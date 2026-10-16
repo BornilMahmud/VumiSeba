@@ -11,7 +11,10 @@
     "build": "tsc -b && vite build && tsc -p server/tsconfig.json",
     "preview": "vite preview",
     "seed": "tsx server/db/seed.ts",
-    "test": "tsx server/tests/e2e-workflow.test.ts"
+    "seed:firestore": "tsx scripts/seedFirestore.ts",
+    "admin:bootstrap": "tsx scripts/bootstrapAdmin.ts",
+    "test": "tsx server/tests/e2e-workflow.test.ts",
+    "test:firebase": "tsx server/tests/firebase-auth-rules.test.ts"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
@@ -21,6 +24,7 @@
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "firebase": "^11.6.1",
+    "firebase-admin": "^14.5.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^1.16.0",
     "react": "^18.3.1",

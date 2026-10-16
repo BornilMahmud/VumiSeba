@@ -20,7 +20,7 @@ import {
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, isDemoSession } = useAuth();
   const { unreadCount } = useNotifications();
   const location = useLocation();
   const navigate = useNavigate();
@@ -194,6 +194,13 @@ export const Navbar: React.FC = () => {
                     </span>
                   )}
                 </Link>
+
+                {isDemoSession && (
+                  <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                    <span>⚠️</span>
+                    <span>নমুনা অ্যাকাউন্ট</span>
+                  </span>
+                )}
 
                 {/* Dashboard Button */}
                 <button

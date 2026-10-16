@@ -4,7 +4,7 @@
       "id": "usr-seller-01",
       "citizen_id": "BHM-CIT-882194",
       "email": "seller@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "রফিকুল ইসলাম",
       "name_en": "Rafiqul Islam",
       "mobile": "01711000001",
@@ -25,7 +25,7 @@
       "id": "usr-buyer-01",
       "citizen_id": "BHM-CIT-419203",
       "email": "buyer@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "ফারহান আহমেদ",
       "name_en": "Farhan Ahmed",
       "mobile": "01811000002",
@@ -46,7 +46,7 @@
       "id": "usr-seller-taxdue",
       "citizen_id": "BHM-CIT-339102",
       "email": "latif.taxdue@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "আব্দুল লতিফ",
       "name_en": "Abdul Latif",
       "mobile": "01911000003",
@@ -67,7 +67,7 @@
       "id": "usr-seller-oversell",
       "citizen_id": "BHM-CIT-771920",
       "email": "nazrul.share@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "নজরুল ইসলাম",
       "name_en": "Nazrul Islam",
       "mobile": "01611000004",
@@ -87,7 +87,7 @@
     {
       "id": "usr-officer-union",
       "email": "union.officer@land.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "মোহাম্মদ কামাল হোসেন",
       "name_en": "Md. Kamal Hossain",
       "mobile": "01711223344",
@@ -107,7 +107,7 @@
     {
       "id": "usr-officer-acland",
       "email": "ac.land@land.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "তানভীর হাসান চৌধুরী",
       "name_en": "Tanvir Hasan Chowdhury",
       "mobile": "01711334455",
@@ -127,7 +127,7 @@
     {
       "id": "usr-officer-registry",
       "email": "sub.registrar@land.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "সৈয়দা রোকসানা পারভীন",
       "name_en": "Syeda Roksana Parveen",
       "mobile": "01711445566",
@@ -147,7 +147,7 @@
     {
       "id": "usr-admin-central",
       "email": "admin@landtech.gov.bd",
-      "password_hash": "$2b$10$lv58TTo.E9HnRWAd8icF6OZKzWB.7xuyZlloZqS5wm8kB8TUFvf9i",
+      "password_hash": "$2b$10$xbaY8Ph3Od4ZqDO5jqnz1.Fqqf56iDMtKya90GUjpl79HZuC0y2ZO",
       "name_bn": "এ. কে. এম. রেজওয়ানুল হক",
       "name_en": "A. K. M. Rezwanul Haque",
       "mobile": "01711556677",
@@ -163,6 +163,44 @@
       "kyc_status": "verified",
       "created_at": "2024-12-01T08:00:00Z",
       "updated_at": "2024-12-01T08:00:00Z"
+    },
+    {
+      "id": "usr-temp-test",
+      "email": "newuser@test.gov.bd",
+      "password_hash": "hash",
+      "name_bn": "নতুন নাগরিক",
+      "name_en": "New Citizen",
+      "mobile": "01700000000",
+      "nid_no": "19999999999999999",
+      "father_name_bn": "পিতা",
+      "mother_name_bn": "মাতা",
+      "address_bn": "ঢাকা",
+      "district": "ঢাকা",
+      "upazila": "গুলশান",
+      "role": "citizen",
+      "kyc_status": "verified",
+      "created_at": "2026-10-16T20:53:45.940Z",
+      "updated_at": "2026-10-16T20:53:45.942Z",
+      "citizen_id": "BHM-CIT-697998",
+      "kyc_verified_at": "2026-10-16T20:53:45.942Z"
+    },
+    {
+      "id": "fb-user-1234",
+      "email": "citizen.test@gmail.com",
+      "password_hash": "FIREBASE_MANAGED_ACCOUNT",
+      "name_bn": "Citizen Test",
+      "name_en": "Citizen Test",
+      "mobile": "",
+      "nid_no": "",
+      "father_name_bn": "",
+      "mother_name_bn": "",
+      "address_bn": "",
+      "district": "ঢাকা",
+      "upazila": "গুলশান",
+      "role": "citizen",
+      "kyc_status": "unverified",
+      "created_at": "2026-10-16T21:08:51.734Z",
+      "updated_at": "2026-10-16T21:08:51.734Z"
     }
   ],
   "land_parcels": [
@@ -314,13 +352,13 @@
       "owner_id": "usr-seller-01",
       "owner_name_bn": "রফিকুল ইসলাম",
       "owner_nid": "19852691029384756",
-      "share_portion": 0.5,
-      "area_decimal": 10,
+      "share_portion": 0.45,
+      "area_decimal": 9,
       "khatian_ref": "RS-1204",
-      "status": "active",
+      "status": "partial_transferred",
       "acquired_type_bn": "পৈতৃক ওয়ারিশসূত্রে",
       "created_at": "2024-01-10T00:00:00Z",
-      "updated_at": "2024-01-10T00:00:00Z"
+      "updated_at": "2026-10-16T20:53:45.954Z"
     },
     {
       "id": "own-clean-cosharer",
@@ -398,6 +436,20 @@
       "acquired_type_bn": "পৈতৃক ও ক্রয়সূত্রে",
       "created_at": "2024-04-01T00:00:00Z",
       "updated_at": "2024-04-01T00:00:00Z"
+    },
+    {
+      "id": "OWN-NEW-1792184025955",
+      "parcel_id": "pcl-clean-405",
+      "owner_id": "usr-buyer-01",
+      "owner_name_bn": "ফারহান আহমেদ",
+      "owner_nid": "19922694018274619",
+      "share_portion": 0.05,
+      "area_decimal": 1,
+      "khatian_ref": "নামজারি-৮৮৯৯",
+      "status": "active",
+      "acquired_type_bn": "খরিদসূত্রে (নামজারি সম্পন্ন)",
+      "created_at": "2026-10-16T20:53:45.955Z",
+      "updated_at": "2026-10-16T20:53:45.955Z"
     }
   ],
   "khatian_records": [
@@ -496,6 +548,22 @@
       "total_area_decimal": 25,
       "is_archived": false,
       "created_at": "2024-04-01T00:00:00Z"
+    },
+    {
+      "id": "KHT-NEW-1792184025953",
+      "khatian_no": "নামজারি-৮৮৯৯",
+      "khatian_type": "Mutation",
+      "mouza": "বাড্ডা",
+      "jl_no": "২৮",
+      "upazila": "গুলশান",
+      "district": "ঢাকা",
+      "recorded_owner_bn": "ফারহান আহমেদ",
+      "recorded_father_bn": "আনোয়ার হোসেন",
+      "shares_summary_bn": "ফারহান আহমেদ (১.০০০০ অংশ - খারিজকৃত)",
+      "dags_summary_bn": "দাগ ৪০৫ (১.০০ শতক)",
+      "total_area_decimal": 1,
+      "is_archived": false,
+      "created_at": "2026-10-16T20:53:45.953Z"
     }
   ],
   "land_documents": [
@@ -673,6 +741,27 @@
       "mutation_created": false,
       "created_at": "2026-02-28T11:00:00Z",
       "updated_at": "2026-02-28T11:00:00Z"
+    },
+    {
+      "id": "SA-TEST-1792184025946",
+      "application_no": "BHM-SA-2026-TEST",
+      "parcel_id": "pcl-clean-405",
+      "seller_id": "usr-seller-01",
+      "buyer_id": "usr-buyer-01",
+      "buyer_citizen_id": "BHM-CIT-419203",
+      "proposed_share": 0.05,
+      "proposed_area_decimal": 1,
+      "agreed_price_bdt": 1800000,
+      "deed_type_bn": "সাফ-কবলা",
+      "stage": "MUTATION_SUBMITTED",
+      "status": "active",
+      "tax_cleared": true,
+      "admin_reviewed": true,
+      "union_verified": true,
+      "registry_completed": true,
+      "mutation_created": true,
+      "created_at": "2026-10-16T20:53:45.946Z",
+      "updated_at": "2026-10-16T20:53:45.952Z"
     }
   ],
   "risk_assessments": [
@@ -738,6 +827,71 @@
       "acquisition_risk": true,
       "document_discrepancy": true,
       "generated_at": "2026-04-01T10:00:00Z"
+    },
+    {
+      "id": "RISK-1792184025944-54",
+      "parcel_id": "pcl-clean-405",
+      "overall_risk_level": "low",
+      "risk_score": 100,
+      "summary_bn": "জমিটির রেকর্ডীয় তথ্যসমূহ প্রাথমিকভাবে নির্ভরযোগ্য। রাজস্ব রেকর্ড, খতিয়ান এবং মালিকানা ইতিহাসের সাথে কোনো গুরুতর অসঙ্গতি বা আইনি জটিলতা দৃশ্যমান হয়নি। তবে সরেজমিন শারীরিক দখল ও সীমানা নিশ্চিত করে অগ্রসর হওয়া উচিত।",
+      "identified_issues_bn": [],
+      "warning_basis_bn": [
+        "মালিকানা রেকর্ডে প্রাপ্ত বিক্রেতার নাম: রফিকুল ইসলাম (রেকর্ডীয় অংশ: 0.5)",
+        "জমিটিতে মোট 2 জন যৌথ মালিক বা সহ-শরিকের হিস্যা বিদ্যমান।",
+        "ভূমি উন্নয়ন কর হালনাগাদ পরিশোধিত (দাখিলা সংরক্ষিত)"
+      ],
+      "unverified_data_bn": [
+        "সরেজমিন শারীরিক সীমানা ও তৃতীয় পক্ষের অবৈধ দখলদারিত্ব (ম্যানুয়াল মাঠ তদন্ত প্রয়োজন)",
+        "উত্তরাধিকারীদের মধ্যে অপ্রকাশিত পারিবারিক বিরোধ বা অপ্রকাশিত দানপত্র"
+      ],
+      "recommended_actions_bn": [
+        "সহ-শরিকদের মধ্যে কোনো আপস-বণ্টননামা দলিল সম্পাদিত আছে কি না নিশ্চিত হোন।"
+      ],
+      "seller_match": true,
+      "share_valid": true,
+      "tax_cleared": true,
+      "court_dispute": false,
+      "mortgage_encumbrance": false,
+      "duplicate_sale_risk": false,
+      "acquisition_risk": false,
+      "document_discrepancy": false,
+      "generated_at": "2026-10-16T20:53:45.944Z"
+    },
+    {
+      "id": "RISK-1792184025945-676",
+      "parcel_id": "pcl-court-710",
+      "overall_risk_level": "critical",
+      "risk_score": 0,
+      "summary_bn": "মারাত্মক ঝুঁকি সতর্কতা! এই জমিটিতে আদালতের স্থগিতাদেশ, মর্টগেজ দায়বদ্ধতা অথবা সরকারি অধিগ্রহণ বা খাস খতিয়ানের রেকর্ড পাওয়া গেছে। এই জমিতে কোনো লেনদেন করা সম্পূর্ণ অনিরাপদ ও ঝুঁকিপূর্ণ।",
+      "identified_issues_bn": [
+        "আদালতে দেওয়ানি মামলা বিচারাধীন রয়েছে: ঢাকা ১ম যুগ্ম জেলা জজ আদালত, দেওয়ানি মোকদ্দমা নং ১০৪/২০২৩ (স্থগিতাদেশ বলবৎ)",
+        "ব্যাংক বা আর্থিক প্রতিষ্ঠানে দায়বদ্ধ/মর্টগেজ: অগ্রণী ব্যাংক পিএলসি, প্রধান শাখা - ৪২,৫০,০০০ টাকার দায়বদ্ধতা লিয়েন রেকর্ডভুক্ত",
+        "জমিটি সরকারের উন্নয়ন প্রকল্পের জন্য অধিগ্রহণকৃত (LA Case) তালিকাভুক্ত।"
+      ],
+      "warning_basis_bn": [
+        "জেলা জজ আদালতের মোকদ্দমা রেজিস্টার ও নোটিশ ডাটাবেজ",
+        "ব্যাংক চার্জ ও সাব-রেজিস্ট্রি অফিসের মর্টগেজ ইনডেক্স",
+        "জেলা প্রশাসন ভূমি অধিগ্রহণ ও খাস জমি রেজিস্টার"
+      ],
+      "unverified_data_bn": [
+        "অনলাইন ভূমি উন্নয়ন কর ব্যবস্থার সাথে এই খতিয়ানের হোল্ডিং লিংক এখনও সক্রিয় নয়।",
+        "সরেজমিন শারীরিক সীমানা ও তৃতীয় পক্ষের অবৈধ দখলদারিত্ব (ম্যানুয়াল মাঠ তদন্ত প্রয়োজন)",
+        "উত্তরাধিকারীদের মধ্যে অপ্রকাশিত পারিবারিক বিরোধ বা অপ্রকাশিত দানপত্র"
+      ],
+      "recommended_actions_bn": [
+        "কোনো অবস্থাতেই এই জমিতে আর্থিক লেনদেন করবেন না। বিজ্ঞ আদালতের আদেশ স্থগিত হওয়া পর্যন্ত অপেক্ষা করুন।",
+        "ব্যাংক থেকে মূল মালিকের নামে ঋণ পরিশোধ ও দায়মুক্তি সনদ (NOC) যাচাই করুন।",
+        "সরকারি অধিগ্রহণ বা খাস সম্পত্তি ক্রয় আইনত নিষিদ্ধ। যেকোনো লেনদেন থেকে সম্পূর্ণ বিরত থাকুন।"
+      ],
+      "seller_match": true,
+      "share_valid": true,
+      "tax_cleared": true,
+      "court_dispute": true,
+      "mortgage_encumbrance": true,
+      "duplicate_sale_risk": false,
+      "acquisition_risk": true,
+      "document_discrepancy": false,
+      "generated_at": "2026-10-16T20:53:45.945Z"
     }
   ],
   "office_reviews": [
@@ -754,8 +908,38 @@
     }
   ],
   "registration_appointments": [],
-  "registration_records": [],
-  "mutation_applications": [],
+  "registration_records": [
+    {
+      "id": "REG-TEST-1792184025950",
+      "application_id": "SA-TEST-1792184025946",
+      "registry_office_bn": "গুলশান সাব-রেজিস্ট্রি অফিস",
+      "registration_serial_no": "REG-GLS-TEST",
+      "deed_no": "99120/2026",
+      "deed_volume_no": "৪৫/১০২",
+      "deed_year": "২০২৬",
+      "completion_timestamp": "2026-10-16T20:53:45.950Z",
+      "officer_id": "usr-officer-registry",
+      "deed_draft_url": "/drafts/test.pdf",
+      "is_official_record": true,
+      "disclaimer_bn": "ডেমো নিবন্ধন কার্য সম্পন্ন।"
+    }
+  ],
+  "mutation_applications": [
+    {
+      "id": "MUT-TEST-1792184025951",
+      "mutation_case_no": "MUT-AC-2026-TEST",
+      "sale_application_id": "SA-TEST-1792184025946",
+      "parcel_id": "pcl-clean-405",
+      "applicant_id": "usr-buyer-01",
+      "previous_khatian_no": "১২০৪",
+      "proposed_khatian_no": "হাল-৯৯০১",
+      "current_stage": "application_submitted",
+      "status": "active",
+      "order_summary_bn": "সাফ-কবলা দলিল নং 99120/2026 সূত্রে নামজারি রুজু।",
+      "created_at": "2026-10-16T20:53:45.951Z",
+      "updated_at": "2026-10-16T20:53:45.951Z"
+    }
+  ],
   "notifications": [
     {
       "id": "notif-seller-01",

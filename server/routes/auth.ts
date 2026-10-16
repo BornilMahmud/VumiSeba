@@ -118,6 +118,59 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// 2.5 Firebase Google/Auth Session Sync
+router.post('/firebase-sync', async (req, res) => {
+  try {
+    const { uid, email, displayName, photoURL } = req.body;
+    if (!uid || !email) {
+      res.status(400).json({ success: false, message_bn: 'ইউজার আইডি বা ইমেইল পাওয়া যায়নি।' });
+      return;
+    }
+
+    let users = await dbStore.find('profiles', (p) => p.id === uid || p.email.toLowerCase() === email.toLowerCase());
+    let user = users[0];
+
+    if (!user) {
+      // First-time Firebase login -> Create citizen profile strictly with default citizen role
+      const newUser: UserProfile = {
+        id: uid,
+        email: email.toLowerCase(),
+        password_hash: 'FIREBASE_MANAGED_ACCOUNT',
+        name_bn: displayName || 'নাগরিক',
+        name_en: displayName || 'Citizen',
+        mobile: '',
+        nid_no: '',
+        father_name_bn: '',
+        mother_name_bn: '',
+        address_bn: '',
+        district: 'ঢাকা',
+        upazila: 'গুলশান',
+        role: 'citizen', // Strictly citizen!
+        kyc_status: 'unverified',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      await dbStore.create('profiles', newUser);
+      user = newUser;
+    }
+
+    const token = generateToken(user);
+    const { password_hash, ...safeUser } = user;
+    res.json({
+      success: true,
+      message_bn: 'গুগল অ্যাকাউন্ট দিয়ে সফলভাবে প্রবেশ করা হয়েছে।',
+      token,
+      user: safeUser,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message_bn: 'ফায়ারবেস অথেনটিকেশন সিঙ্ক ব্যর্থ হয়েছে।',
+      error: err.message,
+    });
+  }
+});
+
 // 3. Demo Persona 1-Click Login (Essential for Hackathon Judges & Government Evaluators)
 router.post('/demo-login', async (req, res) => {
   const { role, persona } = req.body;

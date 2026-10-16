@@ -165,6 +165,86 @@ For evaluation, a **1-Click Demo Persona Bar** is pinned to the top of every pag
 
 ---
 
+## 🔥 Firebase Integration & Cloud Architecture (Project: `landtech-e5773`)
+
+Bhumisathi connects directly to **Google Firebase** for enterprise authentication, role management, and distributed NoSQL data persistence:
+
+- **Firebase Project ID:** `landtech-e5773`
+- **Authentication Provider:** Google Sign-In (`GoogleAuthProvider`) + Pre-provisioned Demo Accounts (`signInWithEmailAndPassword`)
+- **Database Engine:** Cloud Firestore (`firestore.rules` + `firestore.indexes.json`)
+- **Web App Hosting:** Firebase Hosting (`dist/` with single-page app rewrite in `firebase.json`)
+
+### 1. Firebase Client Configuration
+Set your web credentials in `.env` (refer to `.env.example`):
+```env
+# Firebase Client Configuration for project landtech-e5773
+VITE_FIREBASE_API_KEY=AIzaSy...
+VITE_FIREBASE_AUTH_DOMAIN=landtech-e5773.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=landtech-e5773
+VITE_FIREBASE_STORAGE_BUCKET=landtech-e5773.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=...
+VITE_FIREBASE_APP_ID=...
+VITE_FIREBASE_MEASUREMENT_ID=...
+```
+
+### 2. Firebase Console Configuration Steps (For Project Owner)
+If not already enabled in the `landtech-e5773` Firebase Console:
+1. **Enable Authentication Providers:**
+   - Go to [Firebase Console](https://console.firebase.google.com/) -> Project `landtech-e5773` -> **Authentication** -> **Sign-in method**.
+   - Enable **Google** provider and configure support email.
+   - Enable **Email/Password** provider (enables the pre-provisioned demo accounts).
+2. **Authorize Domains:**
+   - Under Authentication -> **Settings** -> **Authorized domains**, ensure `localhost` and `127.0.0.1` are present. Add any deployed production domain.
+3. **Initialize Cloud Firestore:**
+   - Go to **Firestore Database** -> **Create Database** (if not created). Choose production rules and a regional location (e.g. `asia-south1`).
+4. **Deploy Security Rules & Indexes:**
+   ```bash
+   # Login to Firebase CLI
+   npx firebase-tools login
+
+   # Deploy hardened Firestore security rules
+   npx firebase-tools deploy --only firestore:rules --project landtech-e5773
+
+   # Deploy required query indexes
+   npx firebase-tools deploy --only firestore:indexes --project landtech-e5773
+   ```
+
+### 3. Demo Account Provisioning & Firestore Data Seeder
+Run the idempotent seeding script to automatically register all 5 demo accounts in Firebase Authentication and seed the 6 core scenarios into Cloud Firestore:
+```bash
+# Seed Cloud Firestore and provision demo accounts
+npm run seed:firestore
+```
+
+| Demo Identity | Email | Password | Role | Access Level |
+| :--- | :--- | :--- | :--- | :--- |
+| **১. ডেমো নাগরিক** | `demo-citizen@bhumisathi.gov.bd` | `DemoCitizen2026!` | `citizen` | Citizen Dashboard (`/citizen`) |
+| **২. ইউনিয়ন কর্মকর্তা** | `demo-union@bhumisathi.gov.bd` | `DemoUnion2026!` | `union_officer` | Union Land Office (`/officer/union-land`) |
+| **৩. এসি ল্যান্ড** | `demo-acland@bhumisathi.gov.bd` | `DemoAcLand2026!` | `ac_land` | AC Land Court (`/officer/ac-land`) |
+| **৪. সাব-রেজিস্ট্রার** | `demo-subreg@bhumisathi.gov.bd` | `DemoSubReg2026!` | `sub_registrar` | Sub-Registry Office (`/officer/registry`) |
+| **৫. সিস্টেম অ্যাডমিন** | `demo-admin@bhumisathi.gov.bd` | `DemoAdmin2026!` | `central_admin` | Central Supervisor (`/officer`) |
+
+### 4. Administrator Role Bootstrap Utility
+To promote any registered citizen or staff member to Central Administrator securely via CLI:
+```bash
+npm run admin:bootstrap <user-email-or-uid>
+```
+*Note: Users cannot self-promote. Ordinary Google sign-ins strictly receive the `citizen` role. Role promotions are verified and permanently recorded in `audit_logs`.*
+
+### 5. Automated Verification & Testing
+```bash
+# 1. Run full application end-to-end acceptance workflow
+npm test
+
+# 2. Run Firebase Authentication, Security Rules & Index verification suite
+npm run test:firebase
+
+# 3. Compile full production bundle
+npm run build
+```
+
+---
+
 ## 📜 Statutory Notice
 
 > **আইনানুগ সতর্কবার্তা:**

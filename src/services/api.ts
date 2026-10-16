@@ -47,6 +47,8 @@ export const api = {
   login: (credentials: any) => apiRequest('/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
   register: (userData: any) => apiRequest('/auth/register', { method: 'POST', body: JSON.stringify(userData) }),
   demoLogin: (persona: string, role?: string) => apiRequest('/auth/demo-login', { method: 'POST', body: JSON.stringify({ persona, role }) }),
+  firebaseSync: (payload: { uid: string; email: string | null; displayName: string | null; photoURL?: string | null }) =>
+    apiRequest('/auth/firebase-sync', { method: 'POST', body: JSON.stringify(payload) }),
   getProfile: () => apiRequest('/auth/me'),
   submitKyc: (kycData: any) => apiRequest('/auth/kyc/submit', { method: 'POST', body: JSON.stringify(kycData) }),
   verifyKyc: (userId?: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
