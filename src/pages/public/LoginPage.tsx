@@ -65,7 +65,7 @@ export const LoginPage: React.FC = () => {
             🏛️
           </div>
           <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-            ভূমিসাথী পোর্টালে প্রবেশ
+            ভূমিসেবা পোর্টালে প্রবেশ
           </h2>
           <p className="text-xs text-slate-500 mt-1">
             বাংলাদেশ ডিজিটাল ভূমি সেবা, সত্যতা যাচাই ও স্মার্ট ই-নামজারি

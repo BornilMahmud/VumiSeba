@@ -1,7 +1,7 @@
 {
-  "name": "bhumisathi-landtech",
+  "name": "vumiseba-landtech",
   "version": "1.0.0",
-  "description": "Bhumisathi (ভূমিসাথী) - Bangladesh Citizen Land Services, Ownership Verification, Smart Registry & e-Mutation Platform",
+  "description": "VumiSeba (ভূমিসেবা) - Bangladesh Citizen Land Services, Ownership Verification, Smart Registry & e-Mutation Platform",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,6 +9,9 @@
     "dev:server": "tsx watch server/index.ts",
     "dev:client": "vite",
     "build": "tsc -b && vite build && tsc -p server/tsconfig.json",
+    "build:client": "vite build",
+    "build:server": "tsc -p server/tsconfig.json",
+    "start": "node dist-server/index.js",
     "preview": "vite preview",
     "seed": "tsx server/db/seed.ts",
     "seed:firestore": "tsx scripts/seedFirestore.ts",

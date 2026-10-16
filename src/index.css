@@ -5,7 +5,134 @@
 @layer base {
   html {
     font-family: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
+  body {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    letter-spacing: -0.01em;
+  }
+}
+
+/* =========================================================================
+   Vibrant Animated Button Design System (প্রাণবন্ত ইন্টারেক্টিভ বোতাম)
+   ========================================================================= */
+
+/* Tactile Physics for All Interactive Elements */
+button,
+[role="button"],
+a.inline-flex {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:hover:not(:disabled),
+[role="button"]:hover:not([aria-disabled="true"]) {
+  transform: translateY(-1.5px);
+}
+
+button:active:not(:disabled),
+[role="button"]:active:not([aria-disabled="true"]) {
+  transform: translateY(0.5px) scale(0.98);
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Micro-Shimmer Animation Effect */
+@keyframes button-shimmer {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  pointer-events: none;
+}
+
+.btn-shimmer:hover::after {
+  animation: button-shimmer 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Pulse Glow Animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(13, 148, 136, 0);
+  }
+}
+
+.animate-glow-teal {
+  animation: pulse-glow 2.5s infinite;
+}
+
+/* Rich Button Color Variations with Dynamic Glows */
+.btn-gov-primary {
+  background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #047857 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 rgba(13, 148, 136, 0.35);
+}
+.btn-gov-primary:hover {
+  background: linear-gradient(135deg, #14b8a6 0%, #10b981 50%, #059669 100%);
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.5);
+}
+
+.btn-gov-navy {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1e40af 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 rgba(30, 58, 138, 0.35);
+}
+.btn-gov-navy:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #2563eb 60%, #1d4ed8 100%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+}
+
+.btn-gov-amber {
+  background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 rgba(217, 119, 6, 0.35);
+}
+.btn-gov-amber:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+}
+
+.btn-gov-danger {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 rgba(220, 38, 38, 0.35);
+}
+.btn-gov-danger:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
 }
 
 /* Custom Government Portal Print Styling for Deed Drafts */
@@ -33,7 +160,7 @@
 
 /* Micro-animations and accessibility focus ring */
 :focus-visible {
-  outline: 2px solid #0F172A;
+  outline: 2px solid #0d9488;
   outline-offset: 2px;
 }
 
@@ -43,12 +170,12 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #94a3b8;
 }

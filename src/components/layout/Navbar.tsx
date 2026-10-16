@@ -65,7 +65,7 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-xl font-bold text-slate-900 tracking-tight">ভূমিসাথী</span>
+                <span className="text-xl font-bold text-slate-900 tracking-tight">ভূমিসেবা</span>
                 <span className="text-[10px] bg-teal-100 text-teal-800 font-semibold px-1.5 py-0.5 rounded border border-teal-300">
                   স্মার্ট ল্যান্ডটেক
                 </span>

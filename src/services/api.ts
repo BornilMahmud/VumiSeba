@@ -1,7 +1,23 @@
-const API_BASE = '/api';
+const getApiBase = (): string => {
+  try {
+    const envUrl = (import.meta as any).env?.VITE_API_BASE_URL;
+    if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+      let trimmed = envUrl.trim().replace(/\/+$/, '');
+      if (!trimmed.endsWith('/api') && !trimmed.includes('/api')) {
+        trimmed = `${trimmed}/api`;
+      }
+      return trimmed;
+    }
+  } catch {
+    // browser fallback
+  }
+  return '/api';
+};
+
+const API_BASE = getApiBase();
 
 function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem('bhumisathi_token');
+  const token = localStorage.getItem('vumiseba_token') || localStorage.getItem('bhumisathi_token');
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   };

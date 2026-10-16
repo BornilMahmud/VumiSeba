@@ -35,14 +35,23 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health & Metadata Check
+// Health & Root Status
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    project: 'VumiSeba (ভূমিসেবা)',
+    description: 'Bangladesh Citizen Land Services, Ownership Verification, Smart Registry & e-Mutation Platform API',
+    healthCheck: '/api/health',
+  });
+});
+
 app.get('/api/health', async (req, res) => {
   const db = await dbStore.getRaw();
   res.json({
     status: 'ok',
-    project: 'Bhumisathi (ভূমিসাথী)',
+    project: 'VumiSeba (ভূমিসেবা)',
     tagline: 'Bangladesh Citizen Land Services, Ownership Verification, Smart Registry & e-Mutation Platform',
-    version: '1.0.0-hackathon-mvp',
+    version: '1.0.0',
     database: {
       engine: 'Dual: Firebase Firestore Adapter + Persistent JSON Store',
       parcels_count: db.land_parcels.length,

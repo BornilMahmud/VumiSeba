@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
                 🏛️
               </div>
               <div>
-                <span className="text-xl font-bold text-white tracking-tight">ভূমিসাথী</span>
+                <span className="text-xl font-bold text-white tracking-tight">ভূমিসেবা</span>
                 <p className="text-[11px] text-teal-400 font-medium">স্মার্ট ল্যান্ডটেক প্ল্যাটফর্ম</p>
               </div>
             </div>
@@ -96,14 +96,14 @@ export const Footer: React.FC = () => {
             </div>
 
             <div className="mt-4 p-2.5 rounded bg-slate-800/80 border border-slate-700 text-[11px] text-slate-400 leading-normal">
-              <strong>আইনি বিজ্ঞপ্তি:</strong> ভূমিসাথী একটি পাইলট ডেমো ব্যবস্থা। এটি কোনো বেসরকারি অ্যাপ দ্বারা সরকারি সিলমোহর বা নিবন্ধিত দলিলের আইনগত বিকল্প নয়।
+              <strong>আইনি বিজ্ঞপ্তি:</strong> ভূমিসেবা একটি পাইলট ডেমো ব্যবস্থা। এটি কোনো বেসরকারি অ্যাপ দ্বারা সরকারি সিলমোহর বা নিবন্ধিত দলিলের আইনগত বিকল্প নয়।
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
-          <p>© ২০২৬ ভূমিসাথী (Bhumisathi) ল্যান্ডটেক উদ্যোগ। সর্বস্বত্ব সংরক্ষিত।</p>
+          <p>© ২০২৬ ভূমিসেবা (VumiSeba) ল্যান্ডটেক উদ্যোগ। সর্বস্বত্ব সংরক্ষিত।</p>
           <div className="flex items-center gap-4 text-xs">
             <Link to="/help" className="hover:text-slate-300">গোপনীয়তা নীতিমালা</Link>
             <Link to="/help" className="hover:text-slate-300">ব্যবহারের শর্তাবলী</Link>
