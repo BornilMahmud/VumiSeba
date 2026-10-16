@@ -1,7 +1,20 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Lock, Mail, ArrowRight, UserCheck, Shield, Building2, Scale, User, FileText, AlertCircle } from 'lucide-react';
+import {
+  Lock,
+  Mail,
+  ArrowRight,
+  UserCheck,
+  Shield,
+  Building2,
+  Scale,
+  User,
+  FileText,
+  AlertCircle,
+  Stamp,
+  CheckCircle2
+} from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,18 +25,37 @@ export const LoginPage: React.FC = () => {
 
   const { login, loginWithGoogle, switchDemoPersona, user, isFirebaseActive } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Detect which login route was accessed
+  const isOfficeLogin = location.pathname.includes('/office');
+  const isAdminLogin = location.pathname.includes('/admin');
+  const isCitizenLogin = location.pathname.includes('/citizen') || (!isOfficeLogin && !isAdminLogin);
 
   // Role-based routing after authentication
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
-      if (user.role === 'citizen') navigate('/citizen');
-      else if (user.role === 'union_officer' || (user.role as string) === 'union_land_officer') navigate('/officer/union-land');
-      else if (user.role === 'ac_land' || (user.role as string) === 'ac_land_officer') navigate('/officer/ac-land');
-      else if (user.role === 'sub_registrar' || (user.role as string) === 'sub_registry_officer') navigate('/officer/registry');
-      else if (user.role === 'central_admin' || (user.role as string) === 'admin') navigate('/officer');
-      else navigate('/citizen');
+      const role = (user.role || '').toLowerCase();
+      if (role === 'citizen') {
+        if (isOfficeLogin || isAdminLogin) {
+          setError('আপনার অ্যাকাউন্টে সরকারি কর্মকর্তা বা প্রশাসক রোল বরাদ্দ নেই। সাধারণ নাগরিক প্যানেলে নির্দেশিত করা হচ্ছে...');
+          setTimeout(() => navigate('/citizen/dashboard'), 1500);
+        } else {
+          navigate('/citizen/dashboard');
+        }
+      } else if (role === 'union_officer' || role === 'union_land_officer') {
+        navigate('/office/union/dashboard');
+      } else if (role === 'ac_land' || role === 'ac_land_officer') {
+        navigate('/office/ac-land/dashboard');
+      } else if (role === 'sub_registrar' || role === 'sub_registry_officer') {
+        navigate('/office/registry/dashboard');
+      } else if (role === 'central_admin' || role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/citizen/dashboard');
+      }
     }
-  }, [user, navigate]);
+  }, [user, navigate, isOfficeLogin, isAdminLogin]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,20 +91,52 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="font-bengali min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-md w-full space-y-6">
+        {/* Portal Switching Tabs */}
+        <div className="flex items-center justify-center p-1 bg-slate-200/80 rounded-xl text-xs font-bold gap-1">
+          <Link
+            to="/login/citizen"
+            className={`flex-1 text-center py-2 rounded-lg transition ${
+              isCitizenLogin ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            নাগরিক প্রবেশদ্বার
+          </Link>
+          <Link
+            to="/login/office"
+            className={`flex-1 text-center py-2 rounded-lg transition ${
+              isOfficeLogin ? 'bg-white text-indigo-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            ভূমি কর্মকর্তা
+          </Link>
+          <Link
+            to="/login/admin"
+            className={`flex-1 text-center py-2 rounded-lg transition ${
+              isAdminLogin ? 'bg-white text-cyan-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            কেন্দ্রীয় প্রশাসন
+          </Link>
+        </div>
+
         {/* Header */}
         <div className="text-center">
-          <div className="w-14 h-14 rounded-2xl bg-gov-blue text-white flex items-center justify-center font-bold text-3xl mx-auto shadow-md mb-3 border border-slate-700">
-            🏛️
+          <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-3xl mx-auto shadow-md mb-3 border border-slate-700">
+            {isCitizenLogin ? '👤' : isOfficeLogin ? '🏛️' : '🛡️'}
           </div>
           <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-            ভূমিসেবা পোর্টালে প্রবেশ
+            {isCitizenLogin && 'ভূমিসেবা নাগরিক পোর্টালে প্রবেশ'}
+            {isOfficeLogin && 'সরকারি ভূমি কর্মকর্তা লগইন'}
+            {isAdminLogin && 'ভূমি মন্ত্রণালয় — সুপার অ্যাডমিন লগইন'}
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            বাংলাদেশ ডিজিটাল ভূমি সেবা, সত্যতা যাচাই ও স্মার্ট ই-নামজারি
+            {isCitizenLogin && 'বাংলাদেশ ডিজিটাল ভূমি সেবা, সত্যতা যাচাই ও স্মার্ট ই-নামজারি'}
+            {isOfficeLogin && 'ইউনিয়ন তহশিল, এসি ল্যান্ড ও সাব-রেজিস্ট্রি সরকারি অফিস প্যানেল'}
+            {isAdminLogin && 'সিস্টেম গভর্নেন্স, রোল অ্যাসাইনমেন্ট ও জাতীয় অডিট কনসোল'}
           </p>
         </div>
 
-        {/* 1. Working Demo Logins - MUST BE ABOVE GOOGLE SIGN-IN */}
+        {/* 1. Working Demo Logins */}
         <div className="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-2.5">
             <span className="text-xs font-bold text-teal-900 flex items-center gap-1.5">
@@ -89,7 +153,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('seller')}
+              onClick={() => handleDemoClick('seller', 'citizen')}
               className="p-2.5 rounded-lg bg-white hover:bg-teal-100/70 text-slate-800 font-medium border border-teal-200 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
             >
               <div className="w-7 h-7 rounded-md bg-teal-100 flex items-center justify-center text-teal-800 shrink-0">
@@ -105,15 +169,15 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('union_officer', 'union_officer')}
-              className="p-2.5 rounded-lg bg-white hover:bg-indigo-50 text-slate-800 font-medium border border-indigo-200 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
+              onClick={() => handleDemoClick('union_officer', 'union_land_officer')}
+              className="p-2.5 rounded-lg bg-white hover:bg-emerald-100 text-slate-800 font-medium border border-emerald-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
             >
-              <div className="w-7 h-7 rounded-md bg-indigo-100 flex items-center justify-center text-indigo-800 shrink-0">
+              <div className="w-7 h-7 rounded-md bg-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
                 <Building2 size={15} />
               </div>
               <div>
                 <span className="font-bold block text-slate-900 leading-tight">২. ইউনিয়ন কর্মকর্তা</span>
-                <span className="text-[10px] text-indigo-700 font-medium">ULAO বাড্ডা অফিস</span>
+                <span className="text-[10px] text-emerald-800 font-medium">ULAO তহশিলদার</span>
               </div>
             </button>
 
@@ -122,14 +186,14 @@ export const LoginPage: React.FC = () => {
               type="button"
               disabled={loading || googleLoading}
               onClick={() => handleDemoClick('ac_land', 'ac_land')}
-              className="p-2.5 rounded-lg bg-white hover:bg-purple-50 text-slate-800 font-medium border border-purple-200 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
+              className="p-2.5 rounded-lg bg-white hover:bg-indigo-50 text-slate-800 font-medium border border-indigo-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
             >
-              <div className="w-7 h-7 rounded-md bg-purple-100 flex items-center justify-center text-purple-800 shrink-0">
+              <div className="w-7 h-7 rounded-md bg-indigo-100 flex items-center justify-center text-indigo-800 shrink-0">
                 <Scale size={15} />
               </div>
               <div>
                 <span className="font-bold block text-slate-900 leading-tight">৩. এসি ল্যান্ড</span>
-                <span className="text-[10px] text-purple-700 font-medium">গুলশান রাজস্ব সার্কেল</span>
+                <span className="text-[10px] text-indigo-700 font-medium">উপজেলা ভূমি ও আদালত</span>
               </div>
             </button>
 
@@ -138,37 +202,37 @@ export const LoginPage: React.FC = () => {
               type="button"
               disabled={loading || googleLoading}
               onClick={() => handleDemoClick('sub_registrar', 'sub_registrar')}
-              className="p-2.5 rounded-lg bg-white hover:bg-emerald-50 text-slate-800 font-medium border border-emerald-200 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
+              className="p-2.5 rounded-lg bg-white hover:bg-amber-50 text-slate-800 font-medium border border-amber-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
             >
-              <div className="w-7 h-7 rounded-md bg-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
-                <FileText size={15} />
+              <div className="w-7 h-7 rounded-md bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
+                <Stamp size={15} />
               </div>
               <div>
                 <span className="font-bold block text-slate-900 leading-tight">৪. সাব-রেজিস্ট্রার</span>
-                <span className="text-[10px] text-emerald-700 font-medium">গুলশান সাব-রেজিস্ট্রি</span>
+                <span className="text-[10px] text-amber-800 font-medium">দলিল নিবন্ধন কার্যালয়</span>
               </div>
             </button>
 
-            {/* 5. Demo Admin / Review Officer */}
+            {/* 5. Demo Admin */}
             <button
               type="button"
               disabled={loading || googleLoading}
               onClick={() => handleDemoClick('central_admin', 'central_admin')}
-              className="p-2.5 rounded-lg bg-white hover:bg-blue-50 text-slate-800 font-medium border border-blue-200 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50 col-span-2"
+              className="p-2.5 rounded-lg bg-white hover:bg-cyan-50 text-slate-800 font-medium border border-cyan-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50 col-span-2"
             >
-              <div className="w-7 h-7 rounded-md bg-blue-100 flex items-center justify-center text-blue-800 shrink-0">
+              <div className="w-7 h-7 rounded-md bg-cyan-100 flex items-center justify-center text-cyan-800 shrink-0">
                 <Shield size={15} />
               </div>
               <div>
-                <span className="font-bold block text-slate-900 leading-tight">৫. ভূমি প্রশাসন ও নিবন্ধন সুপারভাইজার (অ্যাডমিন)</span>
-                <span className="text-[10px] text-blue-700 font-medium">কেন্দ্রীক পর্যালোচনা, কেওয়াইসি অনুমোদন ও সার্বিক অডিট</span>
+                <span className="font-bold block text-slate-900 leading-tight">৫. কেন্দ্রীয় ভূমি প্রশাসন (সুপার অ্যাডমিন)</span>
+                <span className="text-[10px] text-cyan-700 font-medium">সার্বিক তদারকি, রোল বণ্টন ও অপরিবর্তনীয় অডিট লগ</span>
               </div>
             </button>
           </div>
         </div>
 
-        {/* 2. Google Sign-In Section */}
-        <div className="bg-white rounded-xl shadow-gov-sm border border-slate-200 p-6 space-y-4">
+        {/* 2. Credentials Form */}
+        <div className="bg-white rounded-xl shadow-xs border border-slate-200 p-6 space-y-4">
           {error && (
             <div className="bg-red-50 text-red-800 text-xs p-3 rounded-lg border border-red-200 font-medium flex items-start gap-2">
               <AlertCircle size={16} className="text-red-600 shrink-0 mt-0.5" />
@@ -176,17 +240,17 @@ export const LoginPage: React.FC = () => {
             </div>
           )}
 
-          {/* Prominent Google Sign-In Button */}
+          {/* Google Sign-In */}
           <div>
             <button
               type="button"
               id="google-signin-btn"
               disabled={googleLoading || loading}
               onClick={handleGoogleSignIn}
-              className="w-full bg-white hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-lg border border-slate-300 shadow-xs transition flex items-center justify-center gap-3 text-sm disabled:opacity-60 disabled:cursor-not-allowed group"
+              className="w-full bg-white hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-lg border border-slate-300 shadow-2xs transition flex items-center justify-center gap-3 text-sm disabled:opacity-60 disabled:cursor-not-allowed group"
             >
               {googleLoading ? (
-                <div className="w-5 h-5 border-2 border-slate-400 border-t-gov-blue rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin"></div>
               ) : (
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -207,35 +271,28 @@ export const LoginPage: React.FC = () => {
                   />
                 </svg>
               )}
-              <span className="group-hover:text-slate-900">
-                {googleLoading ? 'গুগলে সংযোগ করা হচ্ছে...' : 'Google দিয়ে প্রবেশ করুন'}
-              </span>
+              <span>গুগল অ্যাকাউন্ট দিয়ে সরাসরি সাইন-ইন</span>
             </button>
-            <p className="text-[11px] text-slate-500 text-center mt-1.5">
-              স্বয়ংক্রিয়ভাবে সাধারণ নাগরিক হিসেবে প্রোফাইল তৈরি হবে
-            </p>
           </div>
 
-          <div className="relative flex items-center justify-center">
-            <div className="border-t border-slate-200 w-full"></div>
-            <span className="bg-white px-3 text-[11px] text-slate-400 font-semibold absolute">
-              অথবা ইমেইল দিয়ে প্রবেশ
-            </span>
+          <div className="relative flex py-2 items-center">
+            <div className="flex-grow border-t border-slate-200"></div>
+            <span className="flex-shrink mx-3 text-slate-400 text-xs">অথবা ইমেইল ও পাসওয়ার্ড</span>
+            <div className="flex-grow border-t border-slate-200"></div>
           </div>
 
-          {/* Regular Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+          <form onSubmit={handleSubmit} className="space-y-3 text-xs">
             <div>
               <label className="block text-slate-700 font-semibold mb-1">ইমেইল ঠিকানা</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                <Mail className="absolute left-3 top-3 text-slate-400" size={16} />
                 <input
                   type="email"
-                  required
-                  placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-md pl-9 p-2 text-slate-800 focus:ring-1 focus:ring-gov-blue"
+                  placeholder="name@example.com"
+                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-800"
+                  required
                 />
               </div>
             </div>
@@ -243,36 +300,38 @@ export const LoginPage: React.FC = () => {
             <div>
               <label className="block text-slate-700 font-semibold mb-1">পাসওয়ার্ড</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                <Lock className="absolute left-3 top-3 text-slate-400" size={16} />
                 <input
                   type="password"
-                  required
-                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-md pl-9 p-2 text-slate-800 focus:ring-1 focus:ring-gov-blue"
+                  placeholder="••••••••"
+                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-800"
+                  required
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              disabled={loading || googleLoading}
-              className="w-full bg-gov-blue hover:bg-slate-900 text-white font-semibold py-2.5 rounded-md shadow-sm transition flex items-center justify-center gap-1.5 text-sm disabled:opacity-50"
+              disabled={loading}
+              className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg transition shadow-xs flex items-center justify-center gap-2 mt-4"
             >
-              <span>{loading ? 'প্রবেশ করা হচ্ছে...' : 'লগইন করুন'}</span>
+              {loading ? 'যাচাই হচ্ছে...' : 'লগইন করুন'}
               <ArrowRight size={15} />
             </button>
           </form>
+        </div>
 
-          <div className="pt-2 text-center text-xs text-slate-500 border-t">
-            অ্যাকাউন্ট নেই?{' '}
-            <Link to="/register" className="text-gov-blue font-bold hover:underline">
-              নতুন নাগরিক নিবন্ধন করুন
-            </Link>
-          </div>
+        <div className="text-center text-xs text-slate-500">
+          নতুন নাগরিক?{' '}
+          <Link to="/register" className="text-emerald-700 font-bold hover:underline">
+            বিনামূল্যে অ্যাকাউন্ট নিবন্ধন করুন
+          </Link>
         </div>
       </div>
     </div>
   );
 };
+
+export default LoginPage;

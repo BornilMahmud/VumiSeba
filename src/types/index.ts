@@ -83,6 +83,10 @@ export interface LandParcel {
   bank_mortgage_details_bn?: string;
   recorded_owners_bn?: string;
   owners_count?: number;
+  district_bn?: string;
+  upazila_bn?: string;
+  mouza_bn?: string;
+  land_type_bn?: string;
 }
 
 export interface LandOwnership {
@@ -141,17 +145,26 @@ export type SaleApplicationStage =
   | 'TAX_CLEARANCE_PENDING'
   | 'SUBMITTED'
   | 'UNDER_REVIEW'
-  | 'RETURNED_FOR_INFORMATION'
-  | 'REVIEW_APPROVED'
+  | 'UNION_REVIEW_PENDING'
   | 'UNION_REPORT_PENDING'
-  | 'UNION_REPORT_SUBMITTED'
+  | 'RETURNED_FOR_CORRECTION'
+  | 'RETURNED_FOR_INFORMATION'
+  | 'UNION_APPROVED'
+  | 'UNION_REJECTED'
+  | 'AC_LAND_REVIEW_PENDING'
+  | 'AC_LAND_APPROVED'
+  | 'AC_LAND_REJECTED'
+  | 'REGISTRATION_READY'
+  | 'APPOINTMENT_SCHEDULED'
   | 'REGISTRATION_SCHEDULED'
   | 'REGISTRATION_COMPLETED'
+  | 'MUTATION_PENDING'
   | 'MUTATION_SUBMITTED'
   | 'HEARING_SCHEDULED'
   | 'MUTATION_APPROVED'
   | 'MUTATION_REJECTED'
-  | 'REJECTED';
+  | 'REJECTED'
+  | string;
 
 export interface SaleApplication {
   id: string;
@@ -165,7 +178,7 @@ export interface SaleApplication {
   agreed_price_bdt: number;
   deed_type_bn: string;
   stage: SaleApplicationStage;
-  status: 'active' | 'completed' | 'cancelled' | 'rejected';
+  status: 'active' | 'completed' | 'cancelled' | 'rejected' | string;
   tax_cleared: boolean;
   admin_reviewed: boolean;
   union_verified: boolean;
@@ -175,8 +188,17 @@ export interface SaleApplication {
   rejection_reason_bn?: string;
   created_at: string;
   parcel?: LandParcel;
-  seller?: { name_bn: string; citizen_id?: string; mobile?: string; nid_no?: string };
-  buyer?: { name_bn: string; citizen_id?: string; mobile?: string; nid_no?: string };
+  seller?: any;
+  buyer?: any;
+  submission_date?: string;
+  seller_owned_share?: number;
+  seller_owned_area_decimal?: number;
+  seller_citizen_id?: string;
+  holding_no?: string;
+  tax_clearance_status?: string;
+  union_report?: any;
+  appointment_details?: any;
+  registration_details?: any;
   applicationNumber?: string;
   sellerCitizenId?: string;
   buyerCitizenId?: string;
@@ -218,15 +240,15 @@ export interface MutationApplication {
   applicant_id: string;
   previous_khatian_no: string;
   proposed_khatian_no: string;
-  current_stage: 'application_submitted' | 'union_report_pending' | 'hearing_scheduled' | 'approved' | 'rejected';
+  current_stage: 'application_submitted' | 'union_report_pending' | 'hearing_scheduled' | 'approved' | 'rejected' | string;
   status: 'active' | 'approved' | 'rejected' | string;
   hearing_date?: string;
   order_summary_bn?: string;
   approved_khatian_id?: string;
   created_at: string;
   parcel?: LandParcel;
-  applicant?: { name_bn: string; citizen_id?: string; mobile?: string };
-  seller?: { name_bn: string; citizen_id?: string };
+  applicant?: any;
+  seller?: any;
   proposed_area_decimal?: number;
   mutationCaseNumber?: string;
   saleAppId?: string;
@@ -244,6 +266,13 @@ export interface MutationApplication {
   hearingTime?: string;
   resultingKhatianNo?: string;
   resultingHoldingNo?: string;
+  jl_no?: string;
+  khatian_no?: string;
+  dag_no?: string;
+  mouza_bn?: string;
+  transferred_area_decimal?: number;
+  deed_no?: string;
+  approved_khatian_no?: string;
 }
 
 export interface RegistrationAppointment {

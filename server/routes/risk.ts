@@ -7,7 +7,7 @@ const router = Router();
 // Evaluate Land Risk (Check Before You Buy)
 router.post('/evaluate', async (req: Request, res: Response) => {
   try {
-    const { parcel_id, seller_identifier, proposed_share, proposed_area_decimal } = req.body;
+    const { parcel_id, seller_identifier, proposed_share, proposed_area_decimal, exclude_application_id } = req.body;
 
     if (!parcel_id) {
       res.status(400).json({
@@ -22,6 +22,7 @@ router.post('/evaluate', async (req: Request, res: Response) => {
       sellerNidOrCitizenId: seller_identifier,
       proposedShare: proposed_share ? Number(proposed_share) : undefined,
       proposedAreaDecimal: proposed_area_decimal ? Number(proposed_area_decimal) : undefined,
+      excludeApplicationId: exclude_application_id,
     });
 
     res.json({

@@ -32,11 +32,13 @@ export const Navbar: React.FC = () => {
       navigate('/login');
       return;
     }
-    if (user.role === 'citizen') navigate('/citizen');
-    else if (user.role === 'union_officer') navigate('/officer/union-land');
-    else if (user.role === 'ac_land') navigate('/officer/ac-land');
-    else if (user.role === 'sub_registrar') navigate('/officer/registry');
-    else if (user.role === 'central_admin') navigate('/admin');
+    const role = (user.role || '').toLowerCase();
+    if (role === 'citizen') navigate('/citizen/dashboard');
+    else if (role === 'union_officer' || role === 'union_land_officer') navigate('/office/union/dashboard');
+    else if (role === 'ac_land' || role === 'ac_land_officer') navigate('/office/ac-land/dashboard');
+    else if (role === 'sub_registrar' || role === 'sub_registry_officer') navigate('/office/registry/dashboard');
+    else if (role === 'central_admin' || role === 'admin') navigate('/admin/dashboard');
+    else navigate('/citizen/dashboard');
   };
 
   return (

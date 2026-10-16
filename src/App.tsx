@@ -5,8 +5,13 @@ import { NotificationProvider } from './context/NotificationContext';
 import { DemoPersonaBar } from './components/common/DemoPersonaBar';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
+
+// Layouts
 import { CitizenLayout } from './components/layout/CitizenLayout';
-import { OfficerLayout } from './components/layout/OfficerLayout';
+import { UnionOfficeLayout } from './components/layout/UnionOfficeLayout';
+import { AcLandOfficeLayout } from './components/layout/AcLandOfficeLayout';
+import { RegistryOfficeLayout } from './components/layout/RegistryOfficeLayout';
+import { AdminOfficeLayout } from './components/layout/AdminOfficeLayout';
 
 // Public Pages
 import { HomePage } from './pages/public/HomePage';
@@ -32,12 +37,37 @@ import MutationTrackingPage from './pages/citizen/MutationTrackingPage';
 import DocumentsVaultPage from './pages/citizen/DocumentsVaultPage';
 import NotificationsPage from './pages/citizen/NotificationsPage';
 
-// Officer Pages
-import UnionLandPage from './pages/officer/UnionLandPage';
-import AcLandPage from './pages/officer/AcLandPage';
-import SubRegistryPage from './pages/officer/SubRegistryPage';
-import CentralAdminPage from './pages/officer/CentralAdminPage';
-import UnifiedOfficerWorkspace from './pages/officer/UnifiedOfficerWorkspace';
+// Panel 2: Union Land Office Pages
+import UnionDashboard from './pages/office/union/UnionDashboard';
+import UnionApplicationDetailPage from './pages/office/union/UnionApplicationDetailPage';
+import UnionTaxVerificationPage from './pages/office/union/UnionTaxVerificationPage';
+import UnionRecordVerificationPage from './pages/office/union/UnionRecordVerificationPage';
+import UnionReportsPage from './pages/office/union/UnionReportsPage';
+import UnionHistoryPage from './pages/office/union/UnionHistoryPage';
+
+// Panel 3: AC Land Office Pages
+import AcLandDashboard from './pages/office/acland/AcLandDashboard';
+import AcLandApplicationDetailPage from './pages/office/acland/AcLandApplicationDetailPage';
+import AcLandMutationPage from './pages/office/acland/AcLandMutationPage';
+import AcLandHearingsPage from './pages/office/acland/AcLandHearingsPage';
+import AcLandDecisionsPage from './pages/office/acland/AcLandDecisionsPage';
+import AcLandHistoryPage from './pages/office/acland/AcLandHistoryPage';
+
+// Panel 4: Sub-Registry Office Pages
+import RegistryDashboard from './pages/office/registry/RegistryDashboard';
+import RegistryApplicationDetailPage from './pages/office/registry/RegistryApplicationDetailPage';
+import RegistryAppointmentsPage from './pages/office/registry/RegistryAppointmentsPage';
+import RegistryDocumentsPage from './pages/office/registry/RegistryDocumentsPage';
+import RegistryCompletedPage from './pages/office/registry/RegistryCompletedPage';
+import RegistryHistoryPage from './pages/office/registry/RegistryHistoryPage';
+
+// Panel 5: Central Administration Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
+import AdminRolesPage from './pages/admin/AdminRolesPage';
+import AdminApplicationsPage from './pages/admin/AdminApplicationsPage';
+import AdminAuditLogsPage from './pages/admin/AdminAuditLogsPage';
+import AdminMonitoringPage from './pages/admin/AdminMonitoringPage';
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -50,7 +80,7 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500 font-sans">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500 font-bengali">
         অ্যাকাউন্ট ভেরিফিকেশন হচ্ছে...
       </div>
     );
@@ -66,19 +96,20 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
     const normalizedAllowed = allowedRoles.map((r) => r.toLowerCase());
     const isAllowed =
       normalizedAllowed.includes(currentRole) ||
-      (currentRole === 'central_admin' || currentRole === 'admin');
+      currentRole === 'central_admin' ||
+      currentRole === 'admin';
 
     if (!isAllowed) {
       if (currentRole === 'citizen') {
         return <Navigate to="/citizen/dashboard" replace />;
       } else if (currentRole === 'union_officer' || currentRole === 'union_land_officer') {
-        return <Navigate to="/officer/union-land" replace />;
-      } else if (currentRole === 'ac_land') {
-        return <Navigate to="/officer/ac-land" replace />;
-      } else if (currentRole === 'sub_registrar') {
-        return <Navigate to="/officer/registry" replace />;
+        return <Navigate to="/office/union/dashboard" replace />;
+      } else if (currentRole === 'ac_land' || currentRole === 'ac_land_officer') {
+        return <Navigate to="/office/ac-land/dashboard" replace />;
+      } else if (currentRole === 'sub_registrar' || currentRole === 'sub_registry_officer') {
+        return <Navigate to="/office/registry/dashboard" replace />;
       } else {
-        return <Navigate to="/admin" replace />;
+        return <Navigate to="/admin/dashboard" replace />;
       }
     }
   }
@@ -116,9 +147,12 @@ export default function App() {
               <Route path="/how-it-works" element={<PublicLayout><HowItWorksPage /></PublicLayout>} />
               <Route path="/help" element={<PublicLayout><HelpPage /></PublicLayout>} />
               <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
+              <Route path="/login/citizen" element={<PublicLayout><LoginPage /></PublicLayout>} />
+              <Route path="/login/office" element={<PublicLayout><LoginPage /></PublicLayout>} />
+              <Route path="/login/admin" element={<PublicLayout><LoginPage /></PublicLayout>} />
               <Route path="/register" element={<PublicLayout><RegisterPage /></PublicLayout>} />
 
-              {/* Citizen Routes */}
+              {/* Panel 1: Citizen Routes */}
               <Route
                 path="/citizen/*"
                 element={
@@ -128,13 +162,18 @@ export default function App() {
                         <Route path="dashboard" element={<CitizenDashboard />} />
                         <Route path="profile" element={<ProfileKycPage />} />
                         <Route path="my-land" element={<MyLandPage />} />
+                        <Route path="search-land" element={<SearchLandPage />} />
+                        <Route path="verify-land" element={<VerifyLandPage />} />
                         <Route path="land/:id" element={<LandDetailPage />} />
                         <Route path="tax" element={<TaxClearancePage />} />
                         <Route path="sell" element={<SellLandPage />} />
-                        <Route path="deals" element={<DealsPage />} />
+                        <Route path="sale-applications" element={<MyApplicationsPage />} />
                         <Route path="my-applications" element={<MyApplicationsPage />} />
+                        <Route path="deals" element={<DealsPage />} />
                         <Route path="registration-checklist" element={<RegistrationChecklistPage />} />
+                        <Route path="mutation-applications" element={<MutationTrackingPage />} />
                         <Route path="mutation-tracking" element={<MutationTrackingPage />} />
+                        <Route path="mutation" element={<MutationTrackingPage />} />
                         <Route path="documents" element={<DocumentsVaultPage />} />
                         <Route path="notifications" element={<NotificationsPage />} />
                         <Route path="*" element={<Navigate to="/citizen/dashboard" replace />} />
@@ -144,75 +183,97 @@ export default function App() {
                 }
               />
 
-              {/* Consolidated Officer & Governance Workspace */}
+              {/* Panel 2: Union Land Office Routes */}
               <Route
-                path="/officer"
-                element={
-                  <ProtectedRoute allowedRoles={['union_officer', 'union_land_officer', 'sub_registrar', 'ac_land', 'central_admin', 'admin']}>
-                    <OfficerLayout title="সমন্বিত সরকারি কর্মকর্তা ও প্রশাসন পোর্টাল">
-                      <UnifiedOfficerWorkspace />
-                    </OfficerLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/officer/workspace"
-                element={
-                  <ProtectedRoute allowedRoles={['union_officer', 'union_land_officer', 'sub_registrar', 'ac_land', 'central_admin', 'admin']}>
-                    <OfficerLayout title="সমন্বিত সরকারি কর্মকর্তা ও প্রশাসন পোর্টাল">
-                      <UnifiedOfficerWorkspace />
-                    </OfficerLayout>
-                  </ProtectedRoute>
-                }
-              />
-
-              {/* Officer: Union Land Assistant Officer (ULAO) */}
-              <Route
-                path="/officer/union-land"
+                path="/office/union/*"
                 element={
                   <ProtectedRoute allowedRoles={['union_officer', 'union_land_officer', 'central_admin', 'admin']}>
-                    <OfficerLayout title="ইউনিয়ন ভূমি সহকারী কর্মকর্তার ড্যাশবোর্ড">
-                      <UnifiedOfficerWorkspace />
-                    </OfficerLayout>
+                    <UnionOfficeLayout>
+                      <Routes>
+                        <Route path="dashboard" element={<UnionDashboard />} />
+                        <Route path="applications" element={<UnionDashboard />} />
+                        <Route path="applications/:id" element={<UnionApplicationDetailPage />} />
+                        <Route path="tax-verification" element={<UnionTaxVerificationPage />} />
+                        <Route path="record-verification" element={<UnionRecordVerificationPage />} />
+                        <Route path="reports" element={<UnionReportsPage />} />
+                        <Route path="history" element={<UnionHistoryPage />} />
+                        <Route path="*" element={<Navigate to="/office/union/dashboard" replace />} />
+                      </Routes>
+                    </UnionOfficeLayout>
                   </ProtectedRoute>
                 }
               />
 
-              {/* Officer: Assistant Commissioner Land (AC Land) */}
+              {/* Panel 3: AC Land Office Routes */}
               <Route
-                path="/officer/ac-land"
+                path="/office/ac-land/*"
                 element={
-                  <ProtectedRoute allowedRoles={['ac_land', 'central_admin', 'admin']}>
-                    <OfficerLayout title="সহকারী কমিশনার (ভূমি) এর বিচারিক ড্যাশবোর্ড">
-                      <UnifiedOfficerWorkspace />
-                    </OfficerLayout>
+                  <ProtectedRoute allowedRoles={['ac_land', 'ac_land_officer', 'central_admin', 'admin']}>
+                    <AcLandOfficeLayout>
+                      <Routes>
+                        <Route path="dashboard" element={<AcLandDashboard />} />
+                        <Route path="applications" element={<AcLandDashboard />} />
+                        <Route path="applications/:id" element={<AcLandApplicationDetailPage />} />
+                        <Route path="hearings" element={<AcLandHearingsPage />} />
+                        <Route path="mutation" element={<AcLandMutationPage />} />
+                        <Route path="decisions" element={<AcLandDecisionsPage />} />
+                        <Route path="history" element={<AcLandHistoryPage />} />
+                        <Route path="*" element={<Navigate to="/office/ac-land/dashboard" replace />} />
+                      </Routes>
+                    </AcLandOfficeLayout>
                   </ProtectedRoute>
                 }
               />
 
-              {/* Officer: Sub-Registry Office */}
+              {/* Panel 4: Sub-Registry Office Routes */}
               <Route
-                path="/officer/registry"
+                path="/office/registry/*"
                 element={
-                  <ProtectedRoute allowedRoles={['sub_registrar', 'central_admin', 'admin']}>
-                    <OfficerLayout title="সাব-রেজিস্ট্রি অফিস এক্সিকিউশন প্যানেল">
-                      <UnifiedOfficerWorkspace />
-                    </OfficerLayout>
+                  <ProtectedRoute allowedRoles={['sub_registrar', 'sub_registry_officer', 'central_admin', 'admin']}>
+                    <RegistryOfficeLayout>
+                      <Routes>
+                        <Route path="dashboard" element={<RegistryDashboard />} />
+                        <Route path="applications" element={<RegistryDashboard />} />
+                        <Route path="applications/:id" element={<RegistryApplicationDetailPage />} />
+                        <Route path="appointments" element={<RegistryAppointmentsPage />} />
+                        <Route path="documents" element={<RegistryDocumentsPage />} />
+                        <Route path="completed" element={<RegistryCompletedPage />} />
+                        <Route path="history" element={<RegistryHistoryPage />} />
+                        <Route path="*" element={<Navigate to="/office/registry/dashboard" replace />} />
+                      </Routes>
+                    </RegistryOfficeLayout>
                   </ProtectedRoute>
                 }
               />
 
-              {/* Central Administration */}
+              {/* Panel 5: Central Administration Routes */}
               <Route
-                path="/admin"
+                path="/admin/*"
                 element={
                   <ProtectedRoute allowedRoles={['central_admin', 'admin']}>
-                    <OfficerLayout title="কেন্দ্রীয় প্রশাসন ও সুপারভাইজরি ড্যাশবোর্ড">
-                      <UnifiedOfficerWorkspace />
-                    </OfficerLayout>
+                    <AdminOfficeLayout>
+                      <Routes>
+                        <Route path="dashboard" element={<AdminDashboard />} />
+                        <Route path="users" element={<AdminUsersPage />} />
+                        <Route path="roles" element={<AdminRolesPage />} />
+                        <Route path="applications" element={<AdminApplicationsPage />} />
+                        <Route path="audit-logs" element={<AdminAuditLogsPage />} />
+                        <Route path="monitoring" element={<AdminMonitoringPage />} />
+                        <Route path="offices" element={<AdminDashboard />} />
+                        <Route path="demo-data" element={<AdminMonitoringPage />} />
+                        <Route path="settings" element={<AdminMonitoringPage />} />
+                        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+                      </Routes>
+                    </AdminOfficeLayout>
                   </ProtectedRoute>
                 }
               />
+
+              {/* Backwards-compatibility redirects for old /officer URLs */}
+              <Route path="/officer/union-land" element={<Navigate to="/office/union/dashboard" replace />} />
+              <Route path="/officer/ac-land" element={<Navigate to="/office/ac-land/dashboard" replace />} />
+              <Route path="/officer/registry" element={<Navigate to="/office/registry/dashboard" replace />} />
+              <Route path="/officer/*" element={<Navigate to="/office/union/dashboard" replace />} />
 
               {/* Catch-all redirect */}
               <Route path="*" element={<Navigate to="/" replace />} />

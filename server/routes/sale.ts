@@ -157,7 +157,7 @@ router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Respo
       proposed_area_decimal: validated.proposed_area_decimal,
       agreed_price_bdt: validated.agreed_price_bdt,
       deed_type_bn: validated.deed_type_bn,
-      stage: 'UNDER_REVIEW',
+      stage: 'UNION_REVIEW_PENDING',
       status: 'active',
       tax_cleared: true,
       admin_reviewed: false,
@@ -358,11 +358,11 @@ router.post('/:id/admin-review', requireAuth, requireRole('central_admin'), asyn
   }
 });
 
-// 6. Union Land Office: Submit Field Verification Report
-router.post('/:id/union-report', requireAuth, requireRole('union_officer', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
+// 6. Union Land Office: Comprehensive Review (Approve to AC Land, Return, or Reject)
+router.post('/:id/union-review', requireAuth, requireRole('union_officer', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { field_findings_bn, is_possession_verified, boundary_ok, recommendation } = req.body;
+    const { action, field_findings_bn, is_possession_verified, boundary_ok, reason_bn, notes_bn } = req.body;
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -370,12 +370,44 @@ router.post('/:id/union-report', requireAuth, requireRole('union_officer', 'cent
       return;
     }
 
-    const nextStage = recommendation === 'recommend' ? 'REGISTRATION_SCHEDULED' : 'RETURNED_FOR_INFORMATION';
+    if (action === 'return' && !reason_bn) {
+      res.status(400).json({ success: false, message_bn: 'সংশোধনের কারণ উল্লেখ করা বাধ্যতামূলক।' });
+      return;
+    }
+
+    if (action === 'reject' && !reason_bn) {
+      res.status(400).json({ success: false, message_bn: 'আবেদন বাতিলের কারণ উল্লেখ করা বাধ্যতামূলক।' });
+      return;
+    }
+
+    let nextStage: any = app.stage;
+    let nextStatus: any = app.status;
+
+    if (action === 'approve') {
+      nextStage = 'AC_LAND_REVIEW_PENDING';
+    } else if (action === 'return') {
+      nextStage = 'RETURNED_FOR_CORRECTION';
+    } else if (action === 'reject') {
+      nextStage = 'UNION_REJECTED';
+      nextStatus = 'rejected';
+    } else {
+      res.status(400).json({ success: false, message_bn: 'অকার্যকর পদক্ষেপ নির্বাচন করা হয়েছে।' });
+      return;
+    }
 
     await dbStore.update('sale_applications', app.id, {
       stage: nextStage,
-      union_verified: recommendation === 'recommend',
+      status: nextStatus,
+      union_verified: action === 'approve',
+      return_reason_bn: action === 'return' ? reason_bn : undefined,
+      rejection_reason_bn: action === 'reject' ? reason_bn : undefined,
+      updated_at: new Date().toISOString(),
     });
+
+    // Record review log
+    const reviewNote = notes_bn || reason_bn || (action === 'approve'
+      ? `সরেজমিন সীমানা ও দখল: ${is_possession_verified ? 'যাচাইকৃত ও সঠিক' : 'অসঙ্গতিহীন'}। প্রতিবেদন: ${field_findings_bn || 'রেকর্ড সঠিক পাওয়া গেছে।'}`
+      : reason_bn);
 
     await dbStore.create('office_reviews', {
       id: `REV-UNION-${Date.now()}`,
@@ -384,72 +416,360 @@ router.post('/:id/union-report', requireAuth, requireRole('union_officer', 'cent
       officer_id: user.id,
       officer_name_bn: user.name_bn,
       officer_designation_bn: user.designation_bn || 'ইউনিয়ন ভূমি সহকারী কর্মকর্তা',
-      action: 'investigated',
-      notes_bn: `সরেজমিন সীমানা ও দখল: ${is_possession_verified ? 'যাচাইকৃত ও সঠিক' : 'অসঙ্গতিযুক্ত'}। প্রতিবেদন: ${field_findings_bn}`,
-      field_findings_bn,
+      action: action === 'approve' ? 'approved' : action === 'return' ? 'returned' : 'rejected',
+      notes_bn: reviewNote,
+      field_findings_bn: field_findings_bn || '',
       reviewed_at: new Date().toISOString(),
     });
-
-    // If recommended, automatically set up registration appointment slot & checklist
-    if (recommendation === 'recommend') {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 3);
-
-      const appointment: RegistrationAppointment = {
-        id: `APT-${Date.now()}`,
-        application_id: app.id,
-        registry_office_name_bn: 'গুলশান সাব-রেজিস্ট্রি অফিস, ঢাকা',
-        appointment_date: tomorrow.toISOString().split('T')[0],
-        slot_time: 'বেলা ১১:০০ - দুপুর ১২:৩০',
-        token_no: `TOK-${Math.floor(100 + Math.random() * 900)}`,
-        status: 'scheduled',
-        required_documents_bn: [
-          'মূল আর.এস / বি.এস খতিয়ান ও পর্চা',
-          'হালনাগাদ ভূমি উন্নয়ন কর (খাজনা) দাখিলা ও ক্লিয়ারেন্স সনদ',
-          'ক্রেতা ও বিক্রেতার জাতীয় পরিচয়পত্র ও পাসপোর্ট সাইজ রঙিন ছবি (২ কপি)',
-          'ওয়ারিশান সনদ বা মূল বায়া দলিল (প্রযোজ্য ক্ষেত্রে)',
-          'প্রস্তাবিত খসড়া দলিল ও ই-রেজিস্ট্রেশন জমা স্লিপ',
-        ],
-        scheduled_by: user.name_bn,
-        created_at: new Date().toISOString(),
-      };
-      await dbStore.create('registration_appointments', appointment);
-
-      // Notify parties
-      await NotificationService.notify({
-        userId: app.seller_id,
-        titleBn: 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট নির্ধারিত হয়েছে',
-        messageBn: `গুলশান সাব-রেজিস্ট্রি অফিসে আগামী ${appointment.appointment_date} তারিখে দলিল নিবন্ধনের জন্য সময় ও টোকেন নং ${appointment.token_no} নির্ধারিত হয়েছে।`,
-        type: 'info',
-        link: `/citizen/registration-checklist`,
-      });
-
-      await NotificationService.notify({
-        userId: app.buyer_id,
-        titleBn: 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট ও নথি চেকলিস্ট প্রস্তুত',
-        messageBn: `সাব-রেজিস্ট্রি অফিসে আগামী ${appointment.appointment_date} তারিখে উপস্থিত থাকার অনুরোধ করা হচ্ছে।`,
-        type: 'info',
-        link: `/citizen/registration-checklist`,
-      });
-    }
 
     await dbStore.logAudit(
       user.id,
       user.name_bn,
       user.role,
-      'UNION_FIELD_VERIFICATION_SUBMITTED',
+      `UNION_REVIEW_${action.toUpperCase()}`,
       'sale_applications',
       app.id,
       req.ip || '127.0.0.1',
-      { recommendation, field_findings_bn }
+      { action, reason_bn, field_findings_bn }
     );
+
+    // Notifications to Seller & Buyer
+    if (action === 'approve') {
+      await NotificationService.notify({
+        userId: app.seller_id,
+        titleBn: 'ইউনিয়ন ভূমি অফিস যাচাই সম্পন্ন ও এসি ল্যান্ডে প্রেরিত',
+        messageBn: `আবেদন নং ${app.application_no} এর সরেজমিন ও দাখিলা রেকর্ড ইউনিয়ন ভূমি অফিস কর্তৃক অনুমোদিত হয়ে সহকারী কমিশনার (ভূমি) এর এজলাসে প্রেরিত হয়েছে।`,
+        type: 'success',
+        link: `/citizen/my-applications`,
+      });
+      await NotificationService.notify({
+        userId: app.buyer_id,
+        titleBn: 'জমি ক্রয় আবেদন অগ্রগতি (ইউনিয়ন যাচাই সম্পন্ন)',
+        messageBn: `আবেদন নং ${app.application_no} ইউনিয়ন ভূমি অফিস কর্তৃক অনুমোদিত হয়ে এসি ল্যান্ড অফিসে প্রেরিত হয়েছে।`,
+        type: 'info',
+        link: `/citizen/deals`,
+      });
+    } else if (action === 'return') {
+      await NotificationService.notify({
+        userId: app.seller_id,
+        titleBn: 'ইউনিয়ন ভূমি অফিস: আবেদন সংশোধন প্রয়োজন',
+        messageBn: `আবেদন নং ${app.application_no} সংশোধনের জন্য ফেরত পাঠানো হয়েছে। কারণ: ${reason_bn}`,
+        type: 'warning',
+        link: `/citizen/my-applications`,
+      });
+    } else if (action === 'reject') {
+      await NotificationService.notify({
+        userId: app.seller_id,
+        titleBn: 'ইউনিয়ন ভূমি অফিস: বিক্রয় আবেদন বাতিল',
+        messageBn: `আবেদন নং ${app.application_no} নামঞ্জুর করা হয়েছে। কারণ: ${reason_bn}`,
+        type: 'alert',
+        link: `/citizen/my-applications`,
+      });
+    }
 
     res.json({
       success: true,
-      message_bn: 'ইউনিয়ন ভূমি অফিসের সরেজমিন তদন্ত প্রতিবেদন সফলভাবে সংরক্ষণ ও দাখিল করা হয়েছে।',
+      message_bn: action === 'approve'
+        ? 'ইউনিয়ন ভূমি অফিসের সরেজমিন ও রেকর্ড প্রতিবেদন সফলভাবে অনুমোদিত এবং এসি ল্যান্ড কার্যালয়ে প্রেরিত হয়েছে।'
+        : action === 'return'
+        ? 'আবেদনটি সংশোধনের জন্য নাগরিকের কাছে ফেরত পাঠানো হয়েছে।'
+        : 'আবেদনটি বাতিল হিসেবে রেকর্ডভুক্ত হয়েছে।',
     });
   } catch (err: any) {
-    res.status(500).json({ success: false, message_bn: 'তদন্ত প্রতিবেদন সংরক্ষণে ত্রুটি হয়েছে', error: err.message });
+    res.status(500).json({ success: false, message_bn: 'ইউনিয়ন অফিস পর্যালোচনা সংরক্ষণে ত্রুটি হয়েছে', error: err.message });
+  }
+});
+
+// Alias for backwards compatibility
+router.post('/:id/union-report', requireAuth, requireRole('union_officer', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
+  const { recommendation } = req.body;
+  req.body.action = recommendation === 'recommend' || recommendation === 'approve' ? 'approve' : 'return';
+  return (router as any).handle(req, res);
+});
+
+// 6.5 AC Land Pre-Registration Review (Forward to Sub-Registry, Return, or Reject)
+router.post('/:id/acland-review', requireAuth, requireRole('ac_land', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const user = req.user!;
+    const { action, notes_bn, reason_bn } = req.body;
+
+    const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
+    if (!app) {
+      res.status(404).json({ success: false, message_bn: 'আবেদন পাওয়া যায়নি' });
+      return;
+    }
+
+    if (action === 'return' && !reason_bn) {
+      res.status(400).json({ success: false, message_bn: 'সংশোধনের কারণ উল্লেখ করা আবশ্যক।' });
+      return;
+    }
+
+    if (action === 'reject' && !reason_bn) {
+      res.status(400).json({ success: false, message_bn: 'বাতিলের কারণ উল্লেখ করা আবশ্যক।' });
+      return;
+    }
+
+    let nextStage: any = app.stage;
+    let nextStatus: any = app.status;
+
+    if (action === 'approve') {
+      nextStage = 'REGISTRATION_READY';
+    } else if (action === 'return') {
+      nextStage = 'RETURNED_FOR_CORRECTION';
+    } else if (action === 'reject') {
+      nextStage = 'AC_LAND_REJECTED';
+      nextStatus = 'rejected';
+    } else {
+      res.status(400).json({ success: false, message_bn: 'অকার্যকর পদক্ষেপ।' });
+      return;
+    }
+
+    await dbStore.update('sale_applications', app.id, {
+      stage: nextStage,
+      status: nextStatus,
+      return_reason_bn: action === 'return' ? reason_bn : undefined,
+      rejection_reason_bn: action === 'reject' ? reason_bn : undefined,
+      updated_at: new Date().toISOString(),
+    });
+
+    await dbStore.create('office_reviews', {
+      id: `REV-ACLAND-PRE-${Date.now()}`,
+      application_id: app.id,
+      office_type: 'ac_land',
+      officer_id: user.id,
+      officer_name_bn: user.name_bn,
+      officer_designation_bn: user.designation_bn || 'সহকারী কমিশনার (ভূমি)',
+      action: action === 'approve' ? 'approved' : action === 'return' ? 'returned' : 'rejected',
+      notes_bn: notes_bn || reason_bn || 'এসি ল্যান্ড প্রাক-রেজিস্ট্রেশন পর্যালোচনা সম্পন্ন।',
+      reviewed_at: new Date().toISOString(),
+    });
+
+    await dbStore.logAudit(
+      user.id,
+      user.name_bn,
+      user.role,
+      `ACLAND_PRE_REVIEW_${action.toUpperCase()}`,
+      'sale_applications',
+      app.id,
+      req.ip || '127.0.0.1',
+      { action, reason_bn, notes_bn }
+    );
+
+    if (action === 'approve') {
+      await NotificationService.notify({
+        userId: app.seller_id,
+        titleBn: 'এসি ল্যান্ড প্রাক-রেজিস্ট্রেশন পর্যালোচনা অনুমোদিত',
+        messageBn: `আবেদন নং ${app.application_no} এসি ল্যান্ড অফিস কর্তৃক অনুমোদিত হয়েছে এবং সাব-রেজিস্ট্রি অফিসে রেজিস্ট্রেশনের জন্য প্রস্তুত।`,
+        type: 'success',
+        link: `/citizen/my-applications`,
+      });
+      await NotificationService.notify({
+        userId: app.buyer_id,
+        titleBn: 'এসি ল্যান্ড অনুমোদন: দলিল নিবন্ধনের জন্য প্রস্তুত',
+        messageBn: `আবেদন নং ${app.application_no} এর প্রাক-রেজিস্ট্রেশন অনুমোদন সম্পন্ন। সাব-রেজিস্ট্রি অফিস কর্তৃক শিডিউল প্রদানের অপেক্ষায়।`,
+        type: 'info',
+        link: `/citizen/deals`,
+      });
+    } else if (action === 'return') {
+      await NotificationService.notify({
+        userId: app.seller_id,
+        titleBn: 'এসি ল্যান্ড অফিস: আবেদন সংশোধন প্রয়োজন',
+        messageBn: `আবেদন নং ${app.application_no} এসি ল্যান্ড কর্তৃক সংশোধনের জন্য ফেরত দেওয়া হয়েছে: ${reason_bn}`,
+        type: 'warning',
+        link: `/citizen/my-applications`,
+      });
+    } else if (action === 'reject') {
+      await NotificationService.notify({
+        userId: app.seller_id,
+        titleBn: 'এসি ল্যান্ড অফিস: আবেদন নামঞ্জুর',
+        messageBn: `আবেদন নং ${app.application_no} নামঞ্জুর করা হয়েছে: ${reason_bn}`,
+        type: 'alert',
+        link: `/citizen/my-applications`,
+      });
+    }
+
+    res.json({
+      success: true,
+      message_bn: action === 'approve'
+        ? 'এসি ল্যান্ড প্রাক-নিবন্ধন পর্যালোচনা সফলভাবে অনুমোদিত এবং সাব-রেজিস্ট্রি অফিসে প্রেরিত হয়েছে।'
+        : action === 'return'
+        ? 'আবেদনটি সংশোধনের জন্য নাগরিকের কাছে ফেরত পাঠানো হয়েছে।'
+        : 'আবেদনটি নামঞ্জুর করা হয়েছে।',
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message_bn: 'এসি ল্যান্ড পর্যালোচনা সংরক্ষণে ত্রুটি হয়েছে', error: err.message });
+  }
+});
+
+// 6.7 Sub-Registry Office: Schedule Registration Appointment & Generate Checklist
+router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const user = req.user!;
+    const { appointment_date, slot_time, registry_office_name_bn, required_documents_bn, notes_bn } = req.body;
+
+    if (!appointment_date || !slot_time) {
+      res.status(400).json({ success: false, message_bn: 'অ্যাপয়েন্টমেন্টের তারিখ ও সময় নির্ধারণ করা বাধ্যতামূলক।' });
+      return;
+    }
+
+    const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
+    if (!app) {
+      res.status(404).json({ success: false, message_bn: 'আবেদন পাওয়া যায়নি' });
+      return;
+    }
+
+    const tokenNo = `TOK-${Math.floor(100 + Math.random() * 900)}`;
+    const officeName = registry_office_name_bn || user.office_name_bn || 'গুলশান সাব-রেজিস্ট্রি অফিস, ঢাকা';
+    const docChecklist = required_documents_bn && required_documents_bn.length > 0
+      ? required_documents_bn
+      : [
+          'মূল আর.এস / বি.এস খতিয়ান ও পর্চা',
+          'হালনাগাদ ভূমি উন্নয়ন কর (খাজনা) দাখিলা ও ক্লিয়ারেন্স সনদ',
+          'ক্রেতা ও বিক্রেতার জাতীয় পরিচয়পত্র ও পাসপোর্ট সাইজ রঙিন ছবি (২ কপি)',
+          'ওয়ারিশান সনদ বা মূল বায়া দলিল (প্রযোজ্য ক্ষেত্রে)',
+          'প্রস্তাবিত খসড়া দলিল ও ই-রেজিস্ট্রেশন জমা স্লিপ',
+        ];
+
+    // Check if appointment already exists
+    const existingApts = (await dbStore.find('registration_appointments', (a: RegistrationAppointment) => a.application_id === app.id)) as RegistrationAppointment[];
+    let appointment: RegistrationAppointment;
+
+    if (existingApts.length > 0) {
+      appointment = (await dbStore.update('registration_appointments', existingApts[0].id, {
+        appointment_date,
+        slot_time,
+        registry_office_name_bn: officeName,
+        required_documents_bn: docChecklist,
+        status: 'scheduled',
+        token_no: tokenNo,
+        scheduled_by: user.name_bn,
+      })) as RegistrationAppointment;
+    } else {
+      appointment = {
+        id: `APT-${Date.now()}`,
+        application_id: app.id,
+        registry_office_name_bn: officeName,
+        appointment_date,
+        slot_time,
+        token_no: tokenNo,
+        status: 'scheduled',
+        required_documents_bn: docChecklist,
+        scheduled_by: user.name_bn,
+        created_at: new Date().toISOString(),
+      };
+      await dbStore.create('registration_appointments', appointment);
+    }
+
+    // Update sale application stage
+    await dbStore.update('sale_applications', app.id, {
+      stage: 'APPOINTMENT_SCHEDULED',
+      updated_at: new Date().toISOString(),
+    });
+
+    await dbStore.create('office_reviews', {
+      id: `REV-REG-SCHED-${Date.now()}`,
+      application_id: app.id,
+      office_type: 'sub_registry',
+      officer_id: user.id,
+      officer_name_bn: user.name_bn,
+      officer_designation_bn: user.designation_bn || 'সাব-রেজিস্ট্রার',
+      action: 'scheduled',
+      notes_bn: `রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট নির্ধারিত: ${appointment_date} (${slot_time}), টোকেন নং ${tokenNo}। ${notes_bn || ''}`,
+      reviewed_at: new Date().toISOString(),
+    });
+
+    await dbStore.logAudit(
+      user.id,
+      user.name_bn,
+      user.role,
+      'SCHEDULE_REGISTRATION_APPOINTMENT',
+      'sale_applications',
+      app.id,
+      req.ip || '127.0.0.1',
+      { appointment_date, slot_time, token_no: tokenNo, office: officeName }
+    );
+
+    // In-app notifications to BOTH Seller and Buyer
+    await NotificationService.notify({
+      userId: app.seller_id,
+      titleBn: 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট নির্ধারিত হয়েছে',
+      messageBn: `${officeName}-এ আগামী ${appointment_date} তারিখে (${slot_time}) দলিল নিবন্ধনের জন্য সময় ও টোকেন নং ${tokenNo} নির্ধারিত হয়েছে। প্রয়োজনীয় মূল কাগজপত্র সঙ্গে আনুন।`,
+      type: 'info',
+      link: `/citizen/registration-checklist`,
+    });
+
+    await NotificationService.notify({
+      userId: app.buyer_id,
+      titleBn: 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট ও নথি চেকলিস্ট প্রস্তুত',
+      messageBn: `${officeName}-এ আগামী ${appointment_date} তারিখে (${slot_time}) দলিল নিবন্ধনের জন্য সময় ও টোকেন নং ${tokenNo} নির্ধারিত হয়েছে। উপস্থিত থাকার অনুরোধ করা হচ্ছে।`,
+      type: 'info',
+      link: `/citizen/registration-checklist`,
+    });
+
+    res.json({
+      success: true,
+      message_bn: `সাব-রেজিস্ট্রি অফিসে দলিল নিবন্ধনের অ্যাপয়েন্টমেন্ট সফলভাবে নির্ধারিত হয়েছে। টোকেন নং: ${tokenNo}`,
+      appointment,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message_bn: 'অ্যাপয়েন্টমেন্ট নির্ধারণে ত্রুটি হয়েছে', error: err.message });
+  }
+});
+
+// 6.8 Citizen: Resubmit Returned Application after Correction
+router.post('/:id/resubmit', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const user = req.user!;
+    const { correction_notes_bn } = req.body;
+
+    const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
+    if (!app) {
+      res.status(404).json({ success: false, message_bn: 'আবেদন পাওয়া যায়নি' });
+      return;
+    }
+
+    if (app.seller_id !== user.id && user.role !== 'central_admin') {
+      res.status(403).json({ success: false, message_bn: 'শুধুমাত্র বিক্রেতা বা আবেদনকারী সংশোধন জমা দিতে পারেন।' });
+      return;
+    }
+
+    if (app.stage !== 'RETURNED_FOR_CORRECTION' && app.stage !== 'RETURNED_FOR_INFORMATION') {
+      res.status(400).json({ success: false, message_bn: 'আবেদনটি সংশোধনের জন্য ফেরত অবস্থায় নেই।' });
+      return;
+    }
+
+    await dbStore.update('sale_applications', app.id, {
+      stage: 'UNION_REVIEW_PENDING',
+      return_reason_bn: undefined,
+      updated_at: new Date().toISOString(),
+    });
+
+    await dbStore.logAudit(
+      user.id,
+      user.name_bn,
+      user.role,
+      'RESUBMIT_SALE_APPLICATION',
+      'sale_applications',
+      app.id,
+      req.ip || '127.0.0.1',
+      { correction_notes_bn }
+    );
+
+    // Notify citizen
+    await NotificationService.notify({
+      userId: user.id,
+      titleBn: 'সংশোধিত আবেদন সফলভাবে দাখিল হয়েছে',
+      messageBn: `আপনার বিক্রয় আবেদন নং ${app.application_no} সংশোধনের পর পুনরায় ইউনিয়ন ভূমি অফিসে পর্যালোচনার জন্য জমা হয়েছে।`,
+      type: 'success',
+      link: `/citizen/my-applications`,
+    });
+
+    res.json({
+      success: true,
+      message_bn: 'আবেদনটি সফলভাবে পুনরায় জমা হয়েছে। এটি এখন ইউনিয়ন ভূমি অফিসে পর্যালোচিত হবে।',
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message_bn: 'আবেদন পুনরায় জমাদানে ত্রুটি হয়েছে', error: err.message });
   }
 });
 

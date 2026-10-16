@@ -166,10 +166,30 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ recommendation_bn: recommendation }),
       }),
-    completeRegistration: (id: string, regNo: string, notes?: string) =>
+    unionReview: (id: string, payload: { action: 'approve' | 'return' | 'reject'; field_findings_bn?: string; is_possession_verified?: boolean; boundary_ok?: boolean; reason_bn?: string; notes_bn?: string }) =>
+      apiRequest(`/sale/${id}/union-review`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }),
+    acLandReview: (id: string, payload: { action: 'approve' | 'return' | 'reject'; reason_bn?: string; notes_bn?: string }) =>
+      apiRequest(`/sale/${id}/acland-review`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }),
+    scheduleAppointment: (id: string, payload: { appointment_date: string; slot_time: string; registry_office_name_bn?: string; required_documents_bn?: string[]; notes_bn?: string }) =>
+      apiRequest(`/sale/${id}/schedule-appointment`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }),
+    resubmit: (id: string, payload: { correction_notes_bn?: string }) =>
+      apiRequest(`/sale/${id}/resubmit`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }),
+    completeRegistration: (id: string, regNo: string, notes?: string, payload?: any) =>
       apiRequest(`/sale/${id}/complete-registration`, {
         method: 'POST',
-        body: JSON.stringify({ registration_serial_no: regNo, notes_bn: notes }),
+        body: JSON.stringify({ registration_serial_no: regNo, notes_bn: notes, ...(payload || {}) }),
       }),
   },
 
@@ -198,7 +218,10 @@ export const api = {
     registryQueue: () => apiRequest('/officer/registry-queue'),
     adminStats: () => apiRequest('/officer/admin-queue'),
     kycQueue: () => apiRequest('/auth/kyc/pending'),
-    approveKyc: (userId: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
+    users: () => apiRequest('/officer/users'),
+    approveKyc: (userId: string) => apiRequest('/officer/verify-kyc', { method: 'POST', body: JSON.stringify({ userId }) }),
+    updateRole: (payload: { userId: string; role: string; designation_bn?: string; office_name_bn?: string }) =>
+      apiRequest('/officer/update-role', { method: 'POST', body: JSON.stringify(payload) }),
   },
 
   notifications: {

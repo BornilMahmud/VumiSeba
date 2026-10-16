@@ -6,6 +6,7 @@ export interface AssessRiskInput {
   sellerNidOrCitizenId?: string;
   proposedShare?: number;
   proposedAreaDecimal?: number;
+  excludeApplicationId?: string;
 }
 
 export class RiskEngine {
@@ -18,7 +19,9 @@ export class RiskEngine {
     const ownerships = (await dbStore.find('land_ownerships', (o: LandOwnership) => o.parcel_id === input.parcelId && o.status === 'active')) as LandOwnership[];
     const khajnaAccounts = (await dbStore.find('khajna_accounts', (k: KhajnaAccount) => k.parcel_id === input.parcelId)) as KhajnaAccount[];
     const activeSaleApps = (await dbStore.find('sale_applications', (s: SaleApplication) => 
-      s.parcel_id === input.parcelId && (s.stage !== 'REJECTED' && s.stage !== 'MUTATION_APPROVED' && s.status === 'active')
+      s.parcel_id === input.parcelId && 
+      (!input.excludeApplicationId || s.id !== input.excludeApplicationId) &&
+      (s.stage !== 'REJECTED' && s.stage !== 'MUTATION_APPROVED' && s.status === 'active')
     )) as SaleApplication[];
     const documents = await dbStore.find('land_documents', (d) => d.parcel_id === input.parcelId);
 

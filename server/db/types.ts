@@ -144,12 +144,20 @@ export type SaleApplicationStage =
   | 'TAX_CLEARANCE_PENDING'
   | 'SUBMITTED'
   | 'UNDER_REVIEW'
-  | 'RETURNED_FOR_INFORMATION'
-  | 'REVIEW_APPROVED'
+  | 'UNION_REVIEW_PENDING'
   | 'UNION_REPORT_PENDING'
-  | 'UNION_REPORT_SUBMITTED'
+  | 'RETURNED_FOR_CORRECTION'
+  | 'RETURNED_FOR_INFORMATION'
+  | 'UNION_APPROVED'
+  | 'UNION_REJECTED'
+  | 'AC_LAND_REVIEW_PENDING'
+  | 'AC_LAND_APPROVED'
+  | 'AC_LAND_REJECTED'
+  | 'REGISTRATION_READY'
+  | 'APPOINTMENT_SCHEDULED'
   | 'REGISTRATION_SCHEDULED'
   | 'REGISTRATION_COMPLETED'
+  | 'MUTATION_PENDING'
   | 'MUTATION_SUBMITTED'
   | 'HEARING_SCHEDULED'
   | 'MUTATION_APPROVED'
@@ -216,7 +224,7 @@ export interface OfficeReview {
   officer_id: string;
   officer_name_bn: string;
   officer_designation_bn: string;
-  action: 'approved' | 'returned' | 'rejected' | 'investigated' | 'registered' | 'hearing_scheduled';
+  action: 'approved' | 'returned' | 'rejected' | 'investigated' | 'registered' | 'hearing_scheduled' | 'scheduled' | string;
   notes_bn: string;
   field_findings_bn?: string;
   reviewed_at: string;

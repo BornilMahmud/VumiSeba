@@ -22,48 +22,62 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ stage, status, classNa
       break;
     case 'SUBMITTED':
     case 'UNDER_REVIEW':
-      label = 'প্রাথমিক পর্যালোচনাধীন';
-      colorClasses = 'bg-blue-50 text-blue-800 border-blue-300';
+      label = 'আবেদন জমা হয়েছে';
+      colorClasses = 'bg-blue-50 text-blue-800 border-blue-300 font-semibold';
       break;
-    case 'RETURNED_FOR_INFORMATION':
-      label = 'সংশোধন প্রয়োজন / ফেরত';
-      colorClasses = 'bg-amber-100 text-amber-900 border-amber-400 font-semibold';
-      break;
-    case 'REVIEW_APPROVED':
-      label = 'প্রাথমিক যাচাই অনুমোদিত';
-      colorClasses = 'bg-teal-50 text-teal-800 border-teal-300';
-      break;
+    case 'UNION_REVIEW_PENDING':
     case 'UNION_REPORT_PENDING':
-      label = 'ইউনিয়ন সরেজমিন প্রতিবেদন অপেক্ষমাণ';
-      colorClasses = 'bg-indigo-50 text-indigo-800 border-indigo-300';
+      label = 'ইউনিয়ন ভূমি অফিসে যাচাই চলছে';
+      colorClasses = 'bg-indigo-50 text-indigo-800 border-indigo-300 font-medium';
       break;
-    case 'UNION_REPORT_SUBMITTED':
-      label = 'সরেজমিন প্রতিবেদন সম্পন্ন';
-      colorClasses = 'bg-teal-50 text-teal-800 border-teal-300';
+    case 'RETURNED_FOR_CORRECTION':
+    case 'RETURNED_FOR_INFORMATION':
+      label = 'সংশোধন প্রয়োজন';
+      colorClasses = 'bg-amber-100 text-amber-900 border-amber-400 font-bold';
       break;
+    case 'UNION_APPROVED':
+    case 'AC_LAND_REVIEW_PENDING':
+      label = 'এসি ল্যান্ড অফিসে পর্যালোচনা চলছে';
+      colorClasses = 'bg-teal-50 text-teal-800 border-teal-300 font-semibold';
+      break;
+    case 'AC_LAND_APPROVED':
+    case 'REGISTRATION_READY':
+      label = 'রেজিস্ট্রেশনের জন্য প্রস্তুত';
+      colorClasses = 'bg-purple-50 text-purple-800 border-purple-300 font-semibold';
+      break;
+    case 'APPOINTMENT_SCHEDULED':
     case 'REGISTRATION_SCHEDULED':
-      label = 'রেজিস্ট্রেশন তারিখ নির্ধারিত';
-      colorClasses = 'bg-purple-50 text-purple-800 border-purple-300 font-medium';
+      label = 'অ্যাপয়েন্টমেন্ট নির্ধারিত';
+      colorClasses = 'bg-violet-50 text-violet-800 border-violet-400 font-bold';
       break;
     case 'REGISTRATION_COMPLETED':
-      label = 'দলিল রেজিস্ট্রি সম্পন্ন';
-      colorClasses = 'bg-emerald-50 text-emerald-800 border-emerald-300 font-semibold';
+      label = 'রেজিস্ট্রেশন সম্পন্ন';
+      colorClasses = 'bg-emerald-50 text-emerald-800 border-emerald-300 font-bold';
       break;
+    case 'MUTATION_PENDING':
     case 'MUTATION_SUBMITTED':
-      label = 'নামজারি আবেদন প্রক্রিয়াধীন';
-      colorClasses = 'bg-cyan-50 text-cyan-800 border-cyan-300';
+      label = 'নামজারি পর্যালোচনা চলছে';
+      colorClasses = 'bg-cyan-50 text-cyan-800 border-cyan-300 font-semibold';
       break;
     case 'HEARING_SCHEDULED':
       label = 'নামজারি শুনানি নির্ধারিত';
-      colorClasses = 'bg-amber-50 text-amber-800 border-amber-300';
+      colorClasses = 'bg-amber-50 text-amber-800 border-amber-300 font-semibold';
       break;
     case 'MUTATION_APPROVED':
-      label = 'নামজারি মঞ্জুর (নতুন খতিয়ান জারি)';
+      label = 'নামজারি অনুমোদিত (নতুন খতিয়ান জারি)';
       colorClasses = 'bg-emerald-100 text-emerald-900 border-emerald-400 font-bold';
+      break;
+    case 'UNION_REJECTED':
+      label = 'ইউনিয়ন অফিস কর্তৃক বাতিল';
+      colorClasses = 'bg-red-50 text-red-800 border-red-300 font-medium';
+      break;
+    case 'AC_LAND_REJECTED':
+      label = 'এসি ল্যান্ড অফিস কর্তৃক বাতিল';
+      colorClasses = 'bg-red-50 text-red-800 border-red-300 font-medium';
       break;
     case 'MUTATION_REJECTED':
     case 'REJECTED':
-      label = 'বাতিল / নামঞ্জুর';
+      label = 'নামজারি বাতিল / আবেদন বাতিল';
       colorClasses = 'bg-red-50 text-red-800 border-red-300 font-medium';
       break;
     default:
