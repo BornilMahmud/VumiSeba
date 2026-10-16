@@ -638,7 +638,7 @@ Executes `server/tests/firebase-auth-rules.test.ts` (26 passed checks):
    - **Region:** Singapore (`singapore`)
    - **Runtime:** Node
    - **Build Command:** `npm install && npm run build:server`
-   - **Start Command:** `node dist-server/index.js`
+   - **Start Command:** `node dist-server/server/index.js`
    - **Health Check Path:** `/api/health`
 4. Environment Variables on Render:
    - `NODE_ENV` = `production`
@@ -649,6 +649,15 @@ Executes `server/tests/firebase-auth-rules.test.ts` (26 passed checks):
    - `SIMULATE_SMS` = `true`
    - `SIMULATE_EMAIL` = `true`
 5. Click **Create Web Service**. Verify health check at `https://your-service.onrender.com/api/health`.
+
+> **Note on TypeScript Compilation & Layout:**
+> With `server/tsconfig.json` configured with `"rootDir": ".."` and `"outDir": "../dist-server"`, the compiled output entry point is located at `dist-server/server/index.js`. Path resolution in `server/db/store.ts` dynamically resolves the persistent `data/db.json` regardless of whether running under development `tsx` or compiled production `node`.
+
+> **Important Data Architecture Clarification:**
+> The production server currently operates with a persistent local ACID JSON database (`data/db.json`). While the client application includes full Firebase Firestore adapters, security rules (`firestore.rules`), and composite indexes (`firestore.indexes.json`), direct backend server-side persistence to Cloud Firestore requires deploying the Firebase Admin SDK service account key. For reliable zero-downtime evaluation and test reproducibility, the server uses its built-in transactional store.
+
+> **UI Component System & Skiper UI (@skiper-ui/skiper40):**
+> VumiSeba integrates `shadcn/ui` with custom government styling tokens and incorporates `@skiper-ui/skiper40` (CssLink) animated interactive service gateways. Free-tier attribution is provided to Skiper UI and author [@gurvinder-singh02](https://x.com/Gur__vi). All existing Bengali-first fonts, `gov-*` palettes, and institutional layouts remain strictly preserved.
 
 ### 3. Firebase Console Configuration (Project: `landtech-e5773`)
 1. **Authorized Domains:**

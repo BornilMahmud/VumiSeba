@@ -5,7 +5,27 @@ import { AppDatabaseSchema } from './types.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_DIR = path.resolve(__dirname, '../../data');
+
+function resolveDataDir(): string {
+  if (process.env.DATA_DIR) {
+    return path.resolve(process.env.DATA_DIR);
+  }
+  const cwdData = path.resolve(process.cwd(), 'data');
+  if (fs.existsSync(cwdData)) {
+    return cwdData;
+  }
+  const relDist = path.resolve(__dirname, '../../../data');
+  if (fs.existsSync(relDist)) {
+    return relDist;
+  }
+  const relServer = path.resolve(__dirname, '../../data');
+  if (fs.existsSync(relServer)) {
+    return relServer;
+  }
+  return cwdData;
+}
+
+const DATA_DIR = resolveDataDir();
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 
 export const INITIAL_DB: AppDatabaseSchema = {

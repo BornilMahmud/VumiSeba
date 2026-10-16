@@ -13,6 +13,13 @@ import {
   Clock,
   Sparkles,
 } from 'lucide-react';
+import {
+  Link001,
+  Link002,
+  Link003,
+  Link004,
+  Link005,
+} from '@/components/ui/skiper-ui/skiper40';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -317,6 +324,97 @@ export const HomePage: React.FC = () => {
               <h4 className="font-bold text-slate-900 text-base">নতুন নামজারি খতিয়ান ও জোত জারি</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
                 এসি ল্যান্ডের আদেশে ক্রেতার নামে নতুন খতিয়ান সৃষ্টি এবং বিক্রেতার অবশিষ্ট অংশের সঠিক হিস্যা পুনঃনির্ধারণ।
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Citizen Land Services Gateway powered by Skiper UI (@skiper-ui/skiper40) */}
+      <section className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-slate-700/60 shadow-xl">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-700/60 pb-5">
+            <div>
+              <div className="flex items-center gap-2 text-teal-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                <Sparkles size={14} />
+                <span>ইন্টারেক্টিভ সিটিজেন পোর্টাল গেটওয়ে</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">জরুরি নাগরিক সেবা শর্টকাট</h3>
+              <p className="text-xs text-slate-300 mt-1">
+                এক ক্লিকে আপনার প্রয়োজনীয় ভূমিসেবা ও যাচাইকরণ মডিউলে সরাসরি প্রবেশ করুন।
+              </p>
+            </div>
+            <div className="text-left md:text-right text-[11px] text-slate-400">
+              <span className="block text-slate-400">ইন্টারেক্টিভ কম্পোনেন্ট:</span>
+              <a
+                href="https://skiper-ui.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal-400 hover:text-teal-300 font-medium transition"
+              >
+                Skiper UI (CssLink @skiper-ui/skiper40)
+              </a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 text-sm">
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/50 hover:border-teal-500/60 transition group">
+              <span className="text-[11px] font-semibold text-teal-400 block mb-1">যাচাইকরণ পোর্টাল</span>
+              <Link001 to="/verify-land" className="text-white hover:text-teal-300 font-semibold text-base">
+                মালিকানা ও খতিয়ান নির্ভুল যাচাই
+              </Link001>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                বায়না করার পূর্বে জমির খতিয়ান, দাগ, খাজনা ও আইনি সত্যতা যাচাই করুন।
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/50 hover:border-blue-500/60 transition group">
+              <span className="text-[11px] font-semibold text-blue-400 block mb-1">বিক্রয় ও রেজিস্ট্রেশন</span>
+              <Link002 to="/citizen/sell" className="text-white hover:text-blue-300 font-semibold text-base">
+                স্মার্ট রেজিস্ট্রেশন ও বিক্রয় আবেদন
+              </Link002>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                ডিজিটাল সাব-রেজিস্ট্রি সমন্বয় ও ডিজিটাল খসড়া দলিল প্রস্তুতকরণ।
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/50 hover:border-emerald-500/60 transition group">
+              <span className="text-[11px] font-semibold text-emerald-400 block mb-1">ট্র্যাকিং ও শুনানি</span>
+              <Link003 to="/citizen/applications" className="text-white hover:text-emerald-300 font-semibold text-base">
+                আবেদনের অগ্রগতি ও শুনানি ট্র্যাকিং
+              </Link003>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                তহশিল অফিস, সাব-রেজিস্ট্রি এবং এসি ল্যান্ড নামজারি কেসের লাইভ অগ্রগতি।
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/50 hover:border-amber-500/60 transition group">
+              <span className="text-[11px] font-semibold text-amber-400 block mb-1">খাজনা ও কর সেবা</span>
+              <Link004 to="/citizen/tax" className="text-white hover:text-amber-300 font-semibold text-base">
+                ভূমি উন্নয়ন কর ও অনলাইন দাখিলা
+              </Link004>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                হাল সনের ভূমি উন্নয়ন কর পরিশোধ ও ডিজিটাল দাখিলা সংগ্রহ।
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/50 hover:border-purple-500/60 transition group">
+              <span className="text-[11px] font-semibold text-purple-400 block mb-1">সেবা নির্দেশিকা</span>
+              <Link005 to="/services" className="text-white hover:text-purple-300 font-semibold text-base">
+                সকল নাগরিক ভূমিসেবার পূর্ণাঙ্গ তালিকা
+              </Link005>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                ভূমি সেবা, ফি ক্যালকুলেটর, দলিল নমুনা এবং জরুরি নির্দেশনাসমূহ।
+              </p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/50 hover:border-cyan-500/60 transition group">
+              <span className="text-[11px] font-semibold text-cyan-400 block mb-1">সহায়তা ডেস্ক</span>
+              <Link001 to="/help" className="text-white hover:text-cyan-300 font-semibold text-base">
+                হেল্পলাইন ও হটলাইন ১৬১২২ সহায়তা
+              </Link001>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                ভূমি বিষয়ক যেকোনো জটিলতায় সরকারি সাপোর্ট সেন্টারের দিকনির্দেশনা।
               </p>
             </div>
           </div>
