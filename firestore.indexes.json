@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "land_parcels",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "district", "order": "ASCENDING" },
+        { "fieldPath": "upazila", "order": "ASCENDING" },
+        { "fieldPath": "mouza", "order": "ASCENDING" },
+        { "fieldPath": "dag_no", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "sale_applications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "created_at", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

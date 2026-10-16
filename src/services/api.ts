@@ -1,0 +1,195 @@
+const API_BASE = '/api';
+
+function getAuthHeaders(): HeadersInit {
+  const token = localStorage.getItem('bhumisathi_token');
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
+export async function apiRequest<T = any>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<{ success: boolean; data?: T; message_bn?: string; error?: string; [key: string]: any }> {
+  try {
+    const res = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers: {
+        ...getAuthHeaders(),
+        ...(options.headers || {}),
+      },
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      return {
+        success: false,
+        message_bn: data.message_bn || 'অনুরোধ প্রক্রিয়াকরণে ব্যর্থ হয়েছে।',
+        error: data.error,
+      };
+    }
+    return data;
+  } catch (err: any) {
+    return {
+      success: false,
+      message_bn: 'সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।',
+      error: err.message,
+    };
+  }
+}
+
+export const api = {
+  // Auth
+  login: (credentials: any) => apiRequest('/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
+  register: (userData: any) => apiRequest('/auth/register', { method: 'POST', body: JSON.stringify(userData) }),
+  demoLogin: (persona: string, role?: string) => apiRequest('/auth/demo-login', { method: 'POST', body: JSON.stringify({ persona, role }) }),
+  getProfile: () => apiRequest('/auth/me'),
+  submitKyc: (kycData: any) => apiRequest('/auth/kyc/submit', { method: 'POST', body: JSON.stringify(kycData) }),
+  verifyKyc: (userId?: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
+
+  // Land Records & Search
+  searchLand: (params: Record<string, string>) => {
+    const query = new URLSearchParams(params).toString();
+    return apiRequest(`/land/search?${query}`);
+  },
+  getParcelDetails: (id: string) => apiRequest(`/land/${id}`),
+  getMyHoldings: () => apiRequest('/land/my/holdings'),
+
+  // Risk Assessment (Check Before You Buy)
+  evaluateRisk: (payload: { parcel_id: string; seller_identifier?: string; proposed_share?: number; proposed_area_decimal?: number }) =>
+    apiRequest('/risk/evaluate', { method: 'POST', body: JSON.stringify(payload) }),
+  getRiskAssessment: (id: string) => apiRequest(`/risk/${id}`),
+
+  // Tax & Dakhila
+  getHoldingTax: (parcelId: string) => apiRequest(`/tax/holding/${parcelId}`),
+  payTaxDemo: (payload: { holding_id: string; parcel_id: string; amount_bdt?: number; payment_method?: string }) =>
+    apiRequest('/tax/pay', { method: 'POST', body: JSON.stringify(payload) }),
+  getTaxHistory: () => apiRequest('/tax/my/history'),
+
+  // Sale Applications
+  preCheckSale: (payload: { parcel_id: string; proposed_share: number; proposed_area_decimal: number }) =>
+    apiRequest('/sale/pre-check', { method: 'POST', body: JSON.stringify(payload) }),
+  submitSaleApp: (payload: any) => apiRequest('/sale/submit', { method: 'POST', body: JSON.stringify(payload) }),
+  getMyApplications: () => apiRequest('/sale/my'),
+  getApplicationById: (id: string) => apiRequest(`/sale/${id}`),
+  adminReviewSale: (id: string, payload: { action: 'approve' | 'return' | 'reject'; notes_bn?: string; reason_bn?: string }) =>
+    apiRequest(`/sale/${id}/admin-review`, { method: 'POST', body: JSON.stringify(payload) }),
+  unionReportSale: (id: string, payload: any) => apiRequest(`/sale/${id}/union-report`, { method: 'POST', body: JSON.stringify(payload) }),
+  completeRegistration: (id: string, payload: any) =>
+    apiRequest(`/sale/${id}/complete-registration`, { method: 'POST', body: JSON.stringify(payload) }),
+
+  // e-Mutation
+  getMutations: () => apiRequest('/mutation'),
+  scheduleHearing: (id: string, payload: { hearing_date: string; notes_bn?: string }) =>
+    apiRequest(`/mutation/${id}/schedule-hearing`, { method: 'POST', body: JSON.stringify(payload) }),
+  decideMutation: (id: string, payload: { decision: 'approve' | 'reject'; order_notes_bn?: string }) =>
+    apiRequest(`/mutation/${id}/decide`, { method: 'POST', body: JSON.stringify(payload) }),
+
+  // Officer Queues
+  getUnionQueue: () => apiRequest('/officer/union-queue'),
+  getAcLandQueue: () => apiRequest('/officer/acland-queue'),
+  getRegistryQueue: () => apiRequest('/officer/registry-queue'),
+  getAdminQueue: () => apiRequest('/officer/admin-queue'),
+
+  // Notifications & Audit
+  getNotifications: () => apiRequest('/notifications'),
+  markNotificationRead: (id: string) => apiRequest(`/notifications/${id}/read`, { method: 'PUT' }),
+  markAllNotificationsRead: () => apiRequest('/notifications/read-all', { method: 'PUT' }),
+  getAuditLogs: () => apiRequest('/audit'),
+
+  // Grouped namespaces
+  auth: {
+    login: (credentials: any) => apiRequest('/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
+    register: (userData: any) => apiRequest('/auth/register', { method: 'POST', body: JSON.stringify(userData) }),
+    demoLogin: (persona: string, role?: string) => apiRequest('/auth/demo-login', { method: 'POST', body: JSON.stringify({ persona, role }) }),
+    me: () => apiRequest('/auth/me'),
+    submitKyc: (kycData: any) => apiRequest('/auth/kyc/submit', { method: 'POST', body: JSON.stringify(kycData) }),
+    verifyKyc: (userId?: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
+    approveKyc: (userId: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
+  },
+
+  land: {
+    search: (params: Record<string, string>) => {
+      const query = new URLSearchParams(params).toString();
+      return apiRequest(`/land/search?${query}`);
+    },
+    getById: (id: string) => apiRequest(`/land/${id}`),
+    myHoldings: () => apiRequest('/land/my/holdings'),
+  },
+
+  tax: {
+    getHoldingTax: (parcelId: string) => apiRequest(`/tax/holding/${parcelId}`),
+    pay: (payload: any) => apiRequest('/tax/pay', { method: 'POST', body: JSON.stringify(payload) }),
+    history: () => apiRequest('/tax/my/history'),
+  },
+
+  risk: {
+    evaluate: (payload: any) => apiRequest('/risk/evaluate', { method: 'POST', body: JSON.stringify(payload) }),
+    getById: (id: string) => apiRequest(`/risk/${id}`),
+  },
+
+  sales: {
+    preCheck: (payload: any) => apiRequest('/sale/pre-check', { method: 'POST', body: JSON.stringify(payload) }),
+    submit: (payload: any) => apiRequest('/sale/submit', { method: 'POST', body: JSON.stringify(payload) }),
+    list: () => apiRequest('/sale/my'),
+    my: () => apiRequest('/sale/my'),
+    getById: (id: string) => apiRequest(`/sale/${id}`),
+    adminReview: (id: string, action: string, reason?: string) =>
+      apiRequest(`/sale/${id}/admin-review`, {
+        method: 'POST',
+        body: JSON.stringify({ action: action.toLowerCase(), reason_bn: reason, notes_bn: reason }),
+      }),
+    submitUnionReport: (id: string, recommendation: string) =>
+      apiRequest(`/sale/${id}/union-report`, {
+        method: 'POST',
+        body: JSON.stringify({ recommendation_bn: recommendation }),
+      }),
+    completeRegistration: (id: string, regNo: string, notes?: string) =>
+      apiRequest(`/sale/${id}/complete-registration`, {
+        method: 'POST',
+        body: JSON.stringify({ registration_serial_no: regNo, notes_bn: notes }),
+      }),
+  },
+
+  mutations: {
+    list: () => apiRequest('/mutation'),
+    scheduleHearing: (id: string, date: string, time?: string) =>
+      apiRequest(`/mutation/${id}/schedule-hearing`, {
+        method: 'POST',
+        body: JSON.stringify({ hearing_date: `${date} ${time || ''}`.trim() }),
+      }),
+    approve: (id: string, notes?: string) =>
+      apiRequest(`/mutation/${id}/decide`, {
+        method: 'POST',
+        body: JSON.stringify({ decision: 'approve', order_notes_bn: notes }),
+      }),
+    reject: (id: string, reason?: string) =>
+      apiRequest(`/mutation/${id}/decide`, {
+        method: 'POST',
+        body: JSON.stringify({ decision: 'reject', order_notes_bn: reason }),
+      }),
+  },
+
+  officer: {
+    unionQueue: () => apiRequest('/officer/union-queue'),
+    acLandQueue: () => apiRequest('/officer/acland-queue'),
+    registryQueue: () => apiRequest('/officer/registry-queue'),
+    adminStats: () => apiRequest('/officer/admin-queue'),
+    kycQueue: () => apiRequest('/auth/kyc/pending'),
+    approveKyc: (userId: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
+  },
+
+  notifications: {
+    list: () => apiRequest('/notifications'),
+    markRead: (id: string) => apiRequest(`/notifications/${id}/read`, { method: 'PUT' }),
+    markAllRead: () => apiRequest('/notifications/read-all', { method: 'PUT' }),
+  },
+
+  audit: {
+    list: () => apiRequest('/audit'),
+  },
+};
