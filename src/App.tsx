@@ -37,6 +37,7 @@ import UnionLandPage from './pages/officer/UnionLandPage';
 import AcLandPage from './pages/officer/AcLandPage';
 import SubRegistryPage from './pages/officer/SubRegistryPage';
 import CentralAdminPage from './pages/officer/CentralAdminPage';
+import UnifiedOfficerWorkspace from './pages/officer/UnifiedOfficerWorkspace';
 
 // Protected Route Component
 interface ProtectedRouteProps {
@@ -143,13 +144,35 @@ export default function App() {
                 }
               />
 
+              {/* Consolidated Officer & Governance Workspace */}
+              <Route
+                path="/officer"
+                element={
+                  <ProtectedRoute allowedRoles={['union_officer', 'union_land_officer', 'sub_registrar', 'ac_land', 'central_admin', 'admin']}>
+                    <OfficerLayout title="সমন্বিত সরকারি কর্মকর্তা ও প্রশাসন পোর্টাল">
+                      <UnifiedOfficerWorkspace />
+                    </OfficerLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/officer/workspace"
+                element={
+                  <ProtectedRoute allowedRoles={['union_officer', 'union_land_officer', 'sub_registrar', 'ac_land', 'central_admin', 'admin']}>
+                    <OfficerLayout title="সমন্বিত সরকারি কর্মকর্তা ও প্রশাসন পোর্টাল">
+                      <UnifiedOfficerWorkspace />
+                    </OfficerLayout>
+                  </ProtectedRoute>
+                }
+              />
+
               {/* Officer: Union Land Assistant Officer (ULAO) */}
               <Route
                 path="/officer/union-land"
                 element={
                   <ProtectedRoute allowedRoles={['union_officer', 'union_land_officer', 'central_admin', 'admin']}>
                     <OfficerLayout title="ইউনিয়ন ভূমি সহকারী কর্মকর্তার ড্যাশবোর্ড">
-                      <UnionLandPage />
+                      <UnifiedOfficerWorkspace />
                     </OfficerLayout>
                   </ProtectedRoute>
                 }
@@ -161,7 +184,7 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['ac_land', 'central_admin', 'admin']}>
                     <OfficerLayout title="সহকারী কমিশনার (ভূমি) এর বিচারিক ড্যাশবোর্ড">
-                      <AcLandPage />
+                      <UnifiedOfficerWorkspace />
                     </OfficerLayout>
                   </ProtectedRoute>
                 }
@@ -173,7 +196,7 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['sub_registrar', 'central_admin', 'admin']}>
                     <OfficerLayout title="সাব-রেজিস্ট্রি অফিস এক্সিকিউশন প্যানেল">
-                      <SubRegistryPage />
+                      <UnifiedOfficerWorkspace />
                     </OfficerLayout>
                   </ProtectedRoute>
                 }
@@ -185,7 +208,7 @@ export default function App() {
                 element={
                   <ProtectedRoute allowedRoles={['central_admin', 'admin']}>
                     <OfficerLayout title="কেন্দ্রীয় প্রশাসন ও সুপারভাইজরি ড্যাশবোর্ড">
-                      <CentralAdminPage />
+                      <UnifiedOfficerWorkspace />
                     </OfficerLayout>
                   </ProtectedRoute>
                 }
