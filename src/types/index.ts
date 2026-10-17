@@ -87,6 +87,8 @@ export interface LandParcel {
   upazila_bn?: string;
   mouza_bn?: string;
   land_type_bn?: string;
+  data_as_of?: string;
+  data_source?: string;
 }
 
 export interface LandOwnership {

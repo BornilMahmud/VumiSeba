@@ -48,6 +48,8 @@ export interface LandParcel {
   court_case_details_bn?: string;
   bank_mortgage_flag: boolean;
   bank_mortgage_details_bn?: string;
+  data_as_of?: string;
+  data_source?: string;
   created_at: string;
   updated_at: string;
 }

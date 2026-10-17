@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
-import { UserCheck, Shield, Building2, Scale, FileText, User, Sparkles, LogOut } from 'lucide-react';
+import { api } from '../../services/api';
+import { UserCheck, Shield, Building2, Scale, FileText, User, Sparkles, LogOut, RotateCcw } from 'lucide-react';
 
 export const DemoPersonaBar: React.FC = () => {
   const isDemoMode = import.meta.env.VITE_DEMO_MODE !== 'false';
@@ -13,6 +14,7 @@ export const DemoPersonaBar: React.FC = () => {
   const { user, switchDemoPersona, logout } = useAuth();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
+  const [resetting, setResetting] = useState(false);
 
   const personas = [
     { id: 'seller', labelBn: 'বিক্রেতা (রফিকুল)', labelEn: 'Seller (Rafiqul)', role: 'citizen', icon: User, path: '/citizen/dashboard' },
@@ -29,6 +31,26 @@ export const DemoPersonaBar: React.FC = () => {
     const res = await switchDemoPersona(id, role);
     if (res.success) {
       navigate(path);
+    }
+  };
+
+  const handleResetDemo = async () => {
+    if (!window.confirm(language === 'en' ? 'Reset database to clean demo state?' : 'সম্পূর্ণ ডাটাবেজ প্রাথমিক ডেমো অবস্থায় রিসেট করবেন?')) {
+      return;
+    }
+    setResetting(true);
+    try {
+      const res = await api.officer.resetDemo();
+      if (res.success) {
+        alert(language === 'en' ? 'Demo database reset successfully!' : 'ডেমো ডাটাবেজ সফলভাবে রিসেট হয়েছে!');
+        window.location.reload();
+      } else {
+        alert(res.message_bn || 'Reset failed');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Reset failed');
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -77,6 +99,16 @@ export const DemoPersonaBar: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={handleResetDemo}
+            disabled={resetting}
+            className="inline-flex items-center gap-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 hover:text-white px-2 py-0.5 rounded border border-rose-800/80 transition-colors font-semibold text-[11px]"
+            title={language === 'en' ? 'Reset database to clean demo state' : 'ডাটাবেজ প্রাথমিক ডেমো অবস্থায় রিসেট করুন'}
+          >
+            <RotateCcw size={11} className={resetting ? 'animate-spin' : ''} />
+            <span>{resetting ? (language === 'en' ? 'Resetting...' : 'রিসেট হচ্ছে...') : (language === 'en' ? 'Reset Demo' : 'রিসেট ডেমো')}</span>
+          </button>
+
           {user ? (
             <div className="flex items-center gap-2">
               <span className="text-slate-300 font-semibold bg-slate-800 px-2 py-0.5 rounded border border-slate-700/80">

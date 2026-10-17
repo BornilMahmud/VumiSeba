@@ -222,6 +222,7 @@ export const api = {
     approveKyc: (userId: string) => apiRequest('/officer/verify-kyc', { method: 'POST', body: JSON.stringify({ userId }) }),
     updateRole: (payload: { userId: string; role: string; designation_bn?: string; office_name_bn?: string }) =>
       apiRequest('/officer/update-role', { method: 'POST', body: JSON.stringify(payload) }),
+    resetDemo: () => apiRequest('/officer/reset-demo', { method: 'POST' }),
   },
 
   notifications: {

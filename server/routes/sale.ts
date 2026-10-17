@@ -167,6 +167,21 @@ router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Respo
     );
 
     if (!validation.valid) {
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'FRAUD_ATTEMPT_BLOCKED',
+        'sale_applications',
+        validated.parcel_id,
+        req.ip || '127.0.0.1',
+        {
+          reason_code: validation.reasonCode,
+          reason_bn: validation.reasonBn,
+          reason_en: validation.reasonEn,
+          proposed_share: validated.proposed_share,
+        }
+      );
       res.status(400).json({
         success: false,
         message_bn: validation.reasonBn,
@@ -595,6 +610,21 @@ router.post('/:id/acland-review', requireAuth, requireRole('ac_land', 'central_a
         app.id
       );
       if (!revalidation.valid) {
+        await dbStore.logAudit(
+          user.id,
+          user.name_bn,
+          user.role,
+          'FRAUD_ATTEMPT_BLOCKED',
+          'sale_applications',
+          app.id,
+          req.ip || '127.0.0.1',
+          {
+            stage: 'AC_LAND_REVIEW',
+            reason_code: revalidation.reasonCode,
+            reason_bn: revalidation.reasonBn,
+            reason_en: revalidation.reasonEn,
+          }
+        );
         res.status(400).json({
           success: false,
           message_bn: `এসি ল্যান্ড অনুমোদন স্থগিত! জমিটিতে পরবর্তী জটিলতা পরিলক্ষিত হয়েছে: ${revalidation.reasonBn}`,
@@ -708,6 +738,21 @@ router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar
       app.id
     );
     if (!revalidation.valid) {
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'FRAUD_ATTEMPT_BLOCKED',
+        'sale_applications',
+        app.id,
+        req.ip || '127.0.0.1',
+        {
+          stage: 'REGISTRATION_SCHEDULE',
+          reason_code: revalidation.reasonCode,
+          reason_bn: revalidation.reasonBn,
+          reason_en: revalidation.reasonEn,
+        }
+      );
       res.status(400).json({
         success: false,
         message_bn: `অ্যাপয়েন্টমেন্ট নির্ধারণ স্থগিত! জমিটিতে পরবর্তী জটিলতা পরিলক্ষিত হয়েছে: ${revalidation.reasonBn}`,
@@ -892,6 +937,21 @@ router.post('/:id/complete-registration', requireAuth, requireRole('sub_registra
       app.id
     );
     if (!revalidation.valid) {
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'FRAUD_ATTEMPT_BLOCKED',
+        'sale_applications',
+        app.id,
+        req.ip || '127.0.0.1',
+        {
+          stage: 'REGISTRATION_COMPLETION',
+          reason_code: revalidation.reasonCode,
+          reason_bn: revalidation.reasonBn,
+          reason_en: revalidation.reasonEn,
+        }
+      );
       res.status(400).json({
         success: false,
         message_bn: `দলিল নিবন্ধন স্থগিত! জমিটিতে জটিলতা শনাক্ত হয়েছে: ${revalidation.reasonBn}`,

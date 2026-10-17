@@ -201,6 +201,21 @@ router.post('/:id/decide', requireAuth, requireRole('ac_land', 'central_admin'),
     );
 
     if (!revalidation.valid) {
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'FRAUD_ATTEMPT_BLOCKED',
+        'mutation_applications',
+        mutation.id,
+        req.ip || '127.0.0.1',
+        {
+          stage: 'MUTATION_APPROVAL',
+          reason_code: revalidation.reasonCode,
+          reason_bn: revalidation.reasonBn,
+          reason_en: revalidation.reasonEn,
+        }
+      );
       res.status(400).json({
         success: false,
         message_bn: `নামজারি অনুমোদন স্থগিত! জমিটিতে পরবর্তী বিরোধ বা জটিলতা রয়েছে: ${revalidation.reasonBn}`,
