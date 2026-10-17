@@ -139,7 +139,7 @@ const translations: Record<string, { bn: string; en: string }> = {
   },
   'search.btn': {
     bn: 'অনুসন্ধান করুন',
-    en: 'Search Records',
+    en: 'Records',
   },
   'search.sampleLabel': {
     bn: 'পরীক্ষার জন্য নমুনা দাগ:',

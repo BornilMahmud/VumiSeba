@@ -217,7 +217,7 @@ export const HomePage: React.FC = () => {
                 className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold py-2.5 px-3 rounded-lg shadow-xs hover:shadow transition flex items-center justify-center gap-1.5"
               >
                 <Search size={15} />
-                <span>{t('search.btn', 'অনুসন্ধান করুন', 'Search')}</span>
+                <span>{t('search.btn', 'অনুসন্ধান করুন', 'Records')}</span>
               </button>
             </div>
           </form>
