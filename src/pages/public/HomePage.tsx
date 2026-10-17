@@ -75,12 +75,12 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
-            {t('hero.title1', 'জমি কেনা থেকে নামজারি —', 'From Land Purchase to Mutation —')}{' '}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.2]">
+            {t('hero.title1', 'জমি কেনা থেকে নামজারি —', 'From Land Purchase to Mutation —')}
+            <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700">
               {t('hero.titleHighlight', 'এক ক্লিকে নির্ভুল যাচাই', 'One-Click Accurate Verification')}
             </span>{' '}
-            <br className="hidden sm:inline" />
             {t('hero.title2', 'ও স্মার্ট রেজিস্ট্রি', '& Smart Registry')}
           </h1>
 
