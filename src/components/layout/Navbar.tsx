@@ -24,7 +24,7 @@ export const Navbar: React.FC = () => {
   const [servicesDropdown, setServicesDropdown] = useState(false);
   const { user, logout, isDemoSession } = useAuth();
   const { unreadCount } = useNotifications();
-  const { language, setLanguage, toggleLanguage, t } = useLanguage();
+  const { language, toggleLanguage, t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -63,29 +63,16 @@ export const Navbar: React.FC = () => {
               <span className="hidden md:inline">support@land.gov.bd</span>
             </div>
 
-            {/* Language Switcher Pill */}
-            <div className="flex items-center bg-slate-800 rounded-full p-0.5 border border-slate-700">
-              <button
-                onClick={() => setLanguage('bn')}
-                className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all ${
-                  language === 'bn'
-                    ? 'bg-emerald-500 text-white shadow-xs'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                বাংলা
-              </button>
-              <button
-                onClick={() => setLanguage('en')}
-                className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all ${
-                  language === 'en'
-                    ? 'bg-emerald-500 text-white shadow-xs'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                English
-              </button>
-            </div>
+            {/* Single Button Tap Language Switcher */}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-slate-700 shadow-xs transition-all cursor-pointer"
+              title={language === 'bn' ? 'Switch to English (এক ক্লিকে ভাষা পরিবর্তন)' : 'বাংলায় পরিবর্তন করুন (Single tap to switch)'}
+              aria-label="Toggle language"
+            >
+              <Globe size={12} className="text-emerald-400" />
+              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -288,9 +275,12 @@ export const Navbar: React.FC = () => {
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={toggleLanguage}
-              className="px-2 py-1 text-xs font-bold text-slate-700 bg-slate-100 rounded-md border border-slate-200"
+              className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-md border border-slate-200 transition"
+              title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
+              aria-label="Toggle language"
             >
-              {language === 'bn' ? 'EN' : 'বাং'}
+              <Globe size={13} className="text-emerald-600" />
+              <span>{language === 'bn' ? 'EN' : 'বাং'}</span>
             </button>
             {user && (
               <button
