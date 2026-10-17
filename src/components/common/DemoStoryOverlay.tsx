@@ -16,6 +16,8 @@ import {
   FileCheck,
   UserCheck,
   Zap,
+  Minimize2,
+  Maximize2,
 } from 'lucide-react';
 
 export interface StoryStep {
@@ -185,6 +187,7 @@ export const DemoStoryOverlay: React.FC = () => {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
   const [isSwitching, setIsSwitching] = useState(false);
 
@@ -222,11 +225,12 @@ export const DemoStoryOverlay: React.FC = () => {
 
   return (
     <>
-      {/* Floating Demo Trigger Button (Fixed bottom-left) */}
+      {/* Floating Demo Trigger Button (Fixed bottom-left when closed) */}
       {!isOpen && (
         <button
           onClick={() => {
             setIsOpen(true);
+            setIsMinimized(false);
             handleGoToStep(currentStepIdx);
           }}
           className="no-print fixed bottom-6 left-6 z-50 flex items-center gap-2.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold px-4 py-3 rounded-full shadow-2xl border-2 border-emerald-300 hover:scale-105 active:scale-95 transition-all text-xs"
@@ -240,51 +244,113 @@ export const DemoStoryOverlay: React.FC = () => {
         </button>
       )}
 
-      {/* Guided Walkthrough Modal Overlay */}
-      {isOpen && (
-        <div className="no-print fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs font-bengali">
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-emerald-200 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+      {/* Floating Minimized Pill when docked on left */}
+      {isOpen && isMinimized && (
+        <div className="no-print fixed bottom-4 sm:bottom-6 left-3 sm:left-6 z-50 flex items-center gap-2 bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-900 text-white p-2 sm:px-4 sm:py-2.5 rounded-2xl shadow-2xl border-2 border-emerald-400 font-bengali animate-in slide-in-from-bottom-2 duration-150">
+          <div className="flex items-center gap-2">
+            <Sparkles size={16} className="text-yellow-300 animate-spin" />
+            <div className="text-xs">
+              <span className="font-bold text-emerald-200">
+                {isBn ? `ধাপ ${step.stepNumber}/৮:` : `Step ${step.stepNumber}/8:`}
+              </span>{' '}
+              <span className="font-semibold">{isBn ? step.personaNameBn : step.personaNameEn}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 ml-2 border-l border-white/20 pl-2">
+            {currentStepIdx < STORY_STEPS.length - 1 ? (
+              <button
+                onClick={handleNext}
+                disabled={isSwitching}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white text-[11px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 transition"
+                title={isBn ? 'পরবর্তী ধাপ' : 'Next Step'}
+              >
+                <span>{isBn ? 'পরবর্তী' : 'Next'}</span>
+                <ChevronRight size={13} />
+              </button>
+            ) : null}
+            <button
+              onClick={() => setIsMinimized(false)}
+              className="bg-white/15 hover:bg-white/25 text-white text-[11px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 transition"
+              title={isBn ? 'বড় করুন' : 'Expand'}
+            >
+              <Maximize2 size={13} />
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="bg-white/15 hover:bg-rose-500/50 text-white p-1 rounded-lg transition"
+              title={isBn ? 'বন্ধ করুন' : 'Close'}
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Guided Walkthrough Left-Sided Companion Panel (Non-blocking, website on right remains visible) */}
+      {isOpen && !isMinimized && (
+        <aside
+          aria-label={isBn ? 'বিচারকদের ডেমো উপস্থাপনা' : 'Judge Demo Story'}
+          className="no-print fixed left-3 sm:left-5 top-12 sm:top-14 bottom-3 sm:bottom-4 z-50 w-[calc(100vw-1.5rem)] sm:w-[410px] lg:w-[440px] max-w-full font-bengali flex flex-col pointer-events-auto"
+        >
+          <div className="bg-white/98 backdrop-blur-md w-full h-full rounded-2xl shadow-2xl border-2 border-emerald-500/40 ring-1 ring-slate-900/10 overflow-hidden flex flex-col animate-in slide-in-from-left-4 duration-200">
             {/* Header */}
-            <div className="bg-gradient-to-r from-emerald-700 via-teal-700 to-slate-900 text-white px-5 py-4 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/30 border border-emerald-400 flex items-center justify-center">
-                  <Sparkles size={18} className="text-yellow-300" />
+            <div className="bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-900 text-white px-4 py-3 flex items-center justify-between gap-2 shrink-0">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-emerald-500/30 border border-emerald-400 flex items-center justify-center shrink-0">
+                  <Sparkles size={16} className="text-yellow-300" />
                 </div>
-                <div>
-                  <h3 className="font-extrabold text-sm sm:text-base leading-tight">
-                    {isBn ? 'বিচারকদের ৩-মিনিট ডেমো গাইড (Guided Judge Story)' : '3-Minute Judge Demo Story'}
-                  </h3>
-                  <p className="text-[11px] text-emerald-200">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-extrabold text-xs sm:text-sm leading-tight truncate">
+                      {isBn ? 'বিচারকদের ৩-মিনিট ডেমো গল্প' : '3-Minute Judge Demo Story'}
+                    </h3>
+                    <span className="bg-white/20 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                      {step.stepNumber}/৮
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-emerald-200 truncate">
                     {isBn
-                      ? 'বায়না যাচাই থেকে স্বয়ংক্রিয় নামজারি — ভূমিকা অদলবদল ও লাইভ ডেটা'
-                      : 'From Pre-Purchase Audit to Auto-Mutation — Automated Persona Flow'}
+                      ? 'বায়না যাচাই থেকে স্বয়ংক্রিয় নামজারি — লাইভ সাইট ভিউ'
+                      : 'From Pre-Purchase Audit to Auto-Mutation'}
                   </p>
                 </div>
               </div>
 
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition"
-              >
-                <X size={16} />
-              </button>
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => setIsMinimized(true)}
+                  className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition"
+                  title={isBn ? 'মিনিমাইজ করুন' : 'Minimize'}
+                >
+                  <Minimize2 size={13} />
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="w-7 h-7 rounded-lg bg-white/10 hover:bg-rose-500/40 text-white flex items-center justify-center transition"
+                  title={isBn ? 'বন্ধ করুন' : 'Close'}
+                >
+                  <X size={15} />
+                </button>
+              </div>
             </div>
 
             {/* Step Progress Bar */}
-            <div className="bg-slate-100 px-5 py-2.5 flex items-center justify-between text-xs border-b border-slate-200">
-              <span className="font-bold text-slate-700">
-                {isBn ? `ধাপ ${step.stepNumber} এর ৮:` : `Step ${step.stepNumber} of 8:`}{' '}
-                <strong className="text-emerald-700 font-extrabold">
+            <div className="bg-slate-50 px-4 py-2 flex items-center justify-between text-xs border-b border-slate-200 shrink-0">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-[11px] font-bold text-slate-600 shrink-0">
+                  {isBn ? `ধাপ ${step.stepNumber}/৮:` : `Step ${step.stepNumber}/8:`}
+                </span>
+                <span className="text-[11px] text-emerald-700 font-extrabold truncate">
                   {isBn ? step.personaNameBn : step.personaNameEn}
-                </strong>
-              </span>
+                </span>
+              </div>
 
-              <div className="flex gap-1.5">
+              <div className="flex gap-1 shrink-0">
                 {STORY_STEPS.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => handleGoToStep(i)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    className={`w-2 h-2 rounded-full transition-all ${
                       i === currentStepIdx
                         ? 'bg-emerald-600 scale-125'
                         : i < currentStepIdx
@@ -298,18 +364,18 @@ export const DemoStoryOverlay: React.FC = () => {
             </div>
 
             {/* Main Content Area */}
-            <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-800">
+            <div className="p-4 overflow-y-auto space-y-3 text-xs text-slate-800 flex-1">
               {/* Step Title & Persona Badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-teal-50 text-teal-700 border border-teal-200">
-                    <StepIcon size={20} />
+              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 shrink-0">
+                    <StepIcon size={18} />
                   </div>
-                  <div>
-                    <h4 className="font-extrabold text-base text-slate-900">
+                  <div className="min-w-0">
+                    <h4 className="font-extrabold text-sm text-slate-900 leading-tight">
                       {isBn ? step.titleBn : step.titleEn}
                     </h4>
-                    <span className="text-xs text-slate-500 font-medium">
+                    <span className="text-[11px] text-slate-500 font-medium block truncate">
                       {isBn ? 'সক্রিয় পারসোনা:' : 'Active Persona:'}{' '}
                       <strong className="text-teal-700">
                         {isBn ? step.personaNameBn : step.personaNameEn}
@@ -318,19 +384,19 @@ export const DemoStoryOverlay: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <span className="text-[10px] text-slate-400 block font-mono">
+                <div className="text-right shrink-0">
+                  <span className="text-[10px] text-slate-500 block font-mono bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                     {step.targetPath}
                   </span>
                 </div>
               </div>
 
               {/* 3 Pillars: Problem -> Tech Solution -> What to see */}
-              <div className="grid grid-cols-1 gap-3">
+              <div className="space-y-2.5">
                 {/* 1. Problem Solved */}
-                <div className="bg-red-50/70 border border-red-200 rounded-xl p-3.5">
-                  <span className="font-bold text-red-900 text-xs block mb-1 flex items-center gap-1.5">
-                    <ShieldAlert size={14} className="text-red-600" />
+                <div className="bg-red-50/80 border border-red-200 rounded-xl p-3">
+                  <span className="font-bold text-red-900 text-[11px] block mb-1 flex items-center gap-1.5">
+                    <ShieldAlert size={14} className="text-red-600 shrink-0" />
                     <span>{isBn ? 'বাস্তব সমস্যা (Problem Solved):' : 'The Problem Solved:'}</span>
                   </span>
                   <p className="text-red-950 font-medium text-xs leading-relaxed">
@@ -339,10 +405,10 @@ export const DemoStoryOverlay: React.FC = () => {
                 </div>
 
                 {/* 2. Technical Solution */}
-                <div className="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3.5">
-                  <span className="font-bold text-emerald-900 text-xs block mb-1 flex items-center gap-1.5">
-                    <Zap size={14} className="text-emerald-700" />
-                    <span>{isBn ? 'সিস্টেমের প্রযুক্তিগত সমাধান (How It Works):' : 'Technical Solution:'}</span>
+                <div className="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3">
+                  <span className="font-bold text-emerald-900 text-[11px] block mb-1 flex items-center gap-1.5">
+                    <Zap size={14} className="text-emerald-700 shrink-0" />
+                    <span>{isBn ? 'প্রযুক্তিগত সমাধান (How It Works):' : 'Technical Solution:'}</span>
                   </span>
                   <p className="text-emerald-950 font-medium text-xs leading-relaxed">
                     {isBn ? step.howItWorksBn : step.howItWorksEn}
@@ -350,10 +416,10 @@ export const DemoStoryOverlay: React.FC = () => {
                 </div>
 
                 {/* 3. What to Observe */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
-                  <span className="font-bold text-slate-800 text-xs block mb-1 flex items-center gap-1.5">
-                    <Play size={13} className="text-gov-blue" />
-                    <span>{isBn ? 'বিচারক হিসেবে এখন যা দেখবেন (What to Observe):' : 'What Judges Should Observe:'}</span>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                  <span className="font-bold text-slate-800 text-[11px] block mb-1 flex items-center gap-1.5">
+                    <Play size={13} className="text-teal-700 shrink-0" />
+                    <span>{isBn ? 'স্ক্রিনে এখন যা দেখবেন (Observe on Right):' : 'What Judges Should Observe:'}</span>
                   </span>
                   <p className="text-slate-700 font-medium text-xs leading-relaxed">
                     {isBn ? step.whatJudgeSeesBn : step.whatJudgeSeesEn}
@@ -363,46 +429,47 @@ export const DemoStoryOverlay: React.FC = () => {
             </div>
 
             {/* Modal Footer Controls */}
-            <div className="bg-slate-50 px-5 py-3.5 border-t border-slate-200 flex items-center justify-between gap-3">
+            <div className="bg-slate-50 px-4 py-3 border-t border-slate-200 flex items-center justify-between gap-2 shrink-0">
               <button
                 onClick={handlePrev}
                 disabled={currentStepIdx === 0 || isSwitching}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 transition"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 transition"
               >
-                <ChevronLeft size={16} />
-                <span>{isBn ? 'পূর্ববর্তী ধাপ' : 'Previous'}</span>
+                <ChevronLeft size={15} />
+                <span>{isBn ? 'পূর্ববর্তী' : 'Prev'}</span>
               </button>
 
               <button
                 onClick={() => handleGoToStep(currentStepIdx)}
                 disabled={isSwitching}
-                className="inline-flex items-center gap-1.5 text-xs text-teal-700 font-semibold hover:underline"
+                className="inline-flex items-center gap-1 text-[11px] text-teal-700 font-semibold hover:underline"
+                title={isBn ? 'এই পৃষ্ঠায় পুনরায় যান' : 'Reload Current Step'}
               >
-                <RotateCcw size={13} />
-                <span>{isBn ? 'এই পৃষ্ঠায় পুনরায় যান' : 'Reload Current Step'}</span>
+                <RotateCcw size={12} className={isSwitching ? 'animate-spin' : ''} />
+                <span className="hidden sm:inline">{isBn ? 'পুনরায় যান' : 'Reload'}</span>
               </button>
 
               {currentStepIdx < STORY_STEPS.length - 1 ? (
                 <button
                   onClick={handleNext}
                   disabled={isSwitching}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition"
+                  className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition"
                 >
-                  <span>{isBn ? 'পরবর্তী ধাপে চলুন' : 'Next Step'}</span>
-                  <ChevronRight size={16} />
+                  <span>{isBn ? 'পরবর্তী ধাপ' : 'Next Step'}</span>
+                  <ChevronRight size={15} />
                 </button>
               ) : (
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition"
+                  className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition"
                 >
-                  <CheckCircle2 size={15} />
-                  <span>{isBn ? 'সম্পন্ন (Finish Walkthrough)' : 'Finish Walkthrough'}</span>
+                  <CheckCircle2 size={14} />
+                  <span>{isBn ? 'সম্পন্ন' : 'Finish'}</span>
                 </button>
               )}
             </div>
           </div>
-        </div>
+        </aside>
       )}
     </>
   );
