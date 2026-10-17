@@ -68,7 +68,7 @@ export const DealsPage: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {deals.map((deal) => {
-            const sellerName = formatName(deal.seller, isBn, 'Rafiqul Islam');
+            const sellerName = formatName(deal.seller, isBn, 'Md. Arman Hossen Ripon');
             const buyerName = formatName(deal.buyer, isBn, 'Farhan Ahmed');
             const mouza = formatMouza(deal.parcel, isBn);
 

@@ -196,11 +196,11 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
                   />
                 ) : (
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-sm shadow-2xs shrink-0">
-                    {user?.name_bn?.slice(0, 1) || 'র'}
+                    {user?.name_bn?.slice(0, 1) || 'আ'}
                   </div>
                 )}
                 <div className="overflow-hidden min-w-0">
-                  <p className="font-bold text-slate-900 dark:text-white text-xs truncate">{user?.name_bn || 'রফিকুল ইসলাম'}</p>
+                  <p className="font-bold text-slate-900 dark:text-white text-xs truncate">{user?.name_bn || 'মোঃ আরমান হোসেন রিপন'}</p>
                   <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono font-medium truncate">{user?.citizen_id || 'BHM-CIT-882194'}</p>
                 </div>
               </div>

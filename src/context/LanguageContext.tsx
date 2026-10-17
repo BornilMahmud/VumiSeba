@@ -306,8 +306,8 @@ const translations: Record<string, { bn: string; en: string }> = {
     en: '1-Click Role Switch:',
   },
   'persona.seller': {
-    bn: 'বিক্রেতা (রফিকুল)',
-    en: 'Seller (Rafiqul)',
+    bn: 'বিক্রেতা (আরমান)',
+    en: 'Seller (Arman)',
   },
   'persona.buyer': {
     bn: 'ক্রেতা (ফারহান)',

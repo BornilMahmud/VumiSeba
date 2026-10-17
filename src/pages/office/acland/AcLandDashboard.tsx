@@ -314,7 +314,7 @@ export const AcLandDashboard: React.FC = () => {
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
                         <span className="font-semibold text-slate-800 dark:text-slate-200">
-                          {isBn ? 'বি: ' : 'S: '}{formatName(app.seller, isBn, 'Md. Rafiqul Islam')}
+                          {isBn ? 'বি: ' : 'S: '}{formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}
                         </span>
                         <span className="text-slate-400 mx-1.5">→</span>
                         <span className="font-semibold text-indigo-900 dark:text-indigo-400">
@@ -646,7 +646,7 @@ export const AcLandDashboard: React.FC = () => {
                     <div className="p-2.5 bg-slate-50 dark:bg-slate-800/40 rounded border border-slate-200 dark:border-slate-800">
                       <span className="text-[10px] text-slate-400 block">{isBn ? 'বিক্রেতা:' : 'Seller:'}</span>
                       <p className="font-bold text-slate-800 dark:text-slate-200">
-                        {isBn ? (inspectItem.data.seller?.name_bn || 'মো: রফিকুল ইসলাম') : (inspectItem.data.seller?.name_en || 'Md. Rafiqul Islam')}
+                        {isBn ? (inspectItem.data.seller?.name_bn || 'মোঃ আরমান হোসেন রিপন') : (inspectItem.data.seller?.name_en || 'Md. Arman Hossen Ripon')}
                       </p>
                       <p className="text-[10px] text-slate-400">
                         NID: {inspectItem.data.seller?.nid_no || '19852692475187632'}

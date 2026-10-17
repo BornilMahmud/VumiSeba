@@ -409,7 +409,7 @@ router.post('/kyc/verify', requireAuth, async (req: AuthenticatedRequest, res: R
 
   const defaultNidPhoto = targetProfile.email?.includes('buyer')
     ? '/avatars/nid_farhan_ahmed.jpg'
-    : '/avatars/nid_rafiqul_islam.jpg';
+    : '/avatars/default_nid.jpg';
 
   const updated = await dbStore.update('profiles', targetUserId, {
     kyc_status: 'verified',
