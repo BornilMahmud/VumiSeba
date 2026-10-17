@@ -18,6 +18,69 @@ import { generateSequenceId, toBasisPoints, fromBasisPoints, subtractShares } fr
 
 const router = Router();
 
+const BN_TO_EN_DIGITS: Record<string, string> = {
+  '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+  '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9',
+};
+const toEnDigits = (v: any) => (v !== undefined && v !== null ? String(v).replace(/[০-৯]/g, (d) => BN_TO_EN_DIGITS[d] || d) : '');
+
+const MOUZA_MAP_EN: Record<string, string> = {
+  'বাড্ডা': 'Badda', 'সাঁতারকুল': 'Satarkul', 'ভাটারা': 'Bhatara', 'রামপুরা': 'Rampura',
+  'আফতাবনগর': 'Aftabnagar', 'আম্বরখানা': 'Ambarkhana', 'নওদাপাড়া': 'Nawdapara',
+  'নৈহাটী': 'Naihati', 'আলেকান্দা': 'Alekanda', 'ধাপ': 'Dhap', 'আকুয়া': 'Akua', 'আকুয়া': 'Akua',
+  'কান্দিরপাড়': 'Kandirpar', 'কান্দিরপাড়': 'Kandirpar', 'জয়দেবপুর': 'Joydebpur',
+  'ঝিলংজা': 'Jhilongja', 'রাজবাটী': 'Rajbati', 'গুলশান': 'Gulshan', 'মতিঝিল': 'Motijheel',
+  'ধানমন্ডি': 'Dhanmondi', 'মিরপুর': 'Mirpur', 'উত্তরা': 'Uttara', 'তেজগাঁও': 'Tejgaon',
+};
+
+const DISTRICT_MAP_EN: Record<string, string> = {
+  'ঢাকা': 'Dhaka', 'সিলেট': 'Sylhet', 'রাজশাহী': 'Rajshahi', 'খুলনা': 'Khulna',
+  'বরিশাল': 'Barishal', 'রংপুর': 'Rangpur', 'ময়মনসিংহ': 'Mymensingh', 'কুমিল্লা': 'Cumilla',
+  'গাজীপুর': 'Gazipur', 'কক্সবাজার': "Cox's Bazar", 'দিনাজপুর': 'Dinajpur', 'চট্টগ্রাম': 'Chattogram',
+};
+
+const UPAZILA_MAP_EN: Record<string, string> = {
+  'গুলশান': 'Gulshan', 'সিলেট সদর': 'Sylhet Sadar', 'পবা': 'Paba', 'রূপসা': 'Rupsha',
+  'কোতোয়ালী': 'Kotwali', 'রংপুর সদর': 'Rangpur Sadar', 'ময়মনসিংহ সদর': 'Mymensingh Sadar',
+  'আদর্শ সদর': 'Adarsha Sadar', 'গাজীপুর সদর': 'Gazipur Sadar', 'কক্সবাজার সদর': "Cox's Bazar Sadar",
+  'দিনাজপুর সদর': 'Dinajpur Sadar',
+};
+
+const NAME_MAP_EN: Record<string, string> = {
+  'রফিকুল ইসলাম': 'Rafiqul Islam',
+  'মো: রফিকুল ইসলাম': 'Md. Rafiqul Islam',
+  'ফারহান আহমেদ': 'Farhan Ahmed',
+  'মো: ফারহান আহমেদ': 'Md. Farhan Ahmed',
+  'আব্দুল লতিফ': 'Abdul Latif',
+  'নজরুল ইসলাম': 'Nazrul Islam',
+  'বদরুল আলম': 'Badrul Alam',
+  'ড. আনিসুর রহমান': 'Dr. Anisur Rahman',
+  'গৌতম কুমার সেন': 'Goutam Kumar Sen',
+  'মোহাম্মদ কামাল হোসেন': 'Md. Kamal Hossain',
+  'তানভীর হাসান চৌধুরী': 'Tanvir Hasan Chowdhury',
+  'সৈয়দা রোকসানা পারভীন': 'Syeda Roksana Parveen',
+  'এ. কে. এম. রেজওয়ানুল হক': 'A. K. M. Rezwanul Haque',
+  'কাজী মিজানুর রহমান': 'Kazi Mijanur Rahman',
+  'তানিয়া সুলতানা': 'Tania Sultana',
+  'মোসা: তানিয়া আক্তার': 'Mst. Tania Akter',
+  'তানিয়া আক্তার': 'Tania Akter',
+};
+
+const enrichParcel = (p: LandParcel | undefined | null) => {
+  if (!p) return null;
+  return {
+    ...p,
+    mouza_bn: p.mouza,
+    mouza_en: MOUZA_MAP_EN[p.mouza] || p.mouza,
+    upazila_bn: p.upazila,
+    upazila_en: UPAZILA_MAP_EN[p.upazila] || p.upazila,
+    district_bn: p.district,
+    district_en: DISTRICT_MAP_EN[p.district] || p.district,
+    dag_no_en: toEnDigits(p.dag_no),
+    khatian_no_en: toEnDigits(p.khatian_no),
+  };
+};
+
 // Validation Schemas
 const createSaleAppSchema = z.object({
   parcel_id: z.string().min(1, 'জমি বা দাগ নির্বাচন করুন'),
@@ -309,9 +372,19 @@ router.get('/my', requireAuth, async (req: AuthenticatedRequest, res: Response) 
       const buyer = profiles.find((p) => p.id === app.buyer_id);
       return {
         ...app,
-        parcel: parcel || null,
-        seller: seller ? { name_bn: seller.name_bn, citizen_id: seller.citizen_id, mobile: seller.mobile } : null,
-        buyer: buyer ? { name_bn: buyer.name_bn, citizen_id: buyer.citizen_id, mobile: buyer.mobile } : null,
+        parcel: enrichParcel(parcel),
+        seller: seller ? {
+          name_bn: seller.name_bn,
+          name_en: seller.name_en || NAME_MAP_EN[seller.name_bn] || seller.name_bn,
+          citizen_id: seller.citizen_id,
+          mobile: seller.mobile,
+        } : null,
+        buyer: buyer ? {
+          name_bn: buyer.name_bn,
+          name_en: buyer.name_en || NAME_MAP_EN[buyer.name_bn] || buyer.name_bn,
+          citizen_id: buyer.citizen_id,
+          mobile: buyer.mobile,
+        } : null,
       };
     });
 
@@ -353,16 +426,71 @@ router.get('/:id', requireAuth, async (req: AuthenticatedRequest, res: Response)
     const registrationRecord = (await dbStore.find('registration_records', (r: RegistrationRecord) => r.application_id === app.id))[0] || null;
     const mutationApp = (await dbStore.find('mutation_applications', (m: MutationApplication) => m.sale_application_id === app.id))[0] || null;
 
+    const sellerSafe = seller ? {
+      id: seller.id,
+      name_bn: seller.name_bn,
+      name_en: seller.name_en,
+      citizen_id: seller.citizen_id,
+      mobile: seller.mobile,
+      nid_no: seller.nid_no,
+      father_name_bn: seller.father_name_bn,
+      mother_name_bn: seller.mother_name_bn,
+      address_bn: seller.address_bn,
+    } : null;
+
+    const buyerSafe = buyer ? {
+      id: buyer.id,
+      name_bn: buyer.name_bn,
+      name_en: buyer.name_en,
+      citizen_id: buyer.citizen_id,
+      mobile: buyer.mobile,
+      nid_no: buyer.nid_no,
+      father_name_bn: buyer.father_name_bn,
+      mother_name_bn: buyer.mother_name_bn,
+      address_bn: buyer.address_bn,
+    } : null;
+
+    const parcelEnhanced = parcel ? {
+      ...parcel,
+      mouza_bn: parcel.mouza,
+      upazila_bn: parcel.upazila,
+      district_bn: parcel.district,
+    } : null;
+
+    const appointmentDetails = appointment ? {
+      id: appointment.id,
+      token_no: appointment.token_no,
+      date: appointment.appointment_date,
+      time: appointment.slot_time,
+      office_name_bn: appointment.registry_office_name_bn,
+      required_documents_bn: appointment.required_documents_bn,
+      status: appointment.status,
+    } : null;
+
+    const registrationDetails = registrationRecord ? {
+      id: registrationRecord.id,
+      deed_no: registrationRecord.deed_no,
+      volume_no: registrationRecord.deed_volume_no,
+      serial_no: registrationRecord.registration_serial_no,
+      year: registrationRecord.deed_year,
+      registration_date: registrationRecord.completion_timestamp ? registrationRecord.completion_timestamp.split('T')[0] : '২০২৬-০৩-০২',
+      deed_draft_url: registrationRecord.deed_draft_url,
+      office_name_bn: registrationRecord.registry_office_bn,
+    } : null;
+
     res.json({
       success: true,
       data: {
+        ...app,
         application: app,
-        parcel,
-        seller: seller ? { id: seller.id, name_bn: seller.name_bn, citizen_id: seller.citizen_id, mobile: seller.mobile, nid_no: seller.nid_no } : null,
-        buyer: buyer ? { id: buyer.id, name_bn: buyer.name_bn, citizen_id: buyer.citizen_id, mobile: buyer.mobile, nid_no: buyer.nid_no } : null,
+        parcel: parcelEnhanced,
+        seller: sellerSafe,
+        buyer: buyerSafe,
         reviews,
         appointment,
+        appointment_details: appointmentDetails,
         registration_record: registrationRecord,
+        registration_details: registrationDetails,
         mutation: mutationApp,
       },
     });

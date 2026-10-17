@@ -185,13 +185,13 @@ export default function AcLandPage() {
                   onClick={() => setSelectedMutation(m)}
                   className={`p-4 rounded-xl border cursor-pointer transition-all ${
                     isSelected
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-md'
-                      : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
+                      ? 'bg-slate-900 dark:bg-[#0c1427] text-white border-indigo-500 ring-1 ring-indigo-400/40 shadow-md'
+                      : 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50/60 dark:hover:bg-slate-800/40'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
-                      isSelected ? 'bg-slate-800 text-teal-400' : 'bg-slate-100 text-slate-700'
+                      isSelected ? 'bg-slate-800 dark:bg-slate-800 text-teal-400 border border-teal-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                     }`}>
                       {m.mutationCaseNumber}
                     </span>
@@ -200,7 +200,7 @@ export default function AcLandPage() {
                   <div className="text-sm font-semibold mb-1">
                     খতিয়ান #{m.targetKhatianNo} • দাগ #{m.targetDagNo}
                   </div>
-                  <div className={`text-xs ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                  <div className={`text-xs ${isSelected ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                     ক্রেতা: {m.buyerCitizenId}
                   </div>
                 </div>

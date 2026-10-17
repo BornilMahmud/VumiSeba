@@ -21,6 +21,48 @@ function normalizeNumerals(str?: string): string[] {
   return Array.from(new Set([str, asEn, asBn]));
 }
 
+const MOUZA_MAP_EN: Record<string, string> = {
+  'বাড্ডা': 'Badda', 'সাঁতারকুল': 'Satarkul', 'ভাটারা': 'Bhatara', 'রামপুরা': 'Rampura',
+  'আফতাবনগর': 'Aftabnagar', 'আম্বরখানা': 'Ambarkhana', 'নওদাপাড়া': 'Nawdapara',
+  'নৈহাটী': 'Naihati', 'আলেকান্দা': 'Alekanda', 'ধাপ': 'Dhap', 'আকুয়া': 'Akua', 'আকুয়া': 'Akua',
+  'কান্দিরপাড়': 'Kandirpar', 'কান্দিরপাড়': 'Kandirpar', 'জয়দেবপুর': 'Joydebpur',
+  'ঝিলংজা': 'Jhilongja', 'রাজবাটী': 'Rajbati', 'গুলশান': 'Gulshan', 'মতিঝিল': 'Motijheel',
+  'ধানমন্ডি': 'Dhanmondi', 'মিরপুর': 'Mirpur', 'উত্তরা': 'Uttara', 'তেজগাঁও': 'Tejgaon',
+};
+
+const DISTRICT_MAP_EN: Record<string, string> = {
+  'ঢাকা': 'Dhaka', 'সিলেট': 'Sylhet', 'রাজশাহী': 'Rajshahi', 'খুলনা': 'Khulna',
+  'বরিশাল': 'Barishal', 'রংপুর': 'Rangpur', 'ময়মনসিংহ': 'Mymensingh', 'কুমিল্লা': 'Cumilla',
+  'গাজীপুর': 'Gazipur', 'কক্সবাজার': "Cox's Bazar", 'দিনাজপুর': 'Dinajpur', 'চট্টগ্রাম': 'Chattogram',
+};
+
+const UPAZILA_MAP_EN: Record<string, string> = {
+  'গুলশান': 'Gulshan', 'সিলেট সদর': 'Sylhet Sadar', 'পবা': 'Paba', 'রূপসা': 'Rupsha',
+  'কোতোয়ালী': 'Kotwali', 'রংপুর সদর': 'Rangpur Sadar', 'ময়মনসিংহ সদর': 'Mymensingh Sadar',
+  'আদর্শ সদর': 'Adarsha Sadar', 'গাজীপুর সদর': 'Gazipur Sadar', 'কক্সবাজার সদর': "Cox's Bazar Sadar",
+  'দিনাজপুর সদর': 'Dinajpur Sadar',
+};
+
+const enrichParcel = (p: LandParcel | undefined | null) => {
+  if (!p) return null;
+  const bnToEnMap: Record<string, string> = {
+    '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+    '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9',
+  };
+  const toEn = (v: any) => v !== undefined && v !== null ? String(v).replace(/[০-৯]/g, (d) => bnToEnMap[d] || d) : '';
+  return {
+    ...p,
+    mouza_bn: p.mouza,
+    mouza_en: MOUZA_MAP_EN[p.mouza] || p.mouza,
+    upazila_bn: p.upazila,
+    upazila_en: UPAZILA_MAP_EN[p.upazila] || p.upazila,
+    district_bn: p.district,
+    district_en: DISTRICT_MAP_EN[p.district] || p.district,
+    dag_no_en: toEn(p.dag_no),
+    khatian_no_en: toEn(p.khatian_no),
+  };
+};
+
 // 1. Search Land Records (Public & Authenticated)
 router.get('/search', async (req: Request, res: Response) => {
   try {
@@ -104,7 +146,7 @@ router.get('/my/holdings', requireAuth, async (req: AuthenticatedRequest, res: R
     const khajnaAccounts = await dbStore.get('khajna_accounts');
 
     const result = myOwnerships.map((own) => {
-      const parcel = parcels.find((p) => p.id === own.parcel_id);
+      const parcel = enrichParcel(parcels.find((p) => p.id === own.parcel_id));
       const khajna = khajnaAccounts.find((k) => k.parcel_id === own.parcel_id && k.owner_id === user.id);
       return {
         ownership: own,

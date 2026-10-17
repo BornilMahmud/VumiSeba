@@ -32,8 +32,8 @@ const translations: Record<string, { bn: string; en: string }> = {
     en: 'Smart LandTech',
   },
   'brand.tagline': {
-    bn: 'নাগরিক ভূমি সেবা, রেকর্ড যাচাই ও ই-নামজারি',
-    en: 'Citizen Land Services, Record Verification & E-Mutation',
+    bn: 'স্মার্ট ডিজিটাল ভূমি সেবা ও ই-নামজারি',
+    en: 'Smart Land Services & E-Mutation',
   },
   'nav.home': {
     bn: 'হোম',
@@ -45,7 +45,7 @@ const translations: Record<string, { bn: string; en: string }> = {
   },
   'nav.verifyLand': {
     bn: 'কেনার আগে যাচাই',
-    en: 'Verify Before Buying',
+    en: 'Verify Land',
   },
   'nav.howItWorks': {
     bn: 'কীভাবে কাজ করে',

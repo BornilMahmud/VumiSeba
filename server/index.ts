@@ -10,12 +10,13 @@ import riskRoutes from './routes/risk.js';
 import officerRoutes from './routes/officer.js';
 import notificationRoutes from './routes/notifications.js';
 import auditRoutes from './routes/audit.js';
+import chatRoutes from './routes/chat.js';
 import { dbStore } from './db/store.js';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5050;
 
 // Security & Parsing Middleware
 app.use(cors({
@@ -73,6 +74,7 @@ app.use('/api/risk', riskRoutes);
 app.use('/api/officer', officerRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Error Handling Middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -84,12 +86,23 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`=======================================================`);
   console.log(`🏛️  Bhumisathi (ভূমিসাথী) LandTech Server Running`);
   console.log(`🚀 Port: http://localhost:${PORT}`);
   console.log(`📦 Health Check: http://localhost:${PORT}/api/health`);
   console.log(`=======================================================`);
+});
+
+server.on('error', (err: any) => {
+  if (err.code === 'EADDRINUSE') {
+    console.warn(`[Server] Port ${PORT} busy, attempting port 5051...`);
+    app.listen(5051, () => {
+      console.log(`🚀 LandTech Server fallback running on: http://localhost:5051`);
+    });
+  } else {
+    console.error('[Server Error]', err);
+  }
 });
 
 export default app;

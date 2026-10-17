@@ -1,97 +1,305 @@
-import React from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import {
-  Landmark,
-  ClipboardList,
-  CalendarCheck,
-  Scale,
-  FileCheck,
-  History,
-  LayoutDashboard,
-  Award
-} from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { getUserAvatarUrl } from '../../utils/userUtils';
 
 export const AcLandOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const avatarUrl = getUserAvatarUrl(user);
 
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   const navItems = [
-    { path: '/office/ac-land/dashboard', label: 'ড্যাশবোর্ড', icon: LayoutDashboard },
-    { path: '/office/ac-land/applications', label: 'প্রাক-রেজিস্ট্রেশন যাচাই', icon: ClipboardList },
-    { path: '/office/ac-land/mutation', label: 'ই-নামজারি নথি (e-Mutation)', icon: Scale },
-    { path: '/office/ac-land/hearings', label: 'শুনানি ব্যবস্থাপনা', icon: CalendarCheck },
-    { path: '/office/ac-land/decisions', label: 'আদেশ ও সিদ্ধান্তসমূহ', icon: FileCheck },
-    { path: '/office/ac-land/history', label: 'রেকর্ড ও সিদ্ধান্ত ইতিহাস', icon: History },
+    { path: '/office/ac-land/dashboard', label: 'ড্যাশবোর্ড', labelEn: 'Dashboard', iconClass: 'bx bxs-dashboard' },
+    { path: '/office/ac-land/applications', label: 'প্রাক-রেজিস্ট্রেশন যাচাই', labelEn: 'Pre-Registration Audit', iconClass: 'bx bx-task' },
+    { path: '/office/ac-land/mutation', label: 'ই-নামজারি নথি (e-Mutation)', labelEn: 'e-Mutation Cases', iconClass: 'bx bx-git-branch' },
+    { path: '/office/ac-land/hearings', label: 'শুনানি ব্যবস্থাপনা', labelEn: 'Hearing Docket', iconClass: 'bx bx-calendar-event' },
+    { path: '/office/ac-land/decisions', label: 'আদেশ ও সিদ্ধান্তসমূহ', labelEn: 'Orders & Decrees', iconClass: 'bx bx-badge-check' },
+    { path: '/office/ac-land/history', label: 'রেকর্ড ও সিদ্ধান্ত ইতিহাস', labelEn: 'Record History', iconClass: 'bx bx-history' },
+    { path: '/office/ac-land/profile', label: 'কর্মকর্তা প্রোফাইল ও সেটিংস', labelEn: 'Profile & Settings', iconClass: 'bx bx-user-circle' },
   ];
 
+  const currentNav = navItems.find((item) => isActive(item.path));
+
+  const isBn = language === 'bn';
+
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 font-bengali flex flex-col transition-colors duration-200">
-      {/* Top Banner */}
-      <div className="bg-slate-900 text-white border-b border-indigo-950 py-4 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md border border-indigo-500">
-              <Landmark size={24} />
+    <div className={`min-h-screen bg-slate-50/70 dark:bg-slate-950 ${isBn ? 'font-bengali' : 'font-sans'} flex transition-colors duration-200`}>
+      {/* Desktop Left-Sided Sidebar */}
+      <aside className="hidden lg:flex flex-col w-64 xl:w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shrink-0 h-screen sticky top-0 z-40 transition-colors">
+        {/* Brand Header */}
+        <div className="p-4 border-b border-slate-200/90 dark:border-slate-800 flex items-center justify-between">
+          <Link to="/office/ac-land/dashboard" className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-800 text-white flex items-center justify-center font-bold text-xl shadow-md shrink-0 border border-indigo-500/40">
+              <i className="bx bxs-landmark text-2xl"></i>
             </div>
-            <div>
+            <div className="min-w-0">
+              <span className="text-sm font-extrabold text-slate-900 dark:text-white tracking-tight truncate block">
+                {isBn ? 'এসি ল্যান্ড অফিস' : 'AC Land Office'}
+              </span>
+              <span className="text-[10px] text-indigo-700 dark:text-indigo-400 font-semibold block truncate">
+                {isBn ? 'উপজেলা ভূমি ও রাজস্ব আদালত' : 'Upazila Land & Revenue Court'}
+              </span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Officer Profile Card */}
+        <div className="p-3 border-b border-slate-100 dark:border-slate-800">
+          <Link
+            to="/office/ac-land/profile"
+            className="group block bg-indigo-50/60 hover:bg-indigo-100/70 dark:bg-indigo-950/30 dark:hover:bg-indigo-900/40 p-3 rounded-xl border border-indigo-200/80 dark:border-indigo-800/60 transition-all shadow-2xs hover:shadow-xs"
+            title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+          >
+            <div className="flex items-center gap-2.5 mb-2">
+              <div className="relative shrink-0">
+                <img
+                  src={avatarUrl || '/avatars/officer_tanvir_acland.jpg'}
+                  alt={user?.name_bn || 'Officer'}
+                  className="w-10 h-10 rounded-xl object-cover ring-2 ring-indigo-500/50 shadow-2xs group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-indigo-500 border-2 border-white dark:border-slate-900 rounded-full" />
+              </div>
+              <div className="overflow-hidden min-w-0 flex-1">
+                <div className="flex items-center justify-between">
+                  <p className="font-bold text-slate-900 dark:text-white text-xs truncate group-hover:text-indigo-700 dark:group-hover:text-indigo-400 transition-colors">
+                    {isBn ? (user?.name_bn || 'তানভীর আহমেদ') : (user?.name_en || 'Tanvir Ahmed')}
+                  </p>
+                  <i className="bx bx-cog text-slate-400 group-hover:text-indigo-600 transition-colors text-sm"></i>
+                </div>
+                <p className="text-[10px] text-indigo-700 dark:text-indigo-400 font-medium truncate">
+                  {isBn
+                    ? (user?.designation_bn || 'সহকারী কমিশনার (ভূমি) / AC Land')
+                    : (user?.designation_en || 'Assistant Commissioner (Land) / AC Land')}
+                </p>
+              </div>
+            </div>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 pt-2 border-t border-indigo-200/60 dark:border-indigo-800/40 truncate flex items-center justify-between">
+              <span className="truncate">
+                {isBn
+                  ? (user?.office_name_bn || 'উপজেলা ভূমি অফিস, গুলশান রাজস্ব সার্কেল')
+                  : (user?.office_name_en || 'Upazila Land Office, Gulshan Revenue Circle')}
+              </span>
+              <span className="text-[9px] text-indigo-600 dark:text-indigo-400 font-bold shrink-0 ml-1">
+                {isBn ? 'সেটিংস ›' : 'Edit ›'}
+              </span>
+            </p>
+          </Link>
+        </div>
+
+        {/* Vertical Navigation Links */}
+        <nav className="flex-1 overflow-y-auto p-3 space-y-1 text-xs font-medium scrollbar-thin">
+          {navItems.map((item) => {
+            const active = isActive(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all whitespace-nowrap ${
+                  active
+                    ? 'bg-indigo-600 text-white shadow-xs font-bold'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-indigo-50/70 dark:hover:bg-slate-800 hover:text-indigo-800 dark:hover:text-indigo-300'
+                }`}
+              >
+                <i className={`${item.iconClass} text-lg shrink-0 ${active ? 'text-white' : 'text-slate-400 dark:text-slate-500'}`}></i>
+                <span>{language === 'en' ? item.labelEn : item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Sidebar Footer Controls & Logout */}
+        <div className="p-3 border-t border-slate-200/90 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 space-y-2 shrink-0">
+          <div className="flex items-center justify-between px-1">
+            <button
+              onClick={toggleTheme}
+              className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-2 py-1 rounded-lg hover:bg-slate-200/60 dark:hover:bg-slate-800 transition cursor-pointer"
+              title="Toggle Dark/Light Mode"
+            >
+              <i className={`bx ${theme === 'dark' ? 'bx-sun text-amber-400' : 'bx-moon'} text-base`}></i>
+              <span>{theme === 'dark' ? (isBn ? 'লাইট মোড' : 'Light Mode') : (isBn ? 'ডার্ক মোড' : 'Dark Mode')}</span>
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-300 px-2 py-1 rounded-lg hover:bg-slate-200/60 dark:hover:bg-slate-800 transition cursor-pointer"
+              title="Switch Language"
+            >
+              <i className="bx bx-globe text-indigo-600 text-base"></i>
+              <span>{isBn ? 'English' : 'বাংলা'}</span>
+            </button>
+          </div>
+          <button
+            onClick={async () => {
+              await logout();
+              navigate('/login');
+            }}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200/60 dark:border-rose-900/40 cursor-pointer active:scale-95"
+          >
+            <i className="bx bx-log-out text-base"></i>
+            <span>{isBn ? 'লগআউট' : 'Logout'}</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Mobile Slide-Over Drawer */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            onClick={() => setSidebarOpen(false)}
+          />
+          <div className="relative flex flex-col w-72 max-w-[85vw] bg-white dark:bg-slate-900 h-full shadow-2xl z-10 border-r border-slate-200 dark:border-slate-800">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-white tracking-tight">এসি ল্যান্ড অফিস (AC Land Office)</h1>
-                <span className="bg-indigo-500/20 text-indigo-300 text-[10px] font-semibold px-2 py-0.5 rounded border border-indigo-500/30">
-                  উপজেলা ভূমি প্রশাসন ও রাজস্ব আদালত
+                <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold shadow-2xs">
+                  <i className="bx bxs-landmark text-xl"></i>
+                </div>
+                <span className="font-extrabold text-slate-900 dark:text-white text-sm">
+                  {isBn ? 'এসি ল্যান্ড অফিস' : 'AC Land Office'}
                 </span>
               </div>
-              <p className="text-xs text-indigo-200/80">
-                {user?.office_name_bn || 'উপজেলা ভূমি অফিস, গুলশান রাজস্ব সার্কেল, ঢাকা'}
-              </p>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+              >
+                <i className="bx bx-x text-2xl"></i>
+              </button>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3 text-xs bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
-            <div>
-              <p className="text-indigo-300/70 text-[11px]">দায়িত্বরত বিচারক/কর্মকর্তা:</p>
-              <p className="font-semibold text-white">{user?.name_bn || 'তানভীর আহমেদ'}</p>
+            <div className="p-3 border-b border-slate-100 dark:border-slate-800">
+              <Link
+                to="/office/ac-land/profile"
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center gap-2.5 bg-indigo-50 dark:bg-slate-800/80 p-3 rounded-xl border border-indigo-200/80 dark:border-slate-700/80"
+              >
+                <img
+                  src={avatarUrl || '/avatars/officer_tanvir_acland.jpg'}
+                  alt="Officer"
+                  className="w-9 h-9 rounded-lg object-cover ring-1 ring-indigo-500 shrink-0"
+                />
+                <div className="overflow-hidden min-w-0">
+                  <p className="font-bold text-slate-900 dark:text-white text-xs truncate">
+                    {isBn ? (user?.name_bn || 'তানভীর আহমেদ') : (user?.name_en || 'Tanvir Ahmed')}
+                  </p>
+                  <p className="text-[10px] text-indigo-700 dark:text-indigo-400 truncate">
+                    {isBn ? (user?.designation_bn || 'সহকারী কমিশনার (ভূমি)') : (user?.designation_en || 'Assistant Commissioner (Land)')}
+                  </p>
+                </div>
+              </Link>
             </div>
-            <div className="border-l border-slate-700 pl-3">
-              <p className="text-indigo-300/70 text-[11px]">পদবি:</p>
-              <p className="font-semibold text-indigo-300">{user?.designation_bn || 'সহকারী কমিশনার (ভূমি) / AC Land'}</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Navigation Sub-Bar */}
-      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-xs transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-1 overflow-x-auto py-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.path);
-              return (
+            <nav className="flex-1 overflow-y-auto p-3 space-y-1 text-xs font-medium">
+              {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
-                    active
-                      ? 'bg-indigo-700 text-white shadow-2xs'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-indigo-800 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800'
+                  onClick={() => setSidebarOpen(false)}
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg ${
+                    isActive(item.path) ? 'bg-indigo-600 text-white font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Icon size={15} />
-                  <span>{item.label}</span>
+                  <i className={`${item.iconClass} text-lg`}></i>
+                  <span>{language === 'en' ? item.labelEn : item.label}</span>
                 </Link>
-              );
-            })}
+              ))}
+            </nav>
+
+            <div className="p-3 border-t border-slate-200 dark:border-slate-800">
+              <button
+                onClick={async () => {
+                  setSidebarOpen(false);
+                  await logout();
+                  navigate('/login');
+                }}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200/60"
+              >
+                <i className="bx bx-log-out text-base"></i>
+                <span>{isBn ? 'লগআউট' : 'Logout'}</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Page Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {children || <Outlet />}
-      </main>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top Header Bar */}
+        <header className="h-14 sm:h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800 sticky top-0 z-30 px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-4 transition-colors">
+          <div className="flex items-center gap-3">
+            {/* Mobile Hamburger Trigger */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+              title="Open Menu"
+            >
+              <i className="bx bx-menu text-2xl"></i>
+            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-500 hidden sm:inline">
+                {isBn ? 'এসি ল্যান্ড আদালত ও অফিস' : 'AC Land Court & Office'}
+              </span>
+              <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">/</span>
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                {currentNav ? (language === 'en' ? currentNav.labelEn : currentNav.label) : (isBn ? 'ড্যাশবোর্ড' : 'Dashboard')}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/office/ac-land/profile"
+              className="flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 transition border border-transparent hover:border-indigo-200/60 dark:hover:border-slate-700 group cursor-pointer"
+              title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+            >
+              <div className="text-right">
+                <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-indigo-700 dark:group-hover:text-indigo-400 transition-colors">
+                  {isBn ? (user?.name_bn || 'তানভীর হাসান চৌধুরী') : (user?.name_en || 'Tanvir Hasan Chowdhury')}
+                </p>
+                <p className="text-[10px] text-indigo-700 dark:text-indigo-400 font-semibold leading-tight">
+                  {isBn ? (user?.designation_bn || 'সহকারী কমিশনার (ভূমি) ও এক্সিকিউটিভ ম্যাজিস্ট্রেট') : (user?.designation_en || 'Assistant Commissioner (Land) & Executive Magistrate')}
+                </p>
+              </div>
+              <div className="relative shrink-0">
+                <img
+                  src={avatarUrl || '/avatars/officer_tanvir_acland.jpg'}
+                  alt={user?.name_bn || 'Officer'}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/avatars/officer_tanvir_acland.jpg';
+                  }}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-cover ring-2 ring-indigo-500/50 shadow-2xs group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-indigo-500 border-2 border-white dark:border-slate-900 rounded-full" />
+              </div>
+            </Link>
+
+            {/* Direct Logout Option in Top Bar */}
+            <button
+              onClick={async () => {
+                await logout();
+                navigate('/login');
+              }}
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
+              title={isBn ? 'লগআউট' : 'Logout'}
+            >
+              <i className="bx bx-log-out text-base"></i>
+              <span className="hidden sm:inline">{isBn ? 'লগআউট' : 'Logout'}</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Content Outlet */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 w-full min-w-0">
+          {children || <Outlet />}
+        </main>
+      </div>
     </div>
   );
 };

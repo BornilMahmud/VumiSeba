@@ -39,7 +39,9 @@ router.get('/', requireAuth, async (req: AuthenticatedRequest, res: Response) =>
     let mutations: MutationApplication[] = [];
 
     if (user.role === 'citizen') {
-      mutations = (await dbStore.find('mutation_applications', (m: MutationApplication) => m.applicant_id === user.id)) as MutationApplication[];
+      const allSales = (await dbStore.get('sale_applications')) as SaleApplication[];
+      const userSaleIds = new Set(allSales.filter((s) => s.seller_id === user.id || s.buyer_id === user.id).map((s) => s.id));
+      mutations = (await dbStore.find('mutation_applications', (m: MutationApplication) => m.applicant_id === user.id || userSaleIds.has(m.sale_application_id))) as MutationApplication[];
     } else {
       mutations = (await dbStore.get('mutation_applications')) as MutationApplication[];
     }

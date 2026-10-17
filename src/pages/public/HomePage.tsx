@@ -62,7 +62,7 @@ export const HomePage: React.FC = () => {
       {/* 1. Supahero & Skiper-UI Inspired Hero Section (Vivid Colorful Accents + Deep Black Contrast) */}
       <section className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-dot-pattern">
         {/* Soft Ambient Radial Lights (Rich colorful glows for light mode & subtle neon glow for dark mode) */}
-        <div className="absolute top-0 left-1/4 w-[450px] h-[450px] bg-gradient-to-br from-emerald-400/25 via-teal-300/20 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-85 dark:opacity-20 animate-pulse"></div>
+        <div className="absolute top-0 left-1/4 w-[450px] h-[450px] bg-gradient-to-br from-emerald-400/20 via-teal-300/15 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-75 dark:opacity-20"></div>
         <div className="absolute top-10 right-1/4 w-[450px] h-[450px] bg-gradient-to-bl from-cyan-400/25 via-blue-400/20 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-85 dark:opacity-20"></div>
         <div className="absolute top-44 left-1/2 -translate-x-1/2 w-[650px] h-80 bg-gradient-to-b from-amber-300/20 via-emerald-200/15 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-70 dark:opacity-15"></div>
 
@@ -77,13 +77,16 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.2]">
-            {t('hero.title1', 'জমি কেনা থেকে নামজারি', 'From Land Purchase to Mutation')}
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">
+          <h1 className="text-[19px] xs:text-xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-snug sm:leading-[1.2]">
+            <span className="block">
+              {t('hero.title1', 'জমি কেনা থেকে নামজারি', 'From Land Purchase to Mutation')}
+            </span>
+            <span className="block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">
               {t('hero.titleHighlight', 'এক ক্লিকে নির্ভুল যাচাই', 'One-Click Accurate Verification')}
             </span>{' '}
-            {t('hero.title2', 'ও স্মার্ট রেজিস্ট্রি', '& Smart Registry')}
+            <span className="block sm:inline">
+              {t('hero.title2', 'ও স্মার্ট রেজিস্ট্রি', '& Smart Registry')}
+            </span>
           </h1>
 
           {/* Subtitle */}
@@ -96,28 +99,30 @@ export const HomePage: React.FC = () => {
           </p>
 
           {/* Quick Action Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full max-w-sm sm:max-w-none mx-auto">
             <Link
               to="/verify-land"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
             >
-              <ShieldCheck size={18} />
+              <ShieldCheck size={18} className="shrink-0" />
               <span>{t('hero.ctaVerify', 'কেনার আগে জমি যাচাই করুন', 'Verify Land Before Buying')}</span>
             </Link>
 
-            <Link
-              to="/verify-land?parcel_id=pcl-clean-405"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 via-cyan-700 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('vumiseba:start-demo-story'));
+              }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-600 via-cyan-700 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
             >
-              <Sparkles size={18} className="text-yellow-300 animate-spin-slow" />
+              <Sparkles size={18} className="text-yellow-300 animate-spin-slow shrink-0" />
               <span>{t('hero.tryDemo', '৩-মিনিট লাইভ ডেমো শুরু করুন', 'Try 3-Min Live Demo')}</span>
-            </Link>
+            </button>
 
             <Link
               to="/citizen/sell"
-              className="inline-flex items-center gap-2 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 px-6 py-3.5 rounded-xl font-semibold text-sm shadow-xs hover:shadow transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 px-6 py-3.5 rounded-xl font-semibold text-sm shadow-xs hover:shadow transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
             >
-              <FileText size={18} className="text-emerald-600 dark:text-emerald-400" />
+              <FileText size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>{t('hero.ctaSell', 'জমি বিক্রির আবেদন', 'Apply to Sell Land')}</span>
             </Link>
           </div>
@@ -147,77 +152,93 @@ export const HomePage: React.FC = () => {
             </span>
           </div>
 
-          <form onSubmit={handleSearchSubmit} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 text-xs">
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5">{t('search.district', 'জেলা', 'District')}</label>
-              <select
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
-              >
-                <option value="ঢাকা">{language === 'en' ? 'Dhaka' : 'ঢাকা'}</option>
-                <option value="চট্টগ্রাম">{language === 'en' ? 'Chattogram' : 'চট্টগ্রাম'}</option>
-                <option value="সিলেট">{language === 'en' ? 'Sylhet' : 'সিলেট'}</option>
-              </select>
+          <form onSubmit={handleSearchSubmit} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 text-xs items-start">
+            <div className="flex flex-col">
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5 h-4 leading-4 truncate">{t('search.district', 'জেলা', 'District')}</label>
+              <div className="relative">
+                <select
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  className="w-full h-11 box-border appearance-none bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg px-3 pr-8 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition cursor-pointer truncate"
+                >
+                  <option value="ঢাকা">{language === 'en' ? 'Dhaka' : 'ঢাকা'}</option>
+                  <option value="চট্টগ্রাম">{language === 'en' ? 'Chattogram' : 'চট্টগ্রাম'}</option>
+                  <option value="সিলেট">{language === 'en' ? 'Sylhet' : 'সিলেট'}</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 dark:text-slate-400">
+                  <i className="bx bx-chevron-down text-lg"></i>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5">{t('search.upazila', 'উপজেলা/সার্কেল', 'Upazila / Circle')}</label>
-              <select
-                value={upazila}
-                onChange={(e) => setUpazila(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
-              >
-                <option value="গুলশান">{language === 'en' ? 'Gulshan Circle' : 'গুলশান রাজস্ব সার্কেল'}</option>
-                <option value="তেজগাঁও">{language === 'en' ? 'Tejgaon Circle' : 'তেজগাঁও সার্কেল'}</option>
-                <option value="ধানমন্ডি">{language === 'en' ? 'Dhanmondi Circle' : 'ধানমন্ডি সার্কেল'}</option>
-              </select>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5 h-4 leading-4 truncate">{t('search.upazila', 'উপজেলা/সার্কেল', 'Upazila / Circle')}</label>
+              <div className="relative">
+                <select
+                  value={upazila}
+                  onChange={(e) => setUpazila(e.target.value)}
+                  className="w-full h-11 box-border appearance-none bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg px-3 pr-8 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition cursor-pointer truncate"
+                >
+                  <option value="গুলশান">{language === 'en' ? 'Gulshan Circle' : 'গুলশান রাজস্ব সার্কেল'}</option>
+                  <option value="তেজগাঁও">{language === 'en' ? 'Tejgaon Circle' : 'তেজগাঁও সার্কেল'}</option>
+                  <option value="ধানমন্ডি">{language === 'en' ? 'Dhanmondi Circle' : 'ধানমন্ডি সার্কেল'}</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 dark:text-slate-400">
+                  <i className="bx bx-chevron-down text-lg"></i>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5">{t('search.mouza', 'মৌজা', 'Mouza')}</label>
-              <select
-                value={mouza}
-                onChange={(e) => setMouza(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
-              >
-                <option value="বাড্ডা">{language === 'en' ? 'Badda (JL 28)' : 'বাড্ডা (জে.এল ২৮)'}</option>
-                <option value="সাঁতারকুল">{language === 'en' ? 'Satarkul (JL 31)' : 'সাঁতারকুল (জে.এল ৩১)'}</option>
-                <option value="ভাটারা">{language === 'en' ? 'Vatara (JL 25)' : 'ভাটারা (জে.এল ২৫)'}</option>
-                <option value="রামপুরা">{language === 'en' ? 'Rampura (JL 23)' : 'রামপুরা (জে.এল ২৩)'}</option>
-                <option value="আফতাবনগর">{language === 'en' ? 'Aftabnagar (JL 29)' : 'আফতাবনগর (জে.এল ২৯)'}</option>
-              </select>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5 h-4 leading-4 truncate">{t('search.mouza', 'মৌজা', 'Mouza')}</label>
+              <div className="relative">
+                <select
+                  value={mouza}
+                  onChange={(e) => setMouza(e.target.value)}
+                  className="w-full h-11 box-border appearance-none bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg px-3 pr-8 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition cursor-pointer truncate"
+                >
+                  <option value="বাড্ডা">{language === 'en' ? 'Badda (JL 28)' : 'বাড্ডা (জে.এল ২৮)'}</option>
+                  <option value="সাঁতারকুল">{language === 'en' ? 'Satarkul (JL 31)' : 'সাঁতারকুল (জে.এল ৩১)'}</option>
+                  <option value="ভাটারা">{language === 'en' ? 'Vatara (JL 25)' : 'ভাটারা (জে.এল ২৫)'}</option>
+                  <option value="রামপুরা">{language === 'en' ? 'Rampura (JL 23)' : 'রামপুরা (জে.এল ২৩)'}</option>
+                  <option value="আফতাবনগর">{language === 'en' ? 'Aftabnagar (JL 29)' : 'আফতাবনগর (জে.এল ২৯)'}</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 dark:text-slate-400">
+                  <i className="bx bx-chevron-down text-lg"></i>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5">{t('search.khatian', 'খতিয়ান নম্বর', 'Khatian No.')}</label>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5 h-4 leading-4 truncate">{t('search.khatian', 'খতিয়ান নম্বর', 'Khatian No.')}</label>
               <input
                 type="text"
                 placeholder={language === 'en' ? 'e.g., 1204' : 'যেমন: ১২০৪'}
                 value={khatianNo}
                 onChange={(e) => setKhatianNo(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-medium placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
+                className="w-full h-11 box-border bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg px-3 text-slate-900 dark:text-slate-100 font-medium placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
               />
             </div>
 
-            <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5">{t('search.dag', 'দাগ নম্বর', 'Dag Plot No.')}</label>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1.5 h-4 leading-4 truncate">{t('search.dag', 'দাগ নম্বর', 'Dag Plot No.')}</label>
               <input
                 type="text"
                 placeholder={language === 'en' ? 'e.g., 405' : 'যেমন: ৪০৫'}
                 value={dagNo}
                 onChange={(e) => setDagNo(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-slate-900 dark:text-slate-100 font-medium placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
+                className="w-full h-11 box-border bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-lg px-3 text-slate-900 dark:text-slate-100 font-medium placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
               />
             </div>
 
-            <div className="col-span-2 sm:col-span-1 lg:col-span-1 flex items-end">
+            <div className="col-span-2 sm:col-span-1 lg:col-span-1 flex flex-col">
+              <span className="hidden sm:block mb-1.5 h-4 leading-4 invisible select-none" aria-hidden="true">&nbsp;</span>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold py-2.5 px-3 rounded-lg shadow-xs hover:shadow transition flex items-center justify-center gap-1.5"
+                className="w-full h-11 box-border bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold px-3 rounded-lg shadow-xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Search size={15} />
-                <span>{t('search.btn', 'অনুসন্ধান করুন', 'Records')}</span>
+                <span className="truncate">{t('search.btn', 'অনুসন্ধান করুন', 'Records')}</span>
               </button>
             </div>
           </form>
@@ -680,14 +701,14 @@ export const HomePage: React.FC = () => {
             <div className="pt-3 flex flex-wrap justify-center gap-3">
               <Link
                 to="/register"
-                className="bg-white hover:bg-emerald-50 text-emerald-950 font-extrabold px-8 py-3.5 rounded-xl text-sm shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 active:translate-y-0"
+                className="bg-white hover:bg-emerald-50 text-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 dark:text-white dark:border dark:border-emerald-500/40 font-extrabold px-8 py-3.5 rounded-xl text-sm shadow-lg hover:shadow-xl dark:shadow-emerald-950/60 transition transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 {t('cta.register', 'বিনামূল্যে অ্যাকাউন্ট খুলুন', 'Create Citizen Account')}
               </Link>
 
               <Link
                 to="/login"
-                className="bg-white/15 hover:bg-white/25 text-white font-bold border border-white/30 px-8 py-3.5 rounded-xl text-sm shadow-sm backdrop-blur-sm transition transform hover:-translate-y-0.5 active:translate-y-0"
+                className="bg-white/15 hover:bg-white/25 text-white dark:bg-slate-800/80 dark:hover:bg-slate-800 dark:text-slate-100 font-bold border border-white/30 dark:border-slate-700 px-8 py-3.5 rounded-xl text-sm shadow-sm backdrop-blur-sm transition transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 {t('cta.login', 'ডেমো লগইন করুন', 'Explore Demo Logins')}
               </Link>

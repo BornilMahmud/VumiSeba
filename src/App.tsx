@@ -5,6 +5,8 @@ import { NotificationProvider } from './context/NotificationContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { DemoStoryOverlay } from './components/common/DemoStoryOverlay';
+import { ChatbotBubble } from './components/common/ChatbotBubble';
+import { ScrollToTop } from './components/common/ScrollToTop';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 
@@ -70,6 +72,7 @@ const AdminRolesPage = React.lazy(() => import('./pages/admin/AdminRolesPage'));
 const AdminApplicationsPage = React.lazy(() => import('./pages/admin/AdminApplicationsPage'));
 const AdminAuditLogsPage = React.lazy(() => import('./pages/admin/AdminAuditLogsPage'));
 const AdminMonitoringPage = React.lazy(() => import('./pages/admin/AdminMonitoringPage'));
+const OfficerProfilePage = React.lazy(() => import('./pages/office/OfficerProfilePage'));
 
 // Loading Fallback Component
 const OfficeLoadingFallback: React.FC = () => (
@@ -131,7 +134,7 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
 // Public Layout Wrapper
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-bengali">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-bengali transition-colors duration-200">
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
@@ -142,6 +145,9 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
+      {/* Scroll-to-top restoration on every route navigation */}
+      <ScrollToTop />
+
       <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
@@ -149,6 +155,9 @@ export default function App() {
               <div className="min-h-screen flex flex-col font-sans text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950 antialiased selection:bg-teal-500 selection:text-white transition-colors duration-200">
               {/* 3-Minute Guided Walkthrough for Hackathon Judges */}
               <DemoStoryOverlay />
+
+              {/* Floating Gemini AI Chatbot Bubble (Right Side) */}
+              <ChatbotBubble />
 
               {/* Application Routes */}
               <Routes>
@@ -178,8 +187,10 @@ export default function App() {
                           <Route path="search-land" element={<SearchLandPage />} />
                           <Route path="verify-land" element={<VerifyLandPage />} />
                           <Route path="land/:id" element={<LandDetailPage />} />
+                          <Route path="land-details/:id" element={<LandDetailPage />} />
                           <Route path="tax" element={<TaxClearancePage />} />
                           <Route path="sell" element={<SellLandPage />} />
+                          <Route path="applications" element={<MyApplicationsPage />} />
                           <Route path="sale-applications" element={<MyApplicationsPage />} />
                           <Route path="my-applications" element={<MyApplicationsPage />} />
                           <Route path="deals" element={<DealsPage />} />
@@ -189,6 +200,8 @@ export default function App() {
                           <Route path="mutation" element={<MutationTrackingPage />} />
                           <Route path="documents" element={<DocumentsVaultPage />} />
                           <Route path="notifications" element={<NotificationsPage />} />
+                          <Route path="help" element={<HelpPage />} />
+                          <Route path="faq" element={<HelpPage />} />
                           <Route path="*" element={<Navigate to="/citizen/dashboard" replace />} />
                         </Routes>
                       </CitizenLayout>
@@ -211,6 +224,7 @@ export default function App() {
                             <Route path="record-verification" element={<UnionRecordVerificationPage />} />
                             <Route path="reports" element={<UnionReportsPage />} />
                             <Route path="history" element={<UnionHistoryPage />} />
+                            <Route path="profile" element={<OfficerProfilePage />} />
                             <Route path="*" element={<Navigate to="/office/union/dashboard" replace />} />
                           </Routes>
                         </Suspense>
@@ -234,6 +248,7 @@ export default function App() {
                             <Route path="mutation" element={<AcLandMutationPage />} />
                             <Route path="decisions" element={<AcLandDecisionsPage />} />
                             <Route path="history" element={<AcLandHistoryPage />} />
+                            <Route path="profile" element={<OfficerProfilePage />} />
                             <Route path="*" element={<Navigate to="/office/ac-land/dashboard" replace />} />
                           </Routes>
                         </Suspense>
@@ -257,6 +272,7 @@ export default function App() {
                             <Route path="documents" element={<RegistryDocumentsPage />} />
                             <Route path="completed" element={<RegistryCompletedPage />} />
                             <Route path="history" element={<RegistryHistoryPage />} />
+                            <Route path="profile" element={<OfficerProfilePage />} />
                             <Route path="*" element={<Navigate to="/office/registry/dashboard" replace />} />
                           </Routes>
                         </Suspense>
@@ -282,6 +298,7 @@ export default function App() {
                             <Route path="offices" element={<AdminDashboard />} />
                             <Route path="demo-data" element={<AdminMonitoringPage />} />
                             <Route path="settings" element={<AdminMonitoringPage />} />
+                            <Route path="profile" element={<OfficerProfilePage />} />
                             <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
                           </Routes>
                         </Suspense>

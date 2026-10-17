@@ -50,12 +50,18 @@ export interface UserProfile {
   mother_name_bn: string;
   address_bn: string;
   district: string;
+  district_en?: string;
   upazila: string;
+  upazila_en?: string;
   role: UserRole;
   designation_bn?: string;
+  designation_en?: string;
   office_name_bn?: string;
+  office_name_en?: string;
   kyc_status: KycStatus;
   kyc_verified_at?: string;
+  photo_url?: string;
+  nid_photo_url?: string;
   created_at: string;
 }
 
@@ -84,11 +90,17 @@ export interface LandParcel {
   recorded_owners_bn?: string;
   owners_count?: number;
   district_bn?: string;
+  district_en?: string;
   upazila_bn?: string;
+  upazila_en?: string;
   mouza_bn?: string;
+  mouza_en?: string;
   land_type_bn?: string;
+  land_type_en?: string;
   data_as_of?: string;
   data_source?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface LandOwnership {
@@ -187,7 +199,9 @@ export interface SaleApplication {
   registry_completed: boolean;
   mutation_created: boolean;
   return_reason_bn?: string;
+  return_reason_en?: string;
   rejection_reason_bn?: string;
+  rejection_reason_en?: string;
   created_at: string;
   parcel?: LandParcel;
   seller?: any;
@@ -290,10 +304,15 @@ export interface MutationApplication {
   resultingHoldingNo?: string;
   jl_no?: string;
   khatian_no?: string;
+  khatian_no_en?: string;
   dag_no?: string;
+  dag_no_en?: string;
+  mouza?: string;
   mouza_bn?: string;
+  mouza_en?: string;
   transferred_area_decimal?: number;
   deed_no?: string;
+  deed_no_en?: string;
   approved_khatian_no?: string;
 }
 

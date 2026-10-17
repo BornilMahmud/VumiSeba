@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { UserPlus, ArrowRight, ShieldCheck, Sparkles, CheckCircle2, User, RefreshCw } from 'lucide-react';
 
 export const RegisterPage: React.FC = () => {
+  const { language } = useLanguage();
+  const isBn = language === 'bn';
+
   const [formData, setFormData] = useState({
     name_bn: '',
     name_en: '',
@@ -23,6 +27,10 @@ export const RegisterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,7 +56,7 @@ export const RegisterPage: React.FC = () => {
         district: 'ঢাকা',
         upazila: 'গুলশান',
       });
-      setAutoFilledName('নমুনা ক্রেতা (তানিয়া সুলতানা)');
+      setAutoFilledName(isBn ? 'নমুনা ক্রেতা (তানিয়া সুলতানা)' : 'Demo Buyer (Tania Sultana)');
     } else if (type === 'seller') {
       setFormData({
         name_bn: 'কাজী মিজানুর রহমান',
@@ -63,7 +71,7 @@ export const RegisterPage: React.FC = () => {
         district: 'ঢাকা',
         upazila: 'গুলশান',
       });
-      setAutoFilledName('নমুনা বিক্রেতা (কাজী মিজানুর রহমান)');
+      setAutoFilledName(isBn ? 'নমুনা বিক্রেতা (কাজী মিজানুর রহমান)' : 'Demo Seller (Kazi Mijanur Rahman)');
     } else {
       const namesBn = ['আরিফুল ইসলাম', 'মাহমুদা আক্তার', 'সোহেল রানা', 'ফারজানা হক', 'জাকির হোসেন'];
       const namesEn = ['Ariful Islam', 'Mahmuda Akter', 'Sohel Rana', 'Farzana Haque', 'Zakir Hossain'];
@@ -82,7 +90,7 @@ export const RegisterPage: React.FC = () => {
         district: 'ঢাকা',
         upazila: 'গুলশান',
       });
-      setAutoFilledName(`ইউনিক নাগরিক (${namesBn[idx]})`);
+      setAutoFilledName(isBn ? `ইউনিক নাগরিক (${namesBn[idx]})` : `Unique Citizen (${namesEn[idx]})`);
     }
   };
 
@@ -95,23 +103,26 @@ export const RegisterPage: React.FC = () => {
     if (res.success) {
       navigate('/citizen/profile');
     } else {
-      setError(res.message_bn || 'নিবন্ধন সম্পন্ন করা যায়নি। তথ্য সঠিকভাবে পূরণ করুন।');
+      setError(
+        isBn
+          ? (res.message_bn || 'নিবন্ধন সম্পন্ন করা যায়নি। তথ্য সঠিকভাবে পূরণ করুন।')
+          : (res.message_en || 'Registration failed. Please check the entered data.')
+      );
     }
     setLoading(false);
   };
 
   return (
-    <div className="font-bengali min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto transition-colors">
+    <div className={`${isBn ? 'font-bengali' : 'font-sans'} min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto transition-colors`}>
       <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 sm:p-9 transition-colors">
         <div className="text-center mb-6">
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-2xl mx-auto shadow-md mb-2.5 border border-emerald-500/40">
-            🏛️
-          </div>
           <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
-            নতুন নাগরিক নিবন্ধন
+            {isBn ? 'নতুন নাগরিক নিবন্ধন' : 'Citizen Registration'}
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            ভূমিসেবা পোর্টালে সুরক্ষিত অ্যাকাউন্ট তৈরি করে ডিজিটাল ভূমি সেবা গ্রহণ করুন
+            {isBn
+              ? 'ভূমিসেবা পোর্টালে সুরক্ষিত অ্যাকাউন্ট তৈরি করে ডিজিটাল ভূমি সেবা গ্রহণ করুন'
+              : 'Create a verified account on VumiSeba to access digital land governance and services'}
           </p>
         </div>
 
@@ -120,17 +131,19 @@ export const RegisterPage: React.FC = () => {
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-extrabold text-emerald-950 dark:text-emerald-300 flex items-center gap-1.5">
               <Sparkles size={14} className="text-emerald-600 dark:text-emerald-400" />
-              ১-ক্লিক ডেমো অটো-ফিল (পরীক্ষক ও বিচারক):
+              {isBn ? '১-ক্লিক ডেমো অটো-ফিল (পরীক্ষক ও বিচারক):' : '1-Click Demo Auto-Fill (Evaluators & Judges):'}
             </span>
             {autoFilledName && (
               <span className="text-[10px] text-emerald-800 dark:text-emerald-300 font-bold bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700 flex items-center gap-1">
                 <CheckCircle2 size={11} className="text-emerald-600" />
-                {autoFilledName} পূরণ হয়েছে
+                {autoFilledName} {isBn ? 'পূরণ হয়েছে' : 'Loaded'}
               </span>
             )}
           </div>
           <p className="text-[11px] text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">
-            নিবন্ধনের ১১টি ঘর হাতে টাইপ না করে নিচের যেকোনো বাটনে ট্যাপ করুন। সঠিক এনআইডি ও মোবাইল নম্বর স্বয়ংক্রিয়ভাবে লোড হবে:
+            {isBn
+              ? 'নিবন্ধনের ১১টি ঘর হাতে টাইপ না করে নিচের যেকোনো বাটনে ট্যাপ করুন। সঠিক এনআইডি ও মোবাইল নম্বর স্বয়ংক্রিয়ভাবে লোড হবে:'
+              : 'Skip manual typing by tapping any button below. Verified demo citizen credentials, NID & phone will load instantly:'}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <button
@@ -139,7 +152,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-emerald-200 dark:border-emerald-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5"
             >
               <span>🛒</span>
-              <span>ক্রেতা তথ্য পূরণ</span>
+              <span>{isBn ? 'ক্রেতা তথ্য পূরণ' : 'Fill Demo Buyer'}</span>
             </button>
             <button
               type="button"
@@ -147,7 +160,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-teal-200 dark:border-teal-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5"
             >
               <span>📜</span>
-              <span>বিক্রেতা তথ্য পূরণ</span>
+              <span>{isBn ? 'বিক্রেতা তথ্য পূরণ' : 'Fill Demo Seller'}</span>
             </button>
             <button
               type="button"
@@ -155,7 +168,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 active:scale-95"
             >
               <RefreshCw size={12} />
-              <span>র‍্যান্ডম নতুন নাগরিক</span>
+              <span>{isBn ? 'র‍্যান্ডম নতুন নাগরিক' : 'Fill Random Citizen'}</span>
             </button>
           </div>
         </div>
@@ -169,12 +182,14 @@ export const RegisterPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">পূর্ণ নাম (বাংলায়) *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'পূর্ণ নাম (বাংলায়) *' : 'Full Name (in Bengali) *'}
+              </label>
               <input
                 type="text"
                 name="name_bn"
                 required
-                placeholder="যেমন: মোঃ আনিসুর রহমান"
+                placeholder={isBn ? 'যেমন: মোঃ আনিসুর রহমান' : 'e.g. মোঃ আনিসুর রহমান'}
                 value={formData.name_bn}
                 onChange={handleChange}
                 className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -182,7 +197,9 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Full Name (in English) *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'পূর্ণ নাম (ইংরেজিতে) *' : 'Full Name (in English) *'}
+              </label>
               <input
                 type="text"
                 name="name_en"
@@ -197,7 +214,9 @@ export const RegisterPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">মোবাইল নম্বর (১১ ডিজিট) *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'মোবাইল নম্বর (১১ ডিজিট) *' : 'Mobile Number (11 Digits) *'}
+              </label>
               <input
                 type="tel"
                 name="mobile"
@@ -210,12 +229,14 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">জাতীয় পরিচয়পত্র নম্বর (NID) *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'জাতীয় পরিচয়পত্র নম্বর (NID) *' : 'National ID (NID) *'}
+              </label>
               <input
                 type="text"
                 name="nid_no"
                 required
-                placeholder="১০ বা ১৭ ডিজিট"
+                placeholder={isBn ? '১০ বা ১৭ ডিজিট' : '10 or 17 digits'}
                 value={formData.nid_no}
                 onChange={handleChange}
                 className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -225,12 +246,14 @@ export const RegisterPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">পিতার নাম (বাংলায়) *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'পিতার নাম *' : "Father's Name *"}
+              </label>
               <input
                 type="text"
                 name="father_name_bn"
                 required
-                placeholder="পিতার নাম"
+                placeholder={isBn ? 'পিতার নাম' : "Father's Name"}
                 value={formData.father_name_bn}
                 onChange={handleChange}
                 className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -238,12 +261,14 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">মাতার নাম (বাংলায়) *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'মাতার নাম *' : "Mother's Name *"}
+              </label>
               <input
                 type="text"
                 name="mother_name_bn"
                 required
-                placeholder="মাতার নাম"
+                placeholder={isBn ? 'মাতার নাম' : "Mother's Name"}
                 value={formData.mother_name_bn}
                 onChange={handleChange}
                 className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -252,12 +277,14 @@ export const RegisterPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">বর্তমান ঠিকানা *</label>
+            <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+              {isBn ? 'বর্তমান ঠিকানা *' : 'Present Address *'}
+            </label>
             <input
               type="text"
               name="address_bn"
               required
-              placeholder="বাড়ি/গ্রাম, রোড, এলাকা, জেলা"
+              placeholder={isBn ? 'বাড়ি/গ্রাম, রোড, এলাকা, জেলা' : 'House/Village, Road, Area, District'}
               value={formData.address_bn}
               onChange={handleChange}
               className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -266,7 +293,9 @@ export const RegisterPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">ইমেইল ঠিকানা *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'ইমেইল ঠিকানা *' : 'Email Address *'}
+              </label>
               <input
                 type="email"
                 name="email"
@@ -279,12 +308,14 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">পাসওয়ার্ড *</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+                {isBn ? 'পাসওয়ার্ড *' : 'Password *'}
+              </label>
               <input
                 type="password"
                 name="password"
                 required
-                placeholder="ন্যূনতম ৬ অক্ষর"
+                placeholder={isBn ? 'ন্যূনতম ৬ অক্ষর' : 'Min 6 characters'}
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -299,15 +330,15 @@ export const RegisterPage: React.FC = () => {
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-sm active:scale-98"
             >
               <UserPlus size={16} />
-              <span>{loading ? 'নিবন্ধন হচ্ছে...' : 'নাগরিক অ্যাকাউন্ট তৈরি করুন'}</span>
+              <span>{loading ? (isBn ? 'নিবন্ধন হচ্ছে...' : 'Registering...') : (isBn ? 'নাগরিক অ্যাকাউন্ট তৈরি করুন' : 'Create Citizen Account')}</span>
             </button>
           </div>
         </form>
 
         <div className="mt-6 pt-4 text-center text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800">
-          ইতিমধ্যে নিবন্ধিত?{' '}
+          {isBn ? 'ইতিমধ্যে নিবন্ধিত? ' : 'Already registered? '}
           <Link to="/login" className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline">
-            লগইন করুন
+            {isBn ? 'লগইন করুন' : 'Sign In'}
           </Link>
         </div>
       </div>

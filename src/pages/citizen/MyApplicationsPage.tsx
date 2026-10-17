@@ -17,8 +17,18 @@ import {
 } from 'lucide-react';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { DeedDraftModal } from '../../components/common/DeedDraftModal';
+import { useLanguage } from '../../context/LanguageContext';
+import {
+  formatName,
+  formatMouza,
+  formatPlot,
+  formatArea,
+  formatDigits,
+} from '../../utils/bilingual';
 
 export const MyApplicationsPage: React.FC = () => {
+  const { language } = useLanguage();
+  const isBn = language === 'bn';
   const [applications, setApplications] = useState<SaleApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedAppForDeed, setSelectedAppForDeed] = useState<SaleApplication | null>(null);
@@ -119,15 +129,17 @@ export const MyApplicationsPage: React.FC = () => {
   };
 
   return (
-    <div className="font-bengali space-y-6">
+    <div className={`space-y-6 ${isBn ? 'font-bengali' : 'font-sans'}`}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
             <Clock className="text-gov-blue" size={24} />
-            আমার আবেদনসমূহ ও পূর্ণাঙ্গ ট্র্যাকিং
+            {isBn ? 'আমার আবেদনসমূহ ও পূর্ণাঙ্গ ট্র্যাকিং' : 'My Applications & End-to-End Tracking'}
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            নাগরিক বিক্রয় আবেদন, ইউনিয়ন ভূমি অফিস, এসি ল্যান্ড কোর্ট, সাব-রেজিস্ট্রি অ্যাপয়েন্টমেন্ট ও নামজারি স্থিতি
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            {isBn
+              ? 'নাগরিক বিক্রয় আবেদন, ইউনিয়ন ভূমি অফিস, এসি ল্যান্ড কোর্ট, সাব-রেজিস্ট্রি অ্যাপয়েন্টমেন্ট ও নামজারি স্থিতি'
+              : 'Citizen sale applications, Union Land Office, AC Land Court, Sub-Registry appointment & Mutation status'}
           </p>
         </div>
 
@@ -135,7 +147,7 @@ export const MyApplicationsPage: React.FC = () => {
           to="/citizen/sell"
           className="bg-gov-blue hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-sm transition inline-flex items-center gap-1.5"
         >
-          <span>নতুন বিক্রয় আবেদন দাখিল</span>
+          <span>{isBn ? 'নতুন বিক্রয় আবেদন দাখিল' : 'Submit New Sale Application'}</span>
         </Link>
       </div>
 
@@ -149,22 +161,26 @@ export const MyApplicationsPage: React.FC = () => {
       )}
 
       {loading ? (
-        <div className="bg-white rounded-xl p-12 text-center border">
+        <div className="bg-white dark:bg-slate-900 rounded-xl p-12 text-center border border-slate-200 dark:border-slate-800">
           <div className="inline-block animate-spin w-8 h-8 border-4 border-gov-blue border-t-transparent rounded-full mb-3"></div>
-          <p className="text-xs font-semibold text-slate-700">আবেদনের তথ্য লোড হচ্ছে...</p>
+          <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+            {isBn ? 'আবেদনের তথ্য লোড হচ্ছে...' : 'Loading application details...'}
+          </p>
         </div>
       ) : applications.length === 0 ? (
-        <div className="bg-white rounded-xl p-12 text-center border space-y-3">
+        <div className="bg-white dark:bg-slate-900 rounded-xl p-12 text-center border border-slate-200 dark:border-slate-800 space-y-3">
           <Clock size={32} className="text-slate-300 mx-auto" />
-          <h3 className="font-bold text-slate-800 text-base">কোনো আবেদন পাওয়া যায়নি</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
-            আপনি এখনও কোনো জমি বিক্রির আবেদন দাখিল করেননি।
+          <h3 className="font-bold text-slate-800 dark:text-white text-base">
+            {isBn ? 'কোনো আবেদন পাওয়া যায়নি' : 'No applications found'}
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+            {isBn ? 'আপনি এখনও কোনো জমি বিক্রির আবেদন দাখিল করেননি।' : 'You have not submitted any land sale applications yet.'}
           </p>
           <Link
             to="/citizen/sell"
             className="inline-block bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-xs font-semibold mt-2"
           >
-            প্রথম আবেদন করুন
+            {isBn ? 'প্রথম আবেদন করুন' : 'Submit First Application'}
           </Link>
         </div>
       ) : (
@@ -172,110 +188,121 @@ export const MyApplicationsPage: React.FC = () => {
           {applications.map((app) => (
             <div
               key={app.id}
-              className="bg-white rounded-xl shadow-gov-sm border border-slate-200 p-6 space-y-5 hover:border-gov-blue/50 transition"
+              className="bg-white dark:bg-slate-900 rounded-xl shadow-gov-sm border border-slate-200 dark:border-slate-800 p-6 space-y-5 hover:border-gov-blue/50 transition"
             >
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-base font-bold text-slate-900 font-mono">
-                      আবেদন নং: {app.application_no}
+                    <span className="text-base font-bold text-slate-900 dark:text-white font-mono">
+                      {isBn ? 'আবেদন নং:' : 'Application No:'} {app.application_no}
                     </span>
                     <StatusBadge stage={app.stage} />
                   </div>
-                  <span className="text-xs text-slate-500 mt-0.5 block">
-                    দাখিলের সময়: {new Date(app.created_at).toLocaleString('bn-BD')}
+                  <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 block">
+                    {isBn ? 'দাখিলের সময়:' : 'Submission Date:'} {new Date(app.created_at).toLocaleString(isBn ? 'bn-BD' : 'en-US')}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 whitespace-nowrap">
                   <button
                     onClick={() => setSelectedAppForDeed(app)}
-                    className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-300"
+                    className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-slate-300 dark:border-slate-700 whitespace-nowrap shrink-0"
                   >
-                    <FileText size={14} />
-                    <span>খসড়া দলিল প্রিভিউ</span>
+                    <FileText size={14} className="shrink-0" />
+                    <span>{isBn ? 'খসড়া দলিল প্রিভিউ' : 'Deed Draft Preview'}</span>
                   </button>
 
                   {(app.stage === 'RETURNED_FOR_CORRECTION' || app.stage === 'RETURNED_FOR_INFORMATION') && (
                     <button
                       onClick={() => setResubmitApp(app)}
-                      className="inline-flex items-center gap-1.5 bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm"
+                      className="inline-flex items-center gap-1.5 bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm whitespace-nowrap shrink-0"
                     >
-                      <RefreshCw size={14} />
-                      <span>সংশোধন জমা দিন</span>
+                      <RefreshCw size={14} className="shrink-0" />
+                      <span>{isBn ? 'সংশোধন জমা দিন' : 'Submit Correction'}</span>
                     </button>
                   )}
 
                   {(app.stage === 'APPOINTMENT_SCHEDULED' || app.stage === 'REGISTRATION_SCHEDULED') && (
                     <Link
                       to="/citizen/registration-checklist"
-                      className="inline-flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm"
+                      className="inline-flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm whitespace-nowrap shrink-0"
                     >
-                      <Calendar size={14} />
-                      <span>অ্যাপয়েন্টমেন্ট ও স্লট</span>
+                      <Calendar size={14} className="shrink-0" />
+                      <span>{isBn ? 'অ্যাপয়েন্টমেন্ট ও স্লট' : 'Appointment & Slot'}</span>
                     </Link>
                   )}
 
                   {(app.stage === 'REGISTRATION_COMPLETED' || app.mutation_created) && (
                     <Link
                       to="/citizen/mutation"
-                      className="inline-flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm"
+                      className="inline-flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm whitespace-nowrap shrink-0"
                     >
-                      <Sparkles size={14} />
-                      <span>নামজারি ট্র্যাক</span>
+                      <Sparkles size={14} className="shrink-0" />
+                      <span>{isBn ? 'নামজারি ট্র্যাক' : 'Track Mutation'}</span>
                     </Link>
                   )}
                 </div>
               </div>
 
               {/* Application Details Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs bg-slate-50 p-4 rounded-lg border border-slate-100">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs bg-slate-50 dark:bg-slate-800/60 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
                 <div>
-                  <span className="text-slate-500 block mb-0.5">মৌজা ও দাগ নং:</span>
-                  <strong className="text-slate-900 font-semibold">
-                    দাগ {app.parcel?.dag_no || '৪১৫'} ({app.parcel?.mouza || 'বাড্ডা'})
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">
+                    {isBn ? 'মৌজা ও দাগ নং:' : 'Mouza & Plot No:'}
+                  </span>
+                  <strong className="text-slate-900 dark:text-white font-semibold">
+                    {formatPlot(app.parcel?.dag_no, isBn)} ({formatMouza(app.parcel, isBn)})
                   </strong>
                 </div>
 
                 <div>
-                  <span className="text-slate-500 block mb-0.5">বিক্রিত জমির পরিমাণ:</span>
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">
+                    {isBn ? 'বিক্রিত জমির পরিমাণ:' : 'Transferred Area:'}
+                  </span>
                   <strong className="text-gov-blue font-bold font-mono">
-                    {app.proposed_area_decimal} শতক (হিস্যা: {app.proposed_share})
+                    {formatArea(app.proposed_area_decimal, isBn)} ({isBn ? 'হিস্যা:' : 'Share:'} {formatDigits(app.proposed_share, isBn)})
                   </strong>
                 </div>
 
                 <div>
-                  <span className="text-slate-500 block mb-0.5">ধার্যকৃত মূল্য:</span>
-                  <strong className="text-slate-900 font-mono font-bold">
-                    ৳ {app.agreed_price_bdt?.toLocaleString('bn-BD')}
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">
+                    {isBn ? 'ধার্যকৃত মূল্য:' : 'Agreed Price:'}
+                  </span>
+                  <strong className="text-slate-900 dark:text-white font-mono font-bold">
+                    ৳ {isBn ? app.agreed_price_bdt?.toLocaleString('bn-BD') : app.agreed_price_bdt?.toLocaleString('en-US')}
                   </strong>
                 </div>
 
                 <div>
-                  <span className="text-slate-500 block mb-0.5">ক্রেতার সিটিজেন আইডি:</span>
-                  <strong className="text-teal-700 font-mono font-bold">
+                  <span className="text-slate-500 dark:text-slate-400 block mb-0.5">
+                    {isBn ? 'ক্রেতার সিটিজেন আইডি:' : 'Buyer & Citizen ID:'}
+                  </span>
+                  <strong className="text-teal-700 dark:text-teal-400 font-semibold block">
+                    {formatName(app.buyer, isBn)}
+                  </strong>
+                  <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
                     {app.buyer_citizen_id || 'BHM-CIT-419203'}
-                  </strong>
+                  </span>
                 </div>
               </div>
 
               {/* Return / Correction Notice (when returned) */}
               {(app.stage === 'RETURNED_FOR_CORRECTION' || app.stage === 'RETURNED_FOR_INFORMATION') && app.return_reason_bn && (
-                <div className="p-4 bg-amber-50 text-amber-900 border border-amber-300 rounded-xl text-xs flex items-start gap-3 shadow-xs">
+                <div className="p-4 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 rounded-xl text-xs flex items-start gap-3 shadow-xs">
                   <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
                   <div className="flex-1 space-y-1">
-                    <strong className="block font-bold text-amber-950">
-                      সংশোধন নোটিশ (কর্মকর্তার পর্যবেক্ষণ):
+                    <strong className="block font-bold text-amber-950 dark:text-amber-100">
+                      {isBn ? 'সংশোধন নোটিশ (কর্মকর্তার পর্যবেক্ষণ):' : 'Correction Notice (Officer Review):'}
                     </strong>
-                    <p className="leading-relaxed">{app.return_reason_bn}</p>
+                    <p className="leading-relaxed">{isBn ? app.return_reason_bn : (app.return_reason_en || app.return_reason_bn)}</p>
                     <div className="pt-2">
                       <button
                         onClick={() => setResubmitApp(app)}
                         className="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-md text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs"
                       >
                         <RefreshCw size={13} />
-                        <span>সংশোধিত তথ্য দিয়ে পুনরায় দাখিল করুন</span>
+                        <span>{isBn ? 'সংশোধিত তথ্য দিয়ে পুনরায় দাখিল করুন' : 'Resubmit with Corrected Details'}</span>
                       </button>
                     </div>
                   </div>
@@ -284,38 +311,38 @@ export const MyApplicationsPage: React.FC = () => {
 
               {/* Rejection Notice */}
               {(app.stage.includes('REJECTED') || app.status === 'rejected') && app.rejection_reason_bn && (
-                <div className="p-4 bg-red-50 text-red-900 border border-red-300 rounded-xl text-xs flex items-start gap-3 shadow-xs">
+                <div className="p-4 bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-200 border border-red-300 dark:border-red-800 rounded-xl text-xs flex items-start gap-3 shadow-xs">
                   <XCircle size={18} className="text-red-600 shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <strong className="block font-bold text-red-950">
-                      আবেদন বাতিলের কারণ:
+                    <strong className="block font-bold text-red-950 dark:text-red-100">
+                      {isBn ? 'আবেদন বাতিলের কারণ:' : 'Application Rejection Reason:'}
                     </strong>
-                    <p className="leading-relaxed mt-1">{app.rejection_reason_bn}</p>
+                    <p className="leading-relaxed mt-1">{isBn ? app.rejection_reason_bn : (app.rejection_reason_en || app.rejection_reason_bn)}</p>
                   </div>
                 </div>
               )}
 
               {/* 8-Stage Visual Progress Timeline */}
               <div className="pt-2">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2.5">
-                  ৮-ধাপের ডিজিটাল ভূমি সেবা টাইমলাইন:
+                <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2.5">
+                  {isBn ? '৮-ধাপের ডিজিটাল ভূমি সেবা টাইমলাইন:' : '8-Stage Digital Land Service Timeline:'}
                 </span>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 text-center text-[10px]">
                   {[
-                    { num: 1, title: '১. আবেদন জমা' },
-                    { num: 2, title: '২. ইউনিয়ন যাচাই' },
-                    { num: 3, title: '৩. এসি ল্যান্ড প্রাক-রিভিউ' },
-                    { num: 4, title: '৪. রেজিস্ট্রি প্রস্তুতি' },
-                    { num: 5, title: '৫. অ্যাপয়েন্টমেন্ট' },
-                    { num: 6, title: '৬. দলিল সম্পাদন' },
-                    { num: 7, title: '৭. নামজারি কোর্ট' },
-                    { num: 8, title: '৮. নতুন খতিয়ান' },
+                    { num: 1, title: isBn ? '১. আবেদন জমা' : '1. Submitted' },
+                    { num: 2, title: isBn ? '২. ইউনিয়ন যাচাই' : '2. Union Review' },
+                    { num: 3, title: isBn ? '৩. এসি ল্যান্ড প্রাক-রিভিউ' : '3. AC Land Audit' },
+                    { num: 4, title: isBn ? '৪. রেজিস্ট্রি প্রস্তুতি' : '4. Registry Prep' },
+                    { num: 5, title: isBn ? '৫. অ্যাপয়েন্টমেন্ট' : '5. Appointment' },
+                    { num: 6, title: isBn ? '৬. দলিল সম্পাদন' : '6. Execution' },
+                    { num: 7, title: isBn ? '৭. নামজারি কোর্ট' : '7. Mutation Court' },
+                    { num: 8, title: isBn ? '৮. নতুন খতিয়ান' : '8. New Khatian' },
                   ].map((step) => {
                     const st = getStepState(app, step.num);
-                    let color = 'bg-slate-100 text-slate-500 border-slate-200';
-                    if (st === 'completed') color = 'bg-emerald-50 border-emerald-300 text-emerald-800 font-bold';
-                    else if (st === 'current') color = 'bg-blue-50 border-blue-400 text-blue-900 font-bold ring-2 ring-blue-300/50 animate-pulse';
-                    else if (st === 'rejected') color = 'bg-red-50 border-red-300 text-red-800 font-medium opacity-60';
+                    let color = 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700';
+                    if (st === 'completed') color = 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300 font-bold';
+                    else if (st === 'current') color = 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 text-blue-900 dark:text-blue-200 font-bold ring-2 ring-blue-300/50 animate-pulse';
+                    else if (st === 'rejected') color = 'bg-red-50 dark:bg-red-950/60 border-red-300 dark:border-red-800 text-red-800 dark:text-red-300 font-medium opacity-60';
 
                     return (
                       <div key={step.num} className={`p-2 rounded-lg border transition-all ${color}`}>
@@ -338,47 +365,49 @@ export const MyApplicationsPage: React.FC = () => {
       {/* Resubmit Modal */}
       {resubmitApp && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b">
-              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <RefreshCw className="text-amber-600" size={20} />
-                সংশোধিত আবেদন পুনরায় দাখিল
+                {isBn ? 'সংশোধিত আবেদন পুনরায় দাখিল' : 'Resubmit Corrected Application'}
               </h3>
               <button
                 onClick={() => setResubmitApp(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700"
               >
                 ✕
               </button>
             </div>
 
-            <div className="p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900">
-              <strong className="block mb-1 font-bold">কর্মকর্তার মন্তব্য:</strong>
-              <p>{resubmitApp.return_reason_bn}</p>
+            <div className="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-lg border border-amber-200 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200">
+              <strong className="block mb-1 font-bold">
+                {isBn ? 'কর্মকর্তার মন্তব্য:' : 'Officer Observation:'}
+              </strong>
+              <p>{isBn ? resubmitApp.return_reason_bn : (resubmitApp.return_reason_en || resubmitApp.return_reason_bn)}</p>
             </div>
 
             <form onSubmit={handleResubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  সংশোধনী বিবরণ ও সংযুক্ত নথির বিবরণ লিখুন:
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  {isBn ? 'সংশোধনী বিবরণ ও সংযুক্ত নথির বিবরণ লিখুন:' : 'Correction details & supporting documents note:'}
                 </label>
                 <textarea
                   required
                   rows={4}
                   value={correctionNotes}
                   onChange={(e) => setCorrectionNotes(e.target.value)}
-                  placeholder="যেমন: আর.এস পর্চার স্পষ্ট কপি সংযুক্ত করা হলো এবং খাজনা দাখিলা হালনাগাদ করা হলো..."
-                  className="w-full text-xs p-3 rounded-lg border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-teal-500"
+                  placeholder={isBn ? 'যেমন: আর.এস পর্চার স্পষ্ট কপি সংযুক্ত করা হলো এবং খাজনা দাখিলা হালনাগাদ করা হলো...' : 'E.g., Clear RS khatian copy attached and tax dakhila updated...'}
+                  className="w-full text-xs p-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-teal-500"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2 border-t">
+              <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setResubmitApp(null)}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
-                  বাতিল
+                  {isBn ? 'বাতিল' : 'Cancel'}
                 </button>
                 <button
                   type="submit"
@@ -386,7 +415,7 @@ export const MyApplicationsPage: React.FC = () => {
                   className="px-5 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold shadow transition flex items-center gap-1.5 disabled:opacity-50"
                 >
                   <Send size={14} />
-                  <span>{resubmitting ? 'দাখিল হচ্ছে...' : 'পুনরায় জমা দিন'}</span>
+                  <span>{resubmitting ? (isBn ? 'দাখিল হচ্ছে...' : 'Submitting...') : (isBn ? 'পুনরায় জমা দিন' : 'Resubmit Now')}</span>
                 </button>
               </div>
             </form>

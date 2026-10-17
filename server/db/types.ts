@@ -22,6 +22,8 @@ export interface UserProfile {
   office_name_bn?: string;
   kyc_status: KycStatus;
   kyc_verified_at?: string;
+  photo_url?: string;
+  nid_photo_url?: string;
   created_at: string;
   updated_at: string;
 }

@@ -133,18 +133,18 @@ export const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
   const isRejected = currentStage.includes('REJECTED') || !!rejectionReason;
 
   return (
-    <div className="bg-white rounded-xl shadow-gov-sm border border-slate-200 p-6 font-bengali">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 mb-6 gap-2">
+    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-gov-sm border border-slate-200 dark:border-slate-800 p-6 font-bengali transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-6 gap-2">
         <div>
-          <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-            <Building2 className="text-teal-600" size={18} />
+          <h3 className="font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+            <Building2 className="text-teal-600 dark:text-teal-400" size={18} />
             <span>
               {isBn
                 ? 'আবেদনের সমন্বিত ৯-ধাপ লাইফসাইকেল টাইমলাইন'
                 : 'Unified 9-Stage Application Lifecycle Timeline'}
             </span>
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             {isBn
               ? 'বিক্রয় অনুমতি থেকে দলিল রেজিস্ট্রি এবং স্বয়ংক্রিয় ই-নামজারি সমাপ্তি পর্যন্ত সরকারি ট্র্যাকিং'
               : 'Inter-office governance timeline from pre-deed NOC to deed registration and automated e-mutation.'}
@@ -152,11 +152,11 @@ export const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
         </div>
 
         {createdAt && (
-          <div className="text-xs text-slate-500 flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-lg border">
+          <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
             <Calendar size={13} className="text-slate-400" />
             <span>
               {isBn ? 'আবেদন সৃষ্টি:' : 'Initiated:'}{' '}
-              <strong className="text-slate-700">
+              <strong className="text-slate-700 dark:text-slate-200">
                 {new Date(createdAt).toLocaleDateString(isBn ? 'bn-BD' : 'en-US')}
               </strong>
             </span>
@@ -166,16 +166,16 @@ export const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
 
       {/* Return or Rejection Alert Box */}
       {isReturned && returnReason && (
-        <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 flex items-start gap-3">
-          <RotateCcw className="text-amber-600 shrink-0 mt-0.5" size={18} />
+        <div className="mb-6 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 flex items-start gap-3">
+          <RotateCcw className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" size={18} />
           <div className="text-xs">
             <span className="font-bold block text-sm">
               {isBn ? 'আবেদনটি সংশোধনের জন্য ফেরত পাঠানো হয়েছে' : 'Application Returned for Correction'}
             </span>
-            <p className="mt-1 text-slate-800 leading-relaxed font-medium bg-white p-2.5 rounded border border-amber-200">
+            <p className="mt-1 text-slate-800 dark:text-slate-200 leading-relaxed font-medium bg-white dark:bg-slate-800 p-2.5 rounded border border-amber-200 dark:border-amber-700">
               {returnReason}
             </p>
-            <span className="text-[11px] text-amber-800 mt-2 block">
+            <span className="text-[11px] text-amber-800 dark:text-amber-300 mt-2 block">
               {isBn
                 ? 'অনুগ্রহ করে নির্দেশিত ত্রুটি সংশোধন করে পুনঃদাখিল করুন।'
                 : 'Please amend the requested information and re-submit.'}
@@ -185,13 +185,13 @@ export const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
       )}
 
       {isRejected && rejectionReason && (
-        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-300 text-red-900 flex items-start gap-3">
-          <XCircle className="text-red-600 shrink-0 mt-0.5" size={18} />
+        <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 flex items-start gap-3">
+          <XCircle className="text-red-600 dark:text-red-400 shrink-0 mt-0.5" size={18} />
           <div className="text-xs">
             <span className="font-bold block text-sm">
               {isBn ? 'আবেদনটি বাতিল/প্রত্যাখ্যাত করা হয়েছে' : 'Application Rejected'}
             </span>
-            <p className="mt-1 text-red-900 leading-relaxed font-medium bg-white p-2.5 rounded border border-red-200">
+            <p className="mt-1 text-red-900 dark:text-red-200 leading-relaxed font-medium bg-white dark:bg-slate-800 p-2.5 rounded border border-red-200 dark:border-red-700">
               {rejectionReason}
             </p>
           </div>
@@ -199,11 +199,13 @@ export const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
       )}
 
       {/* 9-Stage Visual Stepper */}
-      <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+      <div className="space-y-0">
         {LIFECYCLE_STAGES.map((st, idx) => {
           const isDone = idx < activeIdx;
           const isCurrent = idx === activeIdx;
           const isPending = idx > activeIdx;
+          const isFirst = idx === 0;
+          const isLast = idx === LIFECYCLE_STAGES.length - 1;
 
           // Find if there is an office review for this stage
           const matchingReview = reviews.find((r) => {
@@ -215,49 +217,62 @@ export const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
           });
 
           return (
-            <div key={st.key} className="relative group">
-              {/* Stepper Dot / Icon */}
-              <div
-                className={`absolute -left-6 sm:-left-8 top-0.5 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-xs ${
-                  isDone
-                    ? 'bg-emerald-600 text-white ring-4 ring-emerald-50'
-                    : isCurrent
-                    ? isReturned
-                      ? 'bg-amber-500 text-white ring-4 ring-amber-100 animate-pulse'
-                      : isRejected
-                      ? 'bg-red-600 text-white ring-4 ring-red-100'
-                      : 'bg-gov-blue text-white ring-4 ring-blue-100 animate-pulse'
-                    : 'bg-white border-2 border-slate-300 text-slate-400'
-                }`}
-              >
-                {isDone ? (
-                  <CheckCircle2 size={14} />
-                ) : isCurrent ? (
-                  isReturned ? (
-                    <RotateCcw size={12} />
-                  ) : isRejected ? (
-                    <XCircle size={12} />
+            <div key={st.key} className="relative flex items-start gap-3.5 group">
+              {/* Stepper column with centered connecting line */}
+              <div className="relative self-stretch w-6 flex flex-col items-center shrink-0">
+                {/* Top line segment into circle center */}
+                {!isFirst && (
+                  <div className="absolute top-0 h-[18px] w-0.5 bg-slate-200 dark:bg-slate-700 pointer-events-none" />
+                )}
+
+                {/* Bottom line segment from circle center down */}
+                {!isLast && (
+                  <div className="absolute top-[18px] bottom-0 w-0.5 bg-slate-200 dark:bg-slate-700 pointer-events-none" />
+                )}
+
+                {/* Stepper Dot / Icon */}
+                <div
+                  className={`relative z-10 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-xs shrink-0 mt-1.5 ${
+                    isDone
+                      ? 'bg-emerald-600 text-white ring-4 ring-emerald-50 dark:ring-emerald-950/60'
+                      : isCurrent
+                      ? isReturned
+                        ? 'bg-amber-500 text-white ring-4 ring-amber-100 dark:ring-amber-950/60 animate-pulse'
+                        : isRejected
+                        ? 'bg-red-600 text-white ring-4 ring-red-100 dark:ring-red-950/60'
+                        : 'bg-gov-blue text-white ring-4 ring-blue-100 dark:ring-blue-950/60 animate-pulse'
+                      : 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-500'
+                  }`}
+                >
+                  {isDone ? (
+                    <CheckCircle2 size={14} />
+                  ) : isCurrent ? (
+                    isReturned ? (
+                      <RotateCcw size={12} />
+                    ) : isRejected ? (
+                      <XCircle size={12} />
+                    ) : (
+                      <span>{idx + 1}</span>
+                    )
                   ) : (
                     <span>{idx + 1}</span>
-                  )
-                ) : (
-                  <span>{idx + 1}</span>
-                )}
+                  )}
+                </div>
               </div>
 
               {/* Step Card Content */}
               <div
-                className={`p-3.5 sm:p-4 rounded-xl border transition-all ${
+                className={`grow min-w-0 p-3.5 sm:p-4 rounded-xl border transition-all ${!isLast ? 'mb-4' : 'mb-0'} ${
                   isCurrent
-                    ? 'bg-slate-50 border-teal-500 shadow-sm'
+                    ? 'bg-slate-50 dark:bg-slate-800/80 border-teal-500 dark:border-teal-500 shadow-sm'
                     : isDone
-                    ? 'bg-white border-slate-200'
-                    : 'bg-white border-slate-100 opacity-60'
+                    ? 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+                    : 'bg-white/60 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800/50 opacity-60'
                 }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm font-extrabold text-slate-900">
+                    <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
                       {isBn ? st.title_bn : st.title_en}
                     </span>
                     {isCurrent && (

@@ -15,6 +15,82 @@ import { runSeed } from '../db/seed.js';
 
 const router = Router();
 
+const BN_TO_EN_DIGITS: Record<string, string> = {
+  '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4',
+  '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9',
+};
+const toEnDigits = (v: any) => (v !== undefined && v !== null ? String(v).replace(/[০-৯]/g, (d) => BN_TO_EN_DIGITS[d] || d) : '');
+
+const MOUZA_MAP_EN: Record<string, string> = {
+  'বাড্ডা': 'Badda', 'সাঁতারকুল': 'Satarkul', 'ভাটারা': 'Bhatara', 'রামপুরা': 'Rampura',
+  'আফতাবনগর': 'Aftabnagar', 'আম্বরখানা': 'Ambarkhana', 'নওদাপাড়া': 'Nawdapara',
+  'নৈহাটী': 'Naihati', 'আলেকান্দা': 'Alekanda', 'ধাপ': 'Dhap', 'আকুয়া': 'Akua', 'আকুয়া': 'Akua',
+  'কান্দিরপাড়': 'Kandirpar', 'কান্দিরপাড়': 'Kandirpar', 'জয়দেবপুর': 'Joydebpur',
+  'ঝিলংজা': 'Jhilongja', 'রাজবাটী': 'Rajbati', 'গুলশান': 'Gulshan', 'মতিঝিল': 'Motijheel',
+  'ধানমন্ডি': 'Dhanmondi', 'মিরপুর': 'Mirpur', 'উত্তরা': 'Uttara', 'তেজগাঁও': 'Tejgaon',
+};
+
+const DISTRICT_MAP_EN: Record<string, string> = {
+  'ঢাকা': 'Dhaka', 'সিলেট': 'Sylhet', 'রাজশাহী': 'Rajshahi', 'খুলনা': 'Khulna',
+  'বরিশাল': 'Barishal', 'রংপুর': 'Rangpur', 'ময়মনসিংহ': 'Mymensingh', 'কুমিল্লা': 'Cumilla',
+  'গাজীপুর': 'Gazipur', 'কক্সবাজার': "Cox's Bazar", 'দিনাজপুর': 'Dinajpur', 'চট্টগ্রাম': 'Chattogram',
+};
+
+const UPAZILA_MAP_EN: Record<string, string> = {
+  'গুলশান': 'Gulshan', 'সিলেট সদর': 'Sylhet Sadar', 'পবা': 'Paba', 'রূপসা': 'Rupsha',
+  'কোতোয়ালী': 'Kotwali', 'রংপুর সদর': 'Rangpur Sadar', 'ময়মনসিংহ সদর': 'Mymensingh Sadar',
+  'আদর্শ সদর': 'Adarsha Sadar', 'গাজীপুর সদর': 'Gazipur Sadar', 'কক্সবাজার সদর': "Cox's Bazar Sadar",
+  'দিনাজপুর সদর': 'Dinajpur Sadar',
+};
+
+const NAME_MAP_EN: Record<string, string> = {
+  'রফিকুল ইসলাম': 'Rafiqul Islam',
+  'মো: রফিকুল ইসলাম': 'Md. Rafiqul Islam',
+  'ফারহান আহমেদ': 'Farhan Ahmed',
+  'মো: ফারহান আহমেদ': 'Md. Farhan Ahmed',
+  'আব্দুল লতিফ': 'Abdul Latif',
+  'নজরুল ইসলাম': 'Nazrul Islam',
+  'বদরুল আলম': 'Badrul Alam',
+  'ড. আনিসুর রহমান': 'Dr. Anisur Rahman',
+  'গৌতম কুমার সেন': 'Goutam Kumar Sen',
+  'মোহাম্মদ কামাল হোসেন': 'Md. Kamal Hossain',
+  'তানভীর হাসান চৌধুরী': 'Tanvir Hasan Chowdhury',
+  'সৈয়দা রোকসানা পারভীন': 'Syeda Roksana Parveen',
+  'এ. কে. এম. রেজওয়ানুল হক': 'A. K. M. Rezwanul Haque',
+  'কাজী মিজানুর রহমান': 'Kazi Mijanur Rahman',
+  'তানিয়া সুলতানা': 'Tania Sultana',
+  'মোসা: তানিয়া আক্তার': 'Mst. Tania Akter',
+  'তানিয়া আক্তার': 'Tania Akter',
+  'সোহেল রানা': 'Sohel Rana',
+  'মোজাম্মেল হক চৌধুরী': 'Mozammel Haque Chowdhury',
+  'ড. ফারহানা ইয়াসমিন': 'Dr. Farhana Yasmin',
+  'কবীর আহমেদ': 'Kabir Ahmed',
+  'মোঃ শাহ আলম ভুঁইয়া': 'Md. Shah Alam Bhuiyan',
+};
+
+const enrichProfileHelper = (prof: Partial<UserProfile> | undefined | null) => {
+  if (!prof) return null;
+  return {
+    ...prof,
+    name_en: prof.name_en || (prof.name_bn ? (NAME_MAP_EN[prof.name_bn] || prof.name_bn) : prof.name_en),
+  };
+};
+
+const enrichParcelHelper = (p: LandParcel | undefined | null) => {
+  if (!p) return null;
+  return {
+    ...p,
+    mouza_bn: p.mouza,
+    mouza_en: MOUZA_MAP_EN[p.mouza] || p.mouza,
+    upazila_bn: p.upazila,
+    upazila_en: UPAZILA_MAP_EN[p.upazila] || p.upazila,
+    district_bn: p.district,
+    district_en: DISTRICT_MAP_EN[p.district] || p.district,
+    dag_no_en: toEnDigits(p.dag_no),
+    khatian_no_en: toEnDigits(p.khatian_no),
+  };
+};
+
 // Helper to generate unique Citizen ID
 function generateCitizenId(): string {
   const randNum = Math.floor(100000 + Math.random() * 900000);
@@ -48,15 +124,21 @@ router.get('/union-queue', requireAuth, requireRole('union_officer', 'central_ad
     }).length;
 
     const enrichSale = (s: SaleApplication) => {
+      const p = parcels.find((p) => p.id === s.parcel_id);
+      const parcelEnhanced = enrichParcelHelper(p);
       const khajna = khajnaAccounts.find((k) => k.parcel_id === s.parcel_id);
+      const uRev = reviews.find((r) => r.application_id === s.id && r.office_type === 'union_land');
       return {
         ...s,
-        parcel: parcels.find((p) => p.id === s.parcel_id) || null,
-        seller: profiles.find((p) => p.id === s.seller_id) || null,
-        buyer: profiles.find((p) => p.id === s.buyer_id) || null,
+        parcel: parcelEnhanced,
+        seller: enrichProfileHelper(profiles.find((p) => p.id === s.seller_id) || null),
+        buyer: enrichProfileHelper(profiles.find((p) => p.id === s.buyer_id) || null),
         khajna: khajna || null,
         tax_status: khajna?.status === 'cleared' ? 'পরিশোধিত' : 'বকেয়া বিদ্যমান',
         tax_arrears: khajna?.total_payable_bdt || 0,
+        union_review: uRev || null,
+        union_report: uRev || s.union_verified,
+        union_verified: s.union_verified || !!uRev,
       };
     };
 
@@ -112,40 +194,68 @@ router.get('/acland-queue', requireAuth, requireRole('ac_land', 'central_admin')
     const approvedMutations = mutations.filter((m) => m.status === 'approved');
     const rejectedMutations = mutations.filter((m) => m.status === 'rejected');
 
-    const enrichSale = (s: SaleApplication) => ({
-      ...s,
-      parcel: parcels.find((p) => p.id === s.parcel_id) || null,
-      seller: profiles.find((p) => p.id === s.seller_id) || null,
-      buyer: profiles.find((p) => p.id === s.buyer_id) || null,
-      union_review: reviews.find((r) => r.application_id === s.id && r.office_type === 'union_land') || null,
-    });
+    const enrichSale = (s: SaleApplication) => {
+      const p = parcels.find((p) => p.id === s.parcel_id);
+      const parcelEnhanced = enrichParcelHelper(p);
+      const uRev = reviews.find((r) => r.application_id === s.id && r.office_type === 'union_land');
+      return {
+        ...s,
+        parcel: parcelEnhanced,
+        seller: enrichProfileHelper(profiles.find((p) => p.id === s.seller_id) || null),
+        buyer: enrichProfileHelper(profiles.find((p) => p.id === s.buyer_id) || null),
+        union_review: uRev || null,
+        union_report: uRev || s.union_verified,
+        union_verified: s.union_verified || !!uRev,
+      };
+    };
 
     const enrichMutation = (m: MutationApplication) => {
       const sale = sales.find((s) => s.id === m.sale_application_id);
+      const p = parcels.find((p) => p.id === m.parcel_id);
+      const parcelEnhanced = enrichParcelHelper(p);
       return {
         ...m,
-        parcel: parcels.find((p) => p.id === m.parcel_id) || null,
-        applicant: profiles.find((p) => p.id === m.applicant_id) || null,
-        seller: sale ? profiles.find((p) => p.id === sale.seller_id) : null,
+        parcel: parcelEnhanced,
+        mouza_bn: parcelEnhanced?.mouza_bn || 'বাড্ডা',
+        mouza_en: parcelEnhanced?.mouza_en || 'Badda',
+        mouza: parcelEnhanced?.mouza_bn || 'বাড্ডা',
+        dag_no: p?.dag_no || (m as any).dag_no || '৪০৫',
+        dag_no_en: toEnDigits(p?.dag_no || (m as any).dag_no || '405'),
+        khatian_no: m.previous_khatian_no || p?.khatian_no || '১২০৪',
+        khatian_no_en: toEnDigits(m.previous_khatian_no || p?.khatian_no || '1204'),
+        transferred_area_decimal: sale?.proposed_area_decimal || 2.5,
+        applicant: enrichProfileHelper(profiles.find((p) => p.id === m.applicant_id) || null),
+        seller: sale ? enrichProfileHelper(profiles.find((p) => p.id === sale.seller_id) || null) : null,
         sale_details: sale || null,
+        deed_no: sale?.application_no ? `সাফ-কবলা (${sale.application_no})` : '৪৫১২/২০২৬',
+        deed_no_en: sale?.application_no ? `Saf-Kabala (${sale.application_no})` : '4512/2026',
       };
     };
 
     res.json({
       success: true,
       stats: {
-        // Pre-registration stats
+        // Primary naming for AcLandDashboard.tsx
+        awaiting_review_count: preRegPending.length,
+        returned_count: preRegReturned.length,
+        approved_count: preRegApproved.length,
+        rejected_count: preRegRejected.length + rejectedMutations.length,
+        mutation_pending_count: awaitingDecisionMutations.length,
+        hearings_scheduled_count: pendingHearings.length,
+        completed_count: approvedMutations.length,
+        // Alternate/legacy naming
         pre_registration_pending: preRegPending.length,
         pre_registration_approved: preRegApproved.length,
         pre_registration_returned: preRegReturned.length,
         pre_registration_rejected: preRegRejected.length,
-        // Post-registration mutation stats
         total_mutation_cases: mutations.length,
         awaiting_mutation_decision: awaitingDecisionMutations.length,
         scheduled_hearings: pendingHearings.length,
         approved_khatians: approvedMutations.length,
         rejected_mutations: rejectedMutations.length,
       },
+      all_applications: sales.map(enrichSale),
+      queue: preRegPending.map(enrichSale),
       pre_registration_queue: preRegPending.map(enrichSale),
       pre_registration_all: sales.map(enrichSale),
       mutation_cases: mutations.map(enrichMutation),
@@ -177,27 +287,52 @@ router.get('/registry-queue', requireAuth, requireRole('sub_registrar', 'central
       (s) => s.stage === 'REGISTRATION_COMPLETED' || s.stage === 'MUTATION_SUBMITTED' || s.stage === 'HEARING_SCHEDULED' || s.stage === 'MUTATION_APPROVED'
     );
 
-    const enrichSale = (s: SaleApplication) => ({
-      ...s,
-      parcel: parcels.find((p) => p.id === s.parcel_id) || null,
-      seller: profiles.find((p) => p.id === s.seller_id) || null,
-      buyer: profiles.find((p) => p.id === s.buyer_id) || null,
-      appointment: appointments.find((a) => a.application_id === s.id) || null,
-      registration_record: completedRecords.find((r) => r.application_id === s.id) || null,
-    });
+    const enrichSale = (s: SaleApplication) => {
+      const p = parcels.find((p) => p.id === s.parcel_id);
+      const parcelEnhanced = enrichParcelHelper(p);
+      const apt = appointments.find((a) => a.application_id === s.id);
+      const reg = completedRecords.find((r) => r.application_id === s.id);
+      return {
+        ...s,
+        parcel: parcelEnhanced,
+        seller: enrichProfileHelper(profiles.find((p) => p.id === s.seller_id) || null),
+        buyer: enrichProfileHelper(profiles.find((p) => p.id === s.buyer_id) || null),
+        appointment: apt || null,
+        appointment_details: apt ? {
+          token_no: apt.token_no,
+          date: apt.appointment_date,
+          time: apt.slot_time,
+          office_name_bn: apt.registry_office_name_bn,
+          status: apt.status,
+          required_documents_bn: apt.required_documents_bn,
+        } : null,
+        registration_record: reg || null,
+        registration_details: reg ? {
+          deed_no: reg.deed_no,
+          volume_no: reg.deed_volume_no,
+          registration_date: reg.completion_timestamp ? reg.completion_timestamp.split('T')[0] : '২০২৬-০৩-০২',
+          serial_no: reg.registration_serial_no,
+          office_name_bn: reg.registry_office_bn,
+        } : null,
+      };
+    };
 
     res.json({
       success: true,
       stats: {
         ready_for_scheduling_count: readyForScheduling.length,
+        appointments_scheduled_count: scheduledSales.length,
         scheduled_appointments_count: scheduledSales.length,
-        completed_registrations_count: completedRecords.length,
+        awaiting_completion_count: scheduledSales.length,
+        completed_registrations_count: completedRecords.length || completedSales.length,
         today_appointments: scheduledSales.length,
+        total_cases: sales.length,
       },
       ready_queue: readyForScheduling.map(enrichSale),
       scheduled_queue: scheduledSales.map(enrichSale),
       completed_queue: completedSales.map(enrichSale),
-      completed_records: completedRecords,
+      completed_records: completedSales.map(enrichSale),
+      raw_completed_records: completedRecords,
       all_applications: sales.map(enrichSale),
     });
   } catch (err: any) {
@@ -406,9 +541,9 @@ router.get('/admin-queue', requireAuth, requireRole('central_admin'), async (req
 
     const salesDetailed = sales.map((s) => ({
       ...s,
-      parcel: parcels.find((p) => p.id === s.parcel_id) || null,
-      seller: profiles.find((p) => p.id === s.seller_id) || null,
-      buyer: profiles.find((p) => p.id === s.buyer_id) || null,
+      parcel: enrichParcelHelper(parcels.find((p) => p.id === s.parcel_id) || null),
+      seller: enrichProfileHelper(profiles.find((p) => p.id === s.seller_id) || null),
+      buyer: enrichProfileHelper(profiles.find((p) => p.id === s.buyer_id) || null),
       appointment: appointments.find((a) => a.application_id === s.id) || null,
     }));
 
@@ -422,9 +557,15 @@ router.get('/admin-queue', requireAuth, requireRole('central_admin'), async (req
         total_officers: officers.length,
         total_parcels: parcels.length,
         total_sales: sales.length,
+        total_applications: sales.length,
         pending_kyc_count: pendingKyc.length,
         total_mutations: mutations.length,
         approved_mutations: mutations.filter((m) => m.status === 'approved').length,
+        mutation_approved_count: mutations.filter((m) => m.status === 'approved').length,
+        union_pending_count: sales.filter((s) => s.stage === 'UNION_REVIEW_PENDING' || s.stage === 'UNDER_REVIEW' || s.stage === 'UNION_REPORT_PENDING').length,
+        acland_pending_count: sales.filter((s) => s.stage === 'AC_LAND_REVIEW_PENDING' || s.stage === 'UNION_APPROVED').length,
+        registry_pending_count: sales.filter((s) => s.stage === 'APPOINTMENT_SCHEDULED' || s.stage === 'REGISTRATION_READY').length,
+        completed_registrations: sales.filter((s) => s.stage === 'REGISTRATION_COMPLETED' || s.stage === 'MUTATION_APPROVED').length,
         returned_count: sales.filter((s) => s.stage === 'RETURNED_FOR_CORRECTION' || s.stage === 'RETURNED_FOR_INFORMATION').length,
         rejected_count: sales.filter((s) => s.stage.includes('REJECTED') || s.status === 'rejected').length,
         by_stage: {
@@ -446,6 +587,7 @@ router.get('/admin-queue', requireAuth, requireRole('central_admin'), async (req
       pending_kyc: pendingKyc,
       users: profiles.map(({ password_hash, ...safe }) => safe),
       sales_queue: salesDetailed,
+      applications: salesDetailed,
       mutations,
       recent_audits: auditLogs.slice(-25).reverse(),
     });
@@ -484,8 +626,17 @@ router.post('/reset-demo', async (req: Request, res: Response) => {
 router.get('/users', requireAuth, requireRole('central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const profiles = (await dbStore.get('profiles')) as UserProfile[];
-    const safeProfiles = profiles.map(({ password_hash, ...p }) => p);
-    res.json({ success: true, data: safeProfiles });
+    const safeProfiles = profiles.map(({ password_hash, ...p }) => {
+      const enriched = enrichProfileHelper(p);
+      const rawNid = p.nid_no || (p as any).nid || '';
+      return {
+        ...enriched,
+        nid_no: rawNid,
+        nid: rawNid ? `${rawNid.slice(0, 3)} *** *** ${rawNid.slice(-3)}` : (p as any).nid || '',
+        raw_nid: rawNid,
+      };
+    });
+    res.json({ success: true, data: safeProfiles, users: safeProfiles });
   } catch (err: any) {
     res.status(500).json({ success: false, message_bn: 'ব্যবহারকারী তালিকা লোড করা যায়নি', error: err.message });
   }
@@ -502,7 +653,8 @@ router.post('/update-role', requireAuth, requireRole('central_admin'), async (re
       return;
     }
 
-    const validRoles = ['citizen', 'union_officer', 'ac_land', 'sub_registrar', 'central_admin'];
+    const normalizedRole = role === 'union_land_officer' ? 'union_officer' : role;
+    const validRoles = ['citizen', 'union_officer', 'union_land_officer', 'ac_land', 'sub_registrar', 'central_admin'];
     if (!validRoles.includes(role)) {
       res.status(400).json({ success: false, message_bn: 'অবৈধ ভূমিকা।' });
       return;
@@ -515,7 +667,7 @@ router.post('/update-role', requireAuth, requireRole('central_admin'), async (re
     }
 
     const updated = await dbStore.update('profiles', userId, {
-      role,
+      role: normalizedRole,
       designation_bn: designation_bn || targetUser.designation_bn,
       office_name_bn: office_name_bn || targetUser.office_name_bn,
       updated_at: new Date().toISOString(),

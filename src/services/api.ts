@@ -66,6 +66,7 @@ export const api = {
   firebaseSync: (payload: { uid: string; email: string | null; displayName: string | null; photoURL?: string | null }) =>
     apiRequest('/auth/firebase-sync', { method: 'POST', body: JSON.stringify(payload) }),
   getProfile: () => apiRequest('/auth/me'),
+  updateProfile: (profileData: any) => apiRequest('/auth/profile', { method: 'PUT', body: JSON.stringify(profileData) }),
   submitKyc: (kycData: any) => apiRequest('/auth/kyc/submit', { method: 'POST', body: JSON.stringify(kycData) }),
   verifyKyc: (userId?: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
 

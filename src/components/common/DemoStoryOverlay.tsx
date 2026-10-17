@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -177,6 +177,9 @@ const STORY_STEPS: StoryStep[] = [
   },
 ];
 
+const toBnDigits = (n: number | string) =>
+  String(n).replace(/[0-9]/g, (d) => ({'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'}[d] || d));
+
 export const DemoStoryOverlay: React.FC = () => {
   const isDemoMode = import.meta.env.VITE_DEMO_MODE !== 'false';
   if (!isDemoMode) return null;
@@ -209,6 +212,25 @@ export const DemoStoryOverlay: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const handleStartDemo = () => {
+      setIsOpen(true);
+      setIsMinimized(false);
+      handleGoToStep(0);
+    };
+
+    window.addEventListener('vumiseba:start-demo-story', handleStartDemo);
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('start_demo') === 'true' || params.get('demo') === '1') {
+      handleStartDemo();
+    }
+
+    return () => {
+      window.removeEventListener('vumiseba:start-demo-story', handleStartDemo);
+    };
+  }, []);
+
   const handleNext = () => {
     if (currentStepIdx < STORY_STEPS.length - 1) {
       handleGoToStep(currentStepIdx + 1);
@@ -225,33 +247,14 @@ export const DemoStoryOverlay: React.FC = () => {
 
   return (
     <>
-      {/* Floating Demo Trigger Button (Fixed bottom-left when closed) */}
-      {!isOpen && (
-        <button
-          onClick={() => {
-            setIsOpen(true);
-            setIsMinimized(false);
-            handleGoToStep(currentStepIdx);
-          }}
-          className="no-print fixed bottom-6 left-6 z-50 flex items-center gap-2.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold px-4 py-3 rounded-full shadow-2xl border-2 border-emerald-300 hover:scale-105 active:scale-95 transition-all text-xs"
-          title="বিচারকদের জন্য গাইড করা ৩ মিনিটের ডেমো উপস্থাপন"
-        >
-          <Sparkles size={16} className="text-yellow-300 animate-spin" />
-          <span>{isBn ? '৩-মিনিট ডেমো গল্প (Judge Demo Story)' : '3-Min Judge Demo Story'}</span>
-          <span className="bg-white/20 px-2 py-0.5 rounded-full text-[10px]">
-            {currentStepIdx + 1}/৮
-          </span>
-        </button>
-      )}
-
       {/* Floating Minimized Pill when docked on left */}
       {isOpen && isMinimized && (
-        <div className="no-print fixed bottom-4 sm:bottom-6 left-3 sm:left-6 z-50 flex items-center gap-2 bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-900 text-white p-2 sm:px-4 sm:py-2.5 rounded-2xl shadow-2xl border-2 border-emerald-400 font-bengali animate-in slide-in-from-bottom-2 duration-150">
+        <div className={`no-print fixed bottom-3 sm:bottom-4 left-3 sm:left-5 z-50 flex items-center gap-2 bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-900 text-white p-2 sm:px-4 sm:py-2.5 rounded-2xl shadow-2xl border-2 border-emerald-400 ${isBn ? 'font-bengali' : 'font-sans'} animate-in slide-in-from-bottom-2 duration-150`}>
           <div className="flex items-center gap-2">
             <Sparkles size={16} className="text-yellow-300 animate-spin" />
             <div className="text-xs">
-              <span className="font-bold text-emerald-200">
-                {isBn ? `ধাপ ${step.stepNumber}/৮:` : `Step ${step.stepNumber}/8:`}
+              <span className={`font-bold text-emerald-200 ${isBn ? 'font-bengali' : 'font-sans'}`}>
+                {isBn ? `ধাপ ${toBnDigits(step.stepNumber)}/৮:` : `Step ${step.stepNumber}/8:`}
               </span>{' '}
               <span className="font-semibold">{isBn ? step.personaNameBn : step.personaNameEn}</span>
             </div>
@@ -286,13 +289,13 @@ export const DemoStoryOverlay: React.FC = () => {
         </div>
       )}
 
-      {/* Guided Walkthrough Left-Sided Companion Panel (Non-blocking, website on right remains visible) */}
+      {/* Guided Walkthrough Left-Sided Companion Panel (Half height bottom-left, non-blocking) */}
       {isOpen && !isMinimized && (
         <aside
           aria-label={isBn ? 'বিচারকদের ডেমো উপস্থাপনা' : 'Judge Demo Story'}
-          className="no-print fixed left-3 sm:left-5 top-12 sm:top-14 bottom-3 sm:bottom-4 z-50 w-[calc(100vw-1.5rem)] sm:w-[410px] lg:w-[440px] max-w-full font-bengali flex flex-col pointer-events-auto"
+          className={`no-print fixed left-3 sm:left-5 bottom-3 sm:bottom-4 z-50 w-[calc(100vw-1.5rem)] sm:w-[410px] lg:w-[430px] max-w-full h-[48vh] sm:h-[420px] max-h-[50vh] ${isBn ? 'font-bengali' : 'font-sans'} flex flex-col pointer-events-auto`}
         >
-          <div className="bg-white/98 backdrop-blur-md w-full h-full rounded-2xl shadow-2xl border-2 border-emerald-500/40 ring-1 ring-slate-900/10 overflow-hidden flex flex-col animate-in slide-in-from-left-4 duration-200">
+          <div className="bg-white/98 dark:bg-slate-900/98 backdrop-blur-md w-full h-full rounded-2xl shadow-2xl border-2 border-emerald-500/40 ring-1 ring-slate-900/10 dark:ring-white/10 overflow-hidden flex flex-col animate-in slide-in-from-left-4 duration-200 transition-colors">
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-800 via-teal-800 to-slate-900 text-white px-4 py-3 flex items-center justify-between gap-2 shrink-0">
               <div className="flex items-center gap-2 min-w-0">
@@ -304,8 +307,8 @@ export const DemoStoryOverlay: React.FC = () => {
                     <h3 className="font-extrabold text-xs sm:text-sm leading-tight truncate">
                       {isBn ? 'বিচারকদের ৩-মিনিট ডেমো গল্প' : '3-Minute Judge Demo Story'}
                     </h3>
-                    <span className="bg-white/20 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
-                      {step.stepNumber}/৮
+                    <span className={`bg-white/20 text-[10px] font-bold px-2 py-0.5 rounded-full ${isBn ? 'font-bengali' : 'font-sans font-bold'}`}>
+                      {isBn ? `${toBnDigits(step.stepNumber)}/৮` : `${step.stepNumber}/8`}
                     </span>
                   </div>
                   <p className="text-[10px] text-emerald-200 truncate">
@@ -335,12 +338,12 @@ export const DemoStoryOverlay: React.FC = () => {
             </div>
 
             {/* Step Progress Bar */}
-            <div className="bg-slate-50 px-4 py-2 flex items-center justify-between text-xs border-b border-slate-200 shrink-0">
+            <div className="bg-slate-50 dark:bg-slate-800/90 px-4 py-2 flex items-center justify-between text-xs border-b border-slate-200 dark:border-slate-700 shrink-0">
               <div className="flex items-center gap-1.5 min-w-0">
-                <span className="text-[11px] font-bold text-slate-600 shrink-0">
-                  {isBn ? `ধাপ ${step.stepNumber}/৮:` : `Step ${step.stepNumber}/8:`}
+                <span className={`text-[11px] font-bold text-slate-600 dark:text-slate-300 shrink-0 ${isBn ? 'font-bengali' : 'font-sans'}`}>
+                  {isBn ? `ধাপ ${toBnDigits(step.stepNumber)}/৮:` : `Step ${step.stepNumber}/8:`}
                 </span>
-                <span className="text-[11px] text-emerald-700 font-extrabold truncate">
+                <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-extrabold truncate">
                   {isBn ? step.personaNameBn : step.personaNameEn}
                 </span>
               </div>
@@ -352,32 +355,32 @@ export const DemoStoryOverlay: React.FC = () => {
                     onClick={() => handleGoToStep(i)}
                     className={`w-2 h-2 rounded-full transition-all ${
                       i === currentStepIdx
-                        ? 'bg-emerald-600 scale-125'
+                        ? 'bg-emerald-600 dark:bg-emerald-400 scale-125'
                         : i < currentStepIdx
                         ? 'bg-teal-400'
-                        : 'bg-slate-300'
+                        : 'bg-slate-300 dark:bg-slate-600'
                     }`}
-                    title={`ধাপ ${i + 1}`}
+                    title={isBn ? `ধাপ ${toBnDigits(i + 1)}` : `Step ${i + 1}`}
                   />
                 ))}
               </div>
             </div>
 
             {/* Main Content Area */}
-            <div className="p-4 overflow-y-auto space-y-3 text-xs text-slate-800 flex-1">
+            <div className="p-4 overflow-y-auto space-y-3 text-xs text-slate-800 dark:text-slate-200 flex-1">
               {/* Step Title & Persona Badge */}
-              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100">
+              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="p-1.5 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 shrink-0">
+                  <div className="p-1.5 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 shrink-0">
                     <StepIcon size={18} />
                   </div>
                   <div className="min-w-0">
-                    <h4 className="font-extrabold text-sm text-slate-900 leading-tight">
+                    <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight">
                       {isBn ? step.titleBn : step.titleEn}
                     </h4>
-                    <span className="text-[11px] text-slate-500 font-medium block truncate">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium block truncate">
                       {isBn ? 'সক্রিয় পারসোনা:' : 'Active Persona:'}{' '}
-                      <strong className="text-teal-700">
+                      <strong className="text-teal-700 dark:text-teal-400">
                         {isBn ? step.personaNameBn : step.personaNameEn}
                       </strong>
                     </span>
@@ -385,7 +388,7 @@ export const DemoStoryOverlay: React.FC = () => {
                 </div>
 
                 <div className="text-right shrink-0">
-                  <span className="text-[10px] text-slate-500 block font-mono bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                     {step.targetPath}
                   </span>
                 </div>
@@ -394,34 +397,34 @@ export const DemoStoryOverlay: React.FC = () => {
               {/* 3 Pillars: Problem -> Tech Solution -> What to see */}
               <div className="space-y-2.5">
                 {/* 1. Problem Solved */}
-                <div className="bg-red-50/80 border border-red-200 rounded-xl p-3">
-                  <span className="font-bold text-red-900 text-[11px] block mb-1 flex items-center gap-1.5">
-                    <ShieldAlert size={14} className="text-red-600 shrink-0" />
+                <div className="bg-red-50/80 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-xl p-3">
+                  <span className="font-bold text-red-900 dark:text-red-300 text-[11px] block mb-1 flex items-center gap-1.5">
+                    <ShieldAlert size={14} className="text-red-600 dark:text-red-400 shrink-0" />
                     <span>{isBn ? 'বাস্তব সমস্যা (Problem Solved):' : 'The Problem Solved:'}</span>
                   </span>
-                  <p className="text-red-950 font-medium text-xs leading-relaxed">
+                  <p className="text-red-950 dark:text-red-200 font-medium text-xs leading-relaxed">
                     {isBn ? step.problemSolvedBn : step.problemSolvedEn}
                   </p>
                 </div>
 
                 {/* 2. Technical Solution */}
-                <div className="bg-emerald-50/80 border border-emerald-200 rounded-xl p-3">
-                  <span className="font-bold text-emerald-900 text-[11px] block mb-1 flex items-center gap-1.5">
-                    <Zap size={14} className="text-emerald-700 shrink-0" />
+                <div className="bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 rounded-xl p-3">
+                  <span className="font-bold text-emerald-900 dark:text-emerald-300 text-[11px] block mb-1 flex items-center gap-1.5">
+                    <Zap size={14} className="text-emerald-700 dark:text-emerald-400 shrink-0" />
                     <span>{isBn ? 'প্রযুক্তিগত সমাধান (How It Works):' : 'Technical Solution:'}</span>
                   </span>
-                  <p className="text-emerald-950 font-medium text-xs leading-relaxed">
+                  <p className="text-emerald-950 dark:text-emerald-200 font-medium text-xs leading-relaxed">
                     {isBn ? step.howItWorksBn : step.howItWorksEn}
                   </p>
                 </div>
 
                 {/* 3. What to Observe */}
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                  <span className="font-bold text-slate-800 text-[11px] block mb-1 flex items-center gap-1.5">
-                    <Play size={13} className="text-teal-700 shrink-0" />
+                <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-xl p-3">
+                  <span className="font-bold text-slate-800 dark:text-slate-200 text-[11px] block mb-1 flex items-center gap-1.5">
+                    <Play size={13} className="text-teal-700 dark:text-teal-400 shrink-0" />
                     <span>{isBn ? 'স্ক্রিনে এখন যা দেখবেন (Observe on Right):' : 'What Judges Should Observe:'}</span>
                   </span>
-                  <p className="text-slate-700 font-medium text-xs leading-relaxed">
+                  <p className="text-slate-700 dark:text-slate-300 font-medium text-xs leading-relaxed">
                     {isBn ? step.whatJudgeSeesBn : step.whatJudgeSeesEn}
                   </p>
                 </div>
@@ -429,11 +432,11 @@ export const DemoStoryOverlay: React.FC = () => {
             </div>
 
             {/* Modal Footer Controls */}
-            <div className="bg-slate-50 px-4 py-3 border-t border-slate-200 flex items-center justify-between gap-2 shrink-0">
+            <div className="bg-slate-50 dark:bg-slate-800/90 px-4 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between gap-2 shrink-0">
               <button
                 onClick={handlePrev}
                 disabled={currentStepIdx === 0 || isSwitching}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 transition"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 transition"
               >
                 <ChevronLeft size={15} />
                 <span>{isBn ? 'পূর্ববর্তী' : 'Prev'}</span>

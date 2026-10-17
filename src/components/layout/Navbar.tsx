@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
@@ -14,23 +14,63 @@ import {
   Building,
   HelpCircle,
   Compass,
-  Globe,
   FileText,
   BadgeCheck,
   Landmark,
   Sun,
   Moon,
+  LogOut,
 } from 'lucide-react';
+import { getUserAvatarUrl } from '../../utils/userUtils';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const { user, logout, isDemoSession } = useAuth();
   const { unreadCount } = useNotifications();
+  const avatarUrl = getUserAvatarUrl(user);
   const { language, toggleLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Close dropdown on outside click or clicking other navbar elements
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
+        setServicesDropdown(false);
+      }
+    };
+
+    if (servicesDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [servicesDropdown]);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setServicesDropdown(false);
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setServicesDropdown(false);
+      }
+    };
+    if (servicesDropdown) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [servicesDropdown]);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -49,64 +89,42 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800 sticky top-0 z-40 shadow-xs transition-colors duration-200">
-      {/* Top Ministry Banner & Language / Theme Switcher Strip */}
-      <div className="bg-slate-900 text-slate-200 text-[11px] py-1 px-4 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span className="font-medium text-slate-300">
-              {t('gov.title', 'গণপ্রজাতন্ত্রী বাংলাদেশ সরকার | ভূমি মন্ত্রণালয় ও নিবন্ধন পরিদপ্তর', 'Government of Bangladesh | Ministry of Land')}
+    <header className="navbar bg-white/90 dark:bg-transparent backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800/40 sticky top-0 z-40 transition-colors duration-200 shadow-none">
+      {/* Top Ministry Banner */}
+      <div className="gov-top-banner bg-slate-900/95 dark:bg-transparent text-slate-200 text-[10.5px] sm:text-[11px] py-1 px-3 sm:px-4 border-b border-slate-800/60 dark:border-slate-800/30">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 shrink-0"></span>
+            <span className="font-medium text-slate-300 truncate">
+              <span className="sm:hidden">
+                {language === 'bn'
+                  ? 'বাংলাদেশ সরকার | ভূমি মন্ত্রণালয়'
+                  : 'Govt. of Bangladesh | Ministry of Land'}
+              </span>
+              <span className="hidden sm:inline">
+                {t('gov.title', 'গণপ্রজাতন্ত্রী বাংলাদেশ সরকার | ভূমি মন্ত্রণালয় ও নিবন্ধন পরিদপ্তর', 'Government of Bangladesh | Ministry of Land')}
+              </span>
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-3 text-slate-300">
-              <span>{t('gov.helpline', 'হেল্পলাইন: ১৬১২২ (টোল ফ্রি)', 'Helpline: 16122 (Toll-Free)')}</span>
-              <span className="text-slate-600">|</span>
-              <span className="hidden md:inline">support@land.gov.bd</span>
-            </div>
-
-            {/* Dark / Black Theme Changing Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-slate-700 shadow-xs transition-all cursor-pointer"
-              title={theme === 'dark' ? (language === 'en' ? 'Switch to Light Theme' : 'লাইট থিম চালু করুন') : (language === 'en' ? 'Switch to Dark/Black Theme' : 'ডার্ক/ব্ল্যাক থিম চালু করুন')}
-              aria-label="Toggle dark/light theme"
-            >
-              {theme === 'dark' ? (
-                <>
-                  <Sun size={12} className="text-amber-400 animate-spin-slow" />
-                  <span className="text-amber-300 font-semibold">{language === 'en' ? 'Light' : 'লাইট'}</span>
-                </>
-              ) : (
-                <>
-                  <Moon size={12} className="text-teal-400" />
-                  <span className="text-teal-300 font-semibold">{language === 'en' ? 'Dark' : 'ডার্ক'}</span>
-                </>
-              )}
-            </button>
-
-            {/* Single Button Tap Language Switcher */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-slate-700 shadow-xs transition-all cursor-pointer"
-              title={language === 'bn' ? 'Switch to English (এক ক্লিকে ভাষা পরিবর্তন)' : 'বাংলায় পরিবর্তন করুন (Single tap to switch)'}
-              aria-label="Toggle language"
-            >
-              <Globe size={12} className="text-emerald-400" />
-              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
-            </button>
+          <div className="flex items-center gap-2 sm:gap-3 text-slate-300 shrink-0 whitespace-nowrap text-[10px] sm:text-[11px]">
+            <span className="font-medium">
+              <span className="text-slate-400">{language === 'bn' ? 'হেল্পলাইন: ' : 'Helpline: '}</span>
+              <strong className="text-emerald-400 font-bold">{language === 'bn' ? '১৬১২২' : '16122'}</strong>
+              <span className="hidden sm:inline text-slate-400"> ({language === 'bn' ? 'টোল ফ্রি' : 'Toll Free'})</span>
+            </span>
+            <span className="hidden md:inline text-slate-600">|</span>
+            <span className="hidden md:inline text-slate-400">support@land.gov.bd</span>
           </div>
         </div>
       </div>
 
       {/* Main Navbar Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Identity */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:scale-105 transition-transform duration-200">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-xl border border-emerald-500/30 shrink-0">
               🏛️
             </div>
             <div>
@@ -114,24 +132,24 @@ export const Navbar: React.FC = () => {
                 <span className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                   {t('brand.name', 'ভূমিসেবা', 'VumiSeba')}
                 </span>
-                <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/60">
                   {t('brand.subtitle', 'স্মার্ট ল্যান্ডটেক', 'Smart LandTech')}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-medium">
-                {t('brand.tagline', 'নাগরিক ভূমি সেবা, রেকর্ড যাচাই ও ই-নামজারি', 'Digital Citizen Land Services & Automated Mutation')}
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-medium whitespace-nowrap">
+                {t('brand.tagline', 'স্মার্ট ডিজিটাল ভূমি সেবা ও ই-নামজারি', 'Smart Land Services & E-Mutation')}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-medium">
             <Link
               to="/"
-              className={`px-3.5 py-2 rounded-lg transition-colors ${
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 isActive('/')
-                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
               {t('nav.home', 'হোম', 'Home')}
@@ -139,53 +157,53 @@ export const Navbar: React.FC = () => {
 
             <Link
               to="/search-land"
-              className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 isActive('/search-land')
-                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <Search size={15} className="text-slate-400 dark:text-slate-500 group-hover:text-emerald-600" />
               <span>{t('nav.searchLand', 'জমি খুঁজুন', 'Search Land')}</span>
             </Link>
 
             <Link
               to="/verify-land"
-              className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 isActive('/verify-land')
-                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400" />
               <span>{t('nav.verifyLand', 'কেনার আগে যাচাই', 'Verify Land')}</span>
             </Link>
 
             <Link
               to="/how-it-works"
-              className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 isActive('/how-it-works')
-                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <Compass size={15} className="text-slate-400 dark:text-slate-500" />
               <span>{t('nav.howItWorks', 'কীভাবে কাজ করে', 'How It Works')}</span>
             </Link>
 
             {/* Services Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={servicesRef}>
               <button
                 onClick={() => setServicesDropdown(!servicesDropdown)}
-                className="px-3.5 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1"
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent transition-colors flex items-center gap-1 ${
+                  servicesDropdown ? 'bg-slate-100/80 dark:bg-slate-800/80 text-emerald-700 dark:text-emerald-400' : ''
+                }`}
+                aria-expanded={servicesDropdown}
+                aria-haspopup="true"
               >
                 <span>{t('nav.services', 'সেবাসমূহ', 'Services')}</span>
-                <ChevronDown size={14} className="text-slate-400" />
+                <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${servicesDropdown ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} />
               </button>
 
               {servicesDropdown && (
                 <div
-                  onMouseLeave={() => setServicesDropdown(false)}
                   className="absolute left-0 mt-1 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-card-hover border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in slide-in-from-top-1"
                 >
                   <Link
@@ -221,26 +239,51 @@ export const Navbar: React.FC = () => {
             </div>
 
             <Link
-              to="/help"
-              className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
-                isActive('/help')
-                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+              to={user && user.role === 'citizen' ? '/citizen/help' : '/help'}
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+                isActive('/help') || isActive('/citizen/help')
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <HelpCircle size={15} className="text-slate-400 dark:text-slate-500" />
-              <span>{t('nav.help', 'সহায়তা ও প্রশ্নোত্তর', 'Help & FAQ')}</span>
+              <span>{t('nav.help', 'সহায়তা ও এফএকিউ', 'Help & FAQ')}</span>
             </Link>
           </nav>
 
-          {/* Right Action Menu: User Dashboard Shortcut / Login */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right Action Menu: Theme & Lang Switchers + User Dashboard Shortcut / Login */}
+          <div className="hidden lg:flex items-center gap-2.5">
+            {/* Theme Toggle Button - Icons Only */}
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent transition active:scale-95 cursor-pointer"
+              title={theme === 'dark' ? (language === 'en' ? 'Switch to Light Theme' : 'লাইট থিম চালু করুন') : (language === 'en' ? 'Switch to Dark Theme' : 'ডার্ক থিম চালু করুন')}
+              aria-label="Toggle dark/light theme"
+            >
+              {theme === 'dark' ? (
+                <Sun size={19} className="text-amber-400" />
+              ) : (
+                <Moon size={19} className="text-slate-600 dark:text-slate-300" />
+              )}
+            </button>
+
+            {/* Language Switcher Button - Same height as other buttons */}
+            <button
+              onClick={toggleLanguage}
+              className="h-9 px-3 text-xs font-bold rounded-lg border border-slate-300 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent hover:text-emerald-600 dark:hover:text-emerald-400 inline-flex items-center justify-center transition active:scale-95 cursor-pointer"
+              title={language === 'bn' ? 'Switch to English' : 'বাংলায় দেখুন'}
+              aria-label="Toggle language"
+            >
+              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
+            </button>
+
+            <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 mx-0.5" />
+
             {user ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 sm:gap-2.5">
                 {/* Notification Bell */}
                 <Link
                   to={user.role === 'citizen' ? '/citizen/notifications' : '#'}
-                  className="relative p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  className="h-9 w-9 inline-flex items-center justify-center relative text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent transition"
                   title="বিজ্ঞপ্তি"
                 >
                   <Bell size={18} />
@@ -252,42 +295,97 @@ export const Navbar: React.FC = () => {
                 </Link>
 
                 {isDemoSession && (
-                  <span className="bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <span className="h-9 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 text-[11px] font-bold px-2.5 rounded-full inline-flex items-center gap-1">
                     <span>⚠️</span>
-                    <span>{t('nav.demoAccount', 'নমুনা অ্যাকাউন্ট', 'Demo Account')}</span>
+                    <span className="hidden xl:inline">{t('nav.demoAccount', 'নমুনা অ্যাকাউন্ট', 'Demo Account')}</span>
                   </span>
                 )}
+
+                {/* Profile Name & Photo Widget */}
+                <Link
+                  to={
+                    user.role === 'citizen'
+                      ? '/citizen/profile'
+                      : user.role === 'union_officer'
+                      ? '/office/union/profile'
+                      : user.role === 'ac_land'
+                      ? '/office/ac-land/profile'
+                      : user.role === 'sub_registrar'
+                      ? '/office/registry/profile'
+                      : '/admin/profile'
+                  }
+                  className="flex items-center gap-2 px-2.5 py-1 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800 transition group cursor-pointer"
+                  title={language === 'bn' ? 'প্রোফাইল ও সেটিংস' : 'Profile & Settings'}
+                >
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors truncate max-w-[120px] sm:max-w-[150px]">
+                      {language === 'bn' ? (user.name_bn || 'ব্যবহারকারী') : (user.name_en || 'User')}
+                    </p>
+                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold leading-tight">
+                      {user.role === 'citizen'
+                        ? (language === 'bn' ? 'নাগরিক' : 'Citizen')
+                        : user.role === 'union_officer'
+                        ? (language === 'bn' ? 'ইউনিয়ন কর্মকর্তা' : 'Union Officer')
+                        : user.role === 'ac_land'
+                        ? (language === 'bn' ? 'এসি ল্যান্ড' : 'AC Land')
+                        : user.role === 'sub_registrar'
+                        ? (language === 'bn' ? 'সাব-রেজিস্ট্রার' : 'Sub-Registrar')
+                        : (language === 'bn' ? 'সুপার অ্যাডমিন' : 'Super Admin')}
+                    </p>
+                  </div>
+                  <div className="relative shrink-0">
+                    <img
+                      src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                      alt={user.name_bn || 'User'}
+                      className="w-8 h-8 rounded-xl object-cover ring-2 ring-emerald-500/40 shadow-2xs group-hover:scale-105 transition-transform"
+                    />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
+                  </div>
+                </Link>
 
                 {/* Dashboard Button */}
                 <button
                   onClick={handleDashboardRedirect}
-                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-xs hover:shadow transition transform hover:-translate-y-0.5 active:translate-y-0"
+                  className="h-9 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-3.5 rounded-lg text-xs font-bold shadow-xs hover:shadow transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                 >
-                  <Building size={16} />
+                  <Building size={14} />
                   <span>
                     {user.role === 'citizen'
-                      ? (language === 'en' ? 'Citizen Dashboard' : 'নাগরিক ড্যাশবোর্ড')
+                      ? (language === 'en' ? 'Dashboard' : 'ড্যাশবোর্ড')
                       : user.role === 'union_officer'
-                      ? (language === 'en' ? 'Union Office' : 'ইউনিয়ন অফিস')
+                      ? (language === 'en' ? 'Union' : 'ইউনিয়ন')
                       : user.role === 'ac_land'
-                      ? (language === 'en' ? 'AC Land Court' : 'এসি ল্যান্ড কোর্ট')
+                      ? (language === 'en' ? 'AC Land' : 'এসি ল্যান্ড')
                       : user.role === 'sub_registrar'
                       ? (language === 'en' ? 'Sub-Registry' : 'সাব-রেজিস্ট্রি')
-                      : (language === 'en' ? 'Admin Panel' : 'প্রশাসনিক প্যানেল')}
+                      : (language === 'en' ? 'Admin' : 'অ্যাডমিন')}
                   </span>
+                </button>
+
+                {/* Direct Logout Button */}
+                <button
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="h-9 inline-flex items-center gap-1 px-2.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
+                  title={t('nav.logout', 'লগআউট', 'Logout')}
+                >
+                  <LogOut size={14} />
+                  <span className="hidden xl:inline">{t('nav.logout', 'লগআউট', 'Logout')}</span>
                 </button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+                  className="h-9 px-4 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent rounded-lg inline-flex items-center justify-center transition"
                 >
                   {t('nav.login', 'লগইন', 'Login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-xs hover:shadow transition transform hover:-translate-y-0.5 active:translate-y-0"
+                  className="h-9 px-4 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-xs hover:shadow inline-flex items-center justify-center transition transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                   {t('nav.register', 'নিবন্ধন', 'Register')}
                 </Link>
@@ -295,36 +393,43 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button, Theme & Language Switch */}
-          <div className="flex lg:hidden items-center gap-1.5">
+          {/* Mobile Menu Action Area */}
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+            {/* Theme Toggle Button - Icons Only */}
             <button
               onClick={toggleTheme}
-              className="p-1.5 text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 rounded-md border border-slate-200 dark:border-slate-700 transition"
-              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+              className="h-8 w-8 inline-flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent rounded-lg transition active:scale-95 cursor-pointer"
+              title="Toggle theme"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun size={14} className="text-amber-400" /> : <Moon size={14} className="text-teal-400" />}
+              {theme === 'dark' ? (
+                <Sun size={18} className="text-amber-400" />
+              ) : (
+                <Moon size={18} className="text-slate-600 dark:text-slate-300" />
+              )}
             </button>
+
+            {/* Language Switcher Button - Language Name Only, No Icons */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1 px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 rounded-md border border-slate-200 dark:border-slate-700 transition"
-              title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
+              className="h-8 px-2.5 text-xs font-bold rounded-md border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent inline-flex items-center justify-center transition active:scale-95 cursor-pointer"
+              title="Toggle language"
               aria-label="Toggle language"
             >
-              <Globe size={12} className="text-emerald-600 dark:text-emerald-400" />
-              <span>{language === 'bn' ? 'EN' : 'বাং'}</span>
+              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
             </button>
+
             {user && (
               <button
                 onClick={handleDashboardRedirect}
-                className="bg-emerald-600 text-white px-2.5 py-1.5 rounded-md text-xs font-bold shadow-xs"
+                className="h-8 bg-emerald-600 text-white px-2.5 rounded-lg text-xs font-bold shadow-xs inline-flex items-center justify-center"
               >
                 {t('nav.dashboard', 'ড্যাশবোর্ড', 'Dashboard')}
               </button>
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
+              className="h-8 w-8 inline-flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent rounded-lg transition"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -360,28 +465,58 @@ export const Navbar: React.FC = () => {
           <Link
             to="/services"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.services', 'সেবাসমূহ', 'Services')}
           </Link>
           <Link
             to="/how-it-works"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.howItWorks', 'কীভাবে কাজ করে', 'How It Works')}
           </Link>
           <Link
-            to="/help"
+            to={user && user.role === 'citizen' ? '/citizen/help' : '/help'}
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.help', 'সহায়তা', 'Help & FAQ')}
           </Link>
 
-          <div className="border-t pt-3 mt-2">
+          <div className="border-t border-slate-200 dark:border-slate-800 pt-3 mt-2">
             {user ? (
               <div className="space-y-2">
+                <Link
+                  to={
+                    user.role === 'citizen'
+                      ? '/citizen/profile'
+                      : user.role === 'union_officer'
+                      ? '/office/union/profile'
+                      : user.role === 'ac_land'
+                      ? '/office/ac-land/profile'
+                      : user.role === 'sub_registrar'
+                      ? '/office/registry/profile'
+                      : '/admin/profile'
+                  }
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
+                >
+                  <img
+                    src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                    alt="User"
+                    className="w-10 h-10 rounded-xl object-cover ring-2 ring-emerald-500/50 shrink-0"
+                  />
+                  <div className="overflow-hidden min-w-0 flex-1">
+                    <p className="font-bold text-slate-900 dark:text-white text-xs truncate">
+                      {language === 'bn' ? (user.name_bn || 'ব্যবহারকারী') : (user.name_en || 'User')}
+                    </p>
+                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
+                      {user.role === 'citizen' ? (user.citizen_id || 'নাগরিক প্রোফাইল') : (user.designation_bn || user.role)}
+                    </p>
+                  </div>
+                  <span className="text-xs text-emerald-600 font-bold shrink-0">প্রোফাইল ›</span>
+                </Link>
                 <button
                   onClick={() => {
                     handleDashboardRedirect();
@@ -406,7 +541,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                  className="text-center py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
                   {t('nav.login', 'লগইন', 'Login')}
                 </Link>

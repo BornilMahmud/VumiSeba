@@ -17,27 +17,27 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full border border-slate-300 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 dark:border-slate-700 max-h-[90vh] flex flex-col transition-colors">
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50 no-print">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 rounded-t-2xl no-print">
           <div className="flex items-center gap-2">
-            <FileText className="text-gov-blue" size={20} />
-            <h3 className="font-semibold text-slate-900 text-lg">
+            <FileText className="text-teal-600 dark:text-teal-400" size={20} />
+            <h3 className="font-semibold text-slate-900 dark:text-white text-lg">
               প্রস্তুতিমূলক খসড়া বিক্রয় দলিল ও নিবন্ধন প্যাকেট
             </h3>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 bg-gov-blue hover:bg-slate-900 text-white px-3.5 py-1.5 rounded-md text-sm font-medium transition shadow-sm"
+              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition shadow-sm"
             >
               <Printer size={16} />
               প্রিন্ট করুন
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-500 hover:text-slate-800 rounded-md hover:bg-slate-200"
+              className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition"
             >
               <X size={20} />
             </button>
@@ -156,10 +156,10 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 border-t border-slate-200 bg-slate-50 text-right no-print">
+        <div className="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 rounded-b-2xl text-right no-print">
           <button
             onClick={onClose}
-            className="px-4 py-1.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-100"
+            className="px-4 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition"
           >
             বন্ধ করুন
           </button>
