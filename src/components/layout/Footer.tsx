@@ -224,7 +224,7 @@ export const Footer: React.FC = () => {
         <button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-21 right-5 sm:bottom-23 sm:right-6 z-40 w-11 h-11 rounded-full bg-white dark:bg-slate-900 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border border-slate-200 dark:border-slate-700 hover:border-emerald-500 shadow-lg hover:shadow-xl hover:shadow-emerald-500/25 transition-all duration-300 flex items-center justify-center cursor-pointer group active:scale-95 animate-in fade-in zoom-in-75"
+          className="fixed bottom-[86px] right-[26px] sm:bottom-[92px] sm:right-[30px] z-40 w-11 h-11 rounded-full bg-white dark:bg-slate-900 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border border-slate-200 dark:border-slate-700 hover:border-emerald-500 shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer group active:scale-95 animate-in fade-in zoom-in-75"
           title={language === 'bn' ? 'পৃষ্ঠার শীর্ষে যান' : 'Scroll to top'}
           aria-label={language === 'bn' ? 'পৃষ্ঠার শীর্ষে যান' : 'Scroll to top'}
         >

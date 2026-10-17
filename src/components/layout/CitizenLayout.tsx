@@ -61,7 +61,7 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
           <Link
             to="/citizen/profile"
             className="block group bg-slate-50 dark:bg-slate-800/80 hover:bg-emerald-50/60 dark:hover:bg-slate-800 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700/80 transition shadow-2xs hover:shadow-xs cursor-pointer"
-            title="প্রোফাইল ও ছবি পরিবর্তন করুন"
+            title="নাগরিক প্রোফাইল ও কেওয়াইসি"
           >
             <div className="flex items-center gap-2.5 mb-2">
               <div className="relative shrink-0">
@@ -284,7 +284,7 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
             <Link
               to="/citizen/profile"
               className="flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-800 transition border border-transparent hover:border-emerald-200/60 dark:hover:border-slate-700 group cursor-pointer"
-              title="নাগরিক প্রোফাইল ও ছবি পরিবর্তন করুন"
+              title="নাগরিক প্রোফাইল ও কেওয়াইসি"
             >
               <div className="text-right">
                 <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">

@@ -12,7 +12,7 @@ import { api } from '../services/api';
 import { auth, googleProvider, isFirebaseConfigured } from '../lib/firebase';
 import { firestoreService } from '../services/firestoreService';
 
-import { DEMO_CREDENTIALS } from '../types/demoCredentials';
+import { DEMO_CREDENTIALS, findOfflineDemoUser, createOfflineDemoToken } from '../types/demoCredentials';
 export { DEMO_CREDENTIALS };
 
 interface AuthContextType {
@@ -35,7 +35,20 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const getInitialDemoUser = (): UserProfile | null => {
+    try {
+      const isDemo = localStorage.getItem('bhumisathi_is_demo') === 'true';
+      const cached = localStorage.getItem('bhumisathi_demo_user');
+      if (isDemo && cached) {
+        return JSON.parse(cached);
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  };
+
+  const [user, setUser] = useState<UserProfile | null>(getInitialDemoUser());
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('bhumisathi_token'));
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -47,10 +60,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Sync profile from backend or Firestore
   const refreshProfile = async () => {
-    if (!token && !firebaseUser) {
+    const isDemo = localStorage.getItem('bhumisathi_is_demo') === 'true';
+    const cachedDemoUserJson = localStorage.getItem('bhumisathi_demo_user');
+
+    if (!token && !firebaseUser && !isDemo) {
       setUser(null);
       setIsLoading(false);
       return;
+    }
+
+    if (isDemo && cachedDemoUserJson) {
+      try {
+        const parsed = JSON.parse(cachedDemoUserJson);
+        if (parsed && parsed.id) {
+          setUser(parsed);
+          setIsDemoSession(true);
+        }
+      } catch (e) {
+        console.warn('[AuthContext] Error parsing cached demo user:', e);
+      }
     }
 
     try {
@@ -68,15 +96,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await api.getProfile();
       if (res.success && res.user) {
         setUser(res.user);
+        if (isDemo) {
+          localStorage.setItem('bhumisathi_demo_user', JSON.stringify(res.user));
+        }
       } else {
+        if (isDemo && cachedDemoUserJson) {
+          // Keep offline demo session intact!
+          setIsLoading(false);
+          return;
+        }
         setUser(null);
         localStorage.removeItem('bhumisathi_token');
+        localStorage.removeItem('vumiseba_token');
         localStorage.removeItem('bhumisathi_is_demo');
+        localStorage.removeItem('bhumisathi_demo_user');
         setToken(null);
         setIsDemoSession(false);
       }
     } catch (err) {
       console.warn('[AuthContext] Error refreshing profile:', err);
+      if (isDemo && cachedDemoUserJson) {
+        setIsLoading(false);
+        return;
+      }
     } finally {
       setIsLoading(false);
     }
@@ -130,22 +172,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsubscribe();
   }, [isFirebaseActive]);
 
-  // Standard email/password login
+  // Standard email/password login (with offline fallback for demo accounts)
   const login = async (credentials: any): Promise<{ success: boolean; user?: UserProfile; message_bn?: string; message_en?: string }> => {
     setIsLoading(true);
-    const res = await api.login(credentials);
-    if (res.success && res.token && res.user) {
-      localStorage.setItem('bhumisathi_token', res.token);
-      localStorage.setItem('vumiseba_token', res.token);
-      localStorage.removeItem('bhumisathi_is_demo');
-      setIsDemoSession(false);
-      setToken(res.token);
-      setUser(res.user);
+    const demoUser = findOfflineDemoUser(credentials.email);
+
+    try {
+      const res = await api.login(credentials);
+      if (res.success && res.token && res.user) {
+        localStorage.setItem('bhumisathi_token', res.token);
+        localStorage.setItem('vumiseba_token', res.token);
+        if (demoUser) {
+          localStorage.setItem('bhumisathi_is_demo', 'true');
+          localStorage.setItem('bhumisathi_demo_user', JSON.stringify(res.user));
+          setIsDemoSession(true);
+        } else {
+          localStorage.removeItem('bhumisathi_is_demo');
+          localStorage.removeItem('bhumisathi_demo_user');
+          setIsDemoSession(false);
+        }
+        setToken(res.token);
+        setUser(res.user);
+        setIsLoading(false);
+        return { success: true, user: res.user };
+      }
+
+      if (demoUser) {
+        const token = createOfflineDemoToken(demoUser);
+        localStorage.setItem('bhumisathi_token', token);
+        localStorage.setItem('vumiseba_token', token);
+        localStorage.setItem('bhumisathi_is_demo', 'true');
+        localStorage.setItem('bhumisathi_demo_user', JSON.stringify(demoUser));
+        setIsDemoSession(true);
+        setToken(token);
+        setUser(demoUser);
+        setIsLoading(false);
+        return { success: true, user: demoUser };
+      }
+
       setIsLoading(false);
-      return { success: true, user: res.user };
+      return { success: false, message_bn: res.message_bn, message_en: res.message_en };
+    } catch (err: any) {
+      if (demoUser) {
+        const token = createOfflineDemoToken(demoUser);
+        localStorage.setItem('bhumisathi_token', token);
+        localStorage.setItem('vumiseba_token', token);
+        localStorage.setItem('bhumisathi_is_demo', 'true');
+        localStorage.setItem('bhumisathi_demo_user', JSON.stringify(demoUser));
+        setIsDemoSession(true);
+        setToken(token);
+        setUser(demoUser);
+        setIsLoading(false);
+        return { success: true, user: demoUser };
+      }
+      setIsLoading(false);
+      return {
+        success: false,
+        message_bn: 'সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।',
+        message_en: 'Could not connect to server.',
+      };
     }
-    setIsLoading(false);
-    return { success: false, message_bn: res.message_bn, message_en: res.message_en };
   };
 
   // Google Sign-In with Firebase Auth
@@ -245,66 +331,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { success: false, message_bn: res.message_bn, message_en: res.message_en };
   };
 
-  // Fast 1-Click Demo Persona Switcher (Genuine Firebase Auth or resilient fallback)
+  // Fast 1-Click Demo Persona Switcher (Works 100% offline without requiring connection to the server)
   const switchDemoPersona = async (persona: string, role?: string): Promise<{ success: boolean; message_bn?: string; message_en?: string }> => {
     setIsLoading(true);
-    const demoKey = (persona in DEMO_CREDENTIALS ? persona : role || 'seller') as keyof typeof DEMO_CREDENTIALS;
-    const demoCreds = DEMO_CREDENTIALS[demoKey];
 
-    // 1. Attempt genuine Firebase Authentication if configured
-    if (isFirebaseActive && auth && demoCreds) {
-      try {
-        const userCred = await signInWithEmailAndPassword(auth, demoCreds.email, demoCreds.pass);
-        setFirebaseUser(userCred.user);
-        const profile = await firestoreService.getProfile(userCred.user.uid);
+    // 1. Immediately match offline persona profile
+    const offlineUser = findOfflineDemoUser(persona, role);
+    if (offlineUser) {
+      const offlineToken = createOfflineDemoToken(offlineUser);
+      localStorage.setItem('bhumisathi_token', offlineToken);
+      localStorage.setItem('vumiseba_token', offlineToken);
+      localStorage.setItem('bhumisathi_is_demo', 'true');
+      localStorage.setItem('bhumisathi_demo_user', JSON.stringify(offlineUser));
 
-        // Sync with backend session
-        const syncRes = await api.firebaseSync({
-          uid: userCred.user.uid,
-          email: userCred.user.email,
-          displayName: profile?.name_bn || demoCreds.label,
+      setToken(offlineToken);
+      setUser(offlineUser);
+      setIsDemoSession(true);
+      setIsLoading(false);
+
+      // Asynchronously notify backend in background if running (non-blocking)
+      api.demoLogin(persona, role)
+        .then((res) => {
+          if (res.success && res.token && res.user) {
+            localStorage.setItem('bhumisathi_token', res.token);
+            localStorage.setItem('vumiseba_token', res.token);
+            localStorage.setItem('bhumisathi_demo_user', JSON.stringify(res.user));
+            setToken(res.token);
+            setUser(res.user);
+          }
+        })
+        .catch(() => {
+          // Server offline, silent ignore
         });
 
-        if (syncRes.success && syncRes.token) {
-          localStorage.setItem('bhumisathi_token', syncRes.token);
-          localStorage.setItem('bhumisathi_is_demo', 'true');
-          setIsDemoSession(true);
-          setToken(syncRes.token);
-          setUser(syncRes.user);
-        } else if (profile) {
-          setUser(profile);
-          localStorage.setItem('bhumisathi_is_demo', 'true');
-          setIsDemoSession(true);
-        }
-
-        setIsLoading(false);
-        return {
-          success: true,
-          message_bn: `ডেমো অ্যাকাউন্টে প্রবেশ সফল হয়েছে (${demoCreds.label})।`,
-          message_en: `Logged in as demo persona (${demoCreds.label}).`,
-        };
-      } catch (fbErr: any) {
-        console.warn('[Firebase Demo Auth Note] Cloud demo user not provisioned yet; falling back to local demo runner:', fbErr.message);
-      }
+      return {
+        success: true,
+        message_bn: `ডেমো অ্যাকাউন্টে প্রবেশ সফল হয়েছে (${offlineUser.name_bn})।`,
+        message_en: `Logged in as demo persona (${offlineUser.name_en || offlineUser.name_bn}).`,
+      };
     }
 
-    // 2. Resilient server-validated demo login
-    const res = await api.demoLogin(persona, role);
-    if (res.success && res.token) {
-      localStorage.setItem('bhumisathi_token', res.token);
-      localStorage.setItem('bhumisathi_is_demo', 'true');
-      setIsDemoSession(true);
-      setToken(res.token);
-      setUser(res.user);
-      setIsLoading(false);
-      return { success: true, message_bn: res.message_bn, message_en: res.message_en };
+    // 2. Resilient server-validated demo login fallback
+    try {
+      const res = await api.demoLogin(persona, role);
+      if (res.success && res.token && res.user) {
+        localStorage.setItem('bhumisathi_token', res.token);
+        localStorage.setItem('vumiseba_token', res.token);
+        localStorage.setItem('bhumisathi_is_demo', 'true');
+        localStorage.setItem('bhumisathi_demo_user', JSON.stringify(res.user));
+        setIsDemoSession(true);
+        setToken(res.token);
+        setUser(res.user);
+        setIsLoading(false);
+        return { success: true, message_bn: res.message_bn, message_en: res.message_en };
+      }
+    } catch {
+      // ignore
     }
 
     setIsLoading(false);
     return {
       success: false,
-      message_bn: res.message_bn || 'ডেমো লগইন ব্যর্থ হয়েছে।',
-      message_en: res.message_en || 'Demo login failed.',
+      message_bn: 'ডেমো লগইন ব্যর্থ হয়েছে।',
+      message_en: 'Demo login failed.',
     };
   };
 
@@ -319,7 +408,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
     localStorage.removeItem('bhumisathi_token');
+    localStorage.removeItem('vumiseba_token');
     localStorage.removeItem('bhumisathi_is_demo');
+    localStorage.removeItem('bhumisathi_demo_user');
     setToken(null);
     setFirebaseUser(null);
     setUser(null);

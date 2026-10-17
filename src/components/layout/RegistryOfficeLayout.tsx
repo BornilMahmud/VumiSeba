@@ -57,7 +57,7 @@ export const RegistryOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({
           <Link
             to="/office/registry/profile"
             className="group block bg-amber-50/60 hover:bg-amber-100/70 dark:bg-amber-950/30 dark:hover:bg-amber-900/40 p-3 rounded-xl border border-amber-200/80 dark:border-amber-800/60 transition-all shadow-2xs hover:shadow-xs"
-            title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+            title={isBn ? 'সাব-রেজিস্ট্রার প্রোফাইল' : 'Sub-Registrar Profile'}
           >
             <div className="flex items-center gap-2.5 mb-2">
               <div className="relative shrink-0">
@@ -260,7 +260,7 @@ export const RegistryOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({
             <Link
               to="/office/registry/profile"
               className="flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1 rounded-xl hover:bg-amber-50 dark:hover:bg-slate-800 transition border border-transparent hover:border-amber-200/60 dark:hover:border-slate-700 group cursor-pointer"
-              title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+              title={isBn ? 'সাব-রেজিস্ট্রার প্রোফাইল' : 'Sub-Registrar Profile'}
             >
               <div className="text-right">
                 <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">

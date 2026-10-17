@@ -352,13 +352,23 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('vumiseba_lang');
-    return (saved === 'en' || saved === 'bn') ? saved : 'bn';
+    try {
+      // Per specification: when website is first opened in a tab, strictly open in Bangla ('bn').
+      // Tab-specific language toggles during the active session are preserved in sessionStorage.
+      const saved = sessionStorage.getItem('vumiseba_lang');
+      return (saved === 'en' || saved === 'bn') ? saved : 'bn';
+    } catch {
+      return 'bn';
+    }
   });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('vumiseba_lang', lang);
+    try {
+      sessionStorage.setItem('vumiseba_lang', lang);
+    } catch {
+      // ignore
+    }
     document.documentElement.lang = lang;
   };
 
@@ -369,6 +379,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     document.documentElement.lang = language;
+    try {
+      sessionStorage.setItem('vumiseba_lang', language);
+    } catch {
+      // ignore
+    }
   }, [language]);
 
   const t = (key: string, bnFallback?: string, enFallback?: string): string => {

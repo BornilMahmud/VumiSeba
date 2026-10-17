@@ -56,7 +56,7 @@ export const AdminOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
           <Link
             to="/admin/profile"
             className="group block bg-cyan-50/60 hover:bg-cyan-100/70 dark:bg-cyan-950/30 dark:hover:bg-cyan-900/40 p-3 rounded-xl border border-cyan-200/80 dark:border-cyan-800/60 transition-all shadow-2xs hover:shadow-xs"
-            title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+            title={isBn ? 'অ্যাডমিন প্রোফাইল ও সেটিংস' : 'Admin Profile & Settings'}
           >
             <div className="flex items-center gap-2.5 mb-2">
               <div className="relative shrink-0">
@@ -252,7 +252,7 @@ export const AdminOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
             <Link
               to="/admin/profile"
               className="flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1 rounded-xl hover:bg-cyan-50 dark:hover:bg-slate-800 transition border border-transparent hover:border-cyan-200/60 dark:hover:border-slate-700 group cursor-pointer"
-              title={isBn ? 'অ্যাডমিন প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Admin Profile & Photo'}
+              title={isBn ? 'অ্যাডমিন প্রোফাইল ও সেটিংস' : 'Admin Profile & Settings'}
             >
               <div className="text-right">
                 <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors">

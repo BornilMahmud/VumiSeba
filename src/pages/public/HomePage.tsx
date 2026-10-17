@@ -19,13 +19,6 @@ import {
   BadgeCheck,
   Zap,
 } from 'lucide-react';
-import {
-  Link001,
-  Link002,
-  Link003,
-  Link004,
-  Link005,
-} from '@/components/ui/skiper-ui/skiper40';
 import { useLanguage } from '../../context/LanguageContext';
 import { toBengaliDigits, toEnglishDigits } from '../../utils/bilingual';
 import { motion } from 'framer-motion';
@@ -354,10 +347,10 @@ export const HomePage: React.FC = () => {
           <div className="shrink-0 text-center w-full lg:w-auto relative z-10">
             <Link
               to="/verify-land"
-              className="inline-flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 text-slate-900 font-extrabold px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-0.5 text-sm w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 dark:bg-slate-900/90 dark:hover:bg-slate-800 text-slate-900 dark:text-white font-extrabold px-8 py-4 rounded-xl shadow-xs hover:shadow-sm border border-slate-200/50 dark:border-slate-700/60 transition transform hover:-translate-y-0.5 text-sm w-full sm:w-auto"
             >
-              <span className="text-emerald-950 font-bold">{t('p5.cta', 'ঝুঁকি ক্যালকুলেটর চালু করুন', 'Launch Risk Calculator')}</span>
-              <ArrowRight size={18} className="text-emerald-700" />
+              <span className="text-emerald-950 dark:text-emerald-400 font-bold">{t('p5.cta', 'ঝুঁকি ক্যালকুলেটর চালু করুন', 'Launch Risk Calculator')}</span>
+              <ArrowRight size={18} className="text-emerald-700 dark:text-emerald-400" />
             </Link>
           </div>
         </motion.div>
@@ -637,15 +630,9 @@ export const HomePage: React.FC = () => {
             </div>
 
             <div className="text-left md:text-right text-[11px] text-slate-500 dark:text-slate-400">
-              <span className="block font-medium">Design System:</span>
-              <a
-                href="https://skiper-ui.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-emerald-700 dark:text-emerald-400 hover:underline font-semibold transition"
-              >
-                Skiper UI (CssLink @skiper-ui/skiper40)
-              </a>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-bold">
+                ✓ {language === 'en' ? 'Verified Government Portals' : 'যাচাইকৃত সরকারি গেটওয়ে'}
+              </span>
             </div>
           </div>
 
@@ -661,9 +648,9 @@ export const HomePage: React.FC = () => {
               <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 block mb-1">
                 {language === 'en' ? 'Verification Portal' : 'যাচাইকরণ পোর্টাল'}
               </span>
-              <Link001 to="/verify-land" className="text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 font-bold text-base">
+              <Link to="/verify-land" className="text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 font-bold text-base transition-colors inline-block">
                 {language === 'en' ? 'Accurate Ownership & Plot Audit' : 'মালিকানা ও খতিয়ান নির্ভুল যাচাই'}
-              </Link001>
+              </Link>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                 {language === 'en'
                   ? 'Audit khatian, dag plots, tax dues, and legal restrictions prior to contract signing.'
@@ -682,9 +669,9 @@ export const HomePage: React.FC = () => {
               <span className="text-[11px] font-bold text-blue-700 dark:text-blue-400 block mb-1">
                 {language === 'en' ? 'Sale & Registry' : 'বিক্রয় ও রেজিস্ট্রেশন'}
               </span>
-              <Link002 to="/citizen/sell" className="text-slate-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 font-bold text-base">
+              <Link to="/citizen/sell" className="text-slate-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 font-bold text-base transition-colors inline-block">
                 {language === 'en' ? 'Smart Sale Application & Deed Draft' : 'স্মার্ট রেজিস্ট্রেশন ও বিক্রয় আবেদন'}
-              </Link002>
+              </Link>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                 {language === 'en'
                   ? 'Digital Sub-Registry coordination and automated deed drafting.'
@@ -703,9 +690,9 @@ export const HomePage: React.FC = () => {
               <span className="text-[11px] font-bold text-teal-700 dark:text-teal-400 block mb-1">
                 {language === 'en' ? 'Tracking & Hearings' : 'ট্র্যাকিং ও শুনানি'}
               </span>
-              <Link003 to="/citizen/sale-applications" className="text-slate-900 dark:text-white group-hover:text-teal-700 dark:group-hover:text-teal-400 font-bold text-base">
+              <Link to="/citizen/sale-applications" className="text-slate-900 dark:text-white group-hover:text-teal-700 dark:group-hover:text-teal-400 font-bold text-base transition-colors inline-block">
                 {language === 'en' ? 'Application Progress & Hearing Status' : 'আবেদনের অগ্রগতি ও শুনানি ট্র্যাকিং'}
-              </Link003>
+              </Link>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                 {language === 'en'
                   ? 'Live lifecycle status across Tahsil, Sub-Registry, and AC Land mutation cases.'
@@ -724,9 +711,9 @@ export const HomePage: React.FC = () => {
               <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 block mb-1">
                 {language === 'en' ? 'Land Tax & Dakhila' : 'খাজনা ও কর সেবা'}
               </span>
-              <Link004 to="/citizen/tax" className="text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 font-bold text-base">
+              <Link to="/citizen/tax" className="text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-400 font-bold text-base transition-colors inline-block">
                 {language === 'en' ? 'Land Development Tax & E-Dakhila' : 'ভূমি উন্নয়ন কর ও অনলাইন দাখিলা'}
-              </Link004>
+              </Link>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                 {language === 'en'
                   ? 'Calculate annual land tax, pay instantly, and download official digital Dakhila.'
@@ -745,9 +732,9 @@ export const HomePage: React.FC = () => {
               <span className="text-[11px] font-bold text-purple-700 dark:text-purple-400 block mb-1">
                 {language === 'en' ? 'Service Guide' : 'সেবা নির্দেশিকা'}
               </span>
-              <Link005 to="/services" className="text-slate-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-400 font-bold text-base">
+              <Link to="/services" className="text-slate-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-400 font-bold text-base transition-colors inline-block">
                 {language === 'en' ? 'Complete Directory of Citizen Land Services' : 'সকল নাগরিক ভূমিসেবার পূর্ণাঙ্গ তালিকা'}
-              </Link005>
+              </Link>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                 {language === 'en'
                   ? 'Detailed workflow, statutory fees calculator, required documents checklist.'
@@ -766,9 +753,9 @@ export const HomePage: React.FC = () => {
               <span className="text-[11px] font-bold text-sky-700 dark:text-sky-400 block mb-1">
                 {language === 'en' ? 'Helpdesk & Support' : 'সহায়তা ডেস্ক'}
               </span>
-              <Link001 to="/help" className="text-slate-900 dark:text-white group-hover:text-sky-700 dark:group-hover:text-sky-400 font-bold text-base">
+              <Link to="/help" className="text-slate-900 dark:text-white group-hover:text-sky-700 dark:group-hover:text-sky-400 font-bold text-base transition-colors inline-block">
                 {language === 'en' ? 'Toll-Free Helpline 16122 & Support' : 'হেল্পলাইন ও হটলাইন ১৬১২২ সহায়তা'}
-              </Link001>
+              </Link>
               <p className="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
                 {language === 'en'
                   ? 'Direct government support desk assistance for any land ownership dispute or confusion.'

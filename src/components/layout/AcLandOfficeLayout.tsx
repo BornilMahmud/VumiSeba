@@ -57,7 +57,7 @@ export const AcLandOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ c
           <Link
             to="/office/ac-land/profile"
             className="group block bg-indigo-50/60 hover:bg-indigo-100/70 dark:bg-indigo-950/30 dark:hover:bg-indigo-900/40 p-3 rounded-xl border border-indigo-200/80 dark:border-indigo-800/60 transition-all shadow-2xs hover:shadow-xs"
-            title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+            title={isBn ? 'কর্মকর্তা প্রোফাইল ও সেটিংস' : 'Officer Profile & Settings'}
           >
             <div className="flex items-center gap-2.5 mb-2">
               <div className="relative shrink-0">
@@ -257,7 +257,7 @@ export const AcLandOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ c
             <Link
               to="/office/ac-land/profile"
               className="flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 transition border border-transparent hover:border-indigo-200/60 dark:hover:border-slate-700 group cursor-pointer"
-              title={isBn ? 'প্রোফাইল ও ছবি পরিবর্তন করুন' : 'Change Profile & Photo'}
+              title={isBn ? 'কর্মকর্তা প্রোফাইল ও সেটিংস' : 'Officer Profile & Settings'}
             >
               <div className="text-right">
                 <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-indigo-700 dark:group-hover:text-indigo-400 transition-colors">

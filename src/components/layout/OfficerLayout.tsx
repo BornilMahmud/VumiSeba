@@ -104,7 +104,7 @@ export const OfficerLayout: React.FC<{ children?: React.ReactNode; title?: strin
           <Link
             to={profileLink}
             className="block bg-teal-50/50 dark:bg-teal-950/30 p-3 rounded-xl border border-teal-200/70 dark:border-teal-800/60 hover:border-teal-400 dark:hover:border-teal-700 transition group"
-            title="প্রোফাইল ও ছবি পরিবর্তন"
+            title="কর্মকর্তা প্রোফাইল"
           >
             <div className="flex items-center gap-2.5 mb-2">
               <div className="relative shrink-0">
@@ -266,7 +266,7 @@ export const OfficerLayout: React.FC<{ children?: React.ReactNode; title?: strin
             <Link
               to={profileLink}
               className="flex items-center gap-2.5 p-1 sm:px-2.5 sm:py-1 rounded-xl hover:bg-teal-50 dark:hover:bg-slate-800 transition border border-transparent hover:border-teal-200/60 dark:hover:border-slate-700 group cursor-pointer"
-              title="প্রোফাইল ও ছবি পরিবর্তন"
+              title="কর্মকর্তা প্রোফাইল"
             >
               <div className="hidden sm:block text-right">
                 <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
