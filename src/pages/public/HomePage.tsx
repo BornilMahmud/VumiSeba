@@ -78,7 +78,7 @@ export const HomePage: React.FC = () => {
 
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.2]">
-            {t('hero.title1', 'জমি কেনা থেকে নামজারি —', 'From Land Purchase to Mutation —')}
+            {t('hero.title1', 'জমি কেনা থেকে নামজারি', 'From Land Purchase to Mutation')}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-400 dark:via-teal-300 dark:to-cyan-400">
               {t('hero.titleHighlight', 'এক ক্লিকে নির্ভুল যাচাই', 'One-Click Accurate Verification')}

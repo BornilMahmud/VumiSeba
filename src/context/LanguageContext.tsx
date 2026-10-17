@@ -86,8 +86,8 @@ const translations: Record<string, { bn: string; en: string }> = {
     en: 'National LandTech Platform — Unified Digital Land Services',
   },
   'hero.title1': {
-    bn: 'জমি কেনা থেকে নামজারি —',
-    en: 'From Land Purchase to Mutation —',
+    bn: 'জমি কেনা থেকে নামজারি',
+    en: 'From Land Purchase to Mutation',
   },
   'hero.titleHighlight': {
     bn: 'এক ক্লিকে নির্ভুল যাচাই',
