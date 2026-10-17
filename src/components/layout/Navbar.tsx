@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
 import { useLanguage } from '../../context/LanguageContext';
+import { useTheme } from '../../context/ThemeContext';
 import {
   Menu,
   X,
@@ -17,6 +18,8 @@ import {
   FileText,
   BadgeCheck,
   Landmark,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -25,6 +28,7 @@ export const Navbar: React.FC = () => {
   const { user, logout, isDemoSession } = useAuth();
   const { unreadCount } = useNotifications();
   const { language, toggleLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -45,8 +49,8 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/90 sticky top-[33px] z-40 shadow-xs">
-      {/* Top Ministry Banner & Language Switcher Strip */}
+    <header className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800 sticky top-[33px] z-40 shadow-xs transition-colors duration-200">
+      {/* Top Ministry Banner & Language / Theme Switcher Strip */}
       <div className="bg-slate-900 text-slate-200 text-[11px] py-1 px-4 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -56,12 +60,32 @@ export const Navbar: React.FC = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3 text-slate-300">
               <span>{t('gov.helpline', 'হেল্পলাইন: ১৬১২২ (টোল ফ্রি)', 'Helpline: 16122 (Toll-Free)')}</span>
               <span className="text-slate-600">|</span>
               <span className="hidden md:inline">support@land.gov.bd</span>
             </div>
+
+            {/* Dark / Black Theme Changing Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 hover:text-white px-2.5 py-0.5 rounded-full text-[11px] font-bold border border-slate-700 shadow-xs transition-all cursor-pointer"
+              title={theme === 'dark' ? (language === 'en' ? 'Switch to Light Theme' : 'লাইট থিম চালু করুন') : (language === 'en' ? 'Switch to Dark/Black Theme' : 'ডার্ক/ব্ল্যাক থিম চালু করুন')}
+              aria-label="Toggle dark/light theme"
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Sun size={12} className="text-amber-400 animate-spin-slow" />
+                  <span className="text-amber-300 font-semibold">{language === 'en' ? 'Light' : 'লাইট'}</span>
+                </>
+              ) : (
+                <>
+                  <Moon size={12} className="text-teal-400" />
+                  <span className="text-teal-300 font-semibold">{language === 'en' ? 'Dark' : 'ডার্ক'}</span>
+                </>
+              )}
+            </button>
 
             {/* Single Button Tap Language Switcher */}
             <button
@@ -87,14 +111,14 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-extrabold text-slate-900 tracking-tight">
+                <span className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                   {t('brand.name', 'ভূমিসেবা', 'VumiSeba')}
                 </span>
-                <span className="text-[10px] bg-emerald-50 text-emerald-700 font-semibold px-2 py-0.5 rounded-full border border-emerald-200">
+                <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
                   {t('brand.subtitle', 'স্মার্ট ল্যান্ডটেক', 'Smart LandTech')}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 hidden sm:block font-medium">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-medium">
                 {t('brand.tagline', 'নাগরিক ভূমি সেবা, রেকর্ড যাচাই ও ই-নামজারি', 'Digital Citizen Land Services & Automated Mutation')}
               </p>
             </div>
@@ -106,8 +130,8 @@ export const Navbar: React.FC = () => {
               to="/"
               className={`px-3.5 py-2 rounded-lg transition-colors ${
                 isActive('/')
-                  ? 'text-emerald-700 font-bold bg-emerald-50/80'
-                  : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
               {t('nav.home', 'হোম', 'Home')}
@@ -117,11 +141,11 @@ export const Navbar: React.FC = () => {
               to="/search-land"
               className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                 isActive('/search-land')
-                  ? 'text-emerald-700 font-bold bg-emerald-50/80'
-                  : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
-              <Search size={15} className="text-slate-400 group-hover:text-emerald-600" />
+              <Search size={15} className="text-slate-400 dark:text-slate-500 group-hover:text-emerald-600" />
               <span>{t('nav.searchLand', 'জমি খুঁজুন', 'Search Land')}</span>
             </Link>
 
@@ -129,11 +153,11 @@ export const Navbar: React.FC = () => {
               to="/verify-land"
               className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                 isActive('/verify-land')
-                  ? 'text-emerald-700 font-bold bg-emerald-50/80'
-                  : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
-              <ShieldCheck size={15} className="text-emerald-600" />
+              <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400" />
               <span>{t('nav.verifyLand', 'কেনার আগে যাচাই', 'Verify Land')}</span>
             </Link>
 
@@ -141,11 +165,11 @@ export const Navbar: React.FC = () => {
               to="/how-it-works"
               className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                 isActive('/how-it-works')
-                  ? 'text-emerald-700 font-bold bg-emerald-50/80'
-                  : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
-              <Compass size={15} className="text-slate-400" />
+              <Compass size={15} className="text-slate-400 dark:text-slate-500" />
               <span>{t('nav.howItWorks', 'কীভাবে কাজ করে', 'How It Works')}</span>
             </Link>
 
@@ -153,7 +177,7 @@ export const Navbar: React.FC = () => {
             <div className="relative">
               <button
                 onClick={() => setServicesDropdown(!servicesDropdown)}
-                className="px-3.5 py-2 rounded-lg text-slate-700 hover:text-emerald-700 hover:bg-slate-50 transition-colors flex items-center gap-1"
+                className="px-3.5 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1"
               >
                 <span>{t('nav.services', 'সেবাসমূহ', 'Services')}</span>
                 <ChevronDown size={14} className="text-slate-400" />
@@ -162,33 +186,33 @@ export const Navbar: React.FC = () => {
               {servicesDropdown && (
                 <div
                   onMouseLeave={() => setServicesDropdown(false)}
-                  className="absolute left-0 mt-1 w-64 bg-white rounded-xl shadow-card-hover border border-slate-200 p-2 z-50 animate-in fade-in slide-in-from-top-1"
+                  className="absolute left-0 mt-1 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-card-hover border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in slide-in-from-top-1"
                 >
                   <Link
                     to="/services"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-3 py-2.5 rounded-lg text-xs font-bold text-slate-900 hover:bg-emerald-50 hover:text-emerald-800 transition-colors border-b border-slate-100"
+                    className="block px-3 py-2.5 rounded-lg text-xs font-bold text-slate-900 dark:text-slate-100 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors border-b border-slate-100 dark:border-slate-800"
                   >
                     {language === 'en' ? 'All Land Services Directory' : 'সকল ভূমি সেবার তালিকা'}
                   </Link>
                   <Link
                     to="/citizen/sell"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                   >
                     {language === 'en' ? 'Apply to Sell Land' : 'জমি বিক্রির আবেদন'}
                   </Link>
                   <Link
                     to="/citizen/tax"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                   >
                     {language === 'en' ? 'Land Development Tax & Dakhila' : 'ভূমি উন্নয়ন কর ও দাখিলা'}
                   </Link>
                   <Link
                     to="/citizen/mutation"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 hover:bg-slate-50 hover:text-emerald-700 transition-colors"
+                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                   >
                     {language === 'en' ? 'E-Mutation Status Tracking' : 'ই-নামজারি ট্র্যাকিং'}
                   </Link>
@@ -200,11 +224,11 @@ export const Navbar: React.FC = () => {
               to="/help"
               className={`px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                 isActive('/help')
-                  ? 'text-emerald-700 font-bold bg-emerald-50/80'
-                  : 'text-slate-700 hover:text-emerald-700 hover:bg-slate-50'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-emerald-950/50'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
               }`}
             >
-              <HelpCircle size={15} className="text-slate-400" />
+              <HelpCircle size={15} className="text-slate-400 dark:text-slate-500" />
               <span>{t('nav.help', 'সহায়তা ও প্রশ্নোত্তর', 'Help & FAQ')}</span>
             </Link>
           </nav>
@@ -216,7 +240,7 @@ export const Navbar: React.FC = () => {
                 {/* Notification Bell */}
                 <Link
                   to={user.role === 'citizen' ? '/citizen/notifications' : '#'}
-                  className="relative p-2 text-slate-600 hover:text-emerald-700 rounded-lg hover:bg-slate-100 transition"
+                  className="relative p-2 text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
                   title="বিজ্ঞপ্তি"
                 >
                   <Bell size={18} />
@@ -228,7 +252,7 @@ export const Navbar: React.FC = () => {
                 </Link>
 
                 {isDemoSession && (
-                  <span className="bg-amber-50 text-amber-900 border border-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <span className="bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                     <span>⚠️</span>
                     <span>{t('nav.demoAccount', 'নমুনা অ্যাকাউন্ট', 'Demo Account')}</span>
                   </span>
@@ -257,7 +281,7 @@ export const Navbar: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition"
+                  className="px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
                 >
                   {t('nav.login', 'লগইন', 'Login')}
                 </Link>
@@ -271,31 +295,39 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button & Language Switch */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile Menu Button, Theme & Language Switch */}
+          <div className="flex lg:hidden items-center gap-1.5">
+            <button
+              onClick={toggleTheme}
+              className="p-1.5 text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 rounded-md border border-slate-200 dark:border-slate-700 transition"
+              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun size={14} className="text-amber-400" /> : <Moon size={14} className="text-teal-400" />}
+            </button>
             <button
               onClick={toggleLanguage}
-              className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-md border border-slate-200 transition"
+              className="flex items-center gap-1 px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 rounded-md border border-slate-200 dark:border-slate-700 transition"
               title={language === 'bn' ? 'Switch to English' : 'বাংলায় পরিবর্তন করুন'}
               aria-label="Toggle language"
             >
-              <Globe size={13} className="text-emerald-600" />
+              <Globe size={12} className="text-emerald-600 dark:text-emerald-400" />
               <span>{language === 'bn' ? 'EN' : 'বাং'}</span>
             </button>
             {user && (
               <button
                 onClick={handleDashboardRedirect}
-                className="bg-emerald-600 text-white px-3 py-1.5 rounded-md text-xs font-bold"
+                className="bg-emerald-600 text-white px-2.5 py-1.5 rounded-md text-xs font-bold shadow-xs"
               >
                 {t('nav.dashboard', 'ড্যাশবোর্ড', 'Dashboard')}
               </button>
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
+              className="p-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
@@ -303,25 +335,25 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-2 animate-in fade-in slide-in-from-top-2">
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-2 animate-in fade-in slide-in-from-top-2">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.home', 'হোম', 'Home')}
           </Link>
           <Link
             to="/search-land"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.searchLand', 'জমি খুঁজুন', 'Search Land')}
           </Link>
           <Link
             to="/verify-land"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 hover:bg-slate-50"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.verifyLand', 'কেনার আগে যাচাই', 'Verify Land')}
           </Link>

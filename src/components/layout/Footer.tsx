@@ -7,9 +7,9 @@ export const Footer: React.FC = () => {
   const { language, t } = useLanguage();
 
   return (
-    <footer className="bg-white text-slate-700 font-sans pt-14 pb-8 border-t border-slate-200">
+    <footer className="bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300 font-sans pt-14 pb-8 border-t border-slate-200 dark:border-slate-800 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 pb-12 border-b border-slate-200/80">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 pb-12 border-b border-slate-200/80 dark:border-slate-800">
           {/* Col 1: Brand & Ministry Context */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -17,16 +17,16 @@ export const Footer: React.FC = () => {
                 🏛️
               </div>
               <div>
-                <span className="text-xl font-extrabold text-slate-900 tracking-tight">
+                <span className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                   {t('brand.name', 'ভূমিসেবা', 'VumiSeba')}
                 </span>
-                <p className="text-[11px] text-emerald-700 font-semibold">
+                <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">
                   {t('brand.subtitle', 'স্মার্ট ল্যান্ডটেক প্ল্যাটফর্ম', 'Smart LandTech Platform')}
                 </p>
               </div>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               {t(
                 'footer.about',
                 'ভূমি মন্ত্রণালয় ও নিবন্ধন পরিদপ্তরের সমন্বিত সেবার আলোকে নাগরিক পর্যায়ে জমি কেনা-বেচা, যাচাইকরণ, রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি ট্র্যাকিং সমাধান।',
@@ -34,8 +34,8 @@ export const Footer: React.FC = () => {
               )}
             </p>
 
-            {/* Live System Status Pill (Inspired by footer.design) */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-[11px] text-emerald-800 font-medium">
+            {/* Live System Status Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 font-medium">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -46,38 +46,38 @@ export const Footer: React.FC = () => {
 
           {/* Col 2: Citizen Services */}
           <div>
-            <h4 className="text-slate-900 font-bold text-sm mb-4 flex items-center gap-2">
+            <h4 className="text-slate-900 dark:text-white font-bold text-sm mb-4 flex items-center gap-2">
               <span className="w-1.5 h-4 bg-emerald-600 rounded-full"></span>
               <span>{t('footer.citizenServices', 'নাগরিক সেবাসমূহ', 'Citizen Services')}</span>
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <Link to="/search-land" className="text-slate-600 hover:text-emerald-700 hover:translate-x-0.5 transition-all inline-block">
+                <Link to="/search-land" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block">
                   {language === 'en' ? 'Search Khatian & Dag Plot' : 'খতিয়ান ও দাগ অনুসন্ধান'}
                 </Link>
               </li>
               <li>
-                <Link to="/verify-land" className="text-slate-600 hover:text-emerald-700 hover:translate-x-0.5 transition-all inline-block font-medium">
+                <Link to="/verify-land" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block font-medium">
                   {language === 'en' ? 'Pre-Purchase Risk Audit (P5)' : 'কেনার আগে ঝুঁকি যাচাই (Risk Audit)'}
                 </Link>
               </li>
               <li>
-                <Link to="/citizen/sell" className="text-slate-600 hover:text-emerald-700 hover:translate-x-0.5 transition-all inline-block">
+                <Link to="/citizen/sell" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block">
                   {language === 'en' ? 'Land Sale Online Application' : 'জমি বিক্রির আবেদন প্রণয়ন'}
                 </Link>
               </li>
               <li>
-                <Link to="/citizen/tax" className="text-slate-600 hover:text-emerald-700 hover:translate-x-0.5 transition-all inline-block">
+                <Link to="/citizen/tax" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block">
                   {language === 'en' ? 'Land Development Tax & E-Dakhila' : 'ভূমি উন্নয়ন কর ও ই-দাখিলা'}
                 </Link>
               </li>
               <li>
-                <Link to="/citizen/mutation" className="text-slate-600 hover:text-emerald-700 hover:translate-x-0.5 transition-all inline-block">
+                <Link to="/citizen/mutation" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block">
                   {language === 'en' ? 'Post-Registration E-Mutation Tracking' : 'পোস্ট-রেজিস্ট্রেশন ই-নামজারি ট্র্যাকিং'}
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="text-slate-600 hover:text-emerald-700 hover:translate-x-0.5 transition-all inline-block">
+                <Link to="/services" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block">
                   {language === 'en' ? 'All Land Services Directory' : 'সকল ভূমিসেবার তালিকা'}
                 </Link>
               </li>
@@ -86,11 +86,11 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Government Circles */}
           <div>
-            <h4 className="text-slate-900 font-bold text-sm mb-4 flex items-center gap-2">
+            <h4 className="text-slate-900 dark:text-white font-bold text-sm mb-4 flex items-center gap-2">
               <span className="w-1.5 h-4 bg-teal-600 rounded-full"></span>
               <span>{t('footer.offices', 'সংশ্লিষ্ট দপ্তর ও সার্কেল', 'Associated Offices')}</span>
             </h4>
-            <ul className="space-y-2.5 text-xs text-slate-600">
+            <ul className="space-y-2.5 text-xs text-slate-600 dark:text-slate-400">
               <li className="flex items-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-slate-400"></span>
                 <span>{language === 'en' ? 'Union Land Office (Tahsil)' : 'ইউনিয়ন ভূমি অফিস (তহশিল অফিস)'}</span>
@@ -116,30 +116,30 @@ export const Footer: React.FC = () => {
 
           {/* Col 4: Helpline & Legal Notice */}
           <div>
-            <h4 className="text-slate-900 font-bold text-sm mb-4 flex items-center gap-2">
+            <h4 className="text-slate-900 dark:text-white font-bold text-sm mb-4 flex items-center gap-2">
               <span className="w-1.5 h-4 bg-amber-500 rounded-full"></span>
               <span>{t('footer.helpline', 'জরুরি হটলাইন ও সহায়তা', 'Helpline & Assistance')}</span>
             </h4>
             <div className="space-y-2.5 text-xs">
-              <div className="flex items-center gap-2.5 text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                <Phone size={16} className="text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-2.5 text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                <Phone size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <div>
-                  <span className="text-[10px] text-slate-500 block uppercase font-semibold">Toll-Free Helpline</span>
-                  <strong className="text-slate-900 font-mono text-base">১৬১২২</strong>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-semibold">Toll-Free Helpline</span>
+                  <strong className="text-slate-900 dark:text-white font-mono text-base">১৬১২২</strong>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-slate-600">
-                <Mail size={14} className="text-emerald-600 shrink-0" />
+              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
+                <Mail size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>support@land.gov.bd</span>
               </div>
-              <div className="flex items-start gap-2 text-slate-600">
-                <MapPin size={14} className="text-emerald-600 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-2 text-slate-600 dark:text-slate-400">
+                <MapPin size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 <span>{language === 'en' ? 'Bhumi Bhaban, Tejgaon I/A, Dhaka-1208' : 'ভূমি ভবন, তেজগাঁও শিল্প এলাকা, ঢাকা-১২০৮'}</span>
               </div>
             </div>
 
-            <div className="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 leading-normal">
-              <strong>{language === 'en' ? 'Legal Notice:' : 'আইনি বিজ্ঞপ্তি:'}</strong>{' '}
+            <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
+              <strong className="text-slate-700 dark:text-slate-300">{language === 'en' ? 'Legal Notice:' : 'আইনি বিজ্ঞপ্তি:'}</strong>{' '}
               {t(
                 'footer.disclaimer',
                 'ভূমিসেবা একটি পাইলট ডেমো ব্যবস্থা। এটি কোনো বেসরকারি প্ল্যাটফর্ম দ্বারা সরকারি সিলমোহর বা নিবন্ধিত দলিলের আইনগত বিকল্প নয়।',
@@ -150,18 +150,18 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar: Copyright and Policy Links */}
-        <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-3">
           <p>{t('footer.copyright', '© ২০২৬ ভূমিসেবা (VumiSeba) ল্যান্ডটেক উদ্যোগ। সর্বস্বত্ব সংরক্ষিত।', '© 2026 VumiSeba LandTech Initiative. All rights reserved.')}</p>
           <div className="flex items-center gap-4 text-xs font-medium">
-            <Link to="/help" className="hover:text-emerald-700 transition">
+            <Link to="/help" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">
               {t('footer.privacy', 'গোপনীয়তা নীতিমালা', 'Privacy Policy')}
             </Link>
-            <span className="text-slate-300">·</span>
-            <Link to="/help" className="hover:text-emerald-700 transition">
+            <span className="text-slate-300 dark:text-slate-700">·</span>
+            <Link to="/help" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">
               {t('footer.terms', 'ব্যবহারের শর্তাবলী', 'Terms of Service')}
             </Link>
-            <span className="text-slate-300">·</span>
-            <Link to="/help" className="hover:text-emerald-700 transition">
+            <span className="text-slate-300 dark:text-slate-700">·</span>
+            <Link to="/help" className="hover:text-emerald-700 dark:hover:text-emerald-400 transition">
               {t('footer.faq', 'সচরাচর জিজ্ঞাসা', 'FAQ')}
             </Link>
           </div>

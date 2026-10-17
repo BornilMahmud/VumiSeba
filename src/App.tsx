@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { DemoPersonaBar } from './components/common/DemoPersonaBar';
 import { DemoStoryOverlay } from './components/common/DemoStoryOverlay';
 import { Navbar } from './components/layout/Navbar';
@@ -142,10 +143,11 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <LanguageProvider>
-        <AuthProvider>
-          <NotificationProvider>
-            <div className="min-h-screen flex flex-col font-sans text-slate-800 bg-slate-50 antialiased selection:bg-teal-500 selection:text-white">
+      <ThemeProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <NotificationProvider>
+              <div className="min-h-screen flex flex-col font-sans text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950 antialiased selection:bg-teal-500 selection:text-white transition-colors duration-200">
               {/* 1-Click Role Switcher Demo Persona Bar */}
               <DemoPersonaBar />
 
@@ -305,6 +307,7 @@ export default function App() {
           </NotificationProvider>
         </AuthProvider>
       </LanguageProvider>
-    </BrowserRouter>
+    </ThemeProvider>
+  </BrowserRouter>
   );
 }

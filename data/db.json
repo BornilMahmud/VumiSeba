@@ -4,7 +4,7 @@
       "id": "usr-seller-01",
       "citizen_id": "BHM-CIT-882194",
       "email": "seller@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "রফিকুল ইসলাম",
       "name_en": "Rafiqul Islam",
       "mobile": "01711000001",
@@ -25,7 +25,7 @@
       "id": "usr-buyer-01",
       "citizen_id": "BHM-CIT-419203",
       "email": "buyer@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "ফারহান আহমেদ",
       "name_en": "Farhan Ahmed",
       "mobile": "01811000002",
@@ -46,7 +46,7 @@
       "id": "usr-seller-taxdue",
       "citizen_id": "BHM-CIT-339102",
       "email": "latif.taxdue@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "আব্দুল লতিফ",
       "name_en": "Abdul Latif",
       "mobile": "01911000003",
@@ -67,7 +67,7 @@
       "id": "usr-seller-oversell",
       "citizen_id": "BHM-CIT-771920",
       "email": "nazrul.share@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "নজরুল ইসলাম",
       "name_en": "Nazrul Islam",
       "mobile": "01611000004",
@@ -88,7 +88,7 @@
       "id": "usr-seller-sylhet",
       "citizen_id": "BHM-CIT-551902",
       "email": "badrul.sylhet@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "বদরুল আলম",
       "name_en": "Badrul Alam",
       "mobile": "01711998877",
@@ -108,7 +108,7 @@
       "id": "usr-seller-rajshahi",
       "citizen_id": "BHM-CIT-662810",
       "email": "anisur.rajshahi@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "ড. আনিসুর রহমান",
       "name_en": "Dr. Anisur Rahman",
       "mobile": "01712887766",
@@ -128,7 +128,7 @@
       "id": "usr-seller-khulna",
       "citizen_id": "BHM-CIT-773921",
       "email": "goutam.khulna@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "গৌতম কুমার সেন",
       "name_en": "Goutam Kumar Sen",
       "mobile": "01912776655",
@@ -147,7 +147,7 @@
     {
       "id": "usr-officer-union",
       "email": "union.officer@land.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "মোহাম্মদ কামাল হোসেন",
       "name_en": "Md. Kamal Hossain",
       "mobile": "01711223344",
@@ -167,7 +167,7 @@
     {
       "id": "usr-officer-acland",
       "email": "ac.land@land.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "তানভীর হাসান চৌধুরী",
       "name_en": "Tanvir Hasan Chowdhury",
       "mobile": "01711334455",
@@ -187,7 +187,7 @@
     {
       "id": "usr-officer-registry",
       "email": "sub.registrar@land.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "সৈয়দা রোকসানা পারভীন",
       "name_en": "Syeda Roksana Parveen",
       "mobile": "01711445566",
@@ -207,7 +207,7 @@
     {
       "id": "usr-admin-central",
       "email": "admin@landtech.gov.bd",
-      "password_hash": "$2b$10$MbawvVf8ws3slOJ73/KSPerSXKZb/RBPBsK6GB7z5kuJvniIYIMiS",
+      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
       "name_bn": "এ. কে. এম. রেজওয়ানুল হক",
       "name_en": "A. K. M. Rezwanul Haque",
       "mobile": "01711556677",
@@ -223,6 +223,26 @@
       "kyc_status": "verified",
       "created_at": "2024-12-01T08:00:00Z",
       "updated_at": "2024-12-01T08:00:00Z"
+    },
+    {
+      "id": "usr-temp-test",
+      "email": "newuser@test.gov.bd",
+      "password_hash": "hash",
+      "name_bn": "নতুন নাগরিক",
+      "name_en": "New Citizen",
+      "mobile": "01700000000",
+      "nid_no": "19999999999999999",
+      "father_name_bn": "পিতা",
+      "mother_name_bn": "মাতা",
+      "address_bn": "ঢাকা",
+      "district": "ঢাকা",
+      "upazila": "গুলশান",
+      "role": "citizen",
+      "kyc_status": "verified",
+      "created_at": "2026-10-17T11:32:20.560Z",
+      "updated_at": "2026-10-17T11:32:20.561Z",
+      "citizen_id": "BHM-CIT-669037",
+      "kyc_verified_at": "2026-10-17T11:32:20.561Z"
     }
   ],
   "land_parcels": [
@@ -737,13 +757,13 @@
       "owner_id": "usr-seller-01",
       "owner_name_bn": "রফিকুল ইসলাম",
       "owner_nid": "19852691029384756",
-      "share_portion": 0.5,
-      "area_decimal": 10,
+      "share_portion": 0.45,
+      "area_decimal": 9,
       "khatian_ref": "RS-1204",
-      "status": "active",
+      "status": "partial_transferred",
       "acquired_type_bn": "পৈতৃক ওয়ারিশসূত্রে",
       "created_at": "2024-01-10T00:00:00Z",
-      "updated_at": "2024-01-10T00:00:00Z"
+      "updated_at": "2026-10-17T11:32:20.565Z"
     },
     {
       "id": "own-clean-cosharer",
@@ -1025,6 +1045,20 @@
       "acquired_type_bn": "ই-নামজারি আদেশসূত্রে (খতিয়ান সৃজিত)",
       "created_at": "2024-05-20T00:00:00Z",
       "updated_at": "2024-05-20T00:00:00Z"
+    },
+    {
+      "id": "OWN-NEW-1792236740566",
+      "parcel_id": "pcl-clean-405",
+      "owner_id": "usr-buyer-01",
+      "owner_name_bn": "ফারহান আহমেদ",
+      "owner_nid": "19922694018274619",
+      "share_portion": 0.05,
+      "area_decimal": 1,
+      "khatian_ref": "নামজারি-৮৮৯৯",
+      "status": "active",
+      "acquired_type_bn": "খরিদসূত্রে (নামজারি সম্পন্ন)",
+      "created_at": "2026-10-17T11:32:20.566Z",
+      "updated_at": "2026-10-17T11:32:20.566Z"
     }
   ],
   "khatian_records": [
@@ -1187,6 +1221,22 @@
       "total_area_decimal": 20,
       "is_archived": false,
       "created_at": "2024-05-20T00:00:00Z"
+    },
+    {
+      "id": "KHT-NEW-1792236740565",
+      "khatian_no": "নামজারি-৮৮৯৯",
+      "khatian_type": "Mutation",
+      "mouza": "বাড্ডা",
+      "jl_no": "২৮",
+      "upazila": "গুলশান",
+      "district": "ঢাকা",
+      "recorded_owner_bn": "ফারহান আহমেদ",
+      "recorded_father_bn": "আনোয়ার হোসেন",
+      "shares_summary_bn": "ফারহান আহমেদ (১.০০০০ অংশ - খারিজকৃত)",
+      "dags_summary_bn": "দাগ ৪০৫ (১.০০ শতক)",
+      "total_area_decimal": 1,
+      "is_archived": false,
+      "created_at": "2026-10-17T11:32:20.565Z"
     }
   ],
   "land_documents": [
@@ -1677,6 +1727,27 @@
       "mutation_created": false,
       "created_at": "2026-03-01T08:00:00Z",
       "updated_at": "2026-03-01T08:00:00Z"
+    },
+    {
+      "id": "SA-TEST-1792236740562",
+      "application_no": "BHM-SA-2026-TEST",
+      "parcel_id": "pcl-clean-405",
+      "seller_id": "usr-seller-01",
+      "buyer_id": "usr-buyer-01",
+      "buyer_citizen_id": "BHM-CIT-419203",
+      "proposed_share": 0.05,
+      "proposed_area_decimal": 1,
+      "agreed_price_bdt": 1800000,
+      "deed_type_bn": "সাফ-কবলা",
+      "stage": "MUTATION_SUBMITTED",
+      "status": "active",
+      "tax_cleared": true,
+      "admin_reviewed": true,
+      "union_verified": true,
+      "registry_completed": true,
+      "mutation_created": true,
+      "created_at": "2026-10-17T11:32:20.562Z",
+      "updated_at": "2026-10-17T11:32:20.565Z"
     }
   ],
   "risk_assessments": [
@@ -1792,6 +1863,239 @@
       "acquisition_risk": false,
       "document_discrepancy": true,
       "generated_at": "2026-03-01T00:00:00Z"
+    },
+    {
+      "id": "RISK-1792236740562-304",
+      "parcel_id": "pcl-clean-405",
+      "overall_risk_level": "low",
+      "risk_score": 100,
+      "engine_version": "v2.2-transparency",
+      "data_as_of": "2026-10-15",
+      "disclaimer_bn": "অত্র ঝুঁকি মূল্যায়ন প্রতিবেদনটি ডিজিটাল ভূমি রেকর্ডসমূহের প্রাথমিক স্বয়ংক্রিয় পর্যবেক্ষণীয় বিশ্লেষণ, কোনো চূড়ান্ত আইনি দলিল, প্রত্যয়নপত্র বা টাইটেল গ্যারান্টি নয়। যেকোনো জমি ক্রয়ের পূর্বে উপযুক্ত বিজ্ঞ আইনজীবী দ্বারা সরেজমিন দলিল ও শারীরিক দখল যাচাইকরণ আবশ্যক। (Advisory, not a formal legal opinion)",
+      "disclaimer_en": "This advisory risk assessment is an automated analytical check against digital public land records, not a formal legal certificate or title guarantee. Physical due diligence and formal legal counsel are strongly advised before purchase.",
+      "critical_override_triggered": false,
+      "critical_override_reasons": [],
+      "factors": [
+        {
+          "factor_key": "court_injunction",
+          "title_bn": "আদালতের নিষেধাজ্ঞা ও দেওয়ানি বিরোধ",
+          "title_en": "Court Injunction & Civil Litigation",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 0,
+          "explanation_bn": "জাতীয় বিচার বিভাগীয় ডাটাবেজ মোতাবেক এই জমিতে কোনো সক্রিয় দেওয়ানি মোকদ্দমা বা আদালতের স্থগিতাদেশ নেই।",
+          "explanation_en": "No active court dispute or civil injunction found in national judicial databases."
+        },
+        {
+          "factor_key": "government_land",
+          "title_bn": "সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তি সংরক্ষণ",
+          "title_en": "Government Khas / Acquired / Vested Property",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 0,
+          "explanation_bn": "জমিটি সম্পূর্ণ ব্যক্তিগত খতিয়ানভুক্ত; সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তির আওতামুক্ত।",
+          "explanation_en": "Property is verified private land, cleared of government khas, acquisition, or vested encumbrance."
+        },
+        {
+          "factor_key": "share_validation",
+          "title_bn": "বিক্রেতার মালিকানা হিস্যা ও বৈধতা",
+          "title_en": "Seller Share Verification & Over-Sale Guard",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 30,
+          "deducted_points": 0,
+          "explanation_bn": "বিক্রেতার মালিকানা যাচাইকৃত (রফিকুল ইসলাম) এবং প্রস্তাবিত অংশ অবশিষ্ট বৈধ সীমার মধ্যে রয়েছে।",
+          "explanation_en": "Seller identity confirmed (রফিকুল ইসলাম). Proposed share is fully within uncommitted title quota."
+        },
+        {
+          "factor_key": "bank_mortgage",
+          "title_bn": "ব্যাংক মর্টগেজ ও আর্থিক দায়বদ্ধতা",
+          "title_en": "Bank Mortgage & Lien Encumbrance",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 25,
+          "deducted_points": 0,
+          "explanation_bn": "সাব-রেজিস্ট্রি ইনডেক্স ও তফসিলি ব্যাংক ডাটাবেজ অনুযায়ী জমিটিতে কোনো মর্টগেজ লিয়েন নেই।",
+          "explanation_en": "No registered bank mortgage, charge, or institutional financial lien recorded against parcel."
+        },
+        {
+          "factor_key": "tax_compliance",
+          "title_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ",
+          "title_en": "Land Development Tax Compliance",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 0,
+          "explanation_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ পরিশোধিত রয়েছে (দাখিলা নং সংরক্ষিত)।",
+          "explanation_en": "Land development tax fully cleared with authentic e-Dakhila certificate on record."
+        },
+        {
+          "factor_key": "duplicate_sales",
+          "title_bn": "দ্বৈত বা সমান্তরাল বিক্রয় লেনদেন",
+          "title_en": "Concurrent Conflicting Sales",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 0,
+          "explanation_bn": "এই দাগে কোনো দ্বৈত বা সমান্তরাল বিক্রয় চুক্তির সংঘাত নেই।",
+          "explanation_en": "No competing pending transfers detected on this parcel in registry pipeline."
+        },
+        {
+          "factor_key": "document_consistency",
+          "title_bn": "নথিপত্রের সঙ্গতি ও পর্চা যাচাই",
+          "title_en": "Document Consistency & Boundary Harmony",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 10,
+          "deducted_points": 0,
+          "explanation_bn": "সংযুক্ত সকল খতিয়ান ও দলিলের রেকর্ড পরস্পর সামঞ্জস্যপূর্ণ।",
+          "explanation_en": "All uploaded deeds, porcha maps, and khatian schedules are internally consistent."
+        }
+      ],
+      "summary_bn": "জমিটির রেকর্ডীয় তথ্যসমূহ প্রাথমিকভাবে নির্ভরযোগ্য। রাজস্ব রেকর্ড, খতিয়ান এবং মালিকানা ইতিহাসের সাথে কোনো গুরুতর অসঙ্গতি বা আইনি জটিলতা দৃশ্যমান হয়নি। তবে সরেজমিন শারীরিক দখল ও সীমানা নিশ্চিত করে অগ্রসর হওয়া উচিত।",
+      "summary_en": "The land records are preliminarily sound. No critical injunction, over-selling, or legal encumbrances detected. Physical verification of boundaries remains recommended.",
+      "identified_issues_bn": [],
+      "warning_basis_bn": [],
+      "unverified_data_bn": [
+        "সরেজমিন শারীরিক সীমানা ও তৃতীয় পক্ষের অবৈধ দখলদারিত্ব (ম্যানুয়াল মাঠ তদন্ত প্রয়োজন)",
+        "উত্তরাধিকারীদের মধ্যে অপ্রকাশিত পারিবারিক বিরোধ বা গোপন দানপত্র"
+      ],
+      "recommended_actions_bn": [],
+      "seller_match": true,
+      "share_valid": true,
+      "tax_cleared": true,
+      "court_dispute": false,
+      "mortgage_encumbrance": false,
+      "duplicate_sale_risk": false,
+      "acquisition_risk": false,
+      "document_discrepancy": false,
+      "generated_at": "2026-10-17T11:32:20.562Z"
+    },
+    {
+      "id": "RISK-1792236740562-167",
+      "parcel_id": "pcl-court-710",
+      "overall_risk_level": "critical",
+      "risk_score": 0,
+      "engine_version": "v2.2-transparency",
+      "data_as_of": "2026-10-15",
+      "disclaimer_bn": "অত্র ঝুঁকি মূল্যায়ন প্রতিবেদনটি ডিজিটাল ভূমি রেকর্ডসমূহের প্রাথমিক স্বয়ংক্রিয় পর্যবেক্ষণীয় বিশ্লেষণ, কোনো চূড়ান্ত আইনি দলিল, প্রত্যয়নপত্র বা টাইটেল গ্যারান্টি নয়। যেকোনো জমি ক্রয়ের পূর্বে উপযুক্ত বিজ্ঞ আইনজীবী দ্বারা সরেজমিন দলিল ও শারীরিক দখল যাচাইকরণ আবশ্যক। (Advisory, not a formal legal opinion)",
+      "disclaimer_en": "This advisory risk assessment is an automated analytical check against digital public land records, not a formal legal certificate or title guarantee. Physical due diligence and formal legal counsel are strongly advised before purchase.",
+      "critical_override_triggered": true,
+      "critical_override_reasons": [
+        "আদালতের দেওয়ানি মোকদ্দমা বা স্থগিতাদেশ বলবৎ",
+        "সরকারি অধিগ্রহণভুক্ত (LA Case)",
+        "ব্যাংক মর্টগেজ ও আর্থিক দায়বদ্ধতা বিদ্যমান"
+      ],
+      "factors": [
+        {
+          "factor_key": "court_injunction",
+          "title_bn": "আদালতের নিষেধাজ্ঞা ও দেওয়ানি বিরোধ",
+          "title_en": "Court Injunction & Civil Litigation",
+          "status": "failed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 35,
+          "explanation_bn": "বিজ্ঞ আদালতে দেওয়ানি মোকদ্দমা বা স্থগিতাদেশ বলবৎ রয়েছে (ঢাকা ১ম যুগ্ম জেলা জজ আদালত, দেওয়ানি মোকদ্দমা নং ১০৪/২০২৩ (স্থগিতাদেশ বলবৎ))।",
+          "explanation_en": "Active court injunction or litigation exists (ঢাকা ১ম যুগ্ম জেলা জজ আদালত, দেওয়ানি মোকদ্দমা নং ১০৪/২০২৩ (স্থগিতাদেশ বলবৎ)). Transactions strictly prohibited."
+        },
+        {
+          "factor_key": "government_land",
+          "title_bn": "সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তি সংরক্ষণ",
+          "title_en": "Government Khas / Acquired / Vested Property",
+          "status": "failed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 35,
+          "explanation_bn": "জমিটি সরকারি অধিগ্রহণভুক্ত (LA Case) হিসেবে চিহ্নিত। এটি ব্যক্তিগতভাবে হস্তান্তরযোগ্য নয়।",
+          "explanation_en": "Parcel is designated as সরকারি অধিগ্রহণভুক্ত (LA Case). Private alienation prohibited by law."
+        },
+        {
+          "factor_key": "share_validation",
+          "title_bn": "মালিকানা হিস্যা বিভাজন",
+          "title_en": "Ownership Share Partition",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 30,
+          "deducted_points": 0,
+          "explanation_bn": "খতিয়ানে একক মালিকের পূর্ণাঙ্গ হিস্যা বিদ্যমান।",
+          "explanation_en": "Sole ownership record in khatian with 100% clean title partition."
+        },
+        {
+          "factor_key": "bank_mortgage",
+          "title_bn": "ব্যাংক মর্টগেজ ও আর্থিক দায়বদ্ধতা",
+          "title_en": "Bank Mortgage & Lien Encumbrance",
+          "status": "failed",
+          "is_critical": true,
+          "weight_max_points": 25,
+          "deducted_points": 25,
+          "explanation_bn": "জমিটি ব্যাংক বা আর্থিক প্রতিষ্ঠানে দায়বদ্ধ/মর্টগেজ (অগ্রণী ব্যাংক পিএলসি, প্রধান শাখা - ৪২,৫০,০০০ টাকার দায়বদ্ধতা লিয়েন রেকর্ডভুক্ত)।",
+          "explanation_en": "Parcel is mortgaged to financial institution (অগ্রণী ব্যাংক পিএলসি, প্রধান শাখা - ৪২,৫০,০০০ টাকার দায়বদ্ধতা লিয়েন রেকর্ডভুক্ত). Unconditional NOC mandatory."
+        },
+        {
+          "factor_key": "tax_compliance",
+          "title_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ",
+          "title_en": "Land Development Tax Compliance",
+          "status": "warning",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 5,
+          "explanation_bn": "অনলাইন ভূমি উন্নয়ন কর ব্যবস্থার সাথে এই খতিয়ানের হোল্ডিং লিংক এখনও সক্রিয় নয়।",
+          "explanation_en": "Digital tax holding record pending manual linking at Union Land Office."
+        },
+        {
+          "factor_key": "duplicate_sales",
+          "title_bn": "দ্বৈত বা সমান্তরাল বিক্রয় লেনদেন",
+          "title_en": "Concurrent Conflicting Sales",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 0,
+          "explanation_bn": "এই দাগে কোনো দ্বৈত বা সমান্তরাল বিক্রয় চুক্তির সংঘাত নেই।",
+          "explanation_en": "No competing pending transfers detected on this parcel in registry pipeline."
+        },
+        {
+          "factor_key": "document_consistency",
+          "title_bn": "নথিপত্রের সঙ্গতি ও পর্চা যাচাই",
+          "title_en": "Document Consistency & Boundary Harmony",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 10,
+          "deducted_points": 0,
+          "explanation_bn": "সংযুক্ত সকল খতিয়ান ও দলিলের রেকর্ড পরস্পর সামঞ্জস্যপূর্ণ।",
+          "explanation_en": "All uploaded deeds, porcha maps, and khatian schedules are internally consistent."
+        }
+      ],
+      "summary_bn": "মারাত্মক ঝুঁকি সতর্কতা! এই জমিটিতে আদালতের স্থগিতাদেশ, সরকারি অধিগ্রহণ বা খাস খতিয়ানের রেকর্ড পাওয়া গেছে। এই জমিতে কোনো লেনদেন করা সম্পূর্ণ বেআইনি, অনিরাপদ ও ঝুঁকিপূর্ণ।",
+      "summary_en": "Critical risk alert! Active court injunction, government acquisition, or khas land record found. Transactions legally prohibited.",
+      "identified_issues_bn": [
+        "আদালতে দেওয়ানি মামলা বিচারাধীন রয়েছে: ঢাকা ১ম যুগ্ম জেলা জজ আদালত, দেওয়ানি মোকদ্দমা নং ১০৪/২০২৩ (স্থগিতাদেশ বলবৎ)",
+        "জমিটি সরকারি অধিগ্রহণভুক্ত (LA Case) তালিকাভুক্ত।",
+        "ব্যাংক বা আর্থিক প্রতিষ্ঠানে দায়বদ্ধ: অগ্রণী ব্যাংক পিএলসি, প্রধান শাখা - ৪২,৫০,০০০ টাকার দায়বদ্ধতা লিয়েন রেকর্ডভুক্ত"
+      ],
+      "warning_basis_bn": [
+        "জেলা জজ আদালতের মোকদ্দমা রেজিস্টার ও নোটিশ ডাটাবেজ",
+        "জেলা প্রশাসন ভূমি অধিগ্রহণ ও খাস জমি রেজিস্টার"
+      ],
+      "unverified_data_bn": [
+        "সরেজমিন শারীরিক সীমানা ও তৃতীয় পক্ষের অবৈধ দখলদারিত্ব (ম্যানুয়াল মাঠ তদন্ত প্রয়োজন)",
+        "উত্তরাধিকারীদের মধ্যে অপ্রকাশিত পারিবারিক বিরোধ বা গোপন দানপত্র"
+      ],
+      "recommended_actions_bn": [
+        "কোনো অবস্থাতেই এই জমিতে আর্থিক লেনদেন করবেন না। বিজ্ঞ আদালতের আদেশ স্থগিত হওয়া পর্যন্ত অপেক্ষা করুন।",
+        "সরকারি সম্পত্তি ক্রয় আইনত দণ্ডনীয়। যেকোনো লেনদেন থেকে সম্পূর্ণ বিরত থাকুন।",
+        "ব্যাংক থেকে মূল মালিকের নামে ঋণ পরিশোধ ও দায়মুক্তি সনদ (NOC) যাচাই করুন।"
+      ],
+      "seller_match": true,
+      "share_valid": true,
+      "tax_cleared": true,
+      "court_dispute": true,
+      "mortgage_encumbrance": true,
+      "duplicate_sale_risk": false,
+      "acquisition_risk": true,
+      "document_discrepancy": false,
+      "generated_at": "2026-10-17T11:32:20.562Z"
     }
   ],
   "office_reviews": [
@@ -1885,6 +2189,20 @@
       "deed_draft_url": "https://registry.gov.bd/demo/deeds/deed_4512_2026.pdf",
       "is_official_record": true,
       "disclaimer_bn": "অত্র দলিলটি দ্য রেজিস্ট্রেশন অ্যাক্ট ১৯০৮-এর আওতায় ডিজিটালভাবে নিবন্ধিত এবং স্বয়ংক্রিয় ই-নামজারি প্রক্রিয়ার সাথে সরাসরি সংযুক্ত।"
+    },
+    {
+      "id": "REG-TEST-1792236740564",
+      "application_id": "SA-TEST-1792236740562",
+      "registry_office_bn": "গুলশান সাব-রেজিস্ট্রি অফিস",
+      "registration_serial_no": "REG-GLS-TEST",
+      "deed_no": "99120/2026",
+      "deed_volume_no": "৪৫/১০২",
+      "deed_year": "২০২৬",
+      "completion_timestamp": "2026-10-17T11:32:20.564Z",
+      "officer_id": "usr-officer-registry",
+      "deed_draft_url": "/drafts/test.pdf",
+      "is_official_record": true,
+      "disclaimer_bn": "ডেমো নিবন্ধন কার্য সম্পন্ন।"
     }
   ],
   "mutation_applications": [
@@ -1947,6 +2265,20 @@
       "approved_at": "2025-12-15T16:00:00Z",
       "created_at": "2025-11-20T10:00:00Z",
       "updated_at": "2025-12-15T16:00:00Z"
+    },
+    {
+      "id": "MUT-TEST-1792236740564",
+      "mutation_case_no": "MUT-AC-2026-TEST",
+      "sale_application_id": "SA-TEST-1792236740562",
+      "parcel_id": "pcl-clean-405",
+      "applicant_id": "usr-buyer-01",
+      "previous_khatian_no": "১২০৪",
+      "proposed_khatian_no": "হাল-৯৯০১",
+      "current_stage": "application_submitted",
+      "status": "active",
+      "order_summary_bn": "সাফ-কবলা দলিল নং 99120/2026 সূত্রে নামজারি রুজু।",
+      "created_at": "2026-10-17T11:32:20.564Z",
+      "updated_at": "2026-10-17T11:32:20.564Z"
     }
   ],
   "notifications": [
