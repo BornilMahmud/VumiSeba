@@ -3,7 +3,19 @@ import jwt from 'jsonwebtoken';
 import { dbStore } from '../db/store.js';
 import { UserProfile, UserRole } from '../db/types.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'bhumisathi-super-secret-jwt-key-2026-bangladesh';
+const DEFAULT_INSECURE_SECRET = 'bhumisathi-super-secret-jwt-key-2026-bangladesh';
+
+export function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET || DEFAULT_INSECURE_SECRET;
+  if (process.env.NODE_ENV === 'production') {
+    if (!process.env.JWT_SECRET || process.env.JWT_SECRET === DEFAULT_INSECURE_SECRET || process.env.JWT_SECRET.length < 32) {
+      throw new Error(
+        'SECURITY FATAL: Insecure or default JWT_SECRET is prohibited in production mode. Set a strong secret (>= 32 characters) in environment variables.'
+      );
+    }
+  }
+  return secret;
+}
 
 export interface AuthenticatedRequest extends Request {
   user?: UserProfile;
@@ -18,7 +30,7 @@ export function generateToken(user: UserProfile): string {
       name_bn: user.name_bn,
       citizen_id: user.citizen_id,
     },
-    JWT_SECRET,
+    getJwtSecret(),
     { expiresIn: '7d' }
   );
 }
@@ -40,7 +52,7 @@ export async function requireAuth(
 
   const token = authHeader.split(' ')[1];
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+    const decoded = jwt.verify(token, getJwtSecret()) as { id: string };
     const user = await dbStore.findById('profiles', decoded.id);
     if (!user) {
       res.status(401).json({

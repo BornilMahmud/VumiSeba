@@ -51,9 +51,28 @@ class DatabaseStore {
   private memoryCache: AppDatabaseSchema | null = null;
   private isWriting = false;
   private writeQueue: (() => Promise<void>)[] = [];
+  private transactionLock: Promise<void> = Promise.resolve();
 
   constructor() {
     this.ensureDataDir();
+  }
+
+  public async runTransaction<T>(action: () => Promise<T>): Promise<T> {
+    const prevLock = this.transactionLock;
+    let releaseLock: () => void;
+    this.transactionLock = new Promise<void>((resolve) => {
+      releaseLock = resolve;
+    });
+
+    await prevLock;
+    try {
+      await this.getRaw();
+      const result = await action();
+      await this.persist();
+      return result;
+    } finally {
+      releaseLock!();
+    }
   }
 
   private ensureDataDir() {

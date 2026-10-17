@@ -13,9 +13,12 @@ import {
   MutationApplication,
 } from '../db/types.js';
 import { NotificationService } from '../services/notificationService.js';
+import { ValidationService } from '../services/validationService.js';
+import { generateSequenceId, toBasisPoints, fromBasisPoints, subtractShares } from '../utils/shareMath.js';
 
 const router = Router();
 
+// Validation Schemas
 const createSaleAppSchema = z.object({
   parcel_id: z.string().min(1, 'জমি বা দাগ নির্বাচন করুন'),
   buyer_citizen_id: z.string().min(5, 'ক্রেতার সঠিক সিটিজেন আইডি প্রদান করুন'),
@@ -25,7 +28,48 @@ const createSaleAppSchema = z.object({
   deed_type_bn: z.string().default('সাফ-কবলা'),
 });
 
-// 1. Pre-Check Seller Share & Tax Status Before Submission
+const adminReviewSchema = z.object({
+  action: z.enum(['approve', 'return', 'reject']),
+  notes_bn: z.string().optional(),
+  reason_bn: z.string().optional(),
+});
+
+const unionReviewSchema = z.object({
+  action: z.enum(['approve', 'return', 'reject']),
+  field_findings_bn: z.string().optional(),
+  is_possession_verified: z.boolean().optional(),
+  boundary_ok: z.boolean().optional(),
+  reason_bn: z.string().optional(),
+  notes_bn: z.string().optional(),
+});
+
+const aclandReviewSchema = z.object({
+  action: z.enum(['approve', 'return', 'reject']),
+  notes_bn: z.string().optional(),
+  reason_bn: z.string().optional(),
+});
+
+const scheduleAppointmentSchema = z.object({
+  appointment_date: z.string().min(5, 'অ্যাপয়েন্টমেন্টের তারিখ প্রদান করুন'),
+  slot_time: z.string().min(2, 'সময় স্লট প্রদান করুন'),
+  registry_office_name_bn: z.string().optional(),
+  required_documents_bn: z.array(z.string()).optional(),
+  notes_bn: z.string().optional(),
+});
+
+const completeRegistrationSchema = z.object({
+  registration_serial_no: z.string().optional(),
+  deed_no: z.string().optional(),
+  deed_volume_no: z.string().optional(),
+  deed_year: z.string().optional(),
+  officer_remarks_bn: z.string().optional(),
+});
+
+const resubmitSchema = z.object({
+  correction_notes_bn: z.string().optional(),
+});
+
+// 1. Pre-Check Seller Share & Tax Status Before Submission (accounting for pending reservations)
 router.post('/pre-check', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
@@ -48,9 +92,12 @@ router.post('/pre-check', requireAuth, async (req: AuthenticatedRequest, res: Re
       return;
     }
 
-    // Share limit check
-    const shareExceeded = proposed_share > myOwnership.share_portion;
-    const remainingShare = Number((myOwnership.share_portion - proposed_share).toFixed(4));
+    // Reservation & available share calculation using fixed integer basis points
+    const shareInfo = await ValidationService.getSellerShareReservation(parcel_id, user.id);
+    const proposedBps = toBasisPoints(proposed_share);
+    const shareExceeded = proposedBps > shareInfo.availableShareBps;
+    const remainingBps = Math.max(0, shareInfo.availableShareBps - proposedBps);
+    const remainingShare = fromBasisPoints(remainingBps);
     const remainingArea = Number((myOwnership.area_decimal - proposed_area_decimal).toFixed(2));
 
     // Tax clearance check
@@ -58,21 +105,47 @@ router.post('/pre-check', requireAuth, async (req: AuthenticatedRequest, res: Re
     const khajna = khajnaAccounts[0];
     const isTaxCleared = khajna ? khajna.status === 'cleared' && khajna.total_payable_bdt === 0 : true;
 
+    // Injunction & mortgage check
+    const hasInjunction = !!parcel.court_case_flag;
+    const hasMortgage = !!parcel.bank_mortgage_flag;
+    const isGovLand = !!(parcel.is_khas_land || parcel.is_acquired || parcel.is_vested);
+
+    let blockerMessageBn: string | null = null;
+    if (hasInjunction) {
+      blockerMessageBn = `জমিটিতে দেওয়ানি মামলা বা আদালতের স্থগিতাদেশ বলবৎ রয়েছে (${parcel.court_case_details_bn || 'মামলা বিচারাধীন'})।`;
+    } else if (hasMortgage) {
+      blockerMessageBn = `জমিটি ব্যাংক বা আর্থিক প্রতিষ্ঠানে মর্টগেজ দায়বদ্ধ (${parcel.bank_mortgage_details_bn || 'দায়বদ্ধতা বিদ্যমান'})।`;
+    } else if (isGovLand) {
+      blockerMessageBn = 'জমিটি সরকারি খাস/অধিগ্রহণকৃত/অর্পিত সম্পত্তি হওয়ায় হস্তান্তরযোগ্য নয়।';
+    } else if (shareExceeded) {
+      blockerMessageBn = `প্রস্তাবিত অংশ (${proposed_share}) আপনার অবশিষ্ট অবিক্রীত অংশের (${shareInfo.availableShare}) চেয়ে বেশি! (অন্যান্য পেন্ডিং আবেদনে ${shareInfo.reservedShare} অংশ সংরক্ষিত)`;
+    } else if (!isTaxCleared) {
+      blockerMessageBn = `বকেয়া ভূমি উন্নয়ন কর ৳${khajna.total_payable_bdt} অপরিশোধিত রয়েছে।`;
+    }
+
+    const canSubmit = !shareExceeded && isTaxCleared && !hasInjunction && !hasMortgage && !isGovLand;
+
     res.json({
       success: true,
       data: {
         seller_name_bn: myOwnership.owner_name_bn,
-        recorded_share: myOwnership.share_portion,
+        recorded_share: shareInfo.recordedShare,
+        reserved_share: shareInfo.reservedShare,
+        available_share: shareInfo.availableShare,
+        active_pending_count: shareInfo.activeApplicationsCount,
         recorded_area_decimal: myOwnership.area_decimal,
         proposed_share,
         proposed_area_decimal,
         remaining_share: remainingShare,
         remaining_area_decimal: remainingArea,
         share_valid: !shareExceeded,
-        share_error_bn: shareExceeded ? `প্রস্তাবিত অংশ (${proposed_share}) আপনার মোট মালিকানা হিস্যার (${myOwnership.share_portion}) চেয়ে বেশি!` : null,
+        share_error_bn: shareExceeded ? blockerMessageBn : null,
         tax_cleared: isTaxCleared,
         tax_error_bn: !isTaxCleared ? `বকেয়া ভূমি উন্নয়ন কর ৳${khajna.total_payable_bdt} অপরিশোধিত রয়েছে।` : null,
-        can_submit: !shareExceeded && isTaxCleared,
+        has_injunction: hasInjunction,
+        has_mortgage: hasMortgage,
+        can_submit: canSubmit,
+        blocker_reason_bn: blockerMessageBn,
       },
     });
   } catch (err: any) {
@@ -80,20 +153,30 @@ router.post('/pre-check', requireAuth, async (req: AuthenticatedRequest, res: Re
   }
 });
 
-// 2. Submit Formal Sale Application (Guarded by Tax & Share limits on SERVER!)
+// 2. Submit Formal Sale Application (Guarded by Tax, Injunction, Mortgage & Share limits on SERVER!)
 router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
     const validated = createSaleAppSchema.parse(req.body);
 
-    // 1. Verify parcel exists
-    const parcel = (await dbStore.findById('land_parcels', validated.parcel_id)) as LandParcel | null;
-    if (!parcel) {
-      res.status(404).json({ success: false, message_bn: 'ভূমি পার্সেল রেকর্ড পাওয়া যায়নি।' });
+    // 1. Comprehensive Parcel & Share Validation
+    const validation = await ValidationService.validateParcelForStage(
+      validated.parcel_id,
+      user.id,
+      validated.proposed_share
+    );
+
+    if (!validation.valid) {
+      res.status(400).json({
+        success: false,
+        message_bn: validation.reasonBn,
+        error: validation.reasonEn,
+      });
       return;
     }
 
-    // 2. Verify seller ownership & share portion
+    // 2. Verify seller ownership
+    const parcel = (await dbStore.findById('land_parcels', validated.parcel_id)) as LandParcel;
     const ownerships = (await dbStore.find('land_ownerships', (o: LandOwnership) => o.parcel_id === validated.parcel_id && o.owner_id === user.id && o.status === 'active')) as LandOwnership[];
     const myOwnership = ownerships[0];
 
@@ -105,26 +188,7 @@ router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Respo
       return;
     }
 
-    if (validated.proposed_share > myOwnership.share_portion) {
-      res.status(400).json({
-        success: false,
-        message_bn: `অননুমোদিত বিক্রয় প্রস্তাব! আপনার রেকর্ডীয় হিস্যা ${myOwnership.share_portion}, কিন্তু আপনি ${validated.proposed_share} অংশ বিক্রির প্রস্তাব করেছেন।`,
-      });
-      return;
-    }
-
-    // 3. SERVER-SIDE TAX CLEARANCE ENFORCEMENT
-    const khajnaAccounts = (await dbStore.find('khajna_accounts', (k: KhajnaAccount) => k.parcel_id === validated.parcel_id)) as KhajnaAccount[];
-    const khajna = khajnaAccounts[0];
-    if (khajna && (khajna.status !== 'cleared' || khajna.total_payable_bdt > 0)) {
-      res.status(400).json({
-        success: false,
-        message_bn: `আবেদন গ্রহণ করা সম্ভব নয়! জমিটিতে ৳${khajna.total_payable_bdt} টাকা ভূমি উন্নয়ন কর বকেয়া রয়েছে। পূর্বে বকেয়া পরিশোধ করে দাখিলা গ্রহণ করুন।`,
-      });
-      return;
-    }
-
-    // 4. Resolve Buyer by Citizen ID
+    // 3. Resolve Buyer by Citizen ID
     const buyers = (await dbStore.find('profiles', (p: UserProfile) => p.citizen_id === validated.buyer_citizen_id)) as UserProfile[];
     const buyer = buyers[0];
     if (!buyer) {
@@ -135,7 +199,7 @@ router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Respo
       return;
     }
 
-    // 5. Prevent selling to oneself
+    // 4. Prevent selling to oneself
     if (buyer.id === user.id) {
       res.status(400).json({
         success: false,
@@ -144,10 +208,11 @@ router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Respo
       return;
     }
 
-    // 6. Create Sale Application
-    const appNo = `BHM-SA-${new Date().getFullYear()}-${Date.now().toString().slice(-4)}`;
+    // 5. Create Sale Application with Collision-Safe Sequence IDs
+    const appNo = generateSequenceId('BHM-SA');
+    const newAppId = generateSequenceId('SA', false);
     const newApp: SaleApplication = {
-      id: `SA-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      id: newAppId,
       application_no: appNo,
       parcel_id: validated.parcel_id,
       seller_id: user.id,
@@ -170,7 +235,7 @@ router.post('/submit', requireAuth, async (req: AuthenticatedRequest, res: Respo
 
     await dbStore.create('sale_applications', newApp);
 
-    // 7. Audit log
+    // 6. Audit log
     await dbStore.logAudit(
       user.id,
       user.name_bn,
@@ -245,12 +310,23 @@ router.get('/my', requireAuth, async (req: AuthenticatedRequest, res: Response) 
   }
 });
 
-// 4. Get Application by ID with Full Dossier
+// 4. Get Application by ID with Full Dossier (Citizen Privacy Protected)
 router.get('/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
+    const user = req.user!;
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
       res.status(404).json({ success: false, message_bn: 'আবেদন পাওয়া যায়নি' });
+      return;
+    }
+
+    // Role-based privacy isolation: citizens may only view their own sales or purchases
+    if (user.role === 'citizen' && app.seller_id !== user.id && app.buyer_id !== user.id) {
+      res.status(403).json({
+        success: false,
+        message_bn: 'অননুমোদিত প্রবেশাধিকার। আপনি শুধুমাত্র আপনার নিজের আবেদন বা ক্রয় প্রস্তাব দেখতে পারেন।',
+        error: 'Forbidden: Insufficient access to private citizen dossier',
+      });
       return;
     }
 
@@ -284,7 +360,7 @@ router.get('/:id', requireAuth, async (req: AuthenticatedRequest, res: Response)
 router.post('/:id/admin-review', requireAuth, requireRole('central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { action, notes_bn, reason_bn } = req.body; // action: 'approve' | 'return' | 'reject'
+    const { action, notes_bn, reason_bn } = adminReviewSchema.parse(req.body);
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -362,7 +438,7 @@ router.post('/:id/admin-review', requireAuth, requireRole('central_admin'), asyn
 router.post('/:id/union-review', requireAuth, requireRole('union_officer', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { action, field_findings_bn, is_possession_verified, boundary_ok, reason_bn, notes_bn } = req.body;
+    const { action, field_findings_bn, is_possession_verified, boundary_ok, reason_bn, notes_bn } = unionReviewSchema.parse(req.body);
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -390,9 +466,6 @@ router.post('/:id/union-review', requireAuth, requireRole('union_officer', 'cent
     } else if (action === 'reject') {
       nextStage = 'UNION_REJECTED';
       nextStatus = 'rejected';
-    } else {
-      res.status(400).json({ success: false, message_bn: 'অকার্যকর পদক্ষেপ নির্বাচন করা হয়েছে।' });
-      return;
     }
 
     await dbStore.update('sale_applications', app.id, {
@@ -410,7 +483,7 @@ router.post('/:id/union-review', requireAuth, requireRole('union_officer', 'cent
       : reason_bn);
 
     await dbStore.create('office_reviews', {
-      id: `REV-UNION-${Date.now()}`,
+      id: generateSequenceId('REV-UNION', false),
       application_id: app.id,
       office_type: 'union_land',
       officer_id: user.id,
@@ -488,10 +561,11 @@ router.post('/:id/union-report', requireAuth, requireRole('union_officer', 'cent
 });
 
 // 6.5 AC Land Pre-Registration Review (Forward to Sub-Registry, Return, or Reject)
+// RE-VALIDATES tax, share, injunction, and mortgage status before granting approval!
 router.post('/:id/acland-review', requireAuth, requireRole('ac_land', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { action, notes_bn, reason_bn } = req.body;
+    const { action, notes_bn, reason_bn } = aclandReviewSchema.parse(req.body);
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -513,15 +587,27 @@ router.post('/:id/acland-review', requireAuth, requireRole('ac_land', 'central_a
     let nextStatus: any = app.status;
 
     if (action === 'approve') {
+      // Re-validate parcel state
+      const revalidation = await ValidationService.validateParcelForStage(
+        app.parcel_id,
+        app.seller_id,
+        app.proposed_share,
+        app.id
+      );
+      if (!revalidation.valid) {
+        res.status(400).json({
+          success: false,
+          message_bn: `এসি ল্যান্ড অনুমোদন স্থগিত! জমিটিতে পরবর্তী জটিলতা পরিলক্ষিত হয়েছে: ${revalidation.reasonBn}`,
+          error: revalidation.reasonEn,
+        });
+        return;
+      }
       nextStage = 'REGISTRATION_READY';
     } else if (action === 'return') {
       nextStage = 'RETURNED_FOR_CORRECTION';
     } else if (action === 'reject') {
       nextStage = 'AC_LAND_REJECTED';
       nextStatus = 'rejected';
-    } else {
-      res.status(400).json({ success: false, message_bn: 'অকার্যকর পদক্ষেপ।' });
-      return;
     }
 
     await dbStore.update('sale_applications', app.id, {
@@ -533,7 +619,7 @@ router.post('/:id/acland-review', requireAuth, requireRole('ac_land', 'central_a
     });
 
     await dbStore.create('office_reviews', {
-      id: `REV-ACLAND-PRE-${Date.now()}`,
+      id: generateSequenceId('REV-ACLAND', false),
       application_id: app.id,
       office_type: 'ac_land',
       officer_id: user.id,
@@ -602,15 +688,11 @@ router.post('/:id/acland-review', requireAuth, requireRole('ac_land', 'central_a
 });
 
 // 6.7 Sub-Registry Office: Schedule Registration Appointment & Generate Checklist
+// RE-VALIDATES tax, share, injunction, and mortgage status before scheduling!
 router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { appointment_date, slot_time, registry_office_name_bn, required_documents_bn, notes_bn } = req.body;
-
-    if (!appointment_date || !slot_time) {
-      res.status(400).json({ success: false, message_bn: 'অ্যাপয়েন্টমেন্টের তারিখ ও সময় নির্ধারণ করা বাধ্যতামূলক।' });
-      return;
-    }
+    const { appointment_date, slot_time, registry_office_name_bn, required_documents_bn, notes_bn } = scheduleAppointmentSchema.parse(req.body);
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -618,7 +700,23 @@ router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar
       return;
     }
 
-    const tokenNo = `TOK-${Math.floor(100 + Math.random() * 900)}`;
+    // Downstream parcel re-validation
+    const revalidation = await ValidationService.validateParcelForStage(
+      app.parcel_id,
+      app.seller_id,
+      app.proposed_share,
+      app.id
+    );
+    if (!revalidation.valid) {
+      res.status(400).json({
+        success: false,
+        message_bn: `অ্যাপয়েন্টমেন্ট নির্ধারণ স্থগিত! জমিটিতে পরবর্তী জটিলতা পরিলক্ষিত হয়েছে: ${revalidation.reasonBn}`,
+        error: revalidation.reasonEn,
+      });
+      return;
+    }
+
+    const tokenNo = generateSequenceId('TOK', false);
     const officeName = registry_office_name_bn || user.office_name_bn || 'গুলশান সাব-রেজিস্ট্রি অফিস, ঢাকা';
     const docChecklist = required_documents_bn && required_documents_bn.length > 0
       ? required_documents_bn
@@ -646,7 +744,7 @@ router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar
       })) as RegistrationAppointment;
     } else {
       appointment = {
-        id: `APT-${Date.now()}`,
+        id: generateSequenceId('APT', false),
         application_id: app.id,
         registry_office_name_bn: officeName,
         appointment_date,
@@ -667,7 +765,7 @@ router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar
     });
 
     await dbStore.create('office_reviews', {
-      id: `REV-REG-SCHED-${Date.now()}`,
+      id: generateSequenceId('REV-REG-SCHED', false),
       application_id: app.id,
       office_type: 'sub_registry',
       officer_id: user.id,
@@ -720,7 +818,7 @@ router.post('/:id/schedule-appointment', requireAuth, requireRole('sub_registrar
 router.post('/:id/resubmit', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { correction_notes_bn } = req.body;
+    const { correction_notes_bn } = resubmitSchema.parse(req.body);
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -774,10 +872,11 @@ router.post('/:id/resubmit', requireAuth, async (req: AuthenticatedRequest, res:
 });
 
 // 7. Sub-Registry Office: Record Statutory Registration Completion & Spawn e-Mutation
+// SERIALIZED UNIT OF WORK: Mutex-locked transaction commits registration + appointment + mutation spawn + audit atomically.
 router.post('/:id/complete-registration', requireAuth, requireRole('sub_registrar', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { registration_serial_no, deed_no, deed_volume_no, deed_year, officer_remarks_bn } = req.body;
+    const { registration_serial_no, deed_no, deed_volume_no, deed_year, officer_remarks_bn } = completeRegistrationSchema.parse(req.body);
 
     const app = (await dbStore.findById('sale_applications', req.params.id)) as SaleApplication | null;
     if (!app) {
@@ -785,82 +884,106 @@ router.post('/:id/complete-registration', requireAuth, requireRole('sub_registra
       return;
     }
 
-    const regSerial = registration_serial_no || `REG-GLS-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const finalDeedNo = deed_no || `${Math.floor(10000 + Math.random() * 90000)}/2026`;
-    const regRecord: RegistrationRecord = {
-      id: `REG-REC-${Date.now()}`,
-      application_id: app.id,
-      registry_office_bn: 'গুলশান সাব-রেজিস্ট্রি অফিস, ঢাকা',
-      registration_serial_no: regSerial,
-      deed_no: finalDeedNo,
-      deed_volume_no: deed_volume_no || 'খণ্ড ৪২, পাতা ১০৪-১১২',
-      deed_year: deed_year || '২০২৬',
-      completion_timestamp: new Date().toISOString(),
-      officer_id: user.id,
-      deed_draft_url: `/drafts/deed-${app.id}.pdf`,
-      is_official_record: true,
-      disclaimer_bn: 'ডেমো নিবন্ধন কার্য সম্পন্ন। সরকারি নিবন্ধন পরিদপ্তর নিয়মানুযায়ী পোস্ট-রেজিস্ট্রেশন নামজারি প্রক্রিয়া সূচিত হয়েছে।',
-    };
-    await dbStore.create('registration_records', regRecord);
-
-    // Update appointment status to completed
-    const appointments = (await dbStore.find('registration_appointments', (a: RegistrationAppointment) => a.application_id === app.id)) as RegistrationAppointment[];
-    if (appointments[0]) {
-      await dbStore.update('registration_appointments', appointments[0].id, { status: 'completed' });
+    // Downstream parcel re-validation
+    const revalidation = await ValidationService.validateParcelForStage(
+      app.parcel_id,
+      app.seller_id,
+      app.proposed_share,
+      app.id
+    );
+    if (!revalidation.valid) {
+      res.status(400).json({
+        success: false,
+        message_bn: `দলিল নিবন্ধন স্থগিত! জমিটিতে জটিলতা শনাক্ত হয়েছে: ${revalidation.reasonBn}`,
+        error: revalidation.reasonEn,
+      });
+      return;
     }
 
-    // Update sale application stage
-    await dbStore.update('sale_applications', app.id, {
-      stage: 'MUTATION_SUBMITTED',
-      registry_completed: true,
-      mutation_created: true,
-    });
-
-    // AUTOMATICALLY SPAWN LINKED E-MUTATION APPLICATION
+    const regSerial = registration_serial_no || generateSequenceId('REG-GLS');
+    const finalDeedNo = deed_no || `${Math.floor(10000 + Math.random() * 90000)}/2026`;
     const parcel = (await dbStore.findById('land_parcels', app.parcel_id)) as LandParcel;
-    const mutationCaseNo = `MUT-AC-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const mutationApp: MutationApplication = {
-      id: `MUT-${Date.now()}`,
-      mutation_case_no: mutationCaseNo,
-      sale_application_id: app.id,
-      parcel_id: app.parcel_id,
-      applicant_id: app.buyer_id,
-      previous_khatian_no: parcel ? parcel.khatian_no : '১২০৪',
-      proposed_khatian_no: `হাল-${Math.floor(2000 + Math.random() * 8000)}`,
-      current_stage: 'application_submitted',
-      status: 'active',
-      order_summary_bn: `রেজিস্ট্রিকৃত সাফ-কবলা দলিল নং ${finalDeedNo} এর সূত্রে নামজারি মোকাদ্দমা স্বয়ংক্রিয়ভাবে রুজু করা হলো।`,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    await dbStore.create('mutation_applications', mutationApp);
+    const mutationCaseNo = generateSequenceId('MUT-AC');
 
-    // Office review log
-    await dbStore.create('office_reviews', {
-      id: `REV-REG-${Date.now()}`,
-      application_id: app.id,
-      office_type: 'sub_registry',
-      officer_id: user.id,
-      officer_name_bn: user.name_bn,
-      officer_designation_bn: user.designation_bn || 'সাব-রেজিস্ট্রার',
-      action: 'registered',
-      notes_bn: `দলিল নিবন্ধন সম্পন্ন হয়েছে (দলিল নং ${finalDeedNo})। স্বয়ংক্রিয়ভাবে নামজারি কেস নং ${mutationCaseNo} সৃষ্টি হয়েছে। ${officer_remarks_bn || ''}`,
-      reviewed_at: new Date().toISOString(),
+    let regRecord: RegistrationRecord;
+    let mutationApp: MutationApplication;
+
+    // RUN ATOMIC TRANSACTION VIA STORE MUTEX
+    await dbStore.runTransaction(async () => {
+      regRecord = {
+        id: generateSequenceId('REG-REC', false),
+        application_id: app.id,
+        registry_office_bn: 'গুলশান সাব-রেজিস্ট্রি অফিস, ঢাকা',
+        registration_serial_no: regSerial,
+        deed_no: finalDeedNo,
+        deed_volume_no: deed_volume_no || 'খণ্ড ৪২, পাতা ১০৪-১১২',
+        deed_year: deed_year || '২০২৬',
+        completion_timestamp: new Date().toISOString(),
+        officer_id: user.id,
+        deed_draft_url: `/drafts/deed-${app.id}.pdf`,
+        is_official_record: true,
+        disclaimer_bn: 'ডেমো নিবন্ধন কার্য সম্পন্ন। সরকারি নিবন্ধন পরিদপ্তর নিয়মানুযায়ী পোস্ট-রেজিস্ট্রেশন নামজারি প্রক্রিয়া সূচিত হয়েছে।',
+      };
+      await dbStore.create('registration_records', regRecord);
+
+      // Update appointment status to completed
+      const appointments = (await dbStore.find('registration_appointments', (a: RegistrationAppointment) => a.application_id === app.id)) as RegistrationAppointment[];
+      if (appointments[0]) {
+        await dbStore.update('registration_appointments', appointments[0].id, { status: 'completed' });
+      }
+
+      // Update sale application stage
+      await dbStore.update('sale_applications', app.id, {
+        stage: 'MUTATION_SUBMITTED',
+        registry_completed: true,
+        mutation_created: true,
+        updated_at: new Date().toISOString(),
+      });
+
+      // Spawn Linked e-Mutation Application
+      mutationApp = {
+        id: generateSequenceId('MUT', false),
+        mutation_case_no: mutationCaseNo,
+        sale_application_id: app.id,
+        parcel_id: app.parcel_id,
+        applicant_id: app.buyer_id,
+        previous_khatian_no: parcel ? parcel.khatian_no : '১২০৪',
+        proposed_khatian_no: `হাল-${Math.floor(2000 + Math.random() * 8000)}`,
+        current_stage: 'application_submitted',
+        status: 'active',
+        order_summary_bn: `রেজিস্ট্রিকৃত সাফ-কবলা দলিল নং ${finalDeedNo} এর সূত্রে নামজারি মোকাদ্দমা স্বয়ংক্রিয়ভাবে রুজু করা হলো।`,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      await dbStore.create('mutation_applications', mutationApp);
+
+      // Record Office Review
+      await dbStore.create('office_reviews', {
+        id: generateSequenceId('REV-REG', false),
+        application_id: app.id,
+        office_type: 'sub_registry',
+        officer_id: user.id,
+        officer_name_bn: user.name_bn,
+        officer_designation_bn: user.designation_bn || 'সাব-রেজিস্ট্রার',
+        action: 'registered',
+        notes_bn: `দলিল নিবন্ধন সম্পন্ন হয়েছে (দলিল নং ${finalDeedNo})। স্বয়ংক্রিয়ভাবে নামজারি কেস নং ${mutationCaseNo} সৃষ্টি হয়েছে। ${officer_remarks_bn || ''}`,
+        reviewed_at: new Date().toISOString(),
+      });
+
+      // Record Audit Log inside transaction
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'COMPLETE_DEED_REGISTRATION',
+        'sale_applications',
+        app.id,
+        req.ip || '127.0.0.1',
+        { deed_no: finalDeedNo, registration_serial_no: regSerial, mutation_case_no: mutationCaseNo }
+      );
     });
 
-    // Audit Log
-    await dbStore.logAudit(
-      user.id,
-      user.name_bn,
-      user.role,
-      'COMPLETE_DEED_REGISTRATION',
-      'sale_applications',
-      app.id,
-      req.ip || '127.0.0.1',
-      { deed_no: finalDeedNo, registration_serial_no: regSerial, mutation_case_no: mutationCaseNo }
-    );
-
-    // Notifications
+    // Post-commit Notifications
     await NotificationService.notify({
       userId: app.buyer_id,
       titleBn: 'দলিল নিবন্ধন সম্পন্ন ও নামজারি কেস শুরু হয়েছে',
@@ -880,8 +1003,8 @@ router.post('/:id/complete-registration', requireAuth, requireRole('sub_registra
     res.json({
       success: true,
       message_bn: `দলিল নিবন্ধন সফলভাবে রেকর্ড করা হয়েছে (দলিল নং ${finalDeedNo})। পোস্ট-রেজিস্ট্রেশন নামজারি কেস নং ${mutationCaseNo} রুজু হয়েছে।`,
-      registration: regRecord,
-      mutation: mutationApp,
+      registration: regRecord!,
+      mutation: mutationApp!,
     });
   } catch (err: any) {
     res.status(500).json({ success: false, message_bn: 'রেজিস্ট্রেশন প্রক্রিয়াকরণে ত্রুটি হয়েছে', error: err.message });

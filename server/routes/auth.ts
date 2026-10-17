@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { dbStore } from '../db/store.js';
 import { generateToken, requireAuth, requireRole, AuthenticatedRequest } from '../middleware/auth.js';
 import { UserProfile } from '../db/types.js';
+import { generateSequenceId } from '../utils/shareMath.js';
 
 const router = Router();
 
@@ -29,8 +30,7 @@ const loginSchema = z.object({
 
 // Helper to generate unique Citizen ID
 function generateCitizenId(): string {
-  const randNum = Math.floor(100000 + Math.random() * 900000);
-  return `BHM-CIT-${randNum}`;
+  return generateSequenceId('BHM-CIT', false);
 }
 
 // 1. Citizen Registration
@@ -173,6 +173,15 @@ router.post('/firebase-sync', async (req, res) => {
 
 // 3. Demo Persona 1-Click Login (Essential for Hackathon Judges & Government Evaluators)
 router.post('/demo-login', async (req, res) => {
+  if (process.env.DEMO_MODE !== 'true') {
+    res.status(403).json({
+      success: false,
+      message_bn: 'ডেমো মোড নিষ্ক্রিয়। পরীক্ষামূলক লগইন শুধুমাত্র DEMO_MODE=true সক্রিয় অবস্থায় অনুমোদিত।',
+      error: 'Forbidden: DEMO_MODE is not enabled',
+    });
+    return;
+  }
+
   const { role, persona } = req.body;
   let targetUser: UserProfile | undefined;
 
