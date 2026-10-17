@@ -315,8 +315,8 @@ export const LoginPage: React.FC = () => {
             <div
               onClick={() => {
                 const targetEmail = activeCitizenType === 'buyer' ? 'buyer@bhumisathi.gov.bd' : 'seller@bhumisathi.gov.bd';
-                const labelBn = activeCitizenType === 'buyer' ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা রফিকুল)';
-                const labelEn = activeCitizenType === 'buyer' ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Rafiqul)';
+                const labelBn = activeCitizenType === 'buyer' ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা আরমান)';
+                const labelEn = activeCitizenType === 'buyer' ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Arman)';
                 setEmail(targetEmail);
                 setPassword('demo123456');
                 setSelectedPersona('citizen');
@@ -341,7 +341,7 @@ export const LoginPage: React.FC = () => {
                       {isBn ? '১. ডেমো নাগরিক' : '1. Demo Citizen'}
                     </span>
                     <span className="text-[10px] text-slate-500 dark:text-slate-400 block leading-tight truncate">
-                      {activeCitizenType === 'seller' ? (isBn ? 'বিক্রেতা রফিকুল' : 'Seller Rafiqul') : (isBn ? 'ক্রেতা ফারহান' : 'Buyer Farhan')}
+                      {activeCitizenType === 'seller' ? (isBn ? 'বিক্রেতা আরমান' : 'Seller Arman') : (isBn ? 'ক্রেতা ফারহান' : 'Buyer Farhan')}
                     </span>
                   </div>
                 </div>
@@ -368,7 +368,7 @@ export const LoginPage: React.FC = () => {
                     setEmail('seller@bhumisathi.gov.bd');
                     setPassword('demo123456');
                     setSelectedPersona('citizen');
-                    setAutoFilledNotice(isBn ? '১. ডেমো নাগরিক (বিক্রেতা রফিকুল)' : '1. Demo Citizen (Seller Rafiqul)');
+                    setAutoFilledNotice(isBn ? '১. ডেমো নাগরিক (বিক্রেতা আরমান)' : '1. Demo Citizen (Seller Arman)');
                     setHighlightInputs(true);
                     setTimeout(() => setHighlightInputs(false), 2200);
                   }}
@@ -378,7 +378,7 @@ export const LoginPage: React.FC = () => {
                       : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600'
                   }`}
                 >
-                  {isBn ? 'রফিকুল' : 'Rafiqul'}
+                  {isBn ? 'আরমান' : 'Arman'}
                 </button>
                 <button
                   type="button"

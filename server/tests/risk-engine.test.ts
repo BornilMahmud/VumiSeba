@@ -12,7 +12,7 @@ async function runRiskEngineTests() {
   console.log('Test 1: Clean Title Parcel transparency evaluation...');
   const cleanAssessment = await RiskEngine.assessParcel({
     parcelId: 'pcl-clean-405',
-    sellerNidOrCitizenId: '19852691029384756', // Rafiqul
+    sellerNidOrCitizenId: '6847057587', // Arman
     proposedShare: 0.05,
   });
 
@@ -100,7 +100,7 @@ async function runRiskEngineTests() {
     {
       description: 'Clean Title (Pcl 405)',
       parcelId: 'pcl-clean-405',
-      sellerId: '19852691029384756',
+      sellerId: '6847057587',
       share: 0.05,
       expectedLevel: 'low',
       expectedOverride: false,

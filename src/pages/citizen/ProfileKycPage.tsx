@@ -25,7 +25,7 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
-import { getUserAvatarUrl, AVAILABLE_AVATAR_PRESETS } from '../../utils/userUtils';
+import { getUserAvatarUrl } from '../../utils/userUtils';
 import { BangladeshNidCard, formatMaskedNid } from '../../components/common/BangladeshNidCard';
 
 export const ProfileKycPage: React.FC = () => {
@@ -43,7 +43,7 @@ export const ProfileKycPage: React.FC = () => {
   const [dateOfBirth, setDateOfBirth] = useState(user?.date_of_birth || '2005-06-01');
   const [nidNo, setNidNo] = useState(user?.nid_no || '6847057587');
   const [signatureUrl, setSignatureUrl] = useState<string>('');
-  const [signatureText, setSignatureText] = useState<string>('আহ্বান');
+  const [signatureText, setSignatureText] = useState<string>(() => (user?.name_bn ? (user.name_bn.split(' ').slice(-1)[0] || 'আরমান') : 'আরমান'));
   const [tableNidMasked, setTableNidMasked] = useState(true);
   const [cardType, setCardType] = useState<'smart' | 'laminated'>(() => {
     const rawNid = (user?.nid_no || '6847057587').replace(/\D/g, '');
@@ -78,59 +78,13 @@ export const ProfileKycPage: React.FC = () => {
       setDistrict(user.district || 'ঢাকা');
       setUpazila(user.upazila || 'গুলশান');
       setCustomPhotoUrl(getUserAvatarUrl(user) || '/avatars/default_nid.jpg');
+      const parts = (user.name_bn || '').trim().split(/\s+/);
+      const shortSig = parts.length > 1 ? parts[parts.length - 1] : (user.name_bn || 'আরমান');
+      setSignatureText(shortSig);
     }
   }, [user]);
 
   const avatarUrl = customPhotoUrl || getUserAvatarUrl(user) || '/avatars/default_nid.jpg';
-
-  const applyPreset = (preset: 'arman' | 'rafiqul' | 'farhan') => {
-    if (preset === 'arman') {
-      setNameBn('মোঃ আরমান হোসেন রিপন');
-      setNameEn('MD. ARMAN HOSSEN RIPON');
-      setFatherNameBn('মোঃ ফেরদৌস হাসান খান');
-      setMotherNameBn('মোছাঃ মহসিনা আকতার শান্তনা');
-      setDateOfBirth('2005-06-01');
-      setNidNo('6847057587');
-      setCardType('smart');
-      setCustomPhotoUrl('/avatars/default_nid.jpg');
-      setSignatureUrl('');
-      setSignatureText('আরমান');
-      setEditFeedback({
-        type: 'success',
-        message: 'স্মার্ট এনআইডি কার্ডের তথ্য (MD. ARMAN HOSSEN RIPON) সেট করা হয়েছে।',
-      });
-    } else if (preset === 'rafiqul') {
-      setNameBn('রফিকুল ইসলাম');
-      setNameEn('Rafiqul Islam');
-      setFatherNameBn('মোজাম্মেল হক');
-      setMotherNameBn('ফাতেমা বেগম');
-      setDateOfBirth('1985-05-12');
-      setNidNo('19852691029384756');
-      setCardType('laminated');
-      setCustomPhotoUrl('/avatars/nid_rafiqul_islam.jpg');
-      setSignatureUrl('');
-      setSignatureText('Rafiqul');
-      setEditFeedback({
-        type: 'success',
-        message: 'নাগরিক নমুনা ১ (রফিকুল ইসলাম) লেমিনেটেড পেপার কার্ড সেট করা হয়েছে।',
-      });
-    } else if (preset === 'farhan') {
-      setNameBn('ফারহান আহমেদ');
-      setNameEn('Farhan Ahmed');
-      setFatherNameBn('আনোয়ার হোসেন');
-      setMotherNameBn('শাহীন আক্তার');
-      setDateOfBirth('1992-09-20');
-      setNidNo('19922694018274619');
-      setCardType('laminated');
-      setCustomPhotoUrl('/avatars/nid_farhan_ahmed.jpg');
-      setSignatureUrl('');
-      setSignatureText('Farhan');
-      setEditFeedback({
-        type: 'success',
-        message: 'নাগরিক নমুনা ২ (ফারহান আহমেদ) লেমিনেটেড পেপার কার্ড সেট করা হয়েছে।',
-      });
-    }
-  };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -155,14 +109,6 @@ export const ProfileKycPage: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const handleSelectPreset = (url: string) => {
-    setCustomPhotoUrl(url);
-    setEditFeedback({
-      type: 'success',
-      message: 'পোর্ট্রেট ছবি নির্বাচন করা হয়েছে। "ছবি এখনই সংরক্ষণ করুন" চেপে নিশ্চিত করুন।',
-    });
   };
 
   // 1-Click Save for Photo Only
@@ -377,30 +323,11 @@ export const ProfileKycPage: React.FC = () => {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:inline">দ্রুত নমুনা:</span>
-            <button
-              type="button"
-              onClick={() => applyPreset('arman')}
-              className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition active:scale-95 cursor-pointer shadow-xs"
-              title="আসল স্মার্ট এনআইডি কার্ডের তথ্য সেট করুন"
-            >
-              ⭐ আরমান (স্মার্ট কার্ড)
-            </button>
-            <button
-              type="button"
-              onClick={() => applyPreset('rafiqul')}
-              className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-750 transition active:scale-95 cursor-pointer"
-            >
-              রফিকুল ইসলাম (লেমিনেটেড)
-            </button>
-            <button
-              type="button"
-              onClick={() => applyPreset('farhan')}
-              className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-750 transition active:scale-95 cursor-pointer"
-            >
-              ফারহান আহমেদ (লেমিনেটেড)
-            </button>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
+              <ShieldCheck size={14} />
+              <span>ভেরিফায়েড নাগরিক এনআইডি</span>
+            </span>
           </div>
         </div>
 
@@ -574,7 +501,7 @@ export const ProfileKycPage: React.FC = () => {
               {/* Photo Preview */}
               <div className="relative group shrink-0">
                 <img
-                  src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                  src={avatarUrl || '/avatars/default_nid.jpg'}
                   alt="Avatar Preview"
                   className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover ring-4 ring-emerald-500/30 dark:ring-emerald-500/20 shadow-md bg-white dark:bg-slate-800"
                 />
@@ -588,7 +515,7 @@ export const ProfileKycPage: React.FC = () => {
                 </label>
               </div>
 
-              {/* Upload Input & Preset Buttons */}
+              {/* Upload Input & Photo Controls */}
               <div className="flex-1 w-full space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <label
@@ -658,36 +585,6 @@ export const ProfileKycPage: React.FC = () => {
                       />
                       <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
                     </div>
-                  </div>
-                </div>
-
-                {/* Preset Avatars */}
-                <div>
-                  <p className="text-[11px] font-bold text-slate-600 dark:text-slate-400 mb-2">
-                    অথবা অফিসিয়াল পোর্ট্রেট নির্বাচন করুন:
-                  </p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {AVAILABLE_AVATAR_PRESETS.map((preset) => (
-                      <button
-                        type="button"
-                        key={preset.id}
-                        onClick={() => handleSelectPreset(preset.url)}
-                        className={`flex items-center gap-2 p-1.5 rounded-xl border text-left transition cursor-pointer ${
-                          customPhotoUrl === preset.url
-                            ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 dark:border-emerald-600 ring-2 ring-emerald-500/30'
-                            : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 hover:border-emerald-300'
-                        }`}
-                      >
-                        <img
-                          src={preset.url}
-                          alt={preset.labelBn}
-                          className="w-8 h-8 rounded-lg object-cover shrink-0"
-                        />
-                        <span className="text-[10px] font-semibold text-slate-800 dark:text-slate-200 truncate">
-                          {preset.labelBn}
-                        </span>
-                      </button>
-                    ))}
                   </div>
                 </div>
               </div>

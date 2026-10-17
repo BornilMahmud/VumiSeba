@@ -204,7 +204,7 @@ export const SmartCardHologram: React.FC<{ photoUrl?: string }> = ({ photoUrl })
         alt="Ghost Portrait"
         className="w-full h-full object-cover filter grayscale contrast-125"
         onError={(e) => {
-          (e.target as HTMLImageElement).src = '/avatars/nid_rafiqul_islam.jpg';
+          (e.target as HTMLImageElement).src = '/avatars/default_nid.jpg';
         }}
       />
     </div>
@@ -390,7 +390,7 @@ export const BangladeshSmartNidCard: React.FC<{
               alt={nameEn}
               className="w-full h-full object-cover filter contrast-105"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = '/avatars/nid_rafiqul_islam.jpg';
+                (e.target as HTMLImageElement).src = '/avatars/default_nid.jpg';
               }}
             />
           </div>
@@ -423,7 +423,7 @@ export const BangladeshSmartNidCard: React.FC<{
               {/* নাম */}
               <div>
                 <span className="text-[9.5px] sm:text-[11px] text-slate-700 font-medium block leading-none">নাম</span>
-                <span className="font-bold text-slate-950 text-xs sm:text-[14px] leading-tight truncate block">
+                <span className="font-bold text-slate-950 text-xs sm:text-[15px] leading-tight block">
                   {nameBn}
                 </span>
               </div>
@@ -431,7 +431,7 @@ export const BangladeshSmartNidCard: React.FC<{
               {/* Name */}
               <div>
                 <span className="text-[8.5px] sm:text-[10px] text-slate-700 font-medium block leading-none">Name</span>
-                <span className="font-bold text-slate-950 text-[11px] sm:text-[13px] uppercase tracking-wide leading-tight truncate block">
+                <span className="font-bold text-slate-950 text-[11px] sm:text-[13.5px] uppercase tracking-wide leading-tight block">
                   {nameEn}
                 </span>
               </div>
@@ -439,7 +439,7 @@ export const BangladeshSmartNidCard: React.FC<{
               {/* পিতা */}
               <div>
                 <span className="text-[9.5px] sm:text-[11px] text-slate-700 font-medium block leading-none">পিতা</span>
-                <span className="font-bold text-slate-950 text-xs sm:text-[13px] leading-tight truncate block">
+                <span className="font-semibold text-slate-900 text-xs sm:text-[13.5px] leading-tight block">
                   {fatherNameBn}
                 </span>
               </div>
@@ -447,7 +447,7 @@ export const BangladeshSmartNidCard: React.FC<{
               {/* মাতা */}
               <div>
                 <span className="text-[9.5px] sm:text-[11px] text-slate-700 font-medium block leading-none">মাতা</span>
-                <span className="font-bold text-slate-950 text-xs sm:text-[13px] leading-tight truncate block">
+                <span className="font-semibold text-slate-900 text-xs sm:text-[13.5px] leading-tight block">
                   {motherNameBn}
                 </span>
               </div>
@@ -460,17 +460,17 @@ export const BangladeshSmartNidCard: React.FC<{
           </div>
 
           {/* Bottom Row: Date of Birth & NID No. */}
-          <div className="pt-1 border-t border-emerald-900/10 space-y-0.5 text-[10.5px] sm:text-xs">
+          <div className="pt-1.5 border-t border-emerald-900/10 space-y-0.5 text-[10.5px] sm:text-xs">
             <div className="flex items-baseline gap-2">
               <span className="text-slate-800 font-medium">Date of Birth</span>
-              <span className="font-bold text-slate-900 font-mono text-xs sm:text-sm">
+              <span className="font-bold text-slate-900 font-mono text-xs sm:text-[14.5px]">
                 {formattedDob}
               </span>
             </div>
 
             <div className="flex items-baseline gap-2">
               <span className="text-slate-900 font-bold">NID No.</span>
-              <span className="font-extrabold text-slate-950 font-mono text-xs sm:text-[14px] tracking-wider">
+              <span className="font-extrabold text-slate-950 font-mono text-xs sm:text-[15.5px] tracking-wider">
                 {displayNid}
               </span>
             </div>
@@ -536,7 +536,7 @@ export const BangladeshLaminatedNidCard: React.FC<{
       {/* 2. Main Body Section: Left Photo & Right Details */}
       <div className="flex relative min-h-[160px] sm:min-h-[190px]">
         {/* Left Column: Portrait Photo & Signature */}
-        <div className="w-[30%] sm:w-[28%] border-r-2 border-slate-950 p-2 sm:p-2.5 flex flex-col items-center justify-between bg-white/70">
+        <div className="w-[28%] sm:w-[26%] border-r-2 border-slate-950 p-2 sm:p-2.5 flex flex-col items-center justify-between bg-white/70">
           <div className="w-full flex justify-center pt-1">
             <div className="border border-slate-950 p-0.5 bg-white shadow-2xs">
               <img
@@ -544,7 +544,7 @@ export const BangladeshLaminatedNidCard: React.FC<{
                 alt={nameEn || 'Citizen'}
                 className="w-16 h-20 sm:w-20 sm:h-26 object-cover"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/avatars/nid_rafiqul_islam.jpg';
+                  (e.target as HTMLImageElement).src = '/avatars/default_nid.jpg';
                 }}
               />
             </div>
@@ -569,59 +569,63 @@ export const BangladeshLaminatedNidCard: React.FC<{
         </div>
 
         {/* Right Column: Citizen Details & Golden Watermark */}
-        <div className="w-[70%] sm:w-[72%] p-2.5 sm:p-3.5 relative flex flex-col justify-between overflow-hidden">
+        <div className="w-[72%] sm:w-[74%] p-3 sm:p-4 relative flex flex-col justify-between overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 select-none z-0">
             <ShaplaWatermarkSvg />
           </div>
 
-          <div className="relative z-10 space-y-1 sm:space-y-1.5 text-[11px] sm:text-xs">
-            <div className="grid grid-cols-[55px_1fr] sm:grid-cols-[70px_1fr] items-baseline">
-              <span className="text-slate-800 font-medium">নাম:</span>
-              <span className="font-bold text-slate-950 text-xs sm:text-sm truncate">
+          <div className="relative z-10 space-y-1.5 sm:space-y-2 text-left">
+            {/* নাম */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-slate-800 font-bold text-xs sm:text-sm shrink-0">নাম:</span>
+              <span className="font-black text-slate-950 text-sm sm:text-base md:text-[17px] tracking-tight leading-tight">
                 {nameBn}
               </span>
             </div>
 
-            <div className="grid grid-cols-[55px_1fr] sm:grid-cols-[70px_1fr] items-baseline">
-              <span className="text-slate-800 font-medium">Name:</span>
-              <span className="font-bold text-slate-950 text-xs sm:text-sm tracking-wide uppercase truncate">
+            {/* Name */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-slate-800 font-bold text-xs sm:text-sm shrink-0">Name:</span>
+              <span className="font-extrabold text-slate-950 text-xs sm:text-[14.5px] md:text-base uppercase tracking-wider leading-tight">
                 {nameEn}
               </span>
             </div>
 
-            <div className="grid grid-cols-[55px_1fr] sm:grid-cols-[70px_1fr] items-baseline">
-              <span className="text-slate-800 font-medium">পিতা:</span>
-              <span className="text-slate-900 text-[11px] sm:text-xs font-medium truncate">
+            {/* পিতা */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-slate-800 font-semibold text-xs sm:text-sm shrink-0">পিতা:</span>
+              <span className="font-bold text-slate-900 text-xs sm:text-sm md:text-[15px] leading-tight">
                 {fatherNameBn}
               </span>
             </div>
 
-            <div className="grid grid-cols-[55px_1fr] sm:grid-cols-[70px_1fr] items-baseline">
-              <span className="text-slate-800 font-medium">মাতা:</span>
-              <span className="text-slate-900 text-[11px] sm:text-xs font-medium truncate">
+            {/* মাতা */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-slate-800 font-semibold text-xs sm:text-sm shrink-0">মাতা:</span>
+              <span className="font-bold text-slate-900 text-xs sm:text-sm md:text-[15px] leading-tight">
                 {motherNameBn}
               </span>
             </div>
 
             {/* Date of Birth - RED FONT */}
-            <div className="grid grid-cols-[85px_1fr] sm:grid-cols-[100px_1fr] items-baseline pt-1">
-              <span className="text-slate-900 font-medium">Date of Birth:</span>
-              <span className="font-bold text-red-600 font-mono text-xs sm:text-sm">
+            <div className="flex items-baseline gap-2 pt-0.5">
+              <span className="text-slate-900 font-bold text-xs sm:text-sm shrink-0">Date of Birth:</span>
+              <span className="font-bold text-red-600 font-mono text-sm sm:text-base md:text-[17px] tracking-wide">
                 {formattedDob}
               </span>
             </div>
 
             {/* ID NO - Masked with * by default */}
-            <div className="grid grid-cols-[55px_1fr] sm:grid-cols-[70px_1fr] items-baseline pt-0.5">
-              <span className="text-slate-900 font-bold">ID NO:</span>
-              <span className="font-bold text-red-600 font-mono text-xs sm:text-[15px] tracking-wider">
+            <div className="flex items-baseline gap-2 pt-0.5">
+              <span className="text-slate-950 font-black text-xs sm:text-sm shrink-0">ID NO:</span>
+              <span className="font-black text-red-600 font-mono text-sm sm:text-[16.5px] md:text-[19px] tracking-widest">
                 {displayNid}
               </span>
             </div>
           </div>
 
           <div className="relative z-10 pt-1 text-right">
-            <span className="text-[8px] sm:text-[9px] text-slate-400 font-mono tracking-tighter">
+            <span className="text-[8px] sm:text-[9.5px] text-slate-400 font-mono tracking-tighter">
               নির্বাচন কমিশন বাংলাদেশ • EC-BD
             </span>
           </div>
