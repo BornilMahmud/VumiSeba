@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useNotifications } from '../../context/NotificationContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../context/ThemeContext';
 import {
   Menu,
   X,
-  Bell,
   Search,
   ShieldCheck,
   ChevronDown,
@@ -21,15 +19,12 @@ import {
   Moon,
   LogOut,
 } from 'lucide-react';
-import { getUserAvatarUrl } from '../../utils/userUtils';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
-  const { user, logout, isDemoSession } = useAuth();
-  const { unreadCount } = useNotifications();
-  const avatarUrl = getUserAvatarUrl(user);
+  const { user, logout } = useAuth();
   const { language, toggleLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -299,99 +294,26 @@ export const Navbar: React.FC = () => {
 
             {user ? (
               <div className="flex items-center gap-2 sm:gap-2.5">
-                {/* Notification Bell */}
-                <Link
-                  to={user.role === 'citizen' ? '/citizen/notifications' : '#'}
-                  className="h-9 w-9 inline-flex items-center justify-center relative text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent transition"
-                  title="বিজ্ঞপ্তি"
-                >
-                  <Bell size={18} />
-                  {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-rose-600 text-white text-[10px] flex items-center justify-center font-bold font-mono">
-                      {unreadCount}
-                    </span>
-                  )}
-                </Link>
-
-                {isDemoSession && (
-                  <span className="h-9 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 text-[11px] font-bold px-2.5 rounded-full inline-flex items-center gap-1">
-                    <span>⚠️</span>
-                    <span className="hidden xl:inline">{t('nav.demoAccount', 'নমুনা অ্যাকাউন্ট', 'Demo Account')}</span>
-                  </span>
-                )}
-
-                {/* Profile Name & Photo Widget */}
-                <Link
-                  to={
-                    user.role === 'citizen'
-                      ? '/citizen/profile'
-                      : user.role === 'union_officer'
-                      ? '/office/union/profile'
-                      : user.role === 'ac_land'
-                      ? '/office/ac-land/profile'
-                      : user.role === 'sub_registrar'
-                      ? '/office/registry/profile'
-                      : '/admin/profile'
-                  }
-                  className="flex items-center gap-2 px-2.5 py-1 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800 transition group cursor-pointer"
-                  title={language === 'bn' ? 'প্রোফাইল ও সেটিংস' : 'Profile & Settings'}
-                >
-                  <div className="text-right">
-                    <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors truncate max-w-[120px] sm:max-w-[150px]">
-                      {language === 'bn' ? (user.name_bn || 'ব্যবহারকারী') : (user.name_en || 'User')}
-                    </p>
-                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold leading-tight">
-                      {user.role === 'citizen'
-                        ? (language === 'bn' ? 'নাগরিক' : 'Citizen')
-                        : user.role === 'union_officer'
-                        ? (language === 'bn' ? 'ইউনিয়ন কর্মকর্তা' : 'Union Officer')
-                        : user.role === 'ac_land'
-                        ? (language === 'bn' ? 'এসি ল্যান্ড' : 'AC Land')
-                        : user.role === 'sub_registrar'
-                        ? (language === 'bn' ? 'সাব-রেজিস্ট্রার' : 'Sub-Registrar')
-                        : (language === 'bn' ? 'সুপার অ্যাডমিন' : 'Super Admin')}
-                    </p>
-                  </div>
-                  <div className="relative shrink-0">
-                    <img
-                      src={avatarUrl || '/avatars/default_nid.jpg'}
-                      alt={user.name_bn || 'User'}
-                      className="w-8 h-8 rounded-xl object-cover ring-2 ring-emerald-500/40 shadow-2xs group-hover:scale-105 transition-transform"
-                    />
-                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
-                  </div>
-                </Link>
-
                 {/* Dashboard Button */}
                 <button
                   onClick={handleDashboardRedirect}
-                  className="h-9 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-3.5 rounded-lg text-xs font-bold shadow-xs hover:shadow transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                  className="h-9 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 rounded-lg text-xs font-bold shadow-xs hover:shadow transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                 >
                   <Building size={14} />
-                  <span>
-                    {user.role === 'citizen'
-                      ? (language === 'en' ? 'Dashboard' : 'ড্যাশবোর্ড')
-                      : user.role === 'union_officer'
-                      ? (language === 'en' ? 'Union' : 'ইউনিয়ন')
-                      : user.role === 'ac_land'
-                      ? (language === 'en' ? 'AC Land' : 'এসি ল্যান্ড')
-                      : user.role === 'sub_registrar'
-                      ? (language === 'en' ? 'Sub-Registry' : 'সাব-রেজিস্ট্রি')
-                      : (language === 'en' ? 'Admin' : 'অ্যাডমিন')}
-                  </span>
+                  <span>{t('nav.dashboard', 'ড্যাশবোর্ড', 'Dashboard')}</span>
                 </button>
 
-                {/* Direct Logout Button */}
+                {/* Logout Button */}
                 <button
                   onClick={async () => {
                     await logout();
                     navigate('/login');
                   }}
-                  className="h-9 inline-flex items-center gap-1 px-2.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
+                  className="h-9 inline-flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
                   title={t('nav.logout', 'লগআউট', 'Logout')}
                 >
                   <LogOut size={14} />
-                  <span className="hidden xl:inline">{t('nav.logout', 'লগআউট', 'Logout')}</span>
+                  <span>{t('nav.logout', 'লগআউট', 'Logout')}</span>
                 </button>
               </div>
             ) : (
@@ -509,53 +431,26 @@ export const Navbar: React.FC = () => {
           <div className="border-t border-slate-200 dark:border-slate-800 pt-3 mt-2">
             {user ? (
               <div className="space-y-2">
-                <Link
-                  to={
-                    user.role === 'citizen'
-                      ? '/citizen/profile'
-                      : user.role === 'union_officer'
-                      ? '/office/union/profile'
-                      : user.role === 'ac_land'
-                      ? '/office/ac-land/profile'
-                      : user.role === 'sub_registrar'
-                      ? '/office/registry/profile'
-                      : '/admin/profile'
-                  }
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
-                >
-                  <img
-                    src={avatarUrl || '/avatars/default_nid.jpg'}
-                    alt="User"
-                    className="w-10 h-10 rounded-xl object-cover ring-2 ring-emerald-500/50 shrink-0"
-                  />
-                  <div className="overflow-hidden min-w-0 flex-1">
-                    <p className="font-bold text-slate-900 dark:text-white text-xs truncate">
-                      {language === 'bn' ? (user.name_bn || 'ব্যবহারকারী') : (user.name_en || 'User')}
-                    </p>
-                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
-                      {user.role === 'citizen' ? (user.citizen_id || 'নাগরিক প্রোফাইল') : (user.designation_bn || user.role)}
-                    </p>
-                  </div>
-                  <span className="text-xs text-emerald-600 font-bold shrink-0">প্রোফাইল ›</span>
-                </Link>
                 <button
                   onClick={() => {
                     handleDashboardRedirect();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full text-center bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-xs"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg text-sm font-bold shadow-xs"
                 >
-                  {t('nav.dashboard', 'আমার ড্যাশবোর্ড', 'My Dashboard')}
+                  <Building size={16} />
+                  <span>{t('nav.dashboard', 'ড্যাশবোর্ড', 'Dashboard')}</span>
                 </button>
                 <button
-                  onClick={() => {
-                    logout();
+                  onClick={async () => {
+                    await logout();
                     setMobileMenuOpen(false);
+                    navigate('/login');
                   }}
-                  className="w-full text-center text-rose-600 py-2 text-xs font-semibold"
+                  className="w-full inline-flex items-center justify-center gap-2 border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 py-2.5 rounded-lg text-xs font-bold"
                 >
-                  {t('nav.logout', 'লগআউট', 'Logout')}
+                  <LogOut size={15} />
+                  <span>{t('nav.logout', 'লগআউট', 'Logout')}</span>
                 </button>
               </div>
             ) : (

@@ -14,8 +14,6 @@ import {
   CreditCard,
   ShieldCheck,
   BadgeCheck,
-  Camera,
-  Upload,
   Phone,
   Mail,
   MapPin,
@@ -56,9 +54,7 @@ export const ProfileKycPage: React.FC = () => {
   const [addressBn, setAddressBn] = useState(user?.address_bn || '');
   const [district, setDistrict] = useState(user?.district || 'ঢাকা');
   const [upazila, setUpazila] = useState(user?.upazila || 'গুলশান');
-  const [customPhotoUrl, setCustomPhotoUrl] = useState<string>(getUserAvatarUrl(user) || '/avatars/default_nid.jpg');
   const [saving, setSaving] = useState(false);
-  const [photoSaving, setPhotoSaving] = useState(false);
   const [editFeedback, setEditFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
@@ -77,69 +73,13 @@ export const ProfileKycPage: React.FC = () => {
       setAddressBn(user.address_bn || '');
       setDistrict(user.district || 'ঢাকা');
       setUpazila(user.upazila || 'গুলশান');
-      setCustomPhotoUrl(getUserAvatarUrl(user) || '/avatars/default_nid.jpg');
       const parts = (user.name_bn || '').trim().split(/\s+/);
       const shortSig = parts.length > 1 ? parts[parts.length - 1] : (user.name_bn || 'আরমান');
       setSignatureText(shortSig);
     }
   }, [user]);
 
-  const avatarUrl = customPhotoUrl || getUserAvatarUrl(user) || '/avatars/default_nid.jpg';
-
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setEditFeedback({
-          type: 'error',
-          message: 'ছবির সাইজ ৫ মেগাবাইটের কম হতে হবে।',
-        });
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          const resStr = event.target.result as string;
-          setCustomPhotoUrl(resStr);
-          setEditFeedback({
-            type: 'success',
-            message: 'ডিভাইস থেকে নতুন ছবি নির্বাচন করা হয়েছে। এটি শীর্ষে প্রদর্শন করতে "ছবি এখনই সংরক্ষণ করুন" চাপুন।',
-          });
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // 1-Click Save for Photo Only
-  const handleSavePhotoOnly = async () => {
-    setPhotoSaving(true);
-    setEditFeedback(null);
-    try {
-      const res = await updateProfile({
-        photo_url: customPhotoUrl,
-        nid_photo_url: customPhotoUrl,
-      });
-      setPhotoSaving(false);
-      if (res.success) {
-        setEditFeedback({
-          type: 'success',
-          message: 'প্রোফাইল ছবি সফলভাবে সংরক্ষিত হয়েছে! ড্যাশবোর্ডের উপরে ডানপাশে এবং সাইডবারে আপনার ছবি এখন দৃশ্যমান।',
-        });
-      } else {
-        setEditFeedback({
-          type: 'error',
-          message: res.message_bn || 'ছবি সংরক্ষণ ব্যর্থ হয়েছে।',
-        });
-      }
-    } catch (err: any) {
-      setPhotoSaving(false);
-      setEditFeedback({
-        type: 'error',
-        message: err.message || 'Error saving photo',
-      });
-    }
-  };
+  const avatarUrl = getUserAvatarUrl(user) || '/avatars/default_nid.jpg';
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,8 +98,6 @@ export const ProfileKycPage: React.FC = () => {
       address_bn: addressBn,
       district,
       upazila,
-      photo_url: customPhotoUrl,
-      nid_photo_url: customPhotoUrl,
     };
 
     const res = await updateProfile(payload);
@@ -167,7 +105,7 @@ export const ProfileKycPage: React.FC = () => {
     if (res.success) {
       setEditFeedback({
         type: 'success',
-        message: res.message_bn || 'আপনার প্রোফাইল তথ্য ও ছবি সফলভাবে হালনাগাদ হয়েছে।',
+        message: res.message_bn || 'আপনার প্রোফাইল তথ্য সফলভাবে হালনাগাদ হয়েছে।',
       });
     } else {
       setEditFeedback({
@@ -341,7 +279,7 @@ export const ProfileKycPage: React.FC = () => {
             motherNameBn={motherNameBn}
             dateOfBirth={dateOfBirth}
             nidNo={nidNo}
-            photoUrl={customPhotoUrl || avatarUrl}
+            photoUrl={avatarUrl}
             signatureUrl={signatureUrl}
             signatureText={signatureText}
             showLaminationBorder={true}
@@ -361,7 +299,7 @@ export const ProfileKycPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Interactive Profile Photo & Contact Information Editor */}
+      {/* 3. Interactive Profile & Contact Information Editor */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-gov-sm border border-slate-200 dark:border-slate-800 p-6 space-y-5 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-2">
@@ -373,7 +311,7 @@ export const ProfileKycPage: React.FC = () => {
                 জাতীয় পরিচয়পত্র ও প্রোফাইল বিবরণী পরিবর্তন
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                এনআইডি কার্ডের বিবরণ, প্রোফাইল ছবি এবং যোগাযোগ তথ্য হালনাগাদ করুন (কার্ডে সরাসরি প্রভাব পড়বে)
+                এনআইডি কার্ডের বিবরণ এবং যোগাযোগ তথ্য হালনাগাদ করুন
               </p>
             </div>
           </div>
@@ -490,106 +428,7 @@ export const ProfileKycPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Photo Management Section */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-850/60 border border-slate-200/90 dark:border-slate-800 space-y-4">
-            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wide">
-              <Camera size={14} className="text-emerald-600" />
-              <span>২. প্রোফাইল ও এনআইডি ছবি পরিবর্তন</span>
-            </h4>
 
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-              {/* Photo Preview */}
-              <div className="relative group shrink-0">
-                <img
-                  src={avatarUrl || '/avatars/default_nid.jpg'}
-                  alt="Avatar Preview"
-                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover ring-4 ring-emerald-500/30 dark:ring-emerald-500/20 shadow-md bg-white dark:bg-slate-800"
-                />
-                <label
-                  htmlFor="citizen-photo-upload"
-                  className="absolute inset-0 bg-black/40 hover:bg-black/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white cursor-pointer"
-                  title="ছবি আপলোড করতে ক্লিক করুন"
-                >
-                  <Upload size={18} />
-                  <span className="text-[10px] font-bold mt-1">আপলোড</span>
-                </label>
-              </div>
-
-              {/* Upload Input & Photo Controls */}
-              <div className="flex-1 w-full space-y-3">
-                <div className="flex flex-wrap items-center gap-2">
-                  <label
-                    htmlFor="citizen-photo-upload"
-                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs transition cursor-pointer active:scale-95"
-                  >
-                    <Upload size={14} />
-                    <span>ডিভাইস থেকে নতুন ছবি আপলোড করুন</span>
-                  </label>
-                  <input
-                    id="citizen-photo-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoUpload}
-                    className="hidden"
-                  />
-
-                  {/* 1-Click Save Photo */}
-                  <button
-                    type="button"
-                    onClick={handleSavePhotoOnly}
-                    disabled={photoSaving}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 shadow-2xs transition cursor-pointer active:scale-95 disabled:opacity-50"
-                  >
-                    {photoSaving ? (
-                      <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <CheckCircle2 size={14} className="text-emerald-400 dark:text-emerald-600" />
-                    )}
-                    <span>{photoSaving ? 'সংরক্ষণ হচ্ছে...' : 'ছবি এখনই সংরক্ষণ করুন'}</span>
-                  </button>
-
-                  {customPhotoUrl !== getUserAvatarUrl(user) && (
-                    <button
-                      type="button"
-                      onClick={() => setCustomPhotoUrl(getUserAvatarUrl(user) || '/avatars/default_nid.jpg')}
-                      className="inline-flex items-center gap-1 px-3 py-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-xs font-medium cursor-pointer rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                    >
-                      <RotateCcw size={13} />
-                      <span>রিসেট</span>
-                    </button>
-                  )}
-                  <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                    সর্বোচ্চ ৫ মেগাবাইট (JPG, PNG)
-                  </span>
-                </div>
-
-                {/* Top-Right Header Live Preview */}
-                <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-                  <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 block mb-1.5">
-                    শীর্ষ ড্যাশবোর্ড হেডার প্রিভিউ (Top-Right Live Preview):
-                  </span>
-                  <div className="inline-flex items-center gap-2.5 p-1.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
-                    <div className="text-right">
-                      <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                        {nameBn || user?.name_bn || 'নাগরিক'}
-                      </p>
-                      <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono font-semibold leading-tight">
-                        {user?.citizen_id || 'BHM-CIT-882194'}
-                      </p>
-                    </div>
-                    <div className="relative shrink-0">
-                      <img
-                        src={avatarUrl || '/avatars/default_nid.jpg'}
-                        alt="Header Preview"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl object-cover ring-2 ring-emerald-500/50 shadow-2xs"
-                      />
-                      <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Contact Details Section */}
           <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-850/60 border border-slate-200/90 dark:border-slate-800 space-y-4">
@@ -694,7 +533,6 @@ export const ProfileKycPage: React.FC = () => {
                   setAddressBn(user.address_bn || '');
                   setDistrict(user.district || 'ঢাকা');
                   setUpazila(user.upazila || 'গুলশান');
-                  setCustomPhotoUrl(getUserAvatarUrl(user) || '');
                   setEditFeedback(null);
                 }
               }}
@@ -709,7 +547,7 @@ export const ProfileKycPage: React.FC = () => {
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-teal-600 dark:hover:bg-teal-500 transition shadow-sm cursor-pointer disabled:opacity-50 active:scale-95"
             >
               <Save size={14} />
-              <span>{saving ? 'সংরক্ষণ হচ্ছে...' : 'তথ্য ও ছবি সংরক্ষণ করুন'}</span>
+              <span>{saving ? 'সংরক্ষণ হচ্ছে...' : 'তথ্য সংরক্ষণ করুন'}</span>
             </button>
           </div>
         </form>

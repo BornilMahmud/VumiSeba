@@ -192,7 +192,7 @@ samp {
 }
 .dark .card-interactive:hover {
   border-color: #334155;
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3), 0 4px 8px -2px rgba(0, 0, 0, 0.2);
 }
 
 /* =========================================================================
@@ -685,7 +685,7 @@ button:disabled,
 .dark .shadow-xl,
 .dark .shadow-lg,
 .dark .shadow-card {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Exceptions: Print view for legal documents */

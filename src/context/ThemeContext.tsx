@@ -17,11 +17,10 @@ const ThemeContext = createContext<ThemeContextType>({
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     try {
-      const saved = localStorage.getItem('vumiseba_theme') as Theme | null;
+      // Per specification: when website is first opened in a tab, strictly open in light theme.
+      // Tab-specific overrides during the active session are preserved in sessionStorage.
+      const saved = sessionStorage.getItem('vumiseba_theme') as Theme | null;
       if (saved === 'dark' || saved === 'light') return saved;
-      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
     } catch {
       // fallback
     }
@@ -36,7 +35,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       root.classList.remove('dark');
     }
     try {
-      localStorage.setItem('vumiseba_theme', theme);
+      sessionStorage.setItem('vumiseba_theme', theme);
     } catch {
       // ignore
     }

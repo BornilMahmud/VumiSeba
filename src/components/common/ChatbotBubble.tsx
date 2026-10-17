@@ -151,7 +151,7 @@ export const ChatbotBubble: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xl hover:shadow-2xl hover:shadow-emerald-500/40 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 border-2 border-white/30 flex items-center justify-center"
+          className="group relative w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xl hover:shadow-2xl hover:shadow-emerald-500/40 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 border-2 border-white/30 flex items-center justify-center"
           aria-label="Open AI Land Assistant"
           title={isBn ? 'ভূমিসেবা এআই সহায়ক (Gemini)' : 'VumiSeba AI Land Assistant (Gemini)'}
         >

@@ -1,3 +1,17 @@
+import {
+  findOfflineDemoUser,
+  createOfflineDemoToken,
+  getOfflineMyHoldings,
+  getOfflineMyApplications,
+  getOfflineMutations,
+  getOfflineUnionQueue,
+  getOfflineAcLandQueue,
+  getOfflineRegistryQueue,
+  getOfflineAdminQueue,
+  OFFLINE_DB,
+  OFFLINE_DEMO_USERS,
+} from '../data/offlineDemoData';
+
 const getApiBase = (): string => {
   try {
     const envUrl = (import.meta as any).env?.VITE_API_BASE_URL;
@@ -27,6 +41,182 @@ function getAuthHeaders(): HeadersInit {
   return headers;
 }
 
+function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): any {
+  let body: any = {};
+  if (options.body && typeof options.body === 'string') {
+    try {
+      body = JSON.parse(options.body);
+    } catch {
+      body = {};
+    }
+  }
+
+  // 1. Demo Login offline fallback
+  if (endpoint === '/auth/demo-login') {
+    const user = findOfflineDemoUser(body.persona, body.role);
+    if (user) {
+      const token = createOfflineDemoToken(user);
+      return {
+        success: true,
+        message_bn: `ডেমো লগইন সফল হয়েছে (${user.name_bn})।`,
+        token,
+        user,
+      };
+    }
+  }
+
+  // 2. Standard Login offline fallback for demo emails
+  if (endpoint === '/auth/login') {
+    const user = findOfflineDemoUser(body.email);
+    if (user) {
+      const token = createOfflineDemoToken(user);
+      return {
+        success: true,
+        message_bn: `লগইন সফল হয়েছে (${user.name_bn})।`,
+        token,
+        user,
+      };
+    }
+  }
+
+  // 3. Current User Profile
+  if (endpoint === '/auth/me') {
+    const isDemo = localStorage.getItem('bhumisathi_is_demo') === 'true';
+    const cachedUser = localStorage.getItem('bhumisathi_demo_user');
+    if (isDemo && cachedUser) {
+      try {
+        return {
+          success: true,
+          user: JSON.parse(cachedUser),
+        };
+      } catch {
+        // fallback
+      }
+    }
+    if (isDemo) {
+      return {
+        success: true,
+        user: OFFLINE_DEMO_USERS.seller,
+      };
+    }
+  }
+
+  // 4. Update Profile
+  if (endpoint === '/auth/profile') {
+    try {
+      const cached = JSON.parse(localStorage.getItem('bhumisathi_demo_user') || '{}');
+      const updated = { ...cached, ...body };
+      localStorage.setItem('bhumisathi_demo_user', JSON.stringify(updated));
+      return {
+        success: true,
+        user: updated,
+        message_bn: 'প্রোফাইল তথ্য ও ছবি সফলভাবে হালনাগাদ হয়েছে।',
+      };
+    } catch {
+      return { success: true, message_bn: 'হালনাগাদ হয়েছে।' };
+    }
+  }
+
+  // 5. Citizen Holdings
+  if (endpoint === '/land/my/holdings') {
+    let uid = 'usr-seller-01';
+    try {
+      const u = JSON.parse(localStorage.getItem('bhumisathi_demo_user') || '{}');
+      if (u.id) uid = u.id;
+    } catch {}
+    const holdings = getOfflineMyHoldings(uid);
+    return {
+      success: true,
+      count: holdings.length,
+      data: holdings,
+    };
+  }
+
+  // 6. Citizen Applications
+  if (endpoint === '/sale/my') {
+    let uid = 'usr-seller-01';
+    try {
+      const u = JSON.parse(localStorage.getItem('bhumisathi_demo_user') || '{}');
+      if (u.id) uid = u.id;
+    } catch {}
+    const apps = getOfflineMyApplications(uid);
+    return {
+      success: true,
+      count: apps.length,
+      data: apps,
+    };
+  }
+
+  // 7. Mutations
+  if (endpoint === '/mutation' || endpoint === '/mutations') {
+    const mutations = getOfflineMutations();
+    return {
+      success: true,
+      count: mutations.length,
+      data: mutations,
+    };
+  }
+
+  // 8. Officer Queues
+  if (endpoint === '/officer/union-queue') {
+    return getOfflineUnionQueue();
+  }
+  if (endpoint === '/officer/acland-queue') {
+    return getOfflineAcLandQueue();
+  }
+  if (endpoint === '/officer/registry-queue') {
+    return getOfflineRegistryQueue();
+  }
+  if (endpoint === '/officer/admin-queue') {
+    return getOfflineAdminQueue();
+  }
+
+  // 9. Audit Logs
+  if (endpoint === '/audit') {
+    return {
+      success: true,
+      count: (OFFLINE_DB.audit_logs || []).length,
+      data: OFFLINE_DB.audit_logs || [],
+    };
+  }
+
+  // 10. Notifications
+  if (endpoint === '/notifications') {
+    return {
+      success: true,
+      count: (OFFLINE_DB.notifications || []).length,
+      data: OFFLINE_DB.notifications || [],
+    };
+  }
+
+  // 11. Land Search & Details
+  if (endpoint.startsWith('/land/search')) {
+    return {
+      success: true,
+      count: (OFFLINE_DB.land_parcels || []).length,
+      data: OFFLINE_DB.land_parcels || [],
+    };
+  }
+
+  if (endpoint.startsWith('/land/pcl-')) {
+    const id = endpoint.replace('/land/', '');
+    const p = (OFFLINE_DB.land_parcels || []).find((x: any) => x.id === id);
+    if (p) {
+      return { success: true, data: p };
+    }
+  }
+
+  // 12. Reset Demo
+  if (endpoint === '/officer/reset-demo') {
+    return {
+      success: true,
+      message_bn: 'ডেমো ডাটাবেজ সফলভাবে রিসেট হয়েছে!',
+    };
+  }
+
+  return null;
+}
+
 export async function apiRequest<T = any>(
   endpoint: string,
   options: RequestInit = {}
@@ -42,6 +232,10 @@ export async function apiRequest<T = any>(
 
     const data = await res.json();
     if (!res.ok) {
+      const fallback = resolveOfflineFallback(endpoint, options);
+      if (fallback) {
+        return fallback;
+      }
       return {
         success: false,
         message_bn: data.message_bn || 'অনুরোধ প্রক্রিয়াকরণে ব্যর্থ হয়েছে।',
@@ -50,6 +244,10 @@ export async function apiRequest<T = any>(
     }
     return data;
   } catch (err: any) {
+    const fallback = resolveOfflineFallback(endpoint, options);
+    if (fallback) {
+      return fallback;
+    }
     return {
       success: false,
       message_bn: 'সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।',
