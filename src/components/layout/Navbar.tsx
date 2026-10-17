@@ -74,6 +74,24 @@ export const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+      if (document.documentElement) {
+        document.documentElement.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
+    }
+  };
+
   const handleDashboardRedirect = () => {
     if (!user) {
       navigate('/login');
@@ -123,7 +141,7 @@ export const Navbar: React.FC = () => {
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Identity */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" onClick={handleHomeClick} className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-xl border border-emerald-500/30 shrink-0">
               🏛️
             </div>
@@ -146,6 +164,7 @@ export const Navbar: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-medium">
             <Link
               to="/"
+              onClick={handleHomeClick}
               className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 isActive('/')
                   ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
@@ -443,7 +462,10 @@ export const Navbar: React.FC = () => {
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-2 animate-in fade-in slide-in-from-top-2">
           <Link
             to="/"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => {
+              handleHomeClick(e);
+              setMobileMenuOpen(false);
+            }}
             className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             {t('nav.home', 'হোম', 'Home')}

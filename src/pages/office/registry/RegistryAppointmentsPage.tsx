@@ -94,7 +94,7 @@ export const RegistryAppointmentsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500 dark:text-slate-300 font-medium">{isBn ? 'বিক্রেতা:' : 'Seller:'}</span>
                   <span className="font-semibold text-slate-900 dark:text-white">
-                    {formatName(app.seller, isBn, 'Rafiqul Islam')}
+                    {formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">

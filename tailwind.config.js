@@ -65,8 +65,8 @@ export default {
         '3xl': '1.5rem',
       },
       fontFamily: {
-        bengali: ['"Hind Siliguri"', '"Noto Sans Bengali"', 'system-ui', 'sans-serif'],
-        sans: ['"Inter"', '"Hind Siliguri"', '"Noto Sans Bengali"', 'system-ui', 'sans-serif'],
+        bengali: ['"Noto Sans Bengali"', '"Hind Siliguri"', 'system-ui', 'sans-serif'],
+        sans: ['"Inter"', '"Noto Sans Bengali"', '"Hind Siliguri"', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       boxShadow: {

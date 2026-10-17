@@ -25,6 +25,7 @@ export const LoginPage: React.FC = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const [selectedPersona, setSelectedPersona] = useState<string | null>(null);
+  const [activeLoggingPersona, setActiveLoggingPersona] = useState<string | null>(null);
   const [autoFilledNotice, setAutoFilledNotice] = useState<string | null>(null);
   const [highlightInputs, setHighlightInputs] = useState(false);
   const [activeCitizenType, setActiveCitizenType] = useState<'seller' | 'buyer'>('seller');
@@ -51,7 +52,7 @@ export const LoginPage: React.FC = () => {
     if (user) {
       const role = (user.role || '').toLowerCase();
       if (role === 'citizen') {
-        if (isOfficeLogin || isAdminLogin) {
+        if ((isOfficeLogin || isAdminLogin) && !localStorage.getItem('bhumisathi_is_demo')) {
           setError(
             isBn
               ? 'আপনার অ্যাকাউন্টে সরকারি কর্মকর্তা বা প্রশাসক রোল বরাদ্দ নেই। সাধারণ নাগরিক প্যানেলে নির্দেশিত করা হচ্ছে...'
@@ -121,14 +122,60 @@ export const LoginPage: React.FC = () => {
     setGoogleLoading(false);
   };
 
-  const handleDemoClick = async (persona: string, role?: string) => {
+  // 1-Click: Automatically fill inputs & immediately authenticate into that dashboard
+  const handleOneClickLogin = async (
+    targetEmail: string,
+    targetPassword: string,
+    persona: string,
+    role?: string,
+    labelBn?: string,
+    labelEn?: string
+  ) => {
+    if (loading || googleLoading) return;
     setError(null);
+    setEmail(targetEmail);
+    setPassword(targetPassword);
+    setSelectedPersona(persona);
+    setActiveLoggingPersona(persona);
+    setHighlightInputs(true);
+    setAutoFilledNotice(
+      isBn
+        ? `${labelBn || persona} এর তথ্য পূরণ ও ড্যাশবোর্ডে প্রবেশ করা হচ্ছে...`
+        : `Auto-filling credentials for ${labelEn || persona} & entering dashboard...`
+    );
     setLoading(true);
-    const res = await switchDemoPersona(persona, role);
-    if (!res.success && res.message_bn) {
-      setError(isBn ? res.message_bn : (res.message_en || res.message_bn));
+
+    try {
+      const res = await switchDemoPersona(persona, role);
+      if (res.success) {
+        const targetRole = (role || persona).toLowerCase();
+        if (targetRole.includes('union')) {
+          navigate('/office/union/dashboard');
+        } else if (targetRole.includes('ac_land') || targetRole.includes('acland')) {
+          navigate('/office/ac-land/dashboard');
+        } else if (targetRole.includes('registr')) {
+          navigate('/office/registry/dashboard');
+        } else if (targetRole.includes('admin')) {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/citizen/dashboard');
+        }
+      } else {
+        setError(
+          isBn
+            ? (res.message_bn || 'ডেমো লগইন ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।')
+            : (res.message_en || 'Demo login failed. Please try again.')
+        );
+        setLoading(false);
+        setActiveLoggingPersona(null);
+        setTimeout(() => setHighlightInputs(false), 2000);
+      }
+    } catch (err: any) {
+      setError(err?.message || (isBn ? 'লগইন সম্পন্ন করা যায়নি।' : 'Could not complete login.'));
+      setLoading(false);
+      setActiveLoggingPersona(null);
+      setTimeout(() => setHighlightInputs(false), 2000);
     }
-    setLoading(false);
   };
 
   return (
@@ -305,8 +352,8 @@ export const LoginPage: React.FC = () => {
 
           <p className="text-[10.5px] text-slate-500 dark:text-slate-400">
             {isBn
-              ? 'নিচের প্রোফাইলে ক্লিক করে ইনপুট পূরণ করুন অথবা সরাসরি প্রবেশ করুন:'
-              : 'Click any persona to auto-fill inputs or enter via 1-Click login:'}
+              ? 'নিচের যেকোনো প্রোফাইলে ১-ক্লিকে ইনপুট পূরণ ও সরাসরি ড্যাশবোর্ডে প্রবেশ করুন:'
+              : '1-Click any profile below to auto-fill credentials & enter dashboard directly:'}
           </p>
 
           {/* Minimal 5 Personas Grid */}
@@ -314,19 +361,18 @@ export const LoginPage: React.FC = () => {
             {/* 1: Demo Citizen */}
             <div
               onClick={() => {
-                const targetEmail = activeCitizenType === 'buyer' ? 'buyer@bhumisathi.gov.bd' : 'seller@bhumisathi.gov.bd';
-                const labelBn = activeCitizenType === 'buyer' ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা আরমান)';
-                const labelEn = activeCitizenType === 'buyer' ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Arman)';
-                setEmail(targetEmail);
-                setPassword('demo123456');
-                setSelectedPersona('citizen');
-                setAutoFilledNotice(isBn ? labelBn : labelEn);
-                setHighlightInputs(true);
-                setError(null);
-                setTimeout(() => setHighlightInputs(false), 2200);
+                const isBuyer = activeCitizenType === 'buyer';
+                handleOneClickLogin(
+                  isBuyer ? 'buyer@bhumisathi.gov.bd' : 'seller@bhumisathi.gov.bd',
+                  'demo123456',
+                  activeCitizenType,
+                  'citizen',
+                  isBuyer ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা আরমান)',
+                  isBuyer ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Arman)'
+                );
               }}
-              className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
-                selectedPersona === 'citizen'
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer hover:border-emerald-500 hover:shadow-sm active:scale-[0.99] ${
+                selectedPersona === 'citizen' || activeLoggingPersona === 'citizen' || activeLoggingPersona === 'seller' || activeLoggingPersona === 'buyer'
                   ? 'border-emerald-500 bg-emerald-50/80 dark:bg-emerald-950/40 ring-1 ring-emerald-400/50'
                   : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 hover:border-emerald-300 dark:hover:border-emerald-700'
               }`}
@@ -350,11 +396,23 @@ export const LoginPage: React.FC = () => {
                   disabled={loading || googleLoading}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDemoClick(activeCitizenType, 'citizen');
+                    const isBuyer = activeCitizenType === 'buyer';
+                    handleOneClickLogin(
+                      isBuyer ? 'buyer@bhumisathi.gov.bd' : 'seller@bhumisathi.gov.bd',
+                      'demo123456',
+                      activeCitizenType,
+                      'citizen',
+                      isBuyer ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা আরমান)',
+                      isBuyer ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Arman)'
+                    );
                   }}
-                  className="text-[10px] text-emerald-700 dark:text-emerald-400 hover:underline font-bold shrink-0"
+                  className="text-[10px] text-emerald-700 dark:text-emerald-400 hover:underline font-bold shrink-0 flex items-center gap-1"
                 >
-                  {isBn ? '১-ক্লিক →' : '1-Click →'}
+                  {activeLoggingPersona === 'citizen' || activeLoggingPersona === 'seller' || activeLoggingPersona === 'buyer' ? (
+                    <div className="w-3 h-3 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <span>{isBn ? '১-ক্লিক →' : '1-Click →'}</span>
+                  )}
                 </button>
               </div>
 
@@ -363,38 +421,44 @@ export const LoginPage: React.FC = () => {
                 <span className="text-slate-400 dark:text-slate-500 mr-1">{isBn ? 'টাইপ:' : 'Type:'}</span>
                 <button
                   type="button"
+                  disabled={loading || googleLoading}
                   onClick={() => {
                     setActiveCitizenType('seller');
-                    setEmail('seller@bhumisathi.gov.bd');
-                    setPassword('demo123456');
-                    setSelectedPersona('citizen');
-                    setAutoFilledNotice(isBn ? '১. ডেমো নাগরিক (বিক্রেতা আরমান)' : '1. Demo Citizen (Seller Arman)');
-                    setHighlightInputs(true);
-                    setTimeout(() => setHighlightInputs(false), 2200);
+                    handleOneClickLogin(
+                      'seller@bhumisathi.gov.bd',
+                      'demo123456',
+                      'seller',
+                      'citizen',
+                      '১. ডেমো নাগরিক (বিক্রেতা আরমান)',
+                      '1. Demo Citizen (Seller Arman)'
+                    );
                   }}
-                  className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition ${
+                  className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition cursor-pointer ${
                     activeCitizenType === 'seller'
                       ? 'bg-emerald-600 text-white font-bold'
-                      : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600'
+                      : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'
                   }`}
                 >
                   {isBn ? 'আরমান' : 'Arman'}
                 </button>
                 <button
                   type="button"
+                  disabled={loading || googleLoading}
                   onClick={() => {
                     setActiveCitizenType('buyer');
-                    setEmail('buyer@bhumisathi.gov.bd');
-                    setPassword('demo123456');
-                    setSelectedPersona('citizen');
-                    setAutoFilledNotice(isBn ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '1. Demo Citizen (Buyer Farhan)');
-                    setHighlightInputs(true);
-                    setTimeout(() => setHighlightInputs(false), 2200);
+                    handleOneClickLogin(
+                      'buyer@bhumisathi.gov.bd',
+                      'demo123456',
+                      'buyer',
+                      'citizen',
+                      '১. ডেমো নাগরিক (ক্রেতা ফারহান)',
+                      '1. Demo Citizen (Buyer Farhan)'
+                    );
                   }}
-                  className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition ${
+                  className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition cursor-pointer ${
                     activeCitizenType === 'buyer'
                       ? 'bg-emerald-600 text-white font-bold'
-                      : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600'
+                      : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'
                   }`}
                 >
                   {isBn ? 'ফারহান' : 'Farhan'}
@@ -405,16 +469,17 @@ export const LoginPage: React.FC = () => {
             {/* 2: Union Officer */}
             <div
               onClick={() => {
-                setEmail('union.officer@land.gov.bd');
-                setPassword('demo123456');
-                setSelectedPersona('union_officer');
-                setAutoFilledNotice(isBn ? '২. ইউনিয়ন কর্মকর্তা (ULAO)' : '2. Union Land Officer (ULAO)');
-                setHighlightInputs(true);
-                setError(null);
-                setTimeout(() => setHighlightInputs(false), 2200);
+                handleOneClickLogin(
+                  'union.officer@land.gov.bd',
+                  'demo123456',
+                  'union_officer',
+                  'union_land_officer',
+                  '২. ইউনিয়ন কর্মকর্তা (ULAO তহশিলদার)',
+                  '2. Union Officer (ULAO Tahsildar)'
+                );
               }}
-              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
-                selectedPersona === 'union_officer'
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between hover:border-teal-500 hover:shadow-sm active:scale-[0.99] ${
+                selectedPersona === 'union_officer' || activeLoggingPersona === 'union_officer'
                   ? 'border-emerald-500 bg-emerald-50/80 dark:bg-emerald-950/40 ring-1 ring-emerald-400/50'
                   : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 hover:border-emerald-300 dark:hover:border-emerald-700'
               }`}
@@ -438,11 +503,22 @@ export const LoginPage: React.FC = () => {
                   disabled={loading || googleLoading}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDemoClick('union_officer', 'union_land_officer');
+                    handleOneClickLogin(
+                      'union.officer@land.gov.bd',
+                      'demo123456',
+                      'union_officer',
+                      'union_land_officer',
+                      '২. ইউনিয়ন কর্মকর্তা (ULAO তহশিলদার)',
+                      '2. Union Officer (ULAO Tahsildar)'
+                    );
                   }}
-                  className="text-[10px] text-teal-700 dark:text-teal-300 hover:underline font-bold shrink-0"
+                  className="text-[10px] text-teal-700 dark:text-teal-300 hover:underline font-bold shrink-0 flex items-center gap-1"
                 >
-                  {isBn ? '১-ক্লিক →' : '1-Click →'}
+                  {activeLoggingPersona === 'union_officer' ? (
+                    <div className="w-3 h-3 border-2 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <span>{isBn ? '১-ক্লিক →' : '1-Click →'}</span>
+                  )}
                 </button>
               </div>
               <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-slate-700/60">
@@ -453,16 +529,17 @@ export const LoginPage: React.FC = () => {
             {/* 3: AC Land */}
             <div
               onClick={() => {
-                setEmail('ac.land@land.gov.bd');
-                setPassword('demo123456');
-                setSelectedPersona('ac_land');
-                setAutoFilledNotice(isBn ? '৩. এসি ল্যান্ড (উপজেলা ভূমি অফিস)' : '3. AC Land (Upazila Land Office)');
-                setHighlightInputs(true);
-                setError(null);
-                setTimeout(() => setHighlightInputs(false), 2200);
+                handleOneClickLogin(
+                  'ac.land@land.gov.bd',
+                  'demo123456',
+                  'ac_land',
+                  'ac_land',
+                  '৩. এসি ল্যান্ড (উপজেলা ভূমি অফিস)',
+                  '3. AC Land (Upazila Land Office)'
+                );
               }}
-              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
-                selectedPersona === 'ac_land'
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between hover:border-indigo-500 hover:shadow-sm active:scale-[0.99] ${
+                selectedPersona === 'ac_land' || activeLoggingPersona === 'ac_land'
                   ? 'border-indigo-500 bg-indigo-50/80 dark:bg-indigo-950/40 ring-1 ring-indigo-400/50'
                   : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 hover:border-indigo-300 dark:hover:border-indigo-700'
               }`}
@@ -486,11 +563,22 @@ export const LoginPage: React.FC = () => {
                   disabled={loading || googleLoading}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDemoClick('ac_land', 'ac_land');
+                    handleOneClickLogin(
+                      'ac.land@land.gov.bd',
+                      'demo123456',
+                      'ac_land',
+                      'ac_land',
+                      '৩. এসি ল্যান্ড (উপজেলা ভূমি অফিস)',
+                      '3. AC Land (Upazila Land Office)'
+                    );
                   }}
-                  className="text-[10px] text-indigo-700 dark:text-indigo-300 hover:underline font-bold shrink-0"
+                  className="text-[10px] text-indigo-700 dark:text-indigo-300 hover:underline font-bold shrink-0 flex items-center gap-1"
                 >
-                  {isBn ? '১-ক্লিক →' : '1-Click →'}
+                  {activeLoggingPersona === 'ac_land' ? (
+                    <div className="w-3 h-3 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <span>{isBn ? '১-ক্লিক →' : '1-Click →'}</span>
+                  )}
                 </button>
               </div>
               <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-slate-700/60">
@@ -501,16 +589,17 @@ export const LoginPage: React.FC = () => {
             {/* 4: Sub-Registrar */}
             <div
               onClick={() => {
-                setEmail('sub.registrar@land.gov.bd');
-                setPassword('demo123456');
-                setSelectedPersona('sub_registrar');
-                setAutoFilledNotice(isBn ? '৪. সাব-রেজিস্ট্রার (দলিল নিবন্ধন কার্যালয়)' : '4. Sub-Registrar (Deed Registration)');
-                setHighlightInputs(true);
-                setError(null);
-                setTimeout(() => setHighlightInputs(false), 2200);
+                handleOneClickLogin(
+                  'sub.registrar@land.gov.bd',
+                  'demo123456',
+                  'sub_registrar',
+                  'sub_registrar',
+                  '৪. সাব-রেজিস্ট্রার (দলিল নিবন্ধন কার্যালয়)',
+                  '4. Sub-Registrar (Deed Registration Office)'
+                );
               }}
-              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
-                selectedPersona === 'sub_registrar'
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between hover:border-amber-500 hover:shadow-sm active:scale-[0.99] ${
+                selectedPersona === 'sub_registrar' || activeLoggingPersona === 'sub_registrar'
                   ? 'border-amber-500 bg-amber-50/80 dark:bg-amber-950/40 ring-1 ring-amber-400/50'
                   : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 hover:border-amber-300 dark:hover:border-amber-700'
               }`}
@@ -534,11 +623,22 @@ export const LoginPage: React.FC = () => {
                   disabled={loading || googleLoading}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDemoClick('sub_registrar', 'sub_registrar');
+                    handleOneClickLogin(
+                      'sub.registrar@land.gov.bd',
+                      'demo123456',
+                      'sub_registrar',
+                      'sub_registrar',
+                      '৪. সাব-রেজিস্ট্রার (দলিল নিবন্ধন কার্যালয়)',
+                      '4. Sub-Registrar (Deed Registration Office)'
+                    );
                   }}
-                  className="text-[10px] text-amber-700 dark:text-amber-300 hover:underline font-bold shrink-0"
+                  className="text-[10px] text-amber-700 dark:text-amber-300 hover:underline font-bold shrink-0 flex items-center gap-1"
                 >
-                  {isBn ? '১-ক্লিক →' : '1-Click →'}
+                  {activeLoggingPersona === 'sub_registrar' ? (
+                    <div className="w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <span>{isBn ? '১-ক্লিক →' : '1-Click →'}</span>
+                  )}
                 </button>
               </div>
               <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-slate-700/60">
@@ -549,16 +649,17 @@ export const LoginPage: React.FC = () => {
             {/* 5: Central Land Administration (Super Admin) - Spans 2 cols */}
             <div
               onClick={() => {
-                setEmail('admin@landtech.gov.bd');
-                setPassword('demo123456');
-                setSelectedPersona('central_admin');
-                setAutoFilledNotice(isBn ? '৫. কেন্দ্রীয় প্রশাসন (সুপার অ্যাডমিন)' : '5. Central Admin (Super Admin)');
-                setHighlightInputs(true);
-                setError(null);
-                setTimeout(() => setHighlightInputs(false), 2200);
+                handleOneClickLogin(
+                  'admin@landtech.gov.bd',
+                  'demo123456',
+                  'central_admin',
+                  'central_admin',
+                  '৫. কেন্দ্রীয় প্রশাসন (সুপার অ্যাডমিন)',
+                  '5. Central Land Administration (Super Admin)'
+                );
               }}
-              className={`col-span-1 sm:col-span-2 p-2.5 rounded-xl border transition-all cursor-pointer ${
-                selectedPersona === 'central_admin'
+              className={`col-span-1 sm:col-span-2 p-2.5 rounded-xl border transition-all cursor-pointer hover:border-cyan-500 hover:shadow-sm active:scale-[0.99] ${
+                selectedPersona === 'central_admin' || activeLoggingPersona === 'central_admin'
                   ? 'border-cyan-500 bg-cyan-50/80 dark:bg-cyan-950/40 ring-1 ring-cyan-400/50'
                   : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 hover:border-cyan-300 dark:hover:border-cyan-700'
               }`}
@@ -584,11 +685,22 @@ export const LoginPage: React.FC = () => {
                     disabled={loading || googleLoading}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDemoClick('central_admin', 'central_admin');
+                      handleOneClickLogin(
+                        'admin@landtech.gov.bd',
+                        'demo123456',
+                        'central_admin',
+                        'central_admin',
+                        '৫. কেন্দ্রীয় প্রশাসন (সুপার অ্যাডমিন)',
+                        '5. Central Land Administration (Super Admin)'
+                      );
                     }}
-                    className="text-[10px] text-cyan-700 dark:text-cyan-300 hover:underline font-bold"
+                    className="text-[10px] text-cyan-700 dark:text-cyan-300 hover:underline font-bold flex items-center gap-1"
                   >
-                    {isBn ? '১-ক্লিক →' : '1-Click →'}
+                    {activeLoggingPersona === 'central_admin' ? (
+                      <div className="w-3 h-3 border-2 border-cyan-600 border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <span>{isBn ? '১-ক্লিক →' : '1-Click →'}</span>
+                    )}
                   </button>
                 </div>
               </div>
@@ -600,7 +712,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowExtraPersonas(!showExtraPersonas)}
-              className="text-[10.5px] text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 transition font-medium"
+              className="text-[10.5px] text-slate-500 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 transition font-medium cursor-pointer"
             >
               {showExtraPersonas
                 ? (isBn ? '▲ অতিরিক্ত টেস্ট নাগরিক আড়াল করুন' : '▲ Hide Extra Test Citizens')
@@ -617,12 +729,14 @@ export const LoginPage: React.FC = () => {
                   {/* Abdul Latif - Tax Due */}
                   <div
                     onClick={() => {
-                      setEmail('latif.taxdue@bhumisathi.gov.bd');
-                      setPassword('demo123456');
-                      setSelectedPersona('taxdue');
-                      setAutoFilledNotice(isBn ? 'আব্দুল লতিফ (কর বকেয়া নাগরিক)' : 'Abdul Latif (Tax Due Citizen)');
-                      setHighlightInputs(true);
-                      setTimeout(() => setHighlightInputs(false), 2200);
+                      handleOneClickLogin(
+                        'latif.taxdue@bhumisathi.gov.bd',
+                        'demo123456',
+                        'taxdue',
+                        'citizen',
+                        'আব্দুল লতিফ (কর বকেয়া নাগরিক)',
+                        'Abdul Latif (Tax Due Citizen)'
+                      );
                     }}
                     className="p-2 rounded-lg bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/60 cursor-pointer hover:border-amber-400 transition"
                   >
@@ -635,12 +749,14 @@ export const LoginPage: React.FC = () => {
                   {/* Nazrul Islam - Excess Share */}
                   <div
                     onClick={() => {
-                      setEmail('nazrul.share@bhumisathi.gov.bd');
-                      setPassword('demo123456');
-                      setSelectedPersona('oversell');
-                      setAutoFilledNotice(isBn ? 'নজরুল ইসলাম (হিস্যা ঘাটতি নাগরিক)' : 'Nazrul Islam (Excess Share Citizen)');
-                      setHighlightInputs(true);
-                      setTimeout(() => setHighlightInputs(false), 2200);
+                      handleOneClickLogin(
+                        'nazrul.share@bhumisathi.gov.bd',
+                        'demo123456',
+                        'oversell',
+                        'citizen',
+                        'নজরুল ইসলাম (হিস্যা ঘাটতি নাগরিক)',
+                        'Nazrul Islam (Excess Share Citizen)'
+                      );
                     }}
                     className="p-2 rounded-lg bg-indigo-50/60 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-800/60 cursor-pointer hover:border-indigo-400 transition"
                   >

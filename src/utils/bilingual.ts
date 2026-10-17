@@ -32,8 +32,8 @@ export const formatDigits = (val: string | number | undefined | null, isBn: bool
 
 // Known Names Dictionary
 export const NAMES_MAP: Record<string, { bn: string; en: string }> = {
-  'রফিকুল ইসলাম': { bn: 'রফিকুল ইসলাম', en: 'Rafiqul Islam' },
-  'মো: রফিকুল ইসলাম': { bn: 'মো: রফিকুল ইসলাম', en: 'Md. Rafiqul Islam' },
+  'মোঃ আরমান হোসেন রিপন': { bn: 'মোঃ আরমান হোসেন রিপন', en: 'Md. Arman Hossen Ripon' },
+  'আরমান হোসেন': { bn: 'আরমান হোসেন', en: 'Arman Hossen' },
   'ফারহান আহমেদ': { bn: 'ফারহান আহমেদ', en: 'Farhan Ahmed' },
   'মো: ফারহান আহমেদ': { bn: 'মো: ফারহান আহমেদ', en: 'Md. Farhan Ahmed' },
   'আব্দুল লতিফ': { bn: 'আব্দুল লতিফ', en: 'Abdul Latif' },

@@ -27,6 +27,8 @@ import {
   Link005,
 } from '@/components/ui/skiper-ui/skiper40';
 import { useLanguage } from '../../context/LanguageContext';
+import { toBengaliDigits, toEnglishDigits } from '../../utils/bilingual';
+import { motion } from 'framer-motion';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -53,20 +55,25 @@ export const HomePage: React.FC = () => {
     setDistrict('ঢাকা');
     setUpazila('গুলশান');
     setMouza(sampleMouza);
-    setDagNo(sampleDag);
-    setKhatianNo(sampleKhatian);
+    setDagNo(language === 'en' ? toEnglishDigits(sampleDag) : toBengaliDigits(sampleDag));
+    setKhatianNo(language === 'en' ? toEnglishDigits(sampleKhatian) : toBengaliDigits(sampleKhatian));
   };
 
   return (
     <div className="font-sans text-slate-900 dark:text-slate-100 bg-slate-50/60 dark:bg-slate-950 transition-colors duration-200">
       {/* 1. Supahero & Skiper-UI Inspired Hero Section (Vivid Colorful Accents + Deep Black Contrast) */}
-      <section className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-dot-pattern">
+      <section id="hero" className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-dot-pattern scroll-mt-20">
         {/* Soft Ambient Radial Lights (Rich colorful glows for light mode & subtle neon glow for dark mode) */}
         <div className="absolute top-0 left-1/4 w-[450px] h-[450px] bg-gradient-to-br from-emerald-400/20 via-teal-300/15 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-75 dark:opacity-20"></div>
         <div className="absolute top-10 right-1/4 w-[450px] h-[450px] bg-gradient-to-bl from-cyan-400/25 via-blue-400/20 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-85 dark:opacity-20"></div>
         <div className="absolute top-44 left-1/2 -translate-x-1/2 w-[650px] h-80 bg-gradient-to-b from-amber-300/20 via-emerald-200/15 to-transparent pointer-events-none -z-10 rounded-full blur-3xl opacity-70 dark:opacity-15"></div>
 
-        <div className="relative max-w-5xl mx-auto text-center space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="relative max-w-5xl mx-auto text-center space-y-6"
+        >
           {/* Official Badge Pill */}
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100/90 via-teal-100/70 to-emerald-50/90 dark:from-emerald-950/70 dark:via-teal-950/50 dark:to-emerald-950/70 text-emerald-900 dark:text-emerald-300 border border-emerald-300/90 dark:border-emerald-700/80 px-4 py-1.5 rounded-full text-xs font-semibold shadow-xs hover:border-emerald-400 transition-colors">
             <span className="relative flex h-2 w-2">
@@ -126,10 +133,15 @@ export const HomePage: React.FC = () => {
               <span>{t('hero.ctaSell', 'জমি বিক্রির আবেদন', 'Apply to Sell Land')}</span>
             </Link>
           </div>
-        </div>
+        </motion.div>
 
         {/* Integrated Live Khatian & Dag Search Box (Colorful Card Elevation) */}
-        <div className="relative max-w-4xl mx-auto mt-12 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-emerald-400/30 dark:border-emerald-500/30 text-slate-800 dark:text-slate-100 ring-1 ring-emerald-500/10 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 35, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative max-w-4xl mx-auto mt-12 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 border-2 border-emerald-400/30 dark:border-emerald-500/30 text-slate-800 dark:text-slate-100 ring-1 ring-emerald-500/10 overflow-hidden"
+        >
           {/* Top Decorative Gradient Accent Bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500"></div>
 
@@ -285,12 +297,18 @@ export const HomePage: React.FC = () => {
               <span>{t('search.advanced', 'উন্নত অনুসন্ধান →', 'Advanced Search →')}</span>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 2. P5 Highlight: Check Before You Buy (Rich Colorful Gradient Card) */}
-      <section className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="relative overflow-hidden bg-gradient-to-br from-emerald-700 via-teal-800 to-slate-950 dark:from-emerald-950 dark:via-slate-900 dark:to-slate-950 rounded-3xl p-7 sm:p-11 shadow-xl border border-emerald-500/30 dark:border-emerald-800/40 flex flex-col lg:flex-row items-center justify-between gap-8 text-white">
+      <section id="verify-preview" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="relative overflow-hidden bg-gradient-to-br from-emerald-700 via-teal-800 to-slate-950 dark:from-emerald-950 dark:via-slate-900 dark:to-slate-950 rounded-3xl p-7 sm:p-11 shadow-xl border border-emerald-500/30 dark:border-emerald-800/40 flex flex-col lg:flex-row items-center justify-between gap-8 text-white"
+        >
           {/* Ambient Glows */}
           <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-400/20 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-teal-400/20 dark:bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -342,13 +360,19 @@ export const HomePage: React.FC = () => {
               <ArrowRight size={18} className="text-emerald-700" />
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 3. 9-Stage Visual Roadmap (Vibrantly Colored Cards in Light Mode, Sleek in Dark Mode) */}
-      <section className="py-14 bg-gradient-to-b from-slate-100/80 via-emerald-50/20 to-slate-100/80 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 border-y border-slate-200/90 dark:border-slate-800 transition-colors duration-200">
+      <section id="workflow" className="py-14 bg-gradient-to-b from-slate-100/80 via-emerald-50/20 to-slate-100/80 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 border-y border-slate-200/90 dark:border-slate-800 transition-colors duration-200 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-3xl mx-auto mb-12 space-y-2"
+          >
             <span className="text-emerald-700 dark:text-emerald-400 font-bold text-xs uppercase tracking-wider bg-emerald-100/80 dark:bg-emerald-950/60 px-3.5 py-1 rounded-full border border-emerald-300 dark:border-emerald-800 inline-block shadow-2xs">
               {t('roadmap.subtitle', 'সমন্বিত ডিজিটাল সেবা প্রণালী', 'Unified Digital Service Workflow')}
             </span>
@@ -362,11 +386,18 @@ export const HomePage: React.FC = () => {
                 'A transparent, orderly timeline connecting citizens with all government land offices'
               )}
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Step 1-3: Citizen & Pre-Verification (Emerald Category) */}
-            <div className="card-interactive bg-gradient-to-br from-emerald-50/90 to-white dark:from-emerald-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-emerald-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-emerald-50/90 to-white dark:from-emerald-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-emerald-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-emerald-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">1</span>
                 <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
@@ -381,9 +412,16 @@ export const HomePage: React.FC = () => {
                   ? 'Verify land location, recorded co-owners, share breakdown, and total plot area by Mouza, Khatian and Dag plot numbers.'
                   : 'মৌজা, খতিয়ান ও দাগ নম্বর দিয়ে জমির অবস্থান, রেকর্ডীয় মালিকদের হিস্যা এবং মোট আয়তন যাচাই।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="card-interactive bg-gradient-to-br from-emerald-50/90 to-white dark:from-emerald-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-emerald-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-emerald-50/90 to-white dark:from-emerald-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-emerald-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-emerald-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">2</span>
                 <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-100/80 dark:bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
@@ -398,9 +436,16 @@ export const HomePage: React.FC = () => {
                   ? 'Identify seller NID mismatches, excess share selling attempts, bank mortgages, and civil court injunctions.'
                   : 'বিক্রেতার এনআইডি মিল, অতিরিক্ত হিস্যা বিক্রির চেষ্টা, ব্যাংক দায়বদ্ধতা এবং আদালতের নিষেধাজ্ঞা শনাক্ত।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="card-interactive bg-gradient-to-br from-amber-50/90 to-white dark:from-amber-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-amber-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-amber-50/90 to-white dark:from-amber-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-amber-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-amber-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">3</span>
                 <span className="text-[11px] text-amber-800 dark:text-amber-300 font-bold bg-amber-100/80 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-300 dark:border-amber-800">
@@ -415,10 +460,17 @@ export const HomePage: React.FC = () => {
                   ? 'Confirmation of up-to-date land tax payment. If arrears exist, the portal automatically halts the sale application.'
                   : 'বকেয়া খাজনা পরিশোধ নিশ্চিতকরণ। কর বকেয়া থাকলে সিস্টেম স্বয়ংক্রিয়ভাবে বিক্রয় আবেদন দাখিল আটকে দেবে।'}
               </p>
-            </div>
+            </motion.div>
 
             {/* Step 4-6: Office Review & Field Inquiry (Blue/Indigo Category) */}
-            <div className="card-interactive bg-gradient-to-br from-blue-50/90 to-white dark:from-blue-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-blue-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-blue-50/90 to-white dark:from-blue-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-blue-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">4</span>
                 <span className="text-[11px] text-blue-800 dark:text-blue-300 font-bold bg-blue-100/80 dark:bg-blue-950/80 px-2.5 py-0.5 rounded-full border border-blue-300 dark:border-blue-800">
@@ -433,9 +485,16 @@ export const HomePage: React.FC = () => {
                   ? 'Submit digital application specifying buyer and seller citizen IDs, land acreage, consideration price, and draft deed.'
                   : 'ক্রেতা ও বিক্রেতার সিটিজেন আইডি, বিক্রিত জমির পরিমাণ ও পণমূল্য উল্লেখ করে অনলাইন আবেদন দাখিল।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="card-interactive bg-gradient-to-br from-indigo-50/90 to-white dark:from-indigo-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-indigo-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-indigo-50/90 to-white dark:from-indigo-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-indigo-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">5</span>
                 <span className="text-[11px] text-indigo-800 dark:text-indigo-300 font-bold bg-indigo-100/80 dark:bg-indigo-950/80 px-2.5 py-0.5 rounded-full border border-indigo-300 dark:border-indigo-800">
@@ -450,9 +509,16 @@ export const HomePage: React.FC = () => {
                   ? 'Preliminary verification of shares and record accuracy. If any discrepancies occur, actionable rectification is issued.'
                   : 'হিস্যা ও রেকর্ডীয় তথ্যের প্রাথমিক সঠিকতা যাচাই। কোনো ত্রুটি থাকলে কারণসহ সংশোধনের নির্দেশ।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="card-interactive bg-gradient-to-br from-sky-50/90 to-white dark:from-sky-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-sky-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-sky-50/90 to-white dark:from-sky-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-sky-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-sky-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">6</span>
                 <span className="text-[11px] text-sky-800 dark:text-sky-300 font-bold bg-sky-100/80 dark:bg-sky-950/80 px-2.5 py-0.5 rounded-full border border-sky-300 dark:border-sky-800">
@@ -467,10 +533,17 @@ export const HomePage: React.FC = () => {
                   ? 'On-ground field inspection by the Union Land Assistant Officer regarding physical possession, boundaries, and co-sharer consent.'
                   : 'ইউনিয়ন ভূমি সহকারী কর্মকর্তা কর্তৃক সরেজমিন সীমানা, শারীরিক দখল ও সহ-শরিকদের সম্মতি সম্পর্কিত প্রতিবেদন।'}
               </p>
-            </div>
+            </motion.div>
 
             {/* Step 7-9: Sub-Registry & Mutation (Purple & Teal Category) */}
-            <div className="card-interactive bg-gradient-to-br from-purple-50/90 to-white dark:from-purple-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-purple-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-purple-50/90 to-white dark:from-purple-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-purple-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-purple-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">7</span>
                 <span className="text-[11px] text-purple-800 dark:text-purple-300 font-bold bg-purple-100/80 dark:bg-purple-950/80 px-2.5 py-0.5 rounded-full border border-purple-300 dark:border-purple-800">
@@ -485,9 +558,16 @@ export const HomePage: React.FC = () => {
                   ? 'Biometric appointment at the Sub-Registry office, statutory deed execution, and instantaneous digital registration recording.'
                   : 'সাব-রেজিস্ট্রি অফিসে অ্যাপয়েন্টমেন্ট ও বায়োমেট্রিক উপস্থিতিতে সাফ-কবলা দলিল নিবন্ধন ও সিরিয়াল নম্বর প্রদান।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="card-interactive bg-gradient-to-br from-cyan-50/90 to-white dark:from-cyan-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-cyan-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-cyan-50/90 to-white dark:from-cyan-950/30 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-cyan-500 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-cyan-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">8</span>
                 <span className="text-[11px] text-cyan-800 dark:text-cyan-300 font-bold bg-cyan-100/80 dark:bg-cyan-950/80 px-2.5 py-0.5 rounded-full border border-cyan-300 dark:border-cyan-800">
@@ -502,9 +582,16 @@ export const HomePage: React.FC = () => {
                   ? 'Upon deed registration, a mutation case is automatically lodged at the AC Land office with automatic hearing notices.'
                   : 'রেজিস্ট্রেশন সম্পন্ন হতেই সহকারী কমিশনার (ভূমি) অফিসে নামজারি কেস রুজু ও ডিজিটাল নোটিশ জারি।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="card-interactive bg-gradient-to-br from-emerald-100/90 via-teal-50/60 to-white dark:from-teal-950/40 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-emerald-600 border border-emerald-300 dark:border-emerald-800 shadow-sm hover:shadow-md transition">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="card-interactive bg-gradient-to-br from-emerald-100/90 via-teal-50/60 to-white dark:from-teal-950/40 dark:to-slate-900 rounded-2xl p-6 space-y-3 border-t-4 border-t-emerald-600 border border-emerald-300 dark:border-emerald-800 shadow-sm hover:shadow-md transition"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold bg-emerald-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-xs">9</span>
                 <span className="text-[11px] text-emerald-900 dark:text-emerald-300 font-bold bg-emerald-200/90 dark:bg-emerald-950/90 px-2.5 py-0.5 rounded-full border border-emerald-400 dark:border-emerald-700">
@@ -519,14 +606,20 @@ export const HomePage: React.FC = () => {
                   ? 'AC Land order issues new Record of Rights (Khatian) for the buyer and recalculates remaining seller share automatically.'
                   : 'এসি ল্যান্ডের আদেশে ক্রেতার নামে নতুন খতিয়ান সৃষ্টি এবং বিক্রেতার অবশিষ্ট অংশের সঠিক হিস্যা পুনঃনির্ধারণ।'}
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* 4. Interactive Citizen Land Services Gateway (Colorful Cards) */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200/90 dark:border-slate-800 shadow-card transition-colors duration-200">
+      <section id="services-gateway" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200/90 dark:border-slate-800 shadow-card transition-colors duration-200"
+        >
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
             <div>
               <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1.5">
@@ -557,7 +650,14 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-8 text-sm">
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-teal-50/40 dark:from-emerald-950/40 dark:to-slate-900/90 border border-emerald-200/80 dark:border-emerald-900/60 hover:border-emerald-500 hover:shadow-card transition-all group">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-teal-50/40 dark:from-emerald-950/40 dark:to-slate-900/90 border border-emerald-200/80 dark:border-emerald-900/60 hover:border-emerald-500 hover:shadow-card transition-all group"
+            >
               <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 block mb-1">
                 {language === 'en' ? 'Verification Portal' : 'যাচাইকরণ পোর্টাল'}
               </span>
@@ -569,9 +669,16 @@ export const HomePage: React.FC = () => {
                   ? 'Audit khatian, dag plots, tax dues, and legal restrictions prior to contract signing.'
                   : 'বায়না করার পূর্বে জমির খতিয়ান, দাগ, খাজনা ও আইনি সত্যতা যাচাই করুন।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-50/90 to-indigo-50/40 dark:from-blue-950/40 dark:to-slate-900/90 border border-blue-200/80 dark:border-blue-900/60 hover:border-blue-500 hover:shadow-card transition-all group">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-2xl bg-gradient-to-br from-blue-50/90 to-indigo-50/40 dark:from-blue-950/40 dark:to-slate-900/90 border border-blue-200/80 dark:border-blue-900/60 hover:border-blue-500 hover:shadow-card transition-all group"
+            >
               <span className="text-[11px] font-bold text-blue-700 dark:text-blue-400 block mb-1">
                 {language === 'en' ? 'Sale & Registry' : 'বিক্রয় ও রেজিস্ট্রেশন'}
               </span>
@@ -583,9 +690,16 @@ export const HomePage: React.FC = () => {
                   ? 'Digital Sub-Registry coordination and automated deed drafting.'
                   : 'ডিজিটাল সাব-রেজিস্ট্রি সমন্বয় ও ডিজিটাল খসড়া দলিল প্রস্তুতকরণ।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-teal-50/90 to-cyan-50/40 dark:from-teal-950/40 dark:to-slate-900/90 border border-teal-200/80 dark:border-teal-900/60 hover:border-teal-500 hover:shadow-card transition-all group">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-2xl bg-gradient-to-br from-teal-50/90 to-cyan-50/40 dark:from-teal-950/40 dark:to-slate-900/90 border border-teal-200/80 dark:border-teal-900/60 hover:border-teal-500 hover:shadow-card transition-all group"
+            >
               <span className="text-[11px] font-bold text-teal-700 dark:text-teal-400 block mb-1">
                 {language === 'en' ? 'Tracking & Hearings' : 'ট্র্যাকিং ও শুনানি'}
               </span>
@@ -597,9 +711,16 @@ export const HomePage: React.FC = () => {
                   ? 'Live lifecycle status across Tahsil, Sub-Registry, and AC Land mutation cases.'
                   : 'তহশিল অফিস, সাব-রেজিস্ট্রি এবং এসি ল্যান্ড নামজারি কেসের লাইভ অগ্রগতি।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/90 to-yellow-50/40 dark:from-amber-950/40 dark:to-slate-900/90 border border-amber-200/80 dark:border-amber-900/60 hover:border-amber-500 hover:shadow-card transition-all group">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-2xl bg-gradient-to-br from-amber-50/90 to-yellow-50/40 dark:from-amber-950/40 dark:to-slate-900/90 border border-amber-200/80 dark:border-amber-900/60 hover:border-amber-500 hover:shadow-card transition-all group"
+            >
               <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 block mb-1">
                 {language === 'en' ? 'Land Tax & Dakhila' : 'খাজনা ও কর সেবা'}
               </span>
@@ -611,9 +732,16 @@ export const HomePage: React.FC = () => {
                   ? 'Calculate annual land tax, pay instantly, and download official digital Dakhila.'
                   : 'হাল সনের ভূমি উন্নয়ন কর পরিশোধ ও ডিজিটাল দাখিলা সংগ্রহ।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-purple-50/90 to-pink-50/40 dark:from-purple-950/40 dark:to-slate-900/90 border border-purple-200/80 dark:border-purple-900/60 hover:border-purple-500 hover:shadow-card transition-all group">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-2xl bg-gradient-to-br from-purple-50/90 to-pink-50/40 dark:from-purple-950/40 dark:to-slate-900/90 border border-purple-200/80 dark:border-purple-900/60 hover:border-purple-500 hover:shadow-card transition-all group"
+            >
               <span className="text-[11px] font-bold text-purple-700 dark:text-purple-400 block mb-1">
                 {language === 'en' ? 'Service Guide' : 'সেবা নির্দেশিকা'}
               </span>
@@ -625,9 +753,16 @@ export const HomePage: React.FC = () => {
                   ? 'Detailed workflow, statutory fees calculator, required documents checklist.'
                   : 'ভূমি সেবা, ফি ক্যালকুলেটর, দলিল নমুনা এবং জরুরি নির্দেশনাসমূহ।'}
               </p>
-            </div>
+            </motion.div>
 
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-sky-50/90 to-blue-50/40 dark:from-sky-950/40 dark:to-slate-900/90 border border-sky-200/80 dark:border-sky-900/60 hover:border-sky-500 hover:shadow-card transition-all group">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="p-5 rounded-2xl bg-gradient-to-br from-sky-50/90 to-blue-50/40 dark:from-sky-950/40 dark:to-slate-900/90 border border-sky-200/80 dark:border-sky-900/60 hover:border-sky-500 hover:shadow-card transition-all group"
+            >
               <span className="text-[11px] font-bold text-sky-700 dark:text-sky-400 block mb-1">
                 {language === 'en' ? 'Helpdesk & Support' : 'সহায়তা ডেস্ক'}
               </span>
@@ -639,43 +774,77 @@ export const HomePage: React.FC = () => {
                   ? 'Direct government support desk assistance for any land ownership dispute or confusion.'
                   : 'ভূমি বিষয়ক যেকোনো জটিলতায় সরকারি সাপোর্ট সেন্টারের দিকনির্দেশনা।'}
               </p>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 5. Transparency & Citizen Trust Statistics (Vibrant Color Tints) */}
-      <section className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section id="stats" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-          <div className="bg-gradient-to-br from-emerald-50/90 to-teal-50/50 dark:from-emerald-950/30 dark:to-slate-900 p-6 rounded-2xl border border-emerald-200/90 dark:border-emerald-900/60 shadow-sm card-interactive">
+          <motion.div
+            initial={{ opacity: 0, y: 25, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
+            className="bg-gradient-to-br from-emerald-50/90 to-teal-50/50 dark:from-emerald-950/30 dark:to-slate-900 p-6 rounded-2xl border border-emerald-200/90 dark:border-emerald-900/60 shadow-sm card-interactive"
+          >
             <p className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">100%</p>
             <p className="text-xs text-slate-800 dark:text-slate-200 mt-2 font-bold">{t('stats.khatian', 'ডিজিটাল খতিয়ান যাচাই', 'Digital Record Verification')}</p>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1">{language === 'en' ? 'Instant OCR & ledger matching' : 'তাৎক্ষণিক খতিয়ান সত্যতা নিরূপণ'}</p>
-          </div>
+          </motion.div>
 
-          <div className="bg-gradient-to-br from-teal-50/90 to-cyan-50/50 dark:from-teal-950/30 dark:to-slate-900 p-6 rounded-2xl border border-teal-200/90 dark:border-teal-900/60 shadow-sm card-interactive">
+          <motion.div
+            initial={{ opacity: 0, y: 25, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
+            className="bg-gradient-to-br from-teal-50/90 to-cyan-50/50 dark:from-teal-950/30 dark:to-slate-900 p-6 rounded-2xl border border-teal-200/90 dark:border-teal-900/60 shadow-sm card-interactive"
+          >
             <p className="text-4xl font-extrabold text-teal-600 dark:text-teal-400 font-mono">24h</p>
             <p className="text-xs text-slate-800 dark:text-slate-200 mt-2 font-bold">{t('stats.hours', 'স্বয়ংক্রিয় কেস রুজু', 'Automated Case Filing')}</p>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1">{language === 'en' ? 'Post-registry auto e-mutation' : 'রেজিস্ট্রেশনের পর তাৎক্ষণিক কেস সৃষ্টি'}</p>
-          </div>
+          </motion.div>
 
-          <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/50 dark:from-blue-950/30 dark:to-slate-900 p-6 rounded-2xl border border-blue-200/90 dark:border-blue-900/60 shadow-sm card-interactive">
+          <motion.div
+            initial={{ opacity: 0, y: 25, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
+            className="bg-gradient-to-br from-blue-50/90 to-indigo-50/50 dark:from-blue-950/30 dark:to-slate-900 p-6 rounded-2xl border border-blue-200/90 dark:border-blue-900/60 shadow-sm card-interactive"
+          >
             <p className="text-4xl font-extrabold text-blue-600 dark:text-blue-400 font-mono">4</p>
             <p className="text-xs text-slate-800 dark:text-slate-200 mt-2 font-bold">{t('stats.offices', 'একীভূত সমন্বিত সিস্টেম', 'Unified Inter-Office Grid')}</p>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1">{language === 'en' ? 'Tahsil, AC Land, Registry, Admin' : 'তহশিল, এসি ল্যান্ড, সাব-রেজিস্ট্রি, প্রশাসন'}</p>
-          </div>
+          </motion.div>
 
-          <div className="bg-gradient-to-br from-purple-50/90 to-rose-50/50 dark:from-purple-950/30 dark:to-slate-900 p-6 rounded-2xl border border-purple-200/90 dark:border-purple-900/60 shadow-sm card-interactive">
+          <motion.div
+            initial={{ opacity: 0, y: 25, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
+            className="bg-gradient-to-br from-purple-50/90 to-rose-50/50 dark:from-purple-950/30 dark:to-slate-900 p-6 rounded-2xl border border-purple-200/90 dark:border-purple-900/60 shadow-sm card-interactive"
+          >
             <p className="text-4xl font-extrabold text-purple-600 dark:text-purple-400 font-mono">0%</p>
             <p className="text-xs text-slate-800 dark:text-slate-200 mt-2 font-bold">{t('stats.fraud', 'অতিরিক্ত বিক্রির ঝুঁকি', 'Risk of Duplicate Fraud')}</p>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1">{language === 'en' ? 'Hard cryptographic ledger guard' : 'স্বয়ংক্রিয় হিস্যা লক নিরাপত্তা'}</p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* 6. Citizen Call to Action (Vibrant Emerald Gradient Card) */}
-      <section className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="relative rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-900 dark:from-slate-900 dark:via-emerald-950/70 dark:to-slate-950 p-8 sm:p-14 border border-emerald-400/40 dark:border-emerald-800/50 shadow-2xl text-center space-y-6 overflow-hidden text-white">
+      <section id="cta" className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 35, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-900 dark:from-slate-900 dark:via-emerald-950/70 dark:to-slate-950 p-8 sm:p-14 border border-emerald-400/40 dark:border-emerald-800/50 shadow-2xl text-center space-y-6 overflow-hidden text-white"
+        >
           {/* Ambient Lighting */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-teal-300/20 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-400/20 dark:bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -729,7 +898,7 @@ export const HomePage: React.FC = () => {
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );

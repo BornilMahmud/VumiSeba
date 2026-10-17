@@ -499,7 +499,7 @@ All variables are documented in `.env.example`.
 | Demo Persona | Name (বাংলা) | Email | Role | Pre-configured Testing Scenario |
 | :--- | :--- | :--- | :--- | :--- |
 | **১. ক্রেতা (Buyer)** | ফারহান আহমেদ | `buyer@bhumisathi.gov.bd` | `citizen` | Verified buyer; owns holding in Banasree; receives appointment & mutation alerts. |
-| **২. বিক্রেতা (Clean)** | রফিকুল ইসলাম | `seller@bhumisathi.gov.bd` | `citizen` | Owns Dag 405 (10 decimal / 50% share); tax cleared; clean sale flow. |
+| **২. বিক্রেতা (Clean)** | মোঃ আরমান হোসেন রিপন | `seller@bhumisathi.gov.bd` | `citizen` | Owns Dag 405 (10 decimal / 50% share); tax cleared; clean sale flow. |
 | **৩. বিক্রেতা (Tax Due)** | আব্দুল লতিফ | `latif.taxdue@bhumisathi.gov.bd` | `citizen` | Owns Dag 882; ৳4,850 tax arrears; triggers server tax-clearance block. |
 | **৪. বিক্রেতা (Over-Seller)** | নজরুল ইসলাম | `nazrul.oversell@bhumisathi.gov.bd` | `citizen` | Owns Dag 102 (12.5% share); attempts to sell 80%; blocked by share validation. |
 | **৫. তহশিলদার (ULAO)** | মো. কামাল হোসেন | `kamal.union@bhumisathi.gov.bd` | `union_officer` | Union Land Officer; reviews Dag 405, submits field findings, forwards to AC Land. |

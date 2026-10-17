@@ -379,7 +379,7 @@ export const CitizenDashboard: React.FC = () => {
         ) : (
           <div className="space-y-3">
             {applications.map((app) => {
-              const sellerName = formatName(app.seller, isBn, 'Rafiqul Islam');
+              const sellerName = formatName(app.seller, isBn, 'Md. Arman Hossen Ripon');
               const buyerName = formatName(app.buyer, isBn, 'Farhan Ahmed');
               const mouzaName = formatMouza(app.parcel, isBn);
               const plotLabel = formatPlot(app.parcel?.dag_no, isBn);

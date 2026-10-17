@@ -78,7 +78,7 @@ export const RegistryHistoryPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4">
                       <span className="font-semibold text-slate-900 dark:text-white block">
-                        {isBn ? 'বিক্রেতা:' : 'Seller:'} {formatName(app.seller, isBn, 'Rafiqul Islam')}
+                        {isBn ? 'বিক্রেতা:' : 'Seller:'} {formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}
                       </span>
                       <span className="text-slate-500 dark:text-slate-400 text-[11px]">
                         {isBn ? 'ক্রেতা:' : 'Buyer:'} {formatName(app.buyer, isBn, 'Farhan Ahmed')}
