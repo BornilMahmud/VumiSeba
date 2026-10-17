@@ -22,6 +22,7 @@ import {
   Scale,
   Send
 } from 'lucide-react';
+import { ApplicationTimeline } from '../../../components/common/ApplicationTimeline';
 
 export const AcLandApplicationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -389,6 +390,14 @@ export const AcLandApplicationDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* 9-Stage Application Timeline */}
+      <ApplicationTimeline
+        currentStage={application.stage}
+        returnReason={application.return_reason_bn}
+        rejectionReason={application.rejection_reason_bn}
+        createdAt={application.created_at}
+      />
 
       {/* Review Action Modal */}
       {actionType && (

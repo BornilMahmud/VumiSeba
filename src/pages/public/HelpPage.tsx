@@ -103,20 +103,20 @@ export const HelpPage: React.FC = () => {
       </div>
 
       {/* Hotlines */}
-      <div className="bg-slate-900 text-white p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-white text-slate-900 p-6 sm:p-8 rounded-2xl border border-emerald-300 shadow-card flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="space-y-1">
-          <h3 className="font-bold text-base">সরাসরি সহায়তা প্রয়োজন?</h3>
-          <p className="text-xs text-slate-300">
-            ভূমি মন্ত্রণালয়ের সরকারি সেবা হেল্পলাইনে যোগাযোগ করুন
+          <h3 className="font-extrabold text-base sm:text-lg text-slate-900">সরাসরি সহায়তা প্রয়োজন?</h3>
+          <p className="text-xs text-slate-600">
+            ভূমি মন্ত্রণালয়ের সরকারি সেবা হেল্পলাইনে সার্বক্ষণিক যোগাযোগ করুন
           </p>
         </div>
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 font-mono text-sm">
-            <Phone size={16} className="text-teal-400" />
-            <strong className="text-white">১৬১২২</strong>
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl border border-emerald-300 font-mono text-sm shadow-2xs">
+            <Phone size={16} className="text-emerald-600" />
+            <strong className="text-slate-900">১৬১২২</strong>
           </div>
-          <div className="flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-lg border border-slate-700">
-            <Mail size={16} className="text-teal-400" />
+          <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl border border-slate-300 shadow-2xs text-slate-700">
+            <Mail size={16} className="text-emerald-600" />
             <span>support@land.gov.bd</span>
           </div>
         </div>

@@ -320,6 +320,32 @@ export interface RegistrationRecord {
   disclaimer_bn: string;
 }
 
+export interface OfficeReview {
+  id: string;
+  application_id: string;
+  office_type: 'central_admin' | 'union_land' | 'sub_registry' | 'ac_land';
+  officer_id: string;
+  officer_name_bn: string;
+  officer_designation_bn: string;
+  action: 'approved' | 'returned' | 'rejected' | 'investigated' | 'registered' | 'hearing_scheduled' | 'scheduled' | string;
+  notes_bn: string;
+  created_at: string;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  event_type: string;
+  actor_user_id?: string;
+  actor_role: string;
+  action_summary_bn: string;
+  action_summary_en?: string;
+  entity_type: string;
+  entity_id: string;
+  ip_address?: string;
+  metadata?: Record<string, any>;
+  created_at: string;
+}
+
 export interface NotificationItem {
   id: string;
   user_id: string;

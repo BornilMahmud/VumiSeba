@@ -294,7 +294,7 @@ export const VerifyLandPage: React.FC = () => {
           </p>
         </div>
       ) : assessment ? (
-        <div className="space-y-6">
+        <div id="printable-assessment" className="space-y-6">
           {/* Critical Override Alert Banner */}
           {assessment.critical_override_triggered && (
             <div className="p-4 sm:p-5 rounded-xl bg-red-600 text-white shadow-md flex items-start gap-3">

@@ -98,16 +98,16 @@ export const HowItWorksPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="mt-12 text-center bg-gov-navy text-white p-8 rounded-2xl">
-        <h3 className="text-xl font-bold mb-2">আপনি কি জমি কেনার কথা ভাবছেন?</h3>
-        <p className="text-xs text-slate-300 mb-6 max-w-xl mx-auto">
-          বায়না করার আগে নিশ্চিত হয়ে নিন জমিটির হিস্যা ও কাগজপত্র সঠিক কি না।
+      <div className="mt-12 text-center bg-gradient-to-b from-white to-slate-50 border border-emerald-300 p-8 sm:p-10 rounded-3xl shadow-card">
+        <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mb-2">আপনি কি জমি কেনার কথা ভাবছেন?</h3>
+        <p className="text-xs sm:text-sm text-slate-600 mb-6 max-w-xl mx-auto">
+          বায়না করার আগে নিশ্চিত হয়ে নিন জমিটির হিস্যা, খাজনা ও রেকর্ডীয় কাগজপত্র শতভাগ সঠিক কি না।
         </p>
         <Link
           to="/verify-land"
-          className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold px-6 py-2.5 rounded-lg text-sm transition"
+          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-7 py-3 rounded-xl text-sm shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5"
         >
-          <span>এখনই যাচাই করুন</span>
+          <span>এখনই জমি যাচাই করুন</span>
           <ArrowRight size={16} />
         </Link>
       </div>

@@ -22,6 +22,7 @@ import {
   FileCheck2,
   HelpCircle
 } from 'lucide-react';
+import { ApplicationTimeline } from '../../../components/common/ApplicationTimeline';
 
 export const UnionApplicationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -445,6 +446,14 @@ export const UnionApplicationDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* 9-Stage Application Timeline */}
+      <ApplicationTimeline
+        currentStage={application.stage}
+        returnReason={application.return_reason_bn}
+        rejectionReason={application.rejection_reason_bn}
+        createdAt={application.created_at}
+      />
 
       {/* Review Modal */}
       {actionType && (
