@@ -4,18 +4,33 @@ import { requireAuth, requireRole, AuthenticatedRequest } from '../middleware/au
 
 const router = Router();
 
-router.get('/', requireAuth, requireRole('central_admin'), async (req: AuthenticatedRequest, res: Response) => {
-  try {
-    const logs = await dbStore.get('audit_logs');
-    const sorted = [...logs].reverse();
-    res.json({
-      success: true,
-      count: sorted.length,
-      data: sorted,
+router.get(
+  '/',
+  requireAuth,
+  (req: AuthenticatedRequest, res: Response, next) => {
+    const role = (req.user?.role || '').toLowerCase();
+    if (role === 'central_admin' || role === 'admin') {
+      return next();
+    }
+    return res.status(403).json({
+      success: false,
+      message_bn: 'এই কার্যক্রম পরিচালনার জন্য কেন্দ্রীয় প্রশাসনিক অনুমোদন প্রয়োজন।',
+      error: 'Forbidden: Insufficient permissions',
     });
-  } catch (err: any) {
-    res.status(500).json({ success: false, message_bn: 'অডিট লগ লোড করতে ত্রুটি হয়েছে', error: err.message });
+  },
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const logs = (await dbStore.get('audit_logs')) || [];
+      const sorted = Array.isArray(logs) ? [...logs].reverse() : [];
+      res.json({
+        success: true,
+        count: sorted.length,
+        data: sorted,
+      });
+    } catch (err: any) {
+      res.status(500).json({ success: false, message_bn: 'অডিট লগ লোড করতে ত্রুটি হয়েছে', error: err.message });
+    }
   }
-});
+);
 
 export default router;

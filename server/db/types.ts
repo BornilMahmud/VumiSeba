@@ -22,6 +22,8 @@ export interface UserProfile {
   office_name_bn?: string;
   kyc_status: KycStatus;
   kyc_verified_at?: string;
+  photo_url?: string;
+  nid_photo_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -48,6 +50,8 @@ export interface LandParcel {
   court_case_details_bn?: string;
   bank_mortgage_flag: boolean;
   bank_mortgage_details_bn?: string;
+  data_as_of?: string;
+  data_source?: string;
   created_at: string;
   updated_at: string;
 }
@@ -194,12 +198,32 @@ export interface SaleApplication {
   updated_at: string;
 }
 
+export interface RiskFactorDetail {
+  factor_key: string;
+  title_bn: string;
+  title_en: string;
+  status: 'passed' | 'warning' | 'failed';
+  is_critical: boolean;
+  weight_max_points: number;
+  deducted_points: number;
+  explanation_bn: string;
+  explanation_en: string;
+}
+
 export interface RiskAssessment {
   id: string;
   parcel_id: string;
   overall_risk_level: 'low' | 'medium' | 'high' | 'critical';
   risk_score: number; // 0 to 100
+  engine_version?: string;
+  data_as_of?: string;
+  disclaimer_bn?: string;
+  disclaimer_en?: string;
+  critical_override_triggered?: boolean;
+  critical_override_reasons?: string[];
+  factors?: RiskFactorDetail[];
   summary_bn: string;
+  summary_en?: string;
   identified_issues_bn: string[];
   warning_basis_bn: string[];
   unverified_data_bn: string[];

@@ -1,80 +1,96 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 import {
   ShieldCheck,
   Search,
   FilePlus2,
   Receipt,
   GitBranch,
-  FolderOpen,
-  Scale,
   Building2,
   ArrowRight,
 } from 'lucide-react';
 
 export const ServicesPage: React.FC = () => {
+  const { language } = useLanguage();
+  const isBn = language === 'bn';
+
   const services = [
     {
-      title: 'কেনার আগে জমি যাচাই (P5: Check Before You Buy)',
-      desc: 'বায়নার পূর্বে বিক্রেতার বৈধ হিস্যা, খতিয়ান ও দাগের সত্যতা, বকেয়া খাজনা, আদালতের স্থগিতাদেশ ও ব্যাংক লিয়েন পরীক্ষা।',
+      title: isBn ? 'কেনার আগে জমি যাচাই (P5)' : 'Pre-Purchase Land Audit (P5)',
+      desc: isBn
+        ? 'বায়নার পূর্বে বিক্রেতার বৈধ হিস্যা, খতিয়ান ও দাগের সত্যতা, বকেয়া খাজনা, আদালতের স্থগিতাদেশ ও ব্যাংক লিয়েন পরীক্ষা।'
+        : 'Instant audit of recorded shares, tax liabilities, bank mortgages, and civil court injunctions before paying earnest money.',
       link: '/verify-land',
-      badge: 'অগ্রাধিকার সেবা',
+      badge: isBn ? 'অগ্রাধিকার সেবা' : 'Priority Service',
       icon: ShieldCheck,
       color: 'bg-teal-50 text-teal-800 border-teal-200',
     },
     {
-      title: 'খতিয়ান ও দাগ রেকর্ড অনুসন্ধান',
-      desc: 'অনলাইনে মৌজা, জে.এল নম্বর, আর.এস/বি.এস খতিয়ান ও দাগ নম্বরের রেকর্ডীয় হিস্যা ও তফশিল যাচাই।',
+      title: isBn ? 'খতিয়ান ও দাগ রেকর্ড অনুসন্ধান' : 'Khatian & Dag Records Lookup',
+      desc: isBn
+        ? 'অনলাইনে মৌজা, জে.এল নম্বর, আর.এস/বি.এস খতিয়ান ও দাগ নম্বরের রেকর্ডীয় হিস্যা ও তফশিল যাচাই।'
+        : 'Direct digital query of land records, mouza boundaries, plot shares, and official land schedule.',
       link: '/search-land',
-      badge: 'উন্মুক্ত সেবা',
+      badge: isBn ? 'উন্মুক্ত সেবা' : 'Open Public Access',
       icon: Search,
       color: 'bg-blue-50 text-blue-800 border-blue-200',
     },
     {
-      title: 'জমি বিক্রির অনলাইন আবেদন (P4)',
-      desc: 'ক্রেতা-বিক্রেতা নির্ধারণ, হিস্যা সমন্বয় এবং স্বত্ব যাচাইপূর্বক দলিল প্রস্তুতির আনুষ্ঠানিক আবেদন।',
+      title: isBn ? 'জমি বিক্রির অনলাইন আবেদন (P4)' : 'Online Land Sale Filing (P4)',
+      desc: isBn
+        ? 'ক্রেতা-বিক্রেতা নির্ধারণ, হিস্যা সমন্বয় এবং স্বত্ব যাচাইপূর্বক দলিল প্রস্তুতির আনুষ্ঠানিক আবেদন।'
+        : 'Formal digital application for deed preparation with authenticated buyer ID, share checks, and valuation.',
       link: '/citizen/sell',
-      badge: 'সিটিজেন পোর্টাল',
+      badge: isBn ? 'সিটিজেন পোর্টাল' : 'Citizen Portal',
       icon: FilePlus2,
       color: 'bg-indigo-50 text-indigo-800 border-indigo-200',
     },
     {
-      title: 'ভূমি উন্নয়ন কর ও ই-দাখিলা পরিশোধ',
-      desc: 'হোল্ডিংভিত্তিক বকেয়া কর নিরূপণ, অনলাইনে কর পরিশোধ এবং তাত্ক্ষণিক ডিজিটাল দাখিলা ও ক্লিয়ারেন্স সনদ গ্রহণ।',
+      title: isBn ? 'ভূমি উন্নয়ন কর ও ই-দাখিলা পরিশোধ' : 'Land Development Tax & E-Dakhila',
+      desc: isBn
+        ? 'হোল্ডিংভিত্তিক বকেয়া কর নিরূপণ, অনলাইনে কর পরিশোধ এবং তাত্ক্ষণিক ডিজিটাল দাখিলা ও ক্লিয়ারেন্স সনদ গ্রহণ।'
+        : 'Automated calculation of land taxes, online clearing, instant digital e-dakhila receipts and clearance certificates.',
       link: '/citizen/tax',
-      badge: 'সার্ভার গার্ড',
+      badge: isBn ? 'সার্ভার গার্ড' : 'Server Guard',
       icon: Receipt,
       color: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     {
-      title: 'স্বয়ংক্রিয় ই-নামজারি ট্র্যাকিং (Smart e-Mutation)',
-      desc: 'সাব-রেজিস্ট্রি অফিসে দলিল নিবন্ধনের পর স্বয়ংক্রিয়ভাবে নামজারি কেস রুজু, শুনানি ট্র্যাকিং ও নতুন খতিয়ান প্রাপ্তি।',
+      title: isBn ? 'স্বয়ংক্রিয় ই-নামজারি ট্র্যাকিং (Smart e-Mutation)' : 'Automated e-Mutation Tracking',
+      desc: isBn
+        ? 'সাব-রেজিস্ট্রি অফিসে দলিল নিবন্ধনের পর স্বয়ংক্রিয়ভাবে নামজারি কেস রুজু, শুনানি ট্র্যাকিং ও নতুন খতিয়ান প্রাপ্তি।'
+        : 'Automatic case filing right after deed registration, live hearing notices, and issuance of new record of rights.',
       link: '/citizen/mutation',
-      badge: 'P4 অটোমেশন',
+      badge: isBn ? 'P4 অটোমেশন' : 'P4 Automated',
       icon: GitBranch,
       color: 'bg-emerald-50 text-emerald-800 border-emerald-200',
     },
     {
-      title: 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট ও খসড়া দলিল',
-      desc: 'সাব-রেজিস্ট্রি অফিসের কাউন্টার স্লট সংরক্ষণ, চেকলিস্ট যাচাই এবং প্রস্তুতিমূলক খসড়া দলিল প্রিন্ট।',
+      title: isBn ? 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট ও খসড়া দলিল' : 'Deed Registry Appointment & Drafts',
+      desc: isBn
+        ? 'সাব-রেজিস্ট্রি অফিসের কাউন্টার স্লট সংরক্ষণ, চেকলিস্ট যাচাই এবং প্রস্তুতিমূলক খসড়া দলিল প্রিন্ট।'
+        : 'Reserve counter slots at the Sub-Registry office, verify statutory document checklists, and generate draft deeds.',
       link: '/citizen/registration-checklist',
-      badge: 'নিবন্ধন প্রস্তুতি',
+      badge: isBn ? 'নিবন্ধন প্রস্তুতি' : 'Registry Preparation',
       icon: Building2,
       color: 'bg-purple-50 text-purple-800 border-purple-200',
     },
   ];
 
   return (
-    <div className="font-bengali min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className={`${isBn ? 'font-bengali' : 'font-sans'} min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-10 px-4 sm:px-6 lg:px-8 xl:px-10 w-full transition-colors`}>
       <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
         <span className="text-teal-700 font-bold text-xs uppercase tracking-wider">
-          নাগরিক সেবা নির্দেশিকা
+          {isBn ? 'নাগরিক সেবা নির্দেশিকা' : 'Citizen Services Directory'}
         </span>
         <h1 className="text-3xl font-extrabold text-slate-900">
-          ভূমিসাথী সকল ডিজিটাল ভূমি সেবা
+          {isBn ? 'ভূমিসাথী সকল ডিজিটাল ভূমি সেবা' : 'All Digital Land Governance Services'}
         </h1>
         <p className="text-xs sm:text-sm text-slate-600">
-          জমি অনুসন্ধান, স্বত্ব যাচাইকরণ, কর পরিশোধ, দলিল রেজিস্ট্রি এবং স্বয়ংক্রিয় ই-নামজারি কার্যক্রমসমূহ
+          {isBn
+            ? 'জমি অনুসন্ধান, স্বত্ব যাচাইকরণ, কর পরিশোধ, দলিল রেজিস্ট্রি এবং স্বয়ংক্রিয় ই-নামজারি কার্যক্রমসমূহ'
+            : 'Land record lookups, pre-purchase risk audits, tax clearance, smart registration, and automated e-mutation'}
         </p>
       </div>
 
@@ -103,7 +119,7 @@ export const ServicesPage: React.FC = () => {
                 to={s.link}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-gov-blue hover:text-slate-950 transition border-t pt-3"
               >
-                <span>সেবা গ্রহণ করুন</span>
+                <span>{isBn ? 'সেবা গ্রহণ করুন' : 'Access Service'}</span>
                 <ArrowRight size={14} />
               </Link>
             </div>
@@ -113,3 +129,5 @@ export const ServicesPage: React.FC = () => {
     </div>
   );
 };
+
+export default ServicesPage;

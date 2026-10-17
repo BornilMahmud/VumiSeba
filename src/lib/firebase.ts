@@ -39,6 +39,8 @@ export const isFirebaseConfigured = (): boolean => {
   return Boolean(
     firebaseConfig.apiKey &&
     firebaseConfig.apiKey.trim().length > 10 &&
+    !firebaseConfig.apiKey.includes('your_firebase_api_key_here') &&
+    !firebaseConfig.apiKey.includes('placeholder') &&
     firebaseConfig.projectId === 'landtech-e5773'
   );
 };
@@ -52,7 +54,11 @@ let analytics: Analytics | null = null;
 let initError: string | null = null;
 
 try {
-  if (firebaseConfig.apiKey && firebaseConfig.apiKey.trim().length > 0) {
+  if (
+    firebaseConfig.apiKey &&
+    firebaseConfig.apiKey.trim().length > 10 &&
+    !firebaseConfig.apiKey.includes('your_firebase_api_key_here')
+  ) {
     if (!getApps().length) {
       app = initializeApp(firebaseConfig);
     } else {

@@ -149,17 +149,23 @@ export const SellLandPage: React.FC = () => {
                     onClick={() => handleSelectParcel(h.parcel.id)}
                     className={`p-3.5 rounded-lg border cursor-pointer transition ${
                       isSelected
-                        ? 'border-gov-blue bg-blue-50/50 ring-1 ring-gov-blue'
-                        : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
+                        ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50/80 dark:bg-[#0c1427] ring-1 ring-indigo-500/40 shadow-sm'
+                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 hover:bg-slate-100 dark:hover:bg-slate-800/50'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <strong className="text-slate-900 text-xs">দাগ নং {h.parcel.dag_no}</strong>
-                      <span className="text-[10px] bg-white px-2 py-0.5 rounded border font-mono">
+                      <strong className={`text-xs ${isSelected ? 'text-indigo-950 dark:text-white' : 'text-slate-900 dark:text-slate-100'}`}>
+                        দাগ নং {h.parcel.dag_no}
+                      </strong>
+                      <span className={`text-[10px] px-2 py-0.5 rounded border font-mono ${
+                        isSelected
+                          ? 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-900 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700'
+                          : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                      }`}>
                         খতিয়ান: {h.ownership.khatian_ref || h.parcel.khatian_no}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-600">
+                    <p className={`text-[11px] ${isSelected ? 'text-slate-700 dark:text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
                       মৌজা: {h.parcel.mouza} | আমার মোট অংশ: {h.ownership.area_decimal} শতক ({(h.ownership.share_portion * 100).toFixed(1)}%)
                     </p>
                   </div>

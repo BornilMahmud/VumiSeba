@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { useTheme } from '../../context/ThemeContext';
 import {
   Menu,
   X,
@@ -9,21 +11,66 @@ import {
   Search,
   ShieldCheck,
   ChevronDown,
-  User,
-  LogOut,
   Building,
   HelpCircle,
-  FileCheck,
   Compass,
+  FileText,
+  BadgeCheck,
+  Landmark,
+  Sun,
+  Moon,
+  LogOut,
 } from 'lucide-react';
+import { getUserAvatarUrl } from '../../utils/userUtils';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
   const { user, logout, isDemoSession } = useAuth();
   const { unreadCount } = useNotifications();
+  const avatarUrl = getUserAvatarUrl(user);
+  const { language, toggleLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Close dropdown on outside click or clicking other navbar elements
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
+        setServicesDropdown(false);
+      }
+    };
+
+    if (servicesDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [servicesDropdown]);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setServicesDropdown(false);
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setServicesDropdown(false);
+      }
+    };
+    if (servicesDropdown) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [servicesDropdown]);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -42,220 +89,350 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-[33px] z-40 shadow-gov-sm font-bengali">
+    <header className="navbar bg-white/90 dark:bg-transparent backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800/40 sticky top-0 z-40 transition-colors duration-200 shadow-none">
       {/* Top Ministry Banner */}
-      <div className="bg-gov-navy text-white text-[11px] py-1 px-4 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>গণপ্রজাতন্ত্রী বাংলাদেশ সরকার | ভূমি মন্ত্রণালয় ও নিবন্ধন পরিদপ্তর ডিজিটাল উদ্যোগ</span>
+      <div className="gov-top-banner bg-slate-900/95 dark:bg-transparent text-slate-200 text-[10.5px] sm:text-[11px] py-1 px-3 sm:px-4 border-b border-slate-800/60 dark:border-slate-800/30">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 shrink-0"></span>
+            <span className="font-medium text-slate-300 truncate">
+              <span className="sm:hidden">
+                {language === 'bn'
+                  ? 'বাংলাদেশ সরকার | ভূমি মন্ত্রণালয়'
+                  : 'Govt. of Bangladesh | Ministry of Land'}
+              </span>
+              <span className="hidden sm:inline">
+                {t('gov.title', 'গণপ্রজাতন্ত্রী বাংলাদেশ সরকার | ভূমি মন্ত্রণালয় ও নিবন্ধন পরিদপ্তর', 'Government of Bangladesh | Ministry of Land')}
+              </span>
+            </span>
           </div>
-          <div className="flex items-center gap-4 text-slate-300">
-            <span>হেল্পলাইন: <strong className="text-white font-mono">১৬১২২</strong> (টোল ফ্রি)</span>
-            <span className="hidden md:inline">ই-মেইল: support@land.gov.bd</span>
+
+          <div className="flex items-center gap-2 sm:gap-3 text-slate-300 shrink-0 whitespace-nowrap text-[10px] sm:text-[11px]">
+            <span className="font-medium">
+              <span className="text-slate-400">{language === 'bn' ? 'হেল্পলাইন: ' : 'Helpline: '}</span>
+              <strong className="text-emerald-400 font-bold">{language === 'bn' ? '১৬১২২' : '16122'}</strong>
+              <span className="hidden sm:inline text-slate-400"> ({language === 'bn' ? 'টোল ফ্রি' : 'Toll Free'})</span>
+            </span>
+            <span className="hidden md:inline text-slate-600">|</span>
+            <span className="hidden md:inline text-slate-400">support@land.gov.bd</span>
           </div>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Main Navbar Bar */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Portal Identity */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gov-blue text-white flex items-center justify-center font-bold text-xl shadow-md group-hover:bg-slate-900 transition">
+          {/* Logo & Identity */}
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-xl border border-emerald-500/30 shrink-0">
               🏛️
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xl font-bold text-slate-900 tracking-tight">ভূমিসেবা</span>
-                <span className="text-[10px] bg-teal-100 text-teal-800 font-semibold px-1.5 py-0.5 rounded border border-teal-300">
-                  স্মার্ট ল্যান্ডটেক
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                  {t('brand.name', 'ভূমিসেবা', 'VumiSeba')}
+                </span>
+                <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/60">
+                  {t('brand.subtitle', 'স্মার্ট ল্যান্ডটেক', 'Smart LandTech')}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 hidden sm:block">
-                নাগরিক ভূমি সেবা, রেকর্ড যাচাই ও ই-নামজারি
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block font-medium whitespace-nowrap">
+                {t('brand.tagline', 'স্মার্ট ডিজিটাল ভূমি সেবা ও ই-নামজারি', 'Smart Land Services & E-Mutation')}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-medium">
             <Link
               to="/"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition ${
-                isActive('/') ? 'text-gov-blue font-bold bg-blue-50' : 'text-slate-700 hover:text-gov-blue hover:bg-slate-50'
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+                isActive('/')
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              হোম
+              {t('nav.home', 'হোম', 'Home')}
             </Link>
 
             <Link
               to="/search-land"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition flex items-center gap-1 ${
-                isActive('/search-land') ? 'text-gov-blue font-bold bg-blue-50' : 'text-slate-700 hover:text-gov-blue hover:bg-slate-50'
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+                isActive('/search-land')
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <Search size={15} />
-              জমি খুঁজুন
+              <span>{t('nav.searchLand', 'জমি খুঁজুন', 'Search Land')}</span>
             </Link>
 
             <Link
               to="/verify-land"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 isActive('/verify-land')
-                  ? 'text-gov-blue font-bold bg-blue-50'
-                  : 'text-slate-700 hover:text-gov-blue hover:bg-slate-50'
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <ShieldCheck size={15} className="text-teal-600" />
-              কেনার আগে যাচাই
+              <span>{t('nav.verifyLand', 'কেনার আগে যাচাই', 'Verify Land')}</span>
             </Link>
 
             <Link
               to="/how-it-works"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition flex items-center gap-1 ${
-                isActive('/how-it-works') ? 'text-gov-blue font-bold bg-blue-50' : 'text-slate-700 hover:text-gov-blue hover:bg-slate-50'
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+                isActive('/how-it-works')
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <Compass size={15} />
-              কীভাবে কাজ করে
+              <span>{t('nav.howItWorks', 'কীভাবে কাজ করে', 'How It Works')}</span>
             </Link>
 
             {/* Services Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={servicesRef}>
               <button
                 onClick={() => setServicesDropdown(!servicesDropdown)}
-                className="px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:text-gov-blue hover:bg-slate-50 transition flex items-center gap-1"
+                className={`px-3 py-1.5 rounded-lg whitespace-nowrap text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent transition-colors flex items-center gap-1 ${
+                  servicesDropdown ? 'bg-slate-100/80 dark:bg-slate-800/80 text-emerald-700 dark:text-emerald-400' : ''
+                }`}
+                aria-expanded={servicesDropdown}
+                aria-haspopup="true"
               >
-                <span>সেবাসমূহ</span>
-                <ChevronDown size={14} />
+                <span>{t('nav.services', 'সেবাসমূহ', 'Services')}</span>
+                <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${servicesDropdown ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} />
               </button>
 
               {servicesDropdown && (
                 <div
-                  onMouseLeave={() => setServicesDropdown(false)}
-                  className="absolute left-0 mt-1 w-56 bg-white rounded-lg shadow-gov-lg border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-1"
+                  className="absolute left-0 mt-1 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-card-hover border border-slate-200 dark:border-slate-800 p-2 z-50 animate-in fade-in slide-in-from-top-1"
                 >
                   <Link
                     to="/services"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-50 border-b"
+                    className="block px-3 py-2.5 rounded-lg text-xs font-bold text-slate-900 dark:text-slate-100 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors border-b border-slate-100 dark:border-slate-800"
                   >
-                    সকল ভূমি সেবার তালিকা
+                    {language === 'en' ? 'All Land Services Directory' : 'সকল ভূমি সেবার তালিকা'}
                   </Link>
                   <Link
                     to="/citizen/sell"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50"
+                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                   >
-                    জমি বিক্রির আবেদন
+                    {language === 'en' ? 'Apply to Sell Land' : 'জমি বিক্রির আবেদন'}
                   </Link>
                   <Link
                     to="/citizen/tax"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50"
+                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                   >
-                    ভূমি উন্নয়ন কর ও দাখিলা
+                    {language === 'en' ? 'Land Development Tax & Dakhila' : 'ভূমি উন্নয়ন কর ও দাখিলা'}
                   </Link>
                   <Link
                     to="/citizen/mutation"
                     onClick={() => setServicesDropdown(false)}
-                    className="block px-4 py-2 text-xs text-slate-700 hover:bg-slate-50"
+                    className="block px-3 py-2 rounded-lg text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                   >
-                    ই-নামজারি ট্র্যাকিং
+                    {language === 'en' ? 'E-Mutation Status Tracking' : 'ই-নামজারি ট্র্যাকিং'}
                   </Link>
                 </div>
               )}
             </div>
 
             <Link
-              to="/help"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition flex items-center gap-1 ${
-                isActive('/help') ? 'text-gov-blue font-bold bg-blue-50' : 'text-slate-700 hover:text-gov-blue hover:bg-slate-50'
+              to={user && user.role === 'citizen' ? '/citizen/help' : '/help'}
+              className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+                isActive('/help') || isActive('/citizen/help')
+                  ? 'text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/80 dark:bg-transparent'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-white/5 dark:bg-transparent'
               }`}
             >
-              <HelpCircle size={15} />
-              সহায়তা ও প্রশ্নোত্তর
+              <span>{t('nav.help', 'সহায়তা ও এফএকিউ', 'Help & FAQ')}</span>
             </Link>
           </nav>
 
-          {/* Right Action Menu: User Dashboard Shortcut / Login */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right Action Menu: Theme & Lang Switchers + User Dashboard Shortcut / Login */}
+          <div className="hidden lg:flex items-center gap-2.5">
+            {/* Theme Toggle Button - Icons Only */}
+            <button
+              onClick={toggleTheme}
+              className="h-9 w-9 inline-flex items-center justify-center rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent transition active:scale-95 cursor-pointer"
+              title={theme === 'dark' ? (language === 'en' ? 'Switch to Light Theme' : 'লাইট থিম চালু করুন') : (language === 'en' ? 'Switch to Dark Theme' : 'ডার্ক থিম চালু করুন')}
+              aria-label="Toggle dark/light theme"
+            >
+              {theme === 'dark' ? (
+                <Sun size={19} className="text-amber-400" />
+              ) : (
+                <Moon size={19} className="text-slate-600 dark:text-slate-300" />
+              )}
+            </button>
+
+            {/* Language Switcher Button - Same height as other buttons */}
+            <button
+              onClick={toggleLanguage}
+              className="h-9 px-3 text-xs font-bold rounded-lg border border-slate-300 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent hover:text-emerald-600 dark:hover:text-emerald-400 inline-flex items-center justify-center transition active:scale-95 cursor-pointer"
+              title={language === 'bn' ? 'Switch to English' : 'বাংলায় দেখুন'}
+              aria-label="Toggle language"
+            >
+              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
+            </button>
+
+            <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 mx-0.5" />
+
             {user ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 sm:gap-2.5">
                 {/* Notification Bell */}
                 <Link
                   to={user.role === 'citizen' ? '/citizen/notifications' : '#'}
-                  className="relative p-2 text-slate-600 hover:text-gov-blue rounded-full hover:bg-slate-100 transition"
+                  className="h-9 w-9 inline-flex items-center justify-center relative text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent transition"
                   title="বিজ্ঞপ্তি"
                 >
                   <Bell size={18} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-red-600 text-white text-[10px] flex items-center justify-center font-bold font-mono">
+                    <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-rose-600 text-white text-[10px] flex items-center justify-center font-bold font-mono">
                       {unreadCount}
                     </span>
                   )}
                 </Link>
 
                 {isDemoSession && (
-                  <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
+                  <span className="h-9 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 text-[11px] font-bold px-2.5 rounded-full inline-flex items-center gap-1">
                     <span>⚠️</span>
-                    <span>নমুনা অ্যাকাউন্ট</span>
+                    <span className="hidden xl:inline">{t('nav.demoAccount', 'নমুনা অ্যাকাউন্ট', 'Demo Account')}</span>
                   </span>
                 )}
+
+                {/* Profile Name & Photo Widget */}
+                <Link
+                  to={
+                    user.role === 'citizen'
+                      ? '/citizen/profile'
+                      : user.role === 'union_officer'
+                      ? '/office/union/profile'
+                      : user.role === 'ac_land'
+                      ? '/office/ac-land/profile'
+                      : user.role === 'sub_registrar'
+                      ? '/office/registry/profile'
+                      : '/admin/profile'
+                  }
+                  className="flex items-center gap-2 px-2.5 py-1 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800 transition group cursor-pointer"
+                  title={language === 'bn' ? 'প্রোফাইল ও সেটিংস' : 'Profile & Settings'}
+                >
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors truncate max-w-[120px] sm:max-w-[150px]">
+                      {language === 'bn' ? (user.name_bn || 'ব্যবহারকারী') : (user.name_en || 'User')}
+                    </p>
+                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold leading-tight">
+                      {user.role === 'citizen'
+                        ? (language === 'bn' ? 'নাগরিক' : 'Citizen')
+                        : user.role === 'union_officer'
+                        ? (language === 'bn' ? 'ইউনিয়ন কর্মকর্তা' : 'Union Officer')
+                        : user.role === 'ac_land'
+                        ? (language === 'bn' ? 'এসি ল্যান্ড' : 'AC Land')
+                        : user.role === 'sub_registrar'
+                        ? (language === 'bn' ? 'সাব-রেজিস্ট্রার' : 'Sub-Registrar')
+                        : (language === 'bn' ? 'সুপার অ্যাডমিন' : 'Super Admin')}
+                    </p>
+                  </div>
+                  <div className="relative shrink-0">
+                    <img
+                      src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                      alt={user.name_bn || 'User'}
+                      className="w-8 h-8 rounded-xl object-cover ring-2 ring-emerald-500/40 shadow-2xs group-hover:scale-105 transition-transform"
+                    />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
+                  </div>
+                </Link>
 
                 {/* Dashboard Button */}
                 <button
                   onClick={handleDashboardRedirect}
-                  className="inline-flex items-center gap-2 bg-gov-blue hover:bg-slate-900 text-white px-4 py-2 rounded-md text-sm font-medium shadow-sm transition"
+                  className="h-9 inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-3.5 rounded-lg text-xs font-bold shadow-xs hover:shadow transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                 >
-                  <Building size={16} />
+                  <Building size={14} />
                   <span>
                     {user.role === 'citizen'
-                      ? 'নাগরিক ড্যাশবোর্ড'
+                      ? (language === 'en' ? 'Dashboard' : 'ড্যাশবোর্ড')
                       : user.role === 'union_officer'
-                      ? 'ইউনিয়ন অফিস'
+                      ? (language === 'en' ? 'Union' : 'ইউনিয়ন')
                       : user.role === 'ac_land'
-                      ? 'এসি ল্যান্ড কোর্ট'
+                      ? (language === 'en' ? 'AC Land' : 'এসি ল্যান্ড')
                       : user.role === 'sub_registrar'
-                      ? 'সাব-রেজিস্ট্রি'
-                      : 'প্রশাসনিক প্যানেল'}
+                      ? (language === 'en' ? 'Sub-Registry' : 'সাব-রেজিস্ট্রি')
+                      : (language === 'en' ? 'Admin' : 'অ্যাডমিন')}
                   </span>
+                </button>
+
+                {/* Direct Logout Button */}
+                <button
+                  onClick={async () => {
+                    await logout();
+                    navigate('/login');
+                  }}
+                  className="h-9 inline-flex items-center gap-1 px-2.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
+                  title={t('nav.logout', 'লগআউট', 'Logout')}
+                >
+                  <LogOut size={14} />
+                  <span className="hidden xl:inline">{t('nav.logout', 'লগআউট', 'Logout')}</span>
                 </button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-3.5 py-1.5 text-sm font-medium text-gov-blue hover:bg-blue-50 rounded-md transition"
+                  className="h-9 px-4 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent rounded-lg inline-flex items-center justify-center transition"
                 >
-                  লগইন
+                  {t('nav.login', 'লগইন', 'Login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="px-3.5 py-1.5 text-sm font-medium bg-gov-blue hover:bg-slate-900 text-white rounded-md shadow-sm transition"
+                  className="h-9 px-4 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-xs hover:shadow inline-flex items-center justify-center transition transform hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  নিবন্ধন
+                  {t('nav.register', 'নিবন্ধন', 'Register')}
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile Menu Action Area */}
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
+            {/* Theme Toggle Button - Icons Only */}
+            <button
+              onClick={toggleTheme}
+              className="h-8 w-8 inline-flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent rounded-lg transition active:scale-95 cursor-pointer"
+              title="Toggle theme"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun size={18} className="text-amber-400" />
+              ) : (
+                <Moon size={18} className="text-slate-600 dark:text-slate-300" />
+              )}
+            </button>
+
+            {/* Language Switcher Button - Language Name Only, No Icons */}
+            <button
+              onClick={toggleLanguage}
+              className="h-8 px-2.5 text-xs font-bold rounded-md border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent inline-flex items-center justify-center transition active:scale-95 cursor-pointer"
+              title="Toggle language"
+              aria-label="Toggle language"
+            >
+              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
+            </button>
+
             {user && (
               <button
                 onClick={handleDashboardRedirect}
-                className="bg-gov-blue text-white px-3 py-1.5 rounded text-xs font-semibold"
+                className="h-8 bg-emerald-600 text-white px-2.5 rounded-lg text-xs font-bold shadow-xs inline-flex items-center justify-center"
               >
-                ড্যাশবোর্ড
+                {t('nav.dashboard', 'ড্যাশবোর্ড', 'Dashboard')}
               </button>
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md"
+              className="h-8 w-8 inline-flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 dark:bg-transparent rounded-lg transition"
+              aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
@@ -263,70 +440,100 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-2 animate-in fade-in slide-in-from-top-2">
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-3 pb-6 space-y-2 animate-in fade-in slide-in-from-top-2">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-sm font-medium text-slate-800 hover:bg-slate-100"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
-            হোম
+            {t('nav.home', 'হোম', 'Home')}
           </Link>
           <Link
             to="/search-land"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-sm font-medium text-slate-800 hover:bg-slate-100"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
-            জমি খুঁজুন
+            {t('nav.searchLand', 'জমি খুঁজুন', 'Search Land')}
           </Link>
           <Link
             to="/verify-land"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-sm font-medium text-slate-800 hover:bg-slate-100"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
-            কেনার আগে যাচাই
+            {t('nav.verifyLand', 'কেনার আগে যাচাই', 'Verify Land')}
           </Link>
           <Link
             to="/services"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-sm font-medium text-slate-800 hover:bg-slate-100"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
-            সেবাসমূহ
+            {t('nav.services', 'সেবাসমূহ', 'Services')}
           </Link>
           <Link
             to="/how-it-works"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-sm font-medium text-slate-800 hover:bg-slate-100"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
-            কীভাবে কাজ করে
+            {t('nav.howItWorks', 'কীভাবে কাজ করে', 'How It Works')}
           </Link>
           <Link
-            to="/help"
+            to={user && user.role === 'citizen' ? '/citizen/help' : '/help'}
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-md text-sm font-medium text-slate-800 hover:bg-slate-100"
+            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
           >
-            সহায়তা
+            {t('nav.help', 'সহায়তা', 'Help & FAQ')}
           </Link>
 
-          <div className="border-t pt-3 mt-2">
+          <div className="border-t border-slate-200 dark:border-slate-800 pt-3 mt-2">
             {user ? (
               <div className="space-y-2">
+                <Link
+                  to={
+                    user.role === 'citizen'
+                      ? '/citizen/profile'
+                      : user.role === 'union_officer'
+                      ? '/office/union/profile'
+                      : user.role === 'ac_land'
+                      ? '/office/ac-land/profile'
+                      : user.role === 'sub_registrar'
+                      ? '/office/registry/profile'
+                      : '/admin/profile'
+                  }
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
+                >
+                  <img
+                    src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                    alt="User"
+                    className="w-10 h-10 rounded-xl object-cover ring-2 ring-emerald-500/50 shrink-0"
+                  />
+                  <div className="overflow-hidden min-w-0 flex-1">
+                    <p className="font-bold text-slate-900 dark:text-white text-xs truncate">
+                      {language === 'bn' ? (user.name_bn || 'ব্যবহারকারী') : (user.name_en || 'User')}
+                    </p>
+                    <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
+                      {user.role === 'citizen' ? (user.citizen_id || 'নাগরিক প্রোফাইল') : (user.designation_bn || user.role)}
+                    </p>
+                  </div>
+                  <span className="text-xs text-emerald-600 font-bold shrink-0">প্রোফাইল ›</span>
+                </Link>
                 <button
                   onClick={() => {
                     handleDashboardRedirect();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full text-center bg-gov-blue text-white py-2 rounded-md text-sm font-semibold"
+                  className="w-full text-center bg-emerald-600 text-white py-2.5 rounded-lg text-sm font-bold shadow-xs"
                 >
-                  আমার ড্যাশবোর্ড
+                  {t('nav.dashboard', 'আমার ড্যাশবোর্ড', 'My Dashboard')}
                 </button>
                 <button
                   onClick={() => {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full text-center text-red-600 py-1.5 text-xs font-semibold"
+                  className="w-full text-center text-rose-600 py-2 text-xs font-semibold"
                 >
-                  লগআউট
+                  {t('nav.logout', 'লগআউট', 'Logout')}
                 </button>
               </div>
             ) : (
@@ -334,16 +541,16 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2 border rounded-md text-sm font-medium text-slate-800"
+                  className="text-center py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
-                  লগইন
+                  {t('nav.login', 'লগইন', 'Login')}
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2 bg-gov-blue text-white rounded-md text-sm font-medium"
+                  className="text-center py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-semibold shadow-xs"
                 >
-                  নিবন্ধন
+                  {t('nav.register', 'নিবন্ধন', 'Register')}
                 </Link>
               </div>
             )}

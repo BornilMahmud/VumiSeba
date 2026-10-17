@@ -1,0 +1,324 @@
+Use the `project-knowledge-maintainer` skill to review this completed change.
+
+Inspect the actual code diff and update all relevant files in `info/`, including feature status, architecture, routes, data model, development guide, known issues, QA results, changelog, and roadmap where applicable.
+
+Requirements:
+- Base every update on verified implementation evidence.
+- Add or update tests where appropriate, but do not claim they passed unless you ran them.
+- Record any remaining defects, risks, and unverified behavior.
+- Keep the documentation index and cross-references accurate.
+- Do not overwrite unrelated documentation or include secrets.
+- Do not implement unrelated improvements.
+
+Finally, report the files changed, checks actually executed, documentation updates, and remaining issues.
+
+
+
+
+
+Perform a comprehensive product, UI/UX, engineering, security, and QA audit of the current project.
+
+Read the relevant `info/` documentation, inspect the actual source code, and verify the current implementation.
+
+Review:
+1. Product completeness and requirements coverage.
+2. UI consistency, responsive design, accessibility, and usability.
+3. Frontend/backend integration and broken workflows.
+4. Database integrity, authentication, authorization, and input validation.
+5. Error handling, performance, maintainability, and reliability.
+6. Test coverage and release readiness.
+7. Deployment configuration and operational risks.
+8. Missing features, technical debt, and future opportunities.
+
+Create a dated report in `info/REVIEWS/` and update `info/KNOWN_ISSUES_AND_TECH_DEBT.md`, `info/QA_AND_TESTING.md`, and `info/ROADMAP_AND_FUTURE_IMPROVEMENTS.md` as appropriate.
+
+Prioritize findings by severity and impact. Include concrete evidence, affected file paths, reproduction steps, suggested fixes, and validation criteria.
+
+Do not modify application code during this audit. Do not invent bugs, metrics, or test results. Finish with a prioritized action plan and a clear distinction between verified defects, potential risks, and optional improvements.
+
+
+
+# MASTER PROMPT: GENERATE A COMPLETE PROJECT INTELLIGENCE REPORT
+
+Act as a Senior Software Architect, Product Manager, Lead Developer, QA Engineer, Security Analyst, UI/UX Reviewer, DevOps Engineer, and Technical Documentation Specialist.
+
+## OBJECTIVE
+
+Analyze my entire existing project and produce ONE comprehensive, self-contained Project Intelligence Report that explains everything an external AI needs to understand the project and recommend meaningful improvements.
+
+I want to export this report and share it with ChatGPT, Claude, Gemini, or any other AI that does not have access to my repository.
+
+The report must provide enough verified information for another AI to understand:
+- What the project is and what problem it solves.
+- What the website or application actually does.
+- How every major feature works.
+- How the codebase is organized.
+- Which technologies, frameworks, libraries, and databases are used.
+- How the frontend, backend, APIs, and database interact.
+- What has been implemented, what is incomplete, and what is broken.
+- What technical, design, security, and business problems exist.
+- What improvements could make the project more useful, professional, scalable, maintainable, and commercially viable.
+
+**Do not start implementing improvements. Your task is analysis, documentation, and report generation only.**
+
+## PHASE 1 — INSPECT THE ENTIRE PROJECT
+
+Inspect the repository before writing the report.
+
+Examine all relevant:
+- README files and existing documentation.
+- Source code, pages, components, layouts, and application entry points.
+- Backend logic, services, APIs, routes, and business logic.
+- Database schema, migrations, relationships, indexes, and queries.
+- Authentication, authorization, user roles, and permissions.
+- Frontend design, navigation, forms, dashboards, and user workflows.
+- Package manifests, lockfiles, configuration, scripts, and dependencies.
+- Environment variable names and configuration requirements.
+- Tests, linting, type checking, build configuration, and CI/CD.
+- Deployment and hosting configuration.
+- Existing TODOs, FIXMEs, unfinished features, and known technical debt.
+
+Inspect nested directories where relevant. Exclude generated folders, dependency directories, build artifacts, caches, and binary files unless they contain essential project information.
+
+Do not rely on the README alone. Verify important claims against the implementation.
+
+If the repository is too large to inspect completely in one pass, work through it systematically and record which directories and components were inspected and which remain unexamined.
+
+## PHASE 2 — DOCUMENT THE PROJECT IDENTITY
+
+Explain:
+1. Project name and type.
+2. Primary purpose and problem statement.
+3. Target users and stakeholders.
+4. Main value proposition.
+5. Major user journeys.
+6. Main use cases.
+7. Business or organizational goals, if known.
+8. Current development stage.
+9. Known constraints and assumptions.
+10. Existing differentiators and potential competitive advantages.
+
+Clearly distinguish repository evidence from assumptions or unanswered questions.
+
+## PHASE 3 — CREATE A COMPLETE FEATURE INVENTORY
+
+Identify every significant feature, module, and user-facing workflow.
+
+For each feature, provide:
+- Feature name and purpose.
+- User benefit.
+- How it works.
+- Relevant pages, routes, components, functions, or modules.
+- Backend and database dependencies.
+- Authentication or permission requirements.
+- Validation and error handling.
+- Implementation status.
+- Known limitations and missing behavior.
+- Existing tests and verification status.
+
+Use these status labels:
+- Implemented — source evidence found.
+- Verified — behavior was actually tested.
+- Partial — some functionality is missing.
+- Planned — documented intention without confirmed implementation.
+- Broken — reproducible failure confirmed.
+- Unknown — insufficient evidence.
+
+Do not confuse the existence of code with proof that a feature works.
+
+## PHASE 4 — EXPLAIN THE TECHNICAL ARCHITECTURE
+
+Describe:
+- Programming languages and versions.
+- Frontend and backend frameworks.
+- Major libraries and their purposes.
+- Database and data access approach.
+- Authentication and session management.
+- API endpoints and application routes.
+- State management and data flow.
+- File storage and external integrations.
+- Environment configuration.
+- Build and deployment workflow.
+- Logging, error handling, and monitoring, if present.
+
+Include:
+- A repository directory map.
+- A module responsibility table.
+- A high-level architecture diagram using Mermaid.
+- A typical request-to-database-to-response flow.
+- A database entity relationship diagram if the schema supports one.
+
+Use actual names and paths from the repository. Never invent components, endpoints, database tables, or infrastructure.
+
+## PHASE 5 — DATABASE AND DATA FLOW
+
+Document:
+- Tables, entities, important fields, primary keys, and foreign keys.
+- Relationships and integrity constraints.
+- Major database operations.
+- Which features read or write which entities.
+- Important transactions and consistency requirements.
+- Data validation and error-handling behavior.
+- Potential duplication, missing constraints, or inefficient queries.
+
+Do not include actual customer records, private data, credentials, or secret values.
+
+## PHASE 6 — UI/UX AND PRODUCT EXPERIENCE
+
+Review the user-facing experience, including:
+- Page hierarchy and navigation.
+- Visual design consistency.
+- Responsive behavior across desktop, tablet, and mobile.
+- Typography, spacing, colors, and component reuse.
+- Forms, validation, loading states, and error messages.
+- Accessibility and keyboard navigation.
+- Empty states and first-time user experience.
+- User trust, clarity, and friction.
+- Missing or confusing workflows.
+
+Separate directly observed issues from recommendations that need visual or runtime verification.
+
+## PHASE 7 — ENGINEERING, SECURITY, AND QA REVIEW
+
+Assess the project for:
+- Bugs and edge cases.
+- Maintainability and architectural problems.
+- Code duplication and unnecessary complexity.
+- Input validation and output encoding.
+- Authentication and authorization weaknesses.
+- Injection, access control, session, and data exposure risks where applicable.
+- Database integrity and query performance.
+- Dependency and configuration risks.
+- Missing automated tests.
+- Build, deployment, and operational weaknesses.
+- Performance and scalability limitations.
+
+For each significant finding, provide:
+- Finding ID.
+- Category and severity.
+- Evidence and affected file paths.
+- Description.
+- Impact.
+- Reproduction steps, when confirmed.
+- Recommended resolution.
+- Verification method.
+- Confidence level.
+
+Severity: Critical, High, Medium, or Low.
+
+Never claim a vulnerability is confirmed without adequate evidence. Identify potential vulnerabilities as potential risks. Do not claim tests passed unless they were actually executed.
+
+## PHASE 8 — BUSINESS VALUE AND FUTURE POTENTIAL
+
+Analyze the project's practical value.
+
+Explain:
+- Who would benefit from the product.
+- Which real-world problems it could solve.
+- Potential use in businesses, institutions, or government, if relevant.
+- Possible monetization or sustainable operating models, where appropriate.
+- Features that could create a competitive advantage.
+- Potential partnerships or integrations.
+- Adoption barriers and operational risks.
+- Scalability opportunities.
+- Long-term product directions.
+
+Clearly label speculative ideas. Do not invent market research, revenue projections, customer demand, or government partnerships.
+
+## PHASE 9 — IMPROVEMENT OPPORTUNITIES
+
+Create a prioritized improvement backlog covering:
+- Critical bug fixes.
+- Security and privacy.
+- Missing core functionality.
+- UI/UX and accessibility.
+- Code quality and architecture.
+- Testing and reliability.
+- Performance.
+- Deployment and operations.
+- Automation and AI integration.
+- Business value and product differentiation.
+- Scalability and future capabilities.
+
+For each proposed improvement, specify:
+1. Improvement ID and title.
+2. Existing problem or opportunity.
+3. Evidence or reason.
+4. Proposed solution.
+5. Expected user or business benefit.
+6. Priority.
+7. Estimated effort: XS, S, M, L, or XL.
+8. Dependencies and risks.
+9. Acceptance criteria.
+10. How to test whether the improvement works.
+
+Rank improvements by impact, urgency, effort, dependencies, and confidence. Do not recommend adding technologies simply because they are popular.
+
+## PHASE 10 — GENERATE THE FINAL EXPORTABLE REPORT
+
+Create the following file in the project root:
+
+`PROJECT_INTELLIGENCE_REPORT.md`
+
+This must be a complete, self-contained report, not just an index or summary.
+
+Use this structure:
+
+1. Executive Summary
+2. Project Identity and Goals
+3. Target Users and Use Cases
+4. Technology Stack
+5. Repository Structure
+6. System Architecture
+7. Complete Feature Inventory
+8. User Flows
+9. Database and Data Model
+10. APIs, Routes, and Integrations
+11. Frontend and UI/UX Analysis
+12. Backend and Business Logic
+13. Development Setup and Commands
+14. Current Implementation Status
+15. Known Bugs and Incomplete Features
+16. Code Quality and Technical Debt
+17. Security and Privacy Assessment
+18. QA and Testing Status
+19. Performance and Reliability
+20. Deployment and Operations
+21. Business Value and Future Potential
+22. Prioritized Improvement Backlog
+23. Recommended Development Roadmap
+24. Important File References
+25. Assumptions, Unknowns, and Limitations
+26. Final Project Health Assessment
+27. Context for an External AI
+
+The final section must contain a concise handoff explaining the project's purpose, current state, key constraints, major risks, and how another AI should approach its recommendations.
+
+## REPORT QUALITY REQUIREMENTS
+
+- Use clear Markdown headings, tables, lists, and Mermaid diagrams where useful.
+- Include concrete file paths and actual implementation details.
+- Explain technical terminology where needed.
+- Avoid unnecessary repetition and generic filler.
+- Make the report useful without requiring access to the repository.
+- Include evidence for significant technical claims.
+- Separate facts, observations, hypotheses, and recommendations.
+- Identify any files, modules, or behaviors that could not be inspected.
+- Do not include secrets, API keys, passwords, private keys, or personal data.
+- Do not copy the contents of every source file into the report.
+- Do not modify application code or behavior.
+- Do not deploy, migrate databases, delete files, or install packages.
+- Do not fabricate test results, performance metrics, or implementation status.
+
+## FINAL VALIDATION
+
+Before finishing:
+1. Verify the report covers all 27 sections.
+2. Confirm important claims against the source code.
+3. Check for contradictory or unsupported statements.
+4. Ensure no secrets or private data were included.
+5. Ensure the report is saved at the exact requested path.
+6. If practical, create a companion `PROJECT_INTELLIGENCE_REPORT.txt` with the same core content for plain-text compatibility.
+7. Tell me which directories were inspected, which could not be inspected, and what verification was performed.
+
+Begin the audit now. Produce the report as the final deliverable. Do not begin implementing improvements until I review the report.

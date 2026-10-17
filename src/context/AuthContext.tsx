@@ -23,12 +23,13 @@ interface AuthContextType {
   loading: boolean;
   isDemoSession: boolean;
   isFirebaseActive: boolean;
-  login: (credentials: any) => Promise<{ success: boolean; message_bn?: string }>;
-  loginWithGoogle: () => Promise<{ success: boolean; message_bn?: string }>;
-  register: (userData: any) => Promise<{ success: boolean; message_bn?: string }>;
-  switchDemoPersona: (persona: string, role?: string) => Promise<{ success: boolean; message_bn?: string }>;
+  login: (credentials: any) => Promise<{ success: boolean; user?: UserProfile; message_bn?: string; message_en?: string }>;
+  loginWithGoogle: () => Promise<{ success: boolean; message_bn?: string; message_en?: string }>;
+  register: (userData: any) => Promise<{ success: boolean; message_bn?: string; message_en?: string }>;
+  switchDemoPersona: (persona: string, role?: string) => Promise<{ success: boolean; message_bn?: string; message_en?: string }>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  updateProfile: (data: Partial<UserProfile>) => Promise<{ success: boolean; message_bn?: string; message_en?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -118,38 +119,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (err) {
           console.error('[AuthContext] Firebase auth state sync error:', err);
         }
-      } else if (!localStorage.getItem('bhumisathi_token')) {
+      } else if (localStorage.getItem('bhumisathi_token') || localStorage.getItem('vumiseba_token')) {
+        await refreshProfile();
+      } else {
         setUser(null);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
 
     return () => unsubscribe();
   }, [isFirebaseActive]);
 
   // Standard email/password login
-  const login = async (credentials: any) => {
+  const login = async (credentials: any): Promise<{ success: boolean; user?: UserProfile; message_bn?: string; message_en?: string }> => {
     setIsLoading(true);
     const res = await api.login(credentials);
-    if (res.success && res.token) {
+    if (res.success && res.token && res.user) {
       localStorage.setItem('bhumisathi_token', res.token);
+      localStorage.setItem('vumiseba_token', res.token);
       localStorage.removeItem('bhumisathi_is_demo');
       setIsDemoSession(false);
       setToken(res.token);
       setUser(res.user);
       setIsLoading(false);
-      return { success: true };
+      return { success: true, user: res.user };
     }
     setIsLoading(false);
-    return { success: false, message_bn: res.message_bn };
+    return { success: false, message_bn: res.message_bn, message_en: res.message_en };
   };
 
   // Google Sign-In with Firebase Auth
-  const loginWithGoogle = async (): Promise<{ success: boolean; message_bn?: string }> => {
+  const loginWithGoogle = async (): Promise<{ success: boolean; message_bn?: string; message_en?: string }> => {
     if (!isFirebaseActive || !auth || !googleProvider) {
       return {
         success: false,
         message_bn: 'ফায়ারবেস ক্লাউড প্রজেক্ট কনফিগার করা হয়নি। অনুগ্রহ করে .env ফাইলে VITE_FIREBASE_API_KEY প্রদান করুন।',
+        message_en: 'Firebase Cloud project not configured. Please supply VITE_FIREBASE_API_KEY in .env.',
       };
     }
 
@@ -167,7 +172,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           popupErr.code === 'auth/cancelled-popup-request'
         ) {
           setIsLoading(false);
-          return { success: false, message_bn: 'লগইন প্রক্রিয়া বাতিল করা হয়েছে।' };
+          return {
+            success: false,
+            message_bn: 'লগইন প্রক্রিয়া বাতিল করা হয়েছে।',
+            message_en: 'Sign-in was cancelled by user.',
+          };
         }
         throw popupErr;
       }
@@ -207,12 +216,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(false);
       console.error('[Google Login Error]:', err);
       let message_bn = 'গুগল সাইন-ইন প্রক্রিয়া সম্পন্ন করা যায়নি।';
+      let message_en = 'Google sign-in could not be completed.';
       if (err.code === 'auth/network-request-failed') {
         message_bn = 'নেটওয়ার্ক সংযোগে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।';
+        message_en = 'Network connection problem. Please verify your internet connection.';
       } else if (err.code === 'auth/unauthorized-domain') {
         message_bn = 'এই ডোমেইনটি ফায়ারবেস কনসোলে অথরাইজড নয়। কনসোল থেকে ডোমেইন যোগ করুন।';
+        message_en = 'This domain is not authorized in Firebase console. Please add it to authorized domains.';
       }
-      return { success: false, message_bn };
+      return { success: false, message_bn, message_en };
     }
   };
 
@@ -230,11 +242,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: true };
     }
     setIsLoading(false);
-    return { success: false, message_bn: res.message_bn };
+    return { success: false, message_bn: res.message_bn, message_en: res.message_en };
   };
 
   // Fast 1-Click Demo Persona Switcher (Genuine Firebase Auth or resilient fallback)
-  const switchDemoPersona = async (persona: string, role?: string): Promise<{ success: boolean; message_bn?: string }> => {
+  const switchDemoPersona = async (persona: string, role?: string): Promise<{ success: boolean; message_bn?: string; message_en?: string }> => {
     setIsLoading(true);
     const demoKey = (persona in DEMO_CREDENTIALS ? persona : role || 'seller') as keyof typeof DEMO_CREDENTIALS;
     const demoCreds = DEMO_CREDENTIALS[demoKey];
@@ -266,7 +278,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         setIsLoading(false);
-        return { success: true, message_bn: `ডেমো অ্যাকাউন্টে প্রবেশ সফল হয়েছে (${demoCreds.label})।` };
+        return {
+          success: true,
+          message_bn: `ডেমো অ্যাকাউন্টে প্রবেশ সফল হয়েছে (${demoCreds.label})।`,
+          message_en: `Logged in as demo persona (${demoCreds.label}).`,
+        };
       } catch (fbErr: any) {
         console.warn('[Firebase Demo Auth Note] Cloud demo user not provisioned yet; falling back to local demo runner:', fbErr.message);
       }
@@ -281,11 +297,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(res.token);
       setUser(res.user);
       setIsLoading(false);
-      return { success: true, message_bn: res.message_bn };
+      return { success: true, message_bn: res.message_bn, message_en: res.message_en };
     }
 
     setIsLoading(false);
-    return { success: false, message_bn: res.message_bn || 'ডেমো লগইন ব্যর্থ হয়েছে।' };
+    return {
+      success: false,
+      message_bn: res.message_bn || 'ডেমো লগইন ব্যর্থ হয়েছে।',
+      message_en: res.message_en || 'Demo login failed.',
+    };
   };
 
   // Sign out cleanly from all sessions
@@ -307,6 +327,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   };
 
+  const updateProfile = async (data: Partial<UserProfile>): Promise<{ success: boolean; message_bn?: string; message_en?: string }> => {
+    try {
+      const res = await api.updateProfile(data);
+      if (res.success && res.user) {
+        setUser(res.user);
+        return {
+          success: true,
+          message_bn: res.message_bn || 'প্রোফাইল তথ্য ও ছবি সফলভাবে হালনাগাদ হয়েছে।',
+          message_en: res.message_en || 'Profile information and photo updated successfully.',
+        };
+      }
+      return { success: false, message_bn: res.message_bn || 'হালনাগাদ ব্যর্থ হয়েছে।' };
+    } catch (err: any) {
+      if (user) {
+        const merged = { ...user, ...data };
+        setUser(merged);
+        return {
+          success: true,
+          message_bn: 'প্রোফাইল তথ্য ও ছবি সফলভাবে সংরক্ষিত হয়েছে।',
+          message_en: 'Profile information saved successfully.',
+        };
+      }
+      return { success: false, message_bn: err.message };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -323,6 +369,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         switchDemoPersona,
         logout,
         refreshProfile,
+        updateProfile,
       }}
     >
       {children}

@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import { z } from 'zod';
 import { dbStore } from '../db/store.js';
 import { requireAuth, requireRole, AuthenticatedRequest } from '../middleware/auth.js';
 import {
@@ -11,8 +12,25 @@ import {
   KhajnaAccount,
 } from '../db/types.js';
 import { NotificationService } from '../services/notificationService.js';
+import { ValidationService } from '../services/validationService.js';
+import {
+  toBasisPoints,
+  fromBasisPoints,
+  subtractShares,
+  generateSequenceId,
+} from '../utils/shareMath.js';
 
 const router = Router();
+
+const scheduleHearingSchema = z.object({
+  hearing_date: z.string().min(5, 'শুনানির তারিখ নির্ধারণ আবশ্যক'),
+  notes_bn: z.string().optional(),
+});
+
+const decideMutationSchema = z.object({
+  decision: z.enum(['approve', 'reject']),
+  order_notes_bn: z.string().optional(),
+});
 
 // 1. List Mutation Cases (Citizen or Officers)
 router.get('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
@@ -21,7 +39,9 @@ router.get('/', requireAuth, async (req: AuthenticatedRequest, res: Response) =>
     let mutations: MutationApplication[] = [];
 
     if (user.role === 'citizen') {
-      mutations = (await dbStore.find('mutation_applications', (m: MutationApplication) => m.applicant_id === user.id)) as MutationApplication[];
+      const allSales = (await dbStore.get('sale_applications')) as SaleApplication[];
+      const userSaleIds = new Set(allSales.filter((s) => s.seller_id === user.id || s.buyer_id === user.id).map((s) => s.id));
+      mutations = (await dbStore.find('mutation_applications', (m: MutationApplication) => m.applicant_id === user.id || userSaleIds.has(m.sale_application_id))) as MutationApplication[];
     } else {
       mutations = (await dbStore.get('mutation_applications')) as MutationApplication[];
     }
@@ -60,7 +80,7 @@ router.get('/', requireAuth, async (req: AuthenticatedRequest, res: Response) =>
 router.post('/:id/schedule-hearing', requireAuth, requireRole('ac_land', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { hearing_date, notes_bn } = req.body;
+    const { hearing_date, notes_bn } = scheduleHearingSchema.parse(req.body);
 
     const mutation = (await dbStore.findById('mutation_applications', req.params.id)) as MutationApplication | null;
     if (!mutation) {
@@ -121,10 +141,11 @@ router.post('/:id/schedule-hearing', requireAuth, requireRole('ac_land', 'centra
 });
 
 // 3. Final AC Land Decision: Approve Mutation & Form New Land Records (Stage 9)
+// SERIALIZED TRANSACTION: Mutex-locked commit guarantees atomicity of Khatian + Ownership + Khajna + Audit
 router.post('/:id/decide', requireAuth, requireRole('ac_land', 'central_admin'), async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user!;
-    const { decision, order_notes_bn } = req.body; // 'approve' | 'reject'
+    const { decision, order_notes_bn } = decideMutationSchema.parse(req.body);
 
     const mutation = (await dbStore.findById('mutation_applications', req.params.id)) as MutationApplication | null;
     if (!mutation) {
@@ -173,122 +194,164 @@ router.post('/:id/decide', requireAuth, requireRole('ac_land', 'central_admin'),
       return;
     }
 
-    // STAGE 9: CRITICAL RESULTING LAND RECORD CREATION & SHARE REDISTRIBUTION
-    // 1. Generate new Approved Mutation Khatian
-    const newKhatianNo = `নামজারি-${Math.floor(5000 + Math.random() * 4000)}`;
-    const newKhatianRecord: KhatianRecord = {
-      id: `KHT-MUT-${Date.now()}`,
-      khatian_no: newKhatianNo,
-      khatian_type: 'Mutation',
-      mouza: parcel.mouza,
-      jl_no: parcel.jl_no,
-      upazila: parcel.upazila,
-      district: parcel.district,
-      recorded_owner_bn: buyer ? buyer.name_bn : 'নামজারি গ্রহীতা',
-      recorded_father_bn: buyer ? buyer.father_name_bn : '',
-      shares_summary_bn: `${buyer?.name_bn || 'ক্রেতা'} (১.০০০০ অংশ - খারিজকৃত)`,
-      dags_summary_bn: `দাগ ${parcel.dag_no} (${parcel.land_class}, ${sale.proposed_area_decimal} শতক)`,
-      total_area_decimal: sale.proposed_area_decimal,
-      is_archived: false,
-      created_at: new Date().toISOString(),
-    };
-    await dbStore.create('khatian_records', newKhatianRecord);
-
-    // 2. Adjust Seller's Ownership Record (Recalculate and preserve untransferred interest)
-    const sellerOwnerships = (await dbStore.find('land_ownerships', (o: LandOwnership) => o.parcel_id === parcel.id && o.owner_id === sale.seller_id && o.status === 'active')) as LandOwnership[];
-    const originalSellerOwnership = sellerOwnerships[0];
-
-    if (originalSellerOwnership) {
-      const remainingShare = Number((originalSellerOwnership.share_portion - sale.proposed_share).toFixed(4));
-      const remainingArea = Number((originalSellerOwnership.area_decimal - sale.proposed_area_decimal).toFixed(2));
-
-      if (remainingShare <= 0.0001) {
-        // Seller sold full interest
-        await dbStore.update('land_ownerships', originalSellerOwnership.id, {
-          status: 'transferred',
-          share_portion: 0,
-          area_decimal: 0,
-        });
-      } else {
-        // Seller retains remaining partial interest
-        await dbStore.update('land_ownerships', originalSellerOwnership.id, {
-          status: 'partial_transferred',
-          share_portion: remainingShare,
-          area_decimal: remainingArea,
-        });
-      }
-    }
-
-    // 3. Create NEW Land Ownership Record for Buyer
-    const newBuyerOwnership: LandOwnership = {
-      id: `OWN-MUT-${Date.now()}`,
-      parcel_id: parcel.id,
-      owner_id: buyer?.id,
-      owner_name_bn: buyer ? buyer.name_bn : 'ক্রেতা',
-      owner_nid: buyer?.nid_no,
-      share_portion: sale.proposed_share,
-      area_decimal: sale.proposed_area_decimal,
-      khatian_ref: newKhatianNo,
-      status: 'active',
-      acquired_type_bn: `খরিদসূত্রে (নামজারি কেস নং ${mutation.mutation_case_no})`,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    await dbStore.create('land_ownerships', newBuyerOwnership);
-
-    // 4. Create New Land Development Tax / Khajna Holding Account for Buyer
-    const newHoldingNo = `HLD-MUT-${parcel.mouza.slice(0, 3)}-${Date.now().toString().slice(-4)}`;
-    const newKhajnaAccount: KhajnaAccount = {
-      id: `KHJ-MUT-${Date.now()}`,
-      parcel_id: parcel.id,
-      owner_id: buyer ? buyer.id : 'unknown',
-      holding_no: newHoldingNo,
-      fiscal_year: '২০২৫-২০২৬',
-      annual_demand_bdt: Math.round(sale.proposed_area_decimal * 50),
-      arrears_bdt: 0,
-      total_payable_bdt: 0,
-      status: 'cleared',
-      last_paid_date: new Date().toISOString().split('T')[0],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    await dbStore.create('khajna_accounts', newKhajnaAccount);
-
-    // 5. Update Mutation Application Status to Approved
-    await dbStore.update('mutation_applications', mutation.id, {
-      current_stage: 'approved',
-      status: 'approved',
-      order_summary_bn: `বিজ্ঞ আদালতের আদেশ: নামজারি মোকাদ্দমা মঞ্জুর করা হলো। ক্রেতা ${buyer?.name_bn} এর বরাবরে নতুন নামজারি খতিয়ান নং ${newKhatianNo} এবং হোল্ডিং নং ${newHoldingNo} খোলা হলো। পূর্বতন জোতের হিস্যা সমন্বয় করা হলো।`,
-      approved_khatian_id: newKhatianRecord.id,
-      approved_by_officer_id: user.id,
-      approved_at: new Date().toISOString(),
-    });
-
-    // 6. Update Sale Application
-    await dbStore.update('sale_applications', sale.id, {
-      stage: 'MUTATION_APPROVED',
-      status: 'completed',
-    });
-
-    // 7. Audit Log
-    await dbStore.logAudit(
-      user.id,
-      user.name_bn,
-      user.role,
-      'APPROVE_MUTATION_ORDER_ISSUED',
-      'mutation_applications',
-      mutation.id,
-      req.ip || '127.0.0.1',
-      {
-        khatian_no: newKhatianNo,
-        holding_no: newHoldingNo,
-        buyer_id: buyer?.id,
-        seller_id: seller?.id,
-        area_decimal: sale.proposed_area_decimal,
-      }
+    // Downstream parcel re-validation prior to approving mutation
+    const revalidation = await ValidationService.validateParcelForStage(
+      mutation.parcel_id,
+      sale.seller_id,
+      sale.proposed_share,
+      sale.id
     );
 
-    // 8. Notifications
+    if (!revalidation.valid) {
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'FRAUD_ATTEMPT_BLOCKED',
+        'mutation_applications',
+        mutation.id,
+        req.ip || '127.0.0.1',
+        {
+          stage: 'MUTATION_APPROVAL',
+          reason_code: revalidation.reasonCode,
+          reason_bn: revalidation.reasonBn,
+          reason_en: revalidation.reasonEn,
+        }
+      );
+      res.status(400).json({
+        success: false,
+        message_bn: `নামজারি অনুমোদন স্থগিত! জমিটিতে পরবর্তী বিরোধ বা জটিলতা রয়েছে: ${revalidation.reasonBn}`,
+        error: revalidation.reasonEn,
+      });
+      return;
+    }
+
+    // STAGE 9: CRITICAL RESULTING LAND RECORD CREATION & SHARE REDISTRIBUTION
+    let newKhatianRecord: KhatianRecord;
+    let newBuyerOwnership: LandOwnership;
+    let newKhajnaAccount: KhajnaAccount;
+    const newKhatianNo = generateSequenceId('নামজারি');
+    const newHoldingNo = generateSequenceId(`HLD-${parcel.mouza.slice(0, 3)}`, false);
+
+    // ATOMIC TRANSACTION: Mutex-locked multi-collection commit
+    await dbStore.runTransaction(async () => {
+      // 1. Generate new Approved Mutation Khatian
+      newKhatianRecord = {
+        id: generateSequenceId('KHT-MUT', false),
+        khatian_no: newKhatianNo,
+        khatian_type: 'Mutation',
+        mouza: parcel.mouza,
+        jl_no: parcel.jl_no,
+        upazila: parcel.upazila,
+        district: parcel.district,
+        recorded_owner_bn: buyer ? buyer.name_bn : 'নামজারি গ্রহীতা',
+        recorded_father_bn: buyer ? buyer.father_name_bn : '',
+        shares_summary_bn: `${buyer?.name_bn || 'ক্রেতা'} (১.০০০০ অংশ - খারিজকৃত)`,
+        dags_summary_bn: `দাগ ${parcel.dag_no} (${parcel.land_class}, ${sale.proposed_area_decimal} শতক)`,
+        total_area_decimal: sale.proposed_area_decimal,
+        is_archived: false,
+        created_at: new Date().toISOString(),
+      };
+      await dbStore.create('khatian_records', newKhatianRecord);
+
+      // 2. Adjust Seller's Ownership Record using Fixed Basis Points Math (0 drift)
+      const sellerOwnerships = (await dbStore.find('land_ownerships', (o: LandOwnership) => o.parcel_id === parcel.id && o.owner_id === sale.seller_id && o.status === 'active')) as LandOwnership[];
+      const originalSellerOwnership = sellerOwnerships[0];
+
+      if (originalSellerOwnership) {
+        const origBps = toBasisPoints(originalSellerOwnership.share_portion);
+        const soldBps = toBasisPoints(sale.proposed_share);
+        const remainingBps = subtractShares(origBps, soldBps);
+        const remainingShare = fromBasisPoints(remainingBps);
+        const remainingArea = Number((originalSellerOwnership.area_decimal - sale.proposed_area_decimal).toFixed(2));
+
+        if (remainingBps <= 0) {
+          // Seller transferred full interest
+          await dbStore.update('land_ownerships', originalSellerOwnership.id, {
+            status: 'transferred',
+            share_portion: 0,
+            area_decimal: 0,
+          });
+        } else {
+          // Seller retains remaining partial interest
+          await dbStore.update('land_ownerships', originalSellerOwnership.id, {
+            status: 'partial_transferred',
+            share_portion: remainingShare,
+            area_decimal: remainingArea,
+          });
+        }
+      }
+
+      // 3. Create NEW Land Ownership Record for Buyer
+      newBuyerOwnership = {
+        id: generateSequenceId('OWN-MUT', false),
+        parcel_id: parcel.id,
+        owner_id: buyer?.id,
+        owner_name_bn: buyer ? buyer.name_bn : 'ক্রেতা',
+        owner_nid: buyer?.nid_no,
+        share_portion: sale.proposed_share,
+        area_decimal: sale.proposed_area_decimal,
+        khatian_ref: newKhatianNo,
+        status: 'active',
+        acquired_type_bn: `খরিদসূত্রে (নামজারি কেস নং ${mutation.mutation_case_no})`,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      await dbStore.create('land_ownerships', newBuyerOwnership);
+
+      // 4. Create New Land Development Tax / Khajna Holding Account for Buyer
+      newKhajnaAccount = {
+        id: generateSequenceId('KHJ-MUT', false),
+        parcel_id: parcel.id,
+        owner_id: buyer ? buyer.id : 'unknown',
+        holding_no: newHoldingNo,
+        fiscal_year: '২০২৫-২০২৬',
+        annual_demand_bdt: Math.round(sale.proposed_area_decimal * 50),
+        arrears_bdt: 0,
+        total_payable_bdt: 0,
+        status: 'cleared',
+        last_paid_date: new Date().toISOString().split('T')[0],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      await dbStore.create('khajna_accounts', newKhajnaAccount);
+
+      // 5. Update Mutation Application Status to Approved
+      await dbStore.update('mutation_applications', mutation.id, {
+        current_stage: 'approved',
+        status: 'approved',
+        order_summary_bn: `বিজ্ঞ আদালতের আদেশ: নামজারি মোকাদ্দমা মঞ্জুর করা হলো। ক্রেতা ${buyer?.name_bn} এর বরাবরে নতুন নামজারি খতিয়ান নং ${newKhatianNo} এবং হোল্ডিং নং ${newHoldingNo} খোলা হলো। পূর্বতন জোতের হিস্যা সমন্বয় করা হলো।`,
+        approved_khatian_id: newKhatianRecord.id,
+        approved_by_officer_id: user.id,
+        approved_at: new Date().toISOString(),
+      });
+
+      // 6. Update Sale Application to MUTATION_APPROVED & completed
+      await dbStore.update('sale_applications', sale.id, {
+        stage: 'MUTATION_APPROVED',
+        status: 'completed',
+      });
+
+      // 7. Audit Log inside transaction
+      await dbStore.logAudit(
+        user.id,
+        user.name_bn,
+        user.role,
+        'APPROVE_MUTATION_ORDER_ISSUED',
+        'mutation_applications',
+        mutation.id,
+        req.ip || '127.0.0.1',
+        {
+          khatian_no: newKhatianNo,
+          holding_no: newHoldingNo,
+          buyer_id: buyer?.id,
+          seller_id: seller?.id,
+          area_decimal: sale.proposed_area_decimal,
+        }
+      );
+    });
+
+    // 8. Notifications post-commit
     await NotificationService.notify({
       userId: mutation.applicant_id,
       titleBn: 'অভিনন্দন! আপনার নামজারি আবেদন অনুমোদিত হয়েছে',
@@ -308,9 +371,9 @@ router.post('/:id/decide', requireAuth, requireRole('ac_land', 'central_admin'),
     res.json({
       success: true,
       message_bn: `নামজারি আদেশ সফলভাবে সম্পন্ন হয়েছে! নতুন খতিয়ান নং ${newKhatianNo} এবং নতুন হোল্ডিং নং ${newHoldingNo} জারি করা হয়েছে।`,
-      new_khatian: newKhatianRecord,
-      new_ownership: newBuyerOwnership,
-      new_holding: newKhajnaAccount,
+      new_khatian: newKhatianRecord!,
+      new_ownership: newBuyerOwnership!,
+      new_holding: newKhajnaAccount!,
     });
   } catch (err: any) {
     res.status(500).json({ success: false, message_bn: 'নামজারি অনুমোদনে ত্রুটি হয়েছে', error: err.message });

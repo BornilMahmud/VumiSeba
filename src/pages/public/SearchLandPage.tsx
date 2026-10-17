@@ -69,78 +69,94 @@ export const SearchLandPage: React.FC = () => {
       {/* Search Filter Box */}
       <div className="bg-white rounded-xl shadow-gov-sm border border-slate-200 p-6 mb-8">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
-            <div>
-              <label className="block text-slate-700 font-semibold mb-1">জেলা</label>
-              <select
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-md p-2"
-              >
-                <option value="ঢাকা">ঢাকা</option>
-                <option value="চট্টগ্রাম">চট্টগ্রাম</option>
-                <option value="সিলেট">সিলেট</option>
-              </select>
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 text-xs items-start">
+            <div className="flex flex-col">
+              <label className="block text-slate-700 font-semibold mb-1.5 h-4 leading-4 truncate">জেলা</label>
+              <div className="relative">
+                <select
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  className="w-full h-11 box-border appearance-none bg-slate-50 border border-slate-300 rounded-lg px-3 pr-8 text-slate-900 font-medium cursor-pointer truncate focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
+                >
+                  <option value="ঢাকা">ঢাকা</option>
+                  <option value="চট্টগ্রাম">চট্টগ্রাম</option>
+                  <option value="সিলেট">সিলেট</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400">
+                  <i className="bx bx-chevron-down text-lg"></i>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-slate-700 font-semibold mb-1">উপজেলা / রাজস্ব সার্কেল</label>
-              <select
-                value={upazila}
-                onChange={(e) => setUpazila(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-md p-2"
-              >
-                <option value="গুলশান">গুলশান সার্কেল</option>
-                <option value="তেজগাঁও">তেজগাঁও সার্কেল</option>
-                <option value="মিরপুর">মিরপুর সার্কেল</option>
-              </select>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 font-semibold mb-1.5 h-4 leading-4 truncate">উপজেলা / রাজস্ব সার্কেল</label>
+              <div className="relative">
+                <select
+                  value={upazila}
+                  onChange={(e) => setUpazila(e.target.value)}
+                  className="w-full h-11 box-border appearance-none bg-slate-50 border border-slate-300 rounded-lg px-3 pr-8 text-slate-900 font-medium cursor-pointer truncate focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
+                >
+                  <option value="গুলশান">গুলশান সার্কেল</option>
+                  <option value="তেজগাঁও">তেজগাঁও সার্কেল</option>
+                  <option value="মিরপুর">মিরপুর সার্কেল</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400">
+                  <i className="bx bx-chevron-down text-lg"></i>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-slate-700 font-semibold mb-1">মৌজা</label>
-              <select
-                value={mouza}
-                onChange={(e) => setMouza(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-md p-2"
-              >
-                <option value="">সকল মৌজা</option>
-                <option value="বাড্ডা">বাড্ডা (জে.এল ২৮)</option>
-                <option value="সাঁতারকুল">সাঁতারকুল (জে.এল ৩১)</option>
-                <option value="ভাটারা">ভাটারা (জে.এল ২৫)</option>
-                <option value="রামপুরা">রামপুরা (জে.এল ২৩)</option>
-                <option value="আফতাবনগর">আফতাবনগর (জে.এল ২৯)</option>
-              </select>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 font-semibold mb-1.5 h-4 leading-4 truncate">মৌজা</label>
+              <div className="relative">
+                <select
+                  value={mouza}
+                  onChange={(e) => setMouza(e.target.value)}
+                  className="w-full h-11 box-border appearance-none bg-slate-50 border border-slate-300 rounded-lg px-3 pr-8 text-slate-900 font-medium cursor-pointer truncate focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
+                >
+                  <option value="">সকল মৌজা</option>
+                  <option value="বাড্ডা">বাড্ডা (জে.এল ২৮)</option>
+                  <option value="সাঁতারকুল">সাঁতারকুল (জে.এল ৩১)</option>
+                  <option value="ভাটারা">ভাটারা (জে.এল ২৫)</option>
+                  <option value="রামপুরা">রামপুরা (জে.এল ২৩)</option>
+                  <option value="আফতাবনগর">আফতাবনগর (জে.এল ২৯)</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400">
+                  <i className="bx bx-chevron-down text-lg"></i>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-slate-700 font-semibold mb-1">খতিয়ান নম্বর</label>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 font-semibold mb-1.5 h-4 leading-4 truncate">খতিয়ান নম্বর</label>
               <input
                 type="text"
                 placeholder="যেমন: ১২০৪"
                 value={khatianNo}
                 onChange={(e) => setKhatianNo(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-md p-2"
+                className="w-full h-11 box-border bg-slate-50 border border-slate-300 rounded-lg px-3 text-slate-900 font-medium placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
               />
             </div>
 
-            <div>
-              <label className="block text-slate-700 font-semibold mb-1">দাগ নম্বর</label>
+            <div className="flex flex-col">
+              <label className="block text-slate-700 font-semibold mb-1.5 h-4 leading-4 truncate">দাগ নম্বর</label>
               <input
                 type="text"
                 placeholder="যেমন: ৪০৫"
                 value={dagNo}
                 onChange={(e) => setDagNo(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-md p-2"
+                className="w-full h-11 box-border bg-slate-50 border border-slate-300 rounded-lg px-3 text-slate-900 font-medium placeholder-slate-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition"
               />
             </div>
 
-            <div className="flex items-end">
+            <div className="flex flex-col">
+              <span className="hidden sm:block mb-1.5 h-4 leading-4 invisible select-none" aria-hidden="true">&nbsp;</span>
               <button
                 type="submit"
-                className="w-full bg-gov-blue hover:bg-slate-900 text-white font-semibold py-2 rounded-md shadow-sm transition flex items-center justify-center gap-1.5"
+                className="w-full h-11 box-border bg-gov-blue hover:bg-slate-900 text-white font-semibold px-3 rounded-lg shadow-xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Search size={14} />
-                <span>অনুসন্ধান</span>
+                <span className="truncate">অনুসন্ধান</span>
               </button>
             </div>
           </div>

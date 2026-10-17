@@ -66,6 +66,7 @@ export const api = {
   firebaseSync: (payload: { uid: string; email: string | null; displayName: string | null; photoURL?: string | null }) =>
     apiRequest('/auth/firebase-sync', { method: 'POST', body: JSON.stringify(payload) }),
   getProfile: () => apiRequest('/auth/me'),
+  updateProfile: (profileData: any) => apiRequest('/auth/profile', { method: 'PUT', body: JSON.stringify(profileData) }),
   submitKyc: (kycData: any) => apiRequest('/auth/kyc/submit', { method: 'POST', body: JSON.stringify(kycData) }),
   verifyKyc: (userId?: string) => apiRequest('/auth/kyc/verify', { method: 'POST', body: JSON.stringify({ userId }) }),
 
@@ -222,6 +223,7 @@ export const api = {
     approveKyc: (userId: string) => apiRequest('/officer/verify-kyc', { method: 'POST', body: JSON.stringify({ userId }) }),
     updateRole: (payload: { userId: string; role: string; designation_bn?: string; office_name_bn?: string }) =>
       apiRequest('/officer/update-role', { method: 'POST', body: JSON.stringify(payload) }),
+    resetDemo: () => apiRequest('/officer/reset-demo', { method: 'POST' }),
   },
 
   notifications: {

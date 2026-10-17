@@ -548,7 +548,7 @@ export default function CentralAdminPage() {
                         </td>
                         <td className="p-3 text-teal-700 font-bold">{log.userId}</td>
                         <td className="p-3 text-slate-600">{log.entityType} ({log.entityId})</td>
-                        <td className="p-3 text-slate-700 font-sans">{log.details}</td>
+                        <td className="p-3 text-slate-700 font-sans">{typeof log.details === 'object' ? JSON.stringify(log.details) : log.details}</td>
                       </tr>
                     ))}
                   </tbody>

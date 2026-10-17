@@ -50,12 +50,18 @@ export interface UserProfile {
   mother_name_bn: string;
   address_bn: string;
   district: string;
+  district_en?: string;
   upazila: string;
+  upazila_en?: string;
   role: UserRole;
   designation_bn?: string;
+  designation_en?: string;
   office_name_bn?: string;
+  office_name_en?: string;
   kyc_status: KycStatus;
   kyc_verified_at?: string;
+  photo_url?: string;
+  nid_photo_url?: string;
   created_at: string;
 }
 
@@ -84,9 +90,17 @@ export interface LandParcel {
   recorded_owners_bn?: string;
   owners_count?: number;
   district_bn?: string;
+  district_en?: string;
   upazila_bn?: string;
+  upazila_en?: string;
   mouza_bn?: string;
+  mouza_en?: string;
   land_type_bn?: string;
+  land_type_en?: string;
+  data_as_of?: string;
+  data_source?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface LandOwnership {
@@ -185,7 +199,9 @@ export interface SaleApplication {
   registry_completed: boolean;
   mutation_created: boolean;
   return_reason_bn?: string;
+  return_reason_en?: string;
   rejection_reason_bn?: string;
+  rejection_reason_en?: string;
   created_at: string;
   parcel?: LandParcel;
   seller?: any;
@@ -211,12 +227,32 @@ export interface SaleApplication {
   registrationNumber?: string;
 }
 
+export interface RiskFactorDetail {
+  factor_key: string;
+  title_bn: string;
+  title_en: string;
+  status: 'passed' | 'warning' | 'failed';
+  is_critical: boolean;
+  weight_max_points: number;
+  deducted_points: number;
+  explanation_bn: string;
+  explanation_en: string;
+}
+
 export interface RiskAssessment {
   id: string;
   parcel_id: string;
   overall_risk_level: 'low' | 'medium' | 'high' | 'critical';
   risk_score: number;
+  engine_version?: string;
+  data_as_of?: string;
+  disclaimer_bn?: string;
+  disclaimer_en?: string;
+  critical_override_triggered?: boolean;
+  critical_override_reasons?: string[];
+  factors?: RiskFactorDetail[];
   summary_bn: string;
+  summary_en?: string;
   identified_issues_bn: string[];
   warning_basis_bn: string[];
   unverified_data_bn: string[];
@@ -268,10 +304,15 @@ export interface MutationApplication {
   resultingHoldingNo?: string;
   jl_no?: string;
   khatian_no?: string;
+  khatian_no_en?: string;
   dag_no?: string;
+  dag_no_en?: string;
+  mouza?: string;
   mouza_bn?: string;
+  mouza_en?: string;
   transferred_area_decimal?: number;
   deed_no?: string;
+  deed_no_en?: string;
   approved_khatian_no?: string;
 }
 
@@ -296,6 +337,32 @@ export interface RegistrationRecord {
   deed_year: string;
   completion_timestamp: string;
   disclaimer_bn: string;
+}
+
+export interface OfficeReview {
+  id: string;
+  application_id: string;
+  office_type: 'central_admin' | 'union_land' | 'sub_registry' | 'ac_land';
+  officer_id: string;
+  officer_name_bn: string;
+  officer_designation_bn: string;
+  action: 'approved' | 'returned' | 'rejected' | 'investigated' | 'registered' | 'hearing_scheduled' | 'scheduled' | string;
+  notes_bn: string;
+  created_at: string;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  event_type: string;
+  actor_user_id?: string;
+  actor_role: string;
+  action_summary_bn: string;
+  action_summary_en?: string;
+  entity_type: string;
+  entity_id: string;
+  ip_address?: string;
+  metadata?: Record<string, any>;
+  created_at: string;
 }
 
 export interface NotificationItem {
