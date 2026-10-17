@@ -17,7 +17,7 @@
     "seed:demo": "tsx server/db/seed.ts",
     "seed:firestore": "tsx scripts/seedFirestore.ts",
     "admin:bootstrap": "tsx scripts/bootstrapAdmin.ts",
-    "test": "tsx server/tests/core-correctness.test.ts && tsx server/tests/e2e-workflow.test.ts",
+    "test": "tsx server/tests/core-correctness.test.ts && tsx server/tests/risk-engine.test.ts && tsx server/tests/e2e-workflow.test.ts",
     "test:firebase": "tsx server/tests/firebase-auth-rules.test.ts"
   },
   "dependencies": {
