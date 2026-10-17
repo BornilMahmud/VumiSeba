@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
-import { DemoPersonaBar } from './components/common/DemoPersonaBar';
 import { DemoStoryOverlay } from './components/common/DemoStoryOverlay';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -148,9 +147,6 @@ export default function App() {
           <AuthProvider>
             <NotificationProvider>
               <div className="min-h-screen flex flex-col font-sans text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950 antialiased selection:bg-teal-500 selection:text-white transition-colors duration-200">
-              {/* 1-Click Role Switcher Demo Persona Bar */}
-              <DemoPersonaBar />
-
               {/* 3-Minute Guided Walkthrough for Hackathon Judges */}
               <DemoStoryOverlay />
 

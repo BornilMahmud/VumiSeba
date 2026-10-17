@@ -89,14 +89,14 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="font-bengali min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="font-bengali min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors">
       <div className="max-w-md w-full space-y-6">
         {/* Portal Switching Tabs */}
-        <div className="flex items-center justify-center p-1 bg-slate-200/80 rounded-xl text-xs font-bold gap-1">
+        <div className="flex items-center justify-center p-1 bg-slate-200/80 dark:bg-slate-800 rounded-xl text-xs font-bold gap-1 border border-slate-300/50 dark:border-slate-700">
           <Link
             to="/login/citizen"
             className={`flex-1 text-center py-2 rounded-lg transition ${
-              isCitizenLogin ? 'bg-white text-emerald-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+              isCitizenLogin ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             নাগরিক প্রবেশদ্বার
@@ -104,7 +104,7 @@ export const LoginPage: React.FC = () => {
           <Link
             to="/login/office"
             className={`flex-1 text-center py-2 rounded-lg transition ${
-              isOfficeLogin ? 'bg-white text-indigo-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+              isOfficeLogin ? 'bg-white dark:bg-slate-700 text-indigo-900 dark:text-indigo-300 shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             ভূমি কর্মকর্তা
@@ -112,7 +112,7 @@ export const LoginPage: React.FC = () => {
           <Link
             to="/login/admin"
             className={`flex-1 text-center py-2 rounded-lg transition ${
-              isAdminLogin ? 'bg-white text-cyan-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+              isAdminLogin ? 'bg-white dark:bg-slate-700 text-cyan-900 dark:text-cyan-300 shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             কেন্দ্রীয় প্রশাসন
@@ -121,121 +121,357 @@ export const LoginPage: React.FC = () => {
 
         {/* Header */}
         <div className="text-center">
-          <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-3xl mx-auto shadow-md mb-3 border border-slate-700">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-3xl mx-auto shadow-md mb-3 border border-emerald-500/40">
             {isCitizenLogin ? '👤' : isOfficeLogin ? '🏛️' : '🛡️'}
           </div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
             {isCitizenLogin && 'ভূমিসেবা নাগরিক পোর্টালে প্রবেশ'}
             {isOfficeLogin && 'সরকারি ভূমি কর্মকর্তা লগইন'}
             {isAdminLogin && 'ভূমি মন্ত্রণালয় — সুপার অ্যাডমিন লগইন'}
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             {isCitizenLogin && 'বাংলাদেশ ডিজিটাল ভূমি সেবা, সত্যতা যাচাই ও স্মার্ট ই-নামজারি'}
             {isOfficeLogin && 'ইউনিয়ন তহশিল, এসি ল্যান্ড ও সাব-রেজিস্ট্রি সরকারি অফিস প্যানেল'}
             {isAdminLogin && 'সিস্টেম গভর্নেন্স, রোল অ্যাসাইনমেন্ট ও জাতীয় অডিট কনসোল'}
           </p>
         </div>
 
-        {/* 1. Working Demo Logins */}
-        <div className="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 rounded-xl p-4 shadow-sm">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-bold text-teal-900 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-teal-600 animate-ping"></span>
-              ১-ক্লিক ডেমো অ্যাকাউন্ট (পরীক্ষক ও বিচারকদের জন্য):
-            </span>
-            <span className="text-[10px] text-teal-800 font-semibold bg-white px-2 py-0.5 rounded-full border border-teal-300">
-              নমুনা পরিচয়
+        {/* 1. Working Demo Logins & Auto-Fill Center */}
+        <div className="bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-slate-900 dark:via-emerald-950/40 dark:to-slate-900 border border-emerald-300 dark:border-emerald-800/60 rounded-2xl p-5 shadow-sm transition-colors">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="text-xs font-extrabold text-emerald-950 dark:text-emerald-300">
+                ডেমো অ্যাকাউন্ট ও অটো-ফিল প্যানেল (বিচারক ও পরীক্ষক)
+              </span>
+            </div>
+            <span className="text-[10px] text-emerald-800 dark:text-emerald-300 font-bold bg-white dark:bg-slate-800 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700 shadow-2xs">
+              ৮টি অফিসিয়াল ডেমো
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            {/* 1. Demo Citizen */}
-            <button
-              type="button"
-              disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('seller', 'citizen')}
-              className="p-2.5 rounded-lg bg-white hover:bg-teal-100/70 text-slate-800 font-medium border border-teal-200 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
-            >
-              <div className="w-7 h-7 rounded-md bg-teal-100 flex items-center justify-center text-teal-800 shrink-0">
-                <User size={15} />
-              </div>
-              <div>
-                <span className="font-bold block text-slate-900 leading-tight">১. ডেমো নাগরিক</span>
-                <span className="text-[10px] text-teal-700 font-medium">বিক্রেতা রফিকুল / ফারহান</span>
-              </div>
-            </button>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 mb-3.5 leading-relaxed">
+            যেকোনো ভূমিকায় <strong>‘১-ক্লিক লগইন’</strong> করে সরাসরি সংশ্লিষ্ট ড্যাশবোর্ডে প্রবেশ করুন, অথবা <strong>‘ফর্ম পূরণ’</strong> চেপে নিচে তথ্য লোড করে দেখুন।
+          </p>
 
-            {/* 2. Demo Union Land Officer */}
-            <button
-              type="button"
-              disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('union_officer', 'union_land_officer')}
-              className="p-2.5 rounded-lg bg-white hover:bg-emerald-100 text-slate-800 font-medium border border-emerald-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
-            >
-              <div className="w-7 h-7 rounded-md bg-emerald-100 flex items-center justify-center text-emerald-800 shrink-0">
-                <Building2 size={15} />
+          {/* Group 1: Citizen Personas */}
+          <div className="space-y-1.5 mb-3.5">
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+              নাগরিক ভূমিসমূহ (Citizen Personas):
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              {/* 1. Seller Rafiqul */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-emerald-200 dark:border-emerald-900/60 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                      <User size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">১. রফিকুল ইসলাম (বিক্রেতা)</span>
+                      <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">seller@bhumisathi.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('seller@bhumisathi.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('seller', 'citizen')}
+                    className="flex-1 py-1 px-1.5 rounded bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
               </div>
-              <div>
-                <span className="font-bold block text-slate-900 leading-tight">২. ইউনিয়ন কর্মকর্তা</span>
-                <span className="text-[10px] text-emerald-800 font-medium">ULAO তহশিলদার</span>
-              </div>
-            </button>
 
-            {/* 3. Demo AC Land Officer */}
-            <button
-              type="button"
-              disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('ac_land', 'ac_land')}
-              className="p-2.5 rounded-lg bg-white hover:bg-indigo-50 text-slate-800 font-medium border border-indigo-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
-            >
-              <div className="w-7 h-7 rounded-md bg-indigo-100 flex items-center justify-center text-indigo-800 shrink-0">
-                <Scale size={15} />
+              {/* 2. Buyer Farhan */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-teal-200 dark:border-teal-900/60 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300 flex items-center justify-center shrink-0">
+                      <UserCheck size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">২. ফারহান আহমেদ (ক্রেতা)</span>
+                      <span className="text-[10px] text-teal-700 dark:text-teal-400 font-mono">buyer@bhumisathi.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('buyer@bhumisathi.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('buyer', 'citizen')}
+                    className="flex-1 py-1 px-1.5 rounded bg-teal-600 hover:bg-teal-700 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
               </div>
-              <div>
-                <span className="font-bold block text-slate-900 leading-tight">৩. এসি ল্যান্ড</span>
-                <span className="text-[10px] text-indigo-700 font-medium">উপজেলা ভূমি ও আদালত</span>
-              </div>
-            </button>
 
-            {/* 4. Demo Sub-Registry Officer */}
-            <button
-              type="button"
-              disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('sub_registrar', 'sub_registrar')}
-              className="p-2.5 rounded-lg bg-white hover:bg-amber-50 text-slate-800 font-medium border border-amber-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50"
-            >
-              <div className="w-7 h-7 rounded-md bg-amber-100 flex items-center justify-center text-amber-800 shrink-0">
-                <Stamp size={15} />
+              {/* 3. Tax Due Latif */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-amber-200 dark:border-amber-900/60 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0">
+                      <FileText size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">৩. আব্দুল লতিফ (কর বকেয়া)</span>
+                      <span className="text-[10px] text-amber-700 dark:text-amber-400 font-mono">latif.taxdue@bhumisathi.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('latif.taxdue@bhumisathi.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('taxdue', 'citizen')}
+                    className="flex-1 py-1 px-1.5 rounded bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
               </div>
-              <div>
-                <span className="font-bold block text-slate-900 leading-tight">৪. সাব-রেজিস্ট্রার</span>
-                <span className="text-[10px] text-amber-800 font-medium">দলিল নিবন্ধন কার্যালয়</span>
-              </div>
-            </button>
 
-            {/* 5. Demo Admin */}
-            <button
-              type="button"
-              disabled={loading || googleLoading}
-              onClick={() => handleDemoClick('central_admin', 'central_admin')}
-              className="p-2.5 rounded-lg bg-white hover:bg-cyan-50 text-slate-800 font-medium border border-cyan-300 flex items-center gap-2 transition text-left shadow-2xs hover:shadow-sm disabled:opacity-50 col-span-2"
-            >
-              <div className="w-7 h-7 rounded-md bg-cyan-100 flex items-center justify-center text-cyan-800 shrink-0">
-                <Shield size={15} />
+              {/* 4. Excess Share Nazrul */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-indigo-200 dark:border-indigo-900/60 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 flex items-center justify-center shrink-0">
+                      <AlertCircle size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">৪. নজরুল ইসলাম (হিস্যা ঘাটতি)</span>
+                      <span className="text-[10px] text-indigo-700 dark:text-indigo-400 font-mono">nazrul.share@bhumisathi.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('nazrul.share@bhumisathi.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('oversell', 'citizen')}
+                    className="flex-1 py-1 px-1.5 rounded bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
               </div>
-              <div>
-                <span className="font-bold block text-slate-900 leading-tight">৫. কেন্দ্রীয় ভূমি প্রশাসন (সুপার অ্যাডমিন)</span>
-                <span className="text-[10px] text-cyan-700 font-medium">সার্বিক তদারকি, রোল বণ্টন ও অপরিবর্তনীয় অডিট লগ</span>
+            </div>
+          </div>
+
+          {/* Group 2: Government Officers & Super Admin */}
+          <div className="space-y-1.5">
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+              সরকারি কর্মকর্তা ও প্রশাসন প্যানেল (Officer & Admin Personas):
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              {/* 5. Union Land Officer */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-emerald-300 dark:border-emerald-800 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                      <Building2 size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">৫. তহশিলদার (ইউনিয়ন ভূমি সহকারী)</span>
+                      <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">union.officer@land.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('union.officer@land.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('union_officer', 'union_land_officer')}
+                    className="flex-1 py-1 px-1.5 rounded bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
               </div>
-            </button>
+
+              {/* 6. AC Land */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-indigo-300 dark:border-indigo-800 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 flex items-center justify-center shrink-0">
+                      <Scale size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">৬. এসি ল্যান্ড (নামজারি আদালত)</span>
+                      <span className="text-[10px] text-indigo-700 dark:text-indigo-400 font-mono">ac.land@land.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('ac.land@land.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('ac_land', 'ac_land')}
+                    className="flex-1 py-1 px-1.5 rounded bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
+              </div>
+
+              {/* 7. Sub-Registrar */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-amber-300 dark:border-amber-800 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 flex items-center justify-center shrink-0">
+                      <Stamp size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">৭. সাব-রেজিস্ট্রার (দলিল নিবন্ধন)</span>
+                      <span className="text-[10px] text-amber-700 dark:text-amber-400 font-mono">sub.registrar@land.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('sub.registrar@land.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('sub_registrar', 'sub_registrar')}
+                    className="flex-1 py-1 px-1.5 rounded bg-amber-700 hover:bg-amber-800 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিকে লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
+              </div>
+
+              {/* 8. Super Admin */}
+              <div className="p-2.5 rounded-xl bg-white dark:bg-slate-800/90 border border-cyan-300 dark:border-cyan-800 shadow-2xs hover:shadow-xs transition">
+                <div className="flex items-start justify-between gap-1 mb-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 flex items-center justify-center shrink-0">
+                      <Shield size={13} />
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 dark:text-white block text-[11px] leading-tight">৮. সুপার অ্যাডমিন (ভূমি মন্ত্রণালয়)</span>
+                      <span className="text-[10px] text-cyan-700 dark:text-cyan-400 font-mono">admin@landtech.gov.bd</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-700">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('admin@landtech.gov.bd');
+                      setPassword('demo123456');
+                    }}
+                    className="flex-1 py-1 px-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-[10px] font-semibold text-center transition"
+                    title="ফর্ম পূরণ করুন"
+                  >
+                    ফর্ম পূরণ
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading || googleLoading}
+                    onClick={() => handleDemoClick('central_admin', 'central_admin')}
+                    className="flex-1 py-1 px-1.5 rounded bg-cyan-700 hover:bg-cyan-800 active:scale-95 text-white text-[10px] font-bold text-center transition shadow-2xs"
+                    title="১-ক্লিক লগইন"
+                  >
+                    ১-ক্লিক লগইন →
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* 2. Credentials Form */}
-        <div className="bg-white rounded-xl shadow-xs border border-slate-200 p-6 space-y-4">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 space-y-4 transition-colors">
           {error && (
-            <div className="bg-red-50 text-red-800 text-xs p-3 rounded-lg border border-red-200 font-medium flex items-start gap-2">
-              <AlertCircle size={16} className="text-red-600 shrink-0 mt-0.5" />
+            <div className="bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-200 text-xs p-3.5 rounded-xl border border-rose-200 dark:border-rose-900 font-medium flex items-start gap-2">
+              <AlertCircle size={16} className="text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
@@ -247,10 +483,10 @@ export const LoginPage: React.FC = () => {
               id="google-signin-btn"
               disabled={googleLoading || loading}
               onClick={handleGoogleSignIn}
-              className="w-full bg-white hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-lg border border-slate-300 shadow-2xs transition flex items-center justify-center gap-3 text-sm disabled:opacity-60 disabled:cursor-not-allowed group"
+              className="w-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold py-2.5 px-4 rounded-xl border border-slate-300 dark:border-slate-700 shadow-2xs transition flex items-center justify-center gap-3 text-sm disabled:opacity-60 disabled:cursor-not-allowed group"
             >
               {googleLoading ? (
-                <div className="w-5 h-5 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-2 border-slate-400 border-t-slate-800 dark:border-t-white rounded-full animate-spin"></div>
               ) : (
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -276,37 +512,37 @@ export const LoginPage: React.FC = () => {
           </div>
 
           <div className="relative flex py-2 items-center">
-            <div className="flex-grow border-t border-slate-200"></div>
-            <span className="flex-shrink mx-3 text-slate-400 text-xs">অথবা ইমেইল ও পাসওয়ার্ড</span>
-            <div className="flex-grow border-t border-slate-200"></div>
+            <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
+            <span className="flex-shrink mx-3 text-slate-400 dark:text-slate-500 text-xs font-medium">অথবা ইমেইল ও পাসওয়ার্ড</span>
+            <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3 text-xs">
+          <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
             <div>
-              <label className="block text-slate-700 font-semibold mb-1">ইমেইল ঠিকানা</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">ইমেইল ঠিকানা</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 text-slate-400" size={16} />
+                <Mail className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={16} />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-800"
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-700 font-semibold mb-1">পাসওয়ার্ড</label>
+              <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">পাসওয়ার্ড</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 text-slate-400" size={16} />
+                <Lock className="absolute left-3 top-3 text-slate-400 dark:text-slate-500" size={16} />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-800"
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
                   required
                 />
               </div>
@@ -315,17 +551,17 @@ export const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg transition shadow-xs flex items-center justify-center gap-2 mt-4"
+              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl transition shadow-md hover:shadow-lg flex items-center justify-center gap-2 mt-4 active:scale-98"
             >
               {loading ? 'যাচাই হচ্ছে...' : 'লগইন করুন'}
-              <ArrowRight size={15} />
+              <ArrowRight size={16} />
             </button>
           </form>
         </div>
 
-        <div className="text-center text-xs text-slate-500">
+        <div className="text-center text-xs text-slate-500 dark:text-slate-400">
           নতুন নাগরিক?{' '}
-          <Link to="/register" className="text-emerald-700 font-bold hover:underline">
+          <Link to="/register" className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline">
             বিনামূল্যে অ্যাকাউন্ট নিবন্ধন করুন
           </Link>
         </div>

@@ -69,54 +69,54 @@ export const RegistryDashboard: React.FC = () => {
     <div className="space-y-6 font-bengali">
       {/* Top Stats Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-amber-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">শিডিউলিং অপেক্ষমাণ</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-amber-700 dark:text-amber-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">শিডিউলিং অপেক্ষমাণ</span>
             <Clock size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.ready_for_scheduling_count}</p>
-          <span className="text-[10px] text-amber-700 font-medium">এসি ল্যান্ড অনুমোদিত ফাইল</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.ready_for_scheduling_count}</p>
+          <span className="text-[10px] text-amber-700 dark:text-amber-400 font-medium">এসি ল্যান্ড অনুমোদিত ফাইল</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-blue-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">অ্যাপয়েন্টমেন্ট নির্ধারিত</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-blue-700 dark:text-blue-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">অ্যাপয়েন্টমেন্ট নির্ধারিত</span>
             <Calendar size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.appointments_scheduled_count}</p>
-          <span className="text-[10px] text-blue-700 font-medium">দলিল সম্পাদন তারিখ ধার্য</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.appointments_scheduled_count}</p>
+          <span className="text-[10px] text-blue-700 dark:text-blue-400 font-medium">দলিল সম্পাদন তারিখ ধার্য</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-emerald-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">নিবন্ধিত কবলা দলিল</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-emerald-700 dark:text-emerald-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">নিবন্ধিত কবলা দলিল</span>
             <CheckCircle2 size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.completed_registrations_count}</p>
-          <span className="text-[10px] text-emerald-700 font-medium">বালামভুক্ত ও নামজারিতে প্রেরিত</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.completed_registrations_count}</p>
+          <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-medium">বালামভুক্ত ও নামজারিতে প্রেরিত</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-slate-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">মোট নিবন্ধিত নথি</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-slate-700 dark:text-slate-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">মোট নিবন্ধিত নথি</span>
             <Stamp size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.total_cases}</p>
-          <span className="text-[10px] text-slate-500 font-medium">নিবন্ধন কমপ্লেক্স গুলশান</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.total_cases}</p>
+          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">নিবন্ধন কমপ্লেক্স গুলশান</span>
         </div>
       </div>
 
       {/* Main Table Container */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden transition-colors">
         {/* Navigation Tabs & Search */}
-        <div className="p-4 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('READY')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
                 activeTab === 'READY'
                   ? 'bg-amber-700 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <Clock size={14} />
@@ -128,7 +128,7 @@ export const RegistryDashboard: React.FC = () => {
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
                 activeTab === 'SCHEDULED'
                   ? 'bg-amber-700 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <Calendar size={14} />
@@ -140,7 +140,7 @@ export const RegistryDashboard: React.FC = () => {
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
                 activeTab === 'COMPLETED'
                   ? 'bg-amber-700 text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <CheckCircle2 size={14} />
@@ -156,12 +156,12 @@ export const RegistryDashboard: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="আবেদন নং, নাম বা দাগ..."
-                className="pl-9 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs w-56 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="pl-9 pr-3 py-1.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-xs w-56 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
             <button
               onClick={loadData}
-              className="p-1.5 border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50 transition"
+              className="p-1.5 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
               title="রিফ্রেশ করুন"
             >
               <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
@@ -174,7 +174,7 @@ export const RegistryDashboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold">
                   <th className="py-3 px-4">আবেদন নম্বর</th>
                   <th className="py-3 px-4">পক্ষগণ (বিক্রেতা ও ক্রেতা)</th>
                   <th className="py-3 px-4">জমির তপশিল ও মৌজা</th>
@@ -183,41 +183,41 @@ export const RegistryDashboard: React.FC = () => {
                   <th className="py-3 px-4 text-right">কার্যক্রম</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-500">
+                    <td colSpan={6} className="py-8 text-center text-slate-500 dark:text-slate-400">
                       <Clock size={18} className="animate-spin inline-block mr-2" />
                       নথি লোড হচ্ছে...
                     </td>
                   </tr>
                 ) : filterList(readyQueue).length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-500">
+                    <td colSpan={6} className="py-8 text-center text-slate-500 dark:text-slate-400">
                       বর্তমানে শিডিউলিং এর জন্য কোন অপেক্ষমাণ নথি নেই।
                     </td>
                   </tr>
                 ) : (
                   filterList(readyQueue).map((app) => (
-                    <tr key={app.id} className="hover:bg-slate-50/70 transition">
+                    <tr key={app.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/60 transition">
                       <td className="py-3 px-4">
-                        <span className="font-mono font-bold text-amber-900 block">{app.application_no}</span>
+                        <span className="font-mono font-bold text-amber-900 dark:text-amber-300 block">{app.application_no}</span>
                         <span className="text-[11px] text-slate-400">{app.submission_date || '২০২৬-০৩-১৫'}</span>
                       </td>
                       <td className="py-3 px-4">
-                        <p><span className="text-slate-400">বি:</span> <span className="font-semibold text-slate-800">{app.seller?.name_bn}</span></p>
-                        <p><span className="text-slate-400">ক্র:</span> <span className="font-semibold text-amber-950">{app.buyer?.name_bn}</span></p>
+                        <p><span className="text-slate-400">বি:</span> <span className="font-semibold text-slate-800 dark:text-slate-200">{app.seller?.name_bn}</span></p>
+                        <p><span className="text-slate-400">ক্র:</span> <span className="font-semibold text-amber-950 dark:text-amber-400">{app.buyer?.name_bn}</span></p>
                       </td>
-                      <td className="py-3 px-4 text-slate-700">
+                      <td className="py-3 px-4 text-slate-700 dark:text-slate-300">
                         <span>{app.parcel?.mouza_bn}</span>
                         <span className="block text-[11px] text-slate-400">খতিয়ান: {app.parcel?.khatian_no}, দাগ: {app.parcel?.dag_no}</span>
                       </td>
                       <td className="py-3 px-4">
-                        <span className="font-bold text-slate-900 block">{app.proposed_area_decimal} শতক</span>
-                        <span className="text-[11px] text-slate-500">হিস্যা: {app.proposed_share}</span>
+                        <span className="font-bold text-slate-900 dark:text-white block">{app.proposed_area_decimal} শতক</span>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">হিস্যা: {app.proposed_share}</span>
                       </td>
                       <td className="py-3 px-4">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
                           <CheckCircle2 size={12} />
                           এসি ল্যান্ড অনুমোদিত
                         </span>
@@ -244,7 +244,7 @@ export const RegistryDashboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold">
                   <th className="py-3 px-4">আবেদন ও টোকেন নং</th>
                   <th className="py-3 px-4">নির্ধারিত তারিখ ও সময়</th>
                   <th className="py-3 px-4">পক্ষগণ (হাজিরা)</th>
@@ -253,40 +253,40 @@ export const RegistryDashboard: React.FC = () => {
                   <th className="py-3 px-4 text-right">দলিল সম্পাদন</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filterList(scheduledQueue).length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-500">
+                    <td colSpan={6} className="py-8 text-center text-slate-500 dark:text-slate-400">
                       কোন নির্ধারিত অ্যাপয়েন্টমেন্ট পাওয়া যায়নি।
                     </td>
                   </tr>
                 ) : (
                   filterList(scheduledQueue).map((app) => (
-                    <tr key={app.id} className="hover:bg-slate-50/70 transition">
+                    <tr key={app.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/60 transition">
                       <td className="py-3 px-4">
-                        <span className="font-mono font-bold text-slate-900 block">{app.application_no}</span>
-                        <span className="text-[11px] font-mono text-blue-700 font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                        <span className="font-mono font-bold text-slate-900 dark:text-white block">{app.application_no}</span>
+                        <span className="text-[11px] font-mono text-blue-700 dark:text-blue-300 font-semibold bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-800">
                           টোকেন: {app.appointment_details?.token_no || 'TOK-8812'}
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <span className="font-bold text-blue-900 block flex items-center gap-1">
+                        <span className="font-bold text-blue-900 dark:text-blue-300 block flex items-center gap-1">
                           <Calendar size={13} />
                           {app.appointment_details?.date || '২০২৬-০৩-২০'}
                         </span>
-                        <span className="text-[11px] text-slate-500">
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
                           সময়: {app.appointment_details?.time || 'সকাল ১১:০০ মি.'}
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <p><span className="text-slate-400">বি:</span> <span className="font-semibold text-slate-800">{app.seller?.name_bn}</span></p>
-                        <p><span className="text-slate-400">ক্র:</span> <span className="font-semibold text-amber-950">{app.buyer?.name_bn}</span></p>
+                        <p><span className="text-slate-400">বি:</span> <span className="font-semibold text-slate-800 dark:text-slate-200">{app.seller?.name_bn}</span></p>
+                        <p><span className="text-slate-400">ক্র:</span> <span className="font-semibold text-amber-950 dark:text-amber-400">{app.buyer?.name_bn}</span></p>
                       </td>
-                      <td className="py-3 px-4 text-slate-700">
+                      <td className="py-3 px-4 text-slate-700 dark:text-slate-300">
                         <span>{app.parcel?.mouza_bn}, দাগ: {app.parcel?.dag_no}</span>
-                        <span className="block text-[11px] font-semibold text-emerald-800">{app.proposed_area_decimal} শতক</span>
+                        <span className="block text-[11px] font-semibold text-emerald-800 dark:text-emerald-400">{app.proposed_area_decimal} শতক</span>
                       </td>
-                      <td className="py-3 px-4 text-slate-600">
+                      <td className="py-3 px-4 text-slate-600 dark:text-slate-400">
                         {app.appointment_details?.office_name_bn || 'গুলশান সাব-রেজিস্ট্রি কার্যালয় (বুথ-২)'}
                       </td>
                       <td className="py-3 px-4 text-right">
@@ -311,7 +311,7 @@ export const RegistryDashboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold">
                   <th className="py-3 px-4">আবেদন ও দলিল নম্বর</th>
                   <th className="py-3 px-4">পক্ষগণ</th>
                   <th className="py-3 px-4">তপশিল ও পরিমাণ</th>
@@ -320,33 +320,33 @@ export const RegistryDashboard: React.FC = () => {
                   <th className="py-3 px-4 text-right">বালাম রেকর্ড</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filterList(completedRecords).length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-500">
+                    <td colSpan={6} className="py-8 text-center text-slate-500 dark:text-slate-400">
                       কোন নিবন্ধিত দলিল বালাম রেকর্ড পাওয়া যায়নি।
                     </td>
                   </tr>
                 ) : (
                   filterList(completedRecords).map((app) => (
-                    <tr key={app.id} className="hover:bg-slate-50/70 transition">
+                    <tr key={app.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/60 transition">
                       <td className="py-3 px-4">
-                        <span className="font-mono font-bold text-emerald-900 block">{app.application_no}</span>
-                        <span className="text-[11px] font-mono text-slate-800 font-bold">
+                        <span className="font-mono font-bold text-emerald-900 dark:text-emerald-300 block">{app.application_no}</span>
+                        <span className="text-[11px] font-mono text-slate-800 dark:text-slate-200 font-bold">
                           দলিল নং: {app.registration_details?.deed_no || '৩৪০৯/২০২৬'}
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <p className="font-semibold text-slate-800">{app.seller?.name_bn} → {app.buyer?.name_bn}</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-200">{app.seller?.name_bn} → {app.buyer?.name_bn}</p>
                       </td>
-                      <td className="py-3 px-4 text-slate-700">
+                      <td className="py-3 px-4 text-slate-700 dark:text-slate-300">
                         {app.parcel?.mouza_bn}, দাগ: {app.parcel?.dag_no} ({app.proposed_area_decimal} শতক)
                       </td>
-                      <td className="py-3 px-4 text-slate-600">
+                      <td className="py-3 px-4 text-slate-600 dark:text-slate-400">
                         {app.registration_details?.registration_date || '২০২৬-০৩-২০'}
                       </td>
                       <td className="py-3 px-4">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-800 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-800 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded border border-purple-200 dark:border-purple-800">
                           <CheckCircle2 size={12} />
                           নামজারিতে প্রেরিত
                         </span>
@@ -354,7 +354,7 @@ export const RegistryDashboard: React.FC = () => {
                       <td className="py-3 px-4 text-right">
                         <Link
                           to={`/office/registry/applications/${app.id}`}
-                          className="inline-flex items-center gap-1 text-amber-800 hover:text-amber-950 font-semibold"
+                          className="inline-flex items-center gap-1 text-amber-800 dark:text-amber-400 hover:text-amber-950 dark:hover:text-amber-300 font-semibold"
                         >
                           বিস্তারিত বালাম
                           <ArrowRight size={13} />

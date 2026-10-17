@@ -51,26 +51,26 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/70 font-sans flex flex-col">
+    <div className="min-h-screen bg-slate-50/70 dark:bg-slate-950 font-sans flex flex-col transition-colors duration-200">
       <div className="flex-1 flex max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-64 bg-white rounded-2xl shadow-card border border-slate-200/90 p-4 shrink-0 h-fit sticky top-28">
+        <aside className="hidden lg:block w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-card border border-slate-200/90 dark:border-slate-800 p-4 shrink-0 h-fit sticky top-24 transition-colors">
           {/* User Profile Snippet */}
-          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 mb-4">
+          <div className="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 mb-4">
             <div className="flex items-center gap-2.5 mb-2">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-sm shadow-2xs">
                 {user?.name_bn?.slice(0, 1) || 'না'}
               </div>
               <div className="overflow-hidden">
-                <p className="font-bold text-slate-900 text-xs truncate">{user?.name_bn || 'নাগরিক'}</p>
-                <p className="text-[10px] text-emerald-700 font-mono font-medium truncate">
+                <p className="font-bold text-slate-900 dark:text-white text-xs truncate">{user?.name_bn || 'নাগরিক'}</p>
+                <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono font-medium truncate">
                   {user?.citizen_id || 'কেওয়াইসি অপেক্ষমাণ'}
                 </p>
               </div>
             </div>
-            <div className="text-[10px] text-slate-500 flex items-center justify-between pt-2 border-t border-slate-200">
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-700">
               <span className="font-medium">{language === 'en' ? 'Role: Citizen' : 'ভূমিকা: নাগরিক'}</span>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${user?.kyc_status === 'verified' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${user?.kyc_status === 'verified' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300'}`}>
                 {user?.kyc_status === 'verified' ? (language === 'en' ? 'Verified' : 'যাচাইকৃত') : (language === 'en' ? 'Pending' : 'অযাচাইকৃত')}
               </span>
             </div>
@@ -89,11 +89,11 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
                   className={`flex items-center justify-between px-3 py-2 rounded-xl transition-all ${
                     active
                       ? 'bg-emerald-600 text-white shadow-xs font-bold'
-                      : 'text-slate-700 hover:bg-slate-100/80 hover:text-emerald-800'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-emerald-800 dark:hover:text-emerald-400'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Icon size={16} className={active ? 'text-white' : 'text-slate-400'} />
+                    <Icon size={16} className={active ? 'text-white' : 'text-slate-400 dark:text-slate-500'} />
                     <span>{label}</span>
                   </div>
                   {item.badge && item.badge > 0 ? (
@@ -110,7 +110,7 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
                 logout();
                 navigate('/login');
               }}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition mt-4 pt-3 border-t border-slate-100"
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition mt-4 pt-3 border-t border-slate-100 dark:border-slate-800"
             >
               <LogOut size={16} />
               <span>{t('nav.logout', 'লগআউট', 'Logout')}</span>
@@ -122,21 +122,21 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
         <div className="lg:hidden w-full mb-4">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-full flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-800 shadow-xs"
+            className="w-full flex items-center justify-between bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-800 dark:text-white shadow-xs"
           >
             <span>{language === 'en' ? 'Open Citizen Menu' : 'নাগরিক মেন্যু ওপেন করুন'}</span>
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
           {sidebarOpen && (
-            <div className="bg-white p-4 rounded-xl border border-slate-200 mt-2 shadow-card space-y-1 text-xs">
+            <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 mt-2 shadow-card space-y-1 text-xs">
               {menuItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={() => setSidebarOpen(false)}
                   className={`block px-3 py-2 rounded-lg font-medium ${
-                    isActive(item.path) ? 'bg-emerald-600 text-white font-bold' : 'text-slate-700 hover:bg-slate-50'
+                    isActive(item.path) ? 'bg-emerald-600 text-white font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
                   {language === 'en' ? item.labelEn : item.labelBn}

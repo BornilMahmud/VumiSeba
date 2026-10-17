@@ -93,18 +93,18 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="space-y-6 font-bengali">
       {/* Platform Health & Overview Header */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold text-slate-900">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
               {t('admin.title', 'জাতীয় ভূমিসেবা কেন্দ্রীয় নিয়ন্ত্রণ ও অডিট ড্যাশবোর্ড', 'National Land Services Central Command & Audit Dashboard')}
             </h2>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               {t('admin.statusHealthy', 'সিস্টেম সচল ও সংরক্ষিত', 'System Live & Guarded')}
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             {t(
               'admin.subtitle',
               'সারাদেশের ভূমি অফিসসমূহের রিয়েল-টাইম ট্রানজ্যাকশন, জালিয়াতি প্রতিরোধ অডিট ও ই-নামজারি পর্যবেক্ষণ',
@@ -117,7 +117,7 @@ export const AdminDashboard: React.FC = () => {
           <button
             onClick={handleResetDemo}
             disabled={resetting}
-            className="p-2 border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg transition flex items-center gap-1.5 text-xs font-semibold"
+            className="p-2 border border-rose-300 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 rounded-lg transition flex items-center gap-1.5 text-xs font-semibold"
             title={language === 'en' ? 'Reset database to initial demo state' : 'ডাটাবেজ প্রাথমিক ডেমো অবস্থায় রিসেট করুন'}
           >
             <RotateCcw size={14} className={resetting ? 'animate-spin' : ''} />
@@ -126,7 +126,7 @@ export const AdminDashboard: React.FC = () => {
 
           <button
             onClick={loadData}
-            className="p-2 border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50 transition flex items-center gap-1.5 text-xs font-semibold"
+            className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1.5 text-xs font-semibold"
           >
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
             <span>{t('common.refresh', 'রিফ্রেশ', 'Refresh')}</span>
@@ -136,42 +136,42 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Top Level Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-cyan-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">{t('admin.citizens', 'নিবন্ধিত নাগরিক', 'Registered Citizens')}</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-cyan-700 dark:text-cyan-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t('admin.citizens', 'নিবন্ধিত নাগরিক', 'Registered Citizens')}</span>
             <Users size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.total_citizens}</p>
-          <span className="text-[10px] text-cyan-700 font-medium">{t('admin.kycVerified', 'যাচাইকৃত স্মার্ট গ্রাহক', 'Verified Smart Citizens')}</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.total_citizens}</p>
+          <span className="text-[10px] text-cyan-700 dark:text-cyan-400 font-medium">{t('admin.kycVerified', 'যাচাইকৃত স্মার্ট গ্রাহক', 'Verified Smart Citizens')}</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-amber-600 mb-2">
-            <span className="text-xs font-semibold text-slate-500">{t('admin.pendingKyc', 'অপেক্ষমাণ কেওয়াইসি', 'Pending KYC')}</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-amber-600 dark:text-amber-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t('admin.pendingKyc', 'অপেক্ষমাণ কেওয়াইসি', 'Pending KYC')}</span>
             <UserCheck size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.pending_kyc_count}</p>
-          <Link to="/admin/users" className="text-[10px] text-amber-600 font-bold hover:underline">
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.pending_kyc_count}</p>
+          <Link to="/admin/users" className="text-[10px] text-amber-600 dark:text-amber-400 font-bold hover:underline">
             {t('admin.reviewKyc', 'যাচাই ও অনুমোদন করুন →', 'Review & Verify →')}
           </Link>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-indigo-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">{t('admin.totalSales', 'মোট বিক্রয় আবেদন', 'Total Sale Apps')}</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-indigo-700 dark:text-indigo-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t('admin.totalSales', 'মোট বিক্রয় আবেদন', 'Total Sale Apps')}</span>
             <FileSpreadsheet size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.total_applications || applications.length}</p>
-          <span className="text-[10px] text-indigo-700 font-medium">{t('admin.pipelineCount', 'সক্রিয় সমন্বিত পাইপলাইন', 'Active Integrated Pipeline')}</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.total_applications || applications.length}</p>
+          <span className="text-[10px] text-indigo-700 dark:text-indigo-400 font-medium">{t('admin.pipelineCount', 'সক্রিয় সমন্বিত পাইপলাইন', 'Active Integrated Pipeline')}</span>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
-          <div className="flex items-center justify-between text-emerald-700 mb-2">
-            <span className="text-xs font-semibold text-slate-500">{t('admin.mutations', 'সম্পন্ন নামজারি খতিয়ান', 'Completed Mutations')}</span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs transition-colors">
+          <div className="flex items-center justify-between text-emerald-700 dark:text-emerald-400 mb-2">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{t('admin.mutations', 'সম্পন্ন নামজারি খতিয়ান', 'Completed Mutations')}</span>
             <CheckCircle2 size={18} />
           </div>
-          <p className="text-2xl font-bold text-slate-900 font-mono">{stats.mutation_approved_count}</p>
-          <span className="text-[10px] text-emerald-700 font-medium">{t('admin.titleTransferred', 'স্বত্ব চূড়ান্তভাবে নামান্তরিত', 'Title Permanently Transferred')}</span>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{stats.mutation_approved_count}</p>
+          <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-medium">{t('admin.titleTransferred', 'স্বত্ব চূড়ান্তভাবে নামান্তরিত', 'Title Permanently Transferred')}</span>
         </div>
       </div>
 
@@ -333,53 +333,53 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Office Funnel Breakdown Cards */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-2xs p-5">
-        <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
-          <Building2 size={16} className="text-cyan-700" />
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs p-5 transition-colors">
+        <h3 className="text-sm font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+          <Building2 size={16} className="text-cyan-700 dark:text-cyan-400" />
           {t('admin.officeFunnel', 'দপ্তরভিত্তিক আবেদন বণ্টন ও প্রবাহ (Office Workflow Pipeline)', 'Office Workflow Pipeline & Work Queues')}
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
-          <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200">
+          <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-emerald-950">১. ইউনিয়ন ভূমি অফিস</span>
-              <Building2 size={16} className="text-emerald-700" />
+              <span className="font-bold text-emerald-950 dark:text-emerald-200">১. ইউনিয়ন ভূমি অফিস</span>
+              <Building2 size={16} className="text-emerald-700 dark:text-emerald-400" />
             </div>
-            <p className="text-2xl font-bold font-mono text-emerald-900">
+            <p className="text-2xl font-bold font-mono text-emerald-900 dark:text-emerald-300">
               {applications.filter((s: any) => s.stage === 'UNION_REVIEW_PENDING' || s.stage === 'UNDER_REVIEW').length}
             </p>
-            <p className="text-[11px] text-slate-500 mt-1">স্থানীয় দখল ও খাজনা দাখিলা সরেজমিন যাচাই</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">স্থানীয় দখল ও খাজনা দাখিলা সরেজমিন যাচাই</p>
           </div>
 
-          <div className="p-4 rounded-xl bg-indigo-50/70 border border-indigo-200">
+          <div className="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-indigo-950">২. এসি ল্যান্ড (প্রাক-রেজিস্ট্রি)</span>
-              <Landmark size={16} className="text-indigo-700" />
+              <span className="font-bold text-indigo-950 dark:text-indigo-200">২. এসি ল্যান্ড (প্রাক-রেজিস্ট্রি)</span>
+              <Landmark size={16} className="text-indigo-700 dark:text-indigo-400" />
             </div>
-            <p className="text-2xl font-bold font-mono text-indigo-900">
+            <p className="text-2xl font-bold font-mono text-indigo-900 dark:text-indigo-300">
               {applications.filter((s: any) => s.stage === 'AC_LAND_REVIEW_PENDING' || s.stage === 'UNION_APPROVED').length}
             </p>
-            <p className="text-[11px] text-slate-500 mt-1">রেকর্ডীয় হিস্যা ও অনাপত্তি (NOC) অনুমোদন</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">রেকর্ডীয় হিস্যা ও অনাপত্তি (NOC) অনুমোদন</p>
           </div>
 
-          <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200">
+          <div className="p-4 rounded-xl bg-amber-50/70 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-amber-950">৩. সাব-রেজিস্ট্রি অফিস</span>
-              <Stamp size={16} className="text-amber-700" />
+              <span className="font-bold text-amber-950 dark:text-amber-200">৩. সাব-রেজিস্ট্রি অফিস</span>
+              <Stamp size={16} className="text-amber-700 dark:text-amber-400" />
             </div>
-            <p className="text-2xl font-bold font-mono text-amber-900">
+            <p className="text-2xl font-bold font-mono text-amber-900 dark:text-amber-300">
               {applications.filter((s: any) => s.stage === 'APPOINTMENT_SCHEDULED' || s.stage === 'REGISTRATION_READY').length}
             </p>
-            <p className="text-[11px] text-slate-500 mt-1">অ্যাপয়েন্টমেন্ট ও সংবিধিবদ্ধ দলিল সম্পাদন</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">অ্যাপয়েন্টমেন্ট ও সংবিধিবদ্ধ দলিল সম্পাদন</p>
           </div>
 
-          <div className="p-4 rounded-xl bg-purple-50/70 border border-purple-200">
+          <div className="p-4 rounded-xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/60">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-purple-950">৪. এসি ল্যান্ড (ই-নামজারি)</span>
-              <Scale size={16} className="text-purple-700" />
+              <span className="font-bold text-purple-950 dark:text-purple-200">৪. এসি ল্যান্ড (ই-নামজারি)</span>
+              <Scale size={16} className="text-purple-700 dark:text-purple-400" />
             </div>
-            <p className="text-2xl font-bold font-mono text-purple-900">{stats.mutation_approved_count}</p>
-            <p className="text-[11px] text-slate-500 mt-1">শুনানি নিষ্পত্তি ও চূড়ান্ত নতুন খতিয়ান সৃজন</p>
+            <p className="text-2xl font-bold font-mono text-purple-900 dark:text-purple-300">{stats.mutation_approved_count}</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">শুনানি নিষ্পত্তি ও চূড়ান্ত নতুন খতিয়ান সৃজন</p>
           </div>
         </div>
       </div>
@@ -387,13 +387,13 @@ export const AdminDashboard: React.FC = () => {
       {/* Split: Recent Applications Oversight & Pending KYC */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Applications Oversight (2 cols) */}
-        <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-2xs p-5">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <FileSpreadsheet size={16} className="text-cyan-700" />
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs p-5 transition-colors">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+              <FileSpreadsheet size={16} className="text-cyan-700 dark:text-cyan-400" />
               {t('admin.recentApps', 'সারাদেশের লেনদেন আবেদন ও বর্তমান অবস্থা', 'Nationwide Land Applications & Status')}
             </h3>
-            <span className="text-xs text-slate-500 font-mono">
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
               {applications.length} {t('common.applications', 'টি আবেদন', 'applications')}
             </span>
           </div>
@@ -401,25 +401,25 @@ export const AdminDashboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+                <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold">
                   <th className="py-2.5 px-3">আবেদন নং</th>
                   <th className="py-2.5 px-3">পক্ষগণ</th>
                   <th className="py-2.5 px-3">তপশিল ও পরিমাণ</th>
                   <th className="py-2.5 px-3">বর্তমান অবস্থা</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {applications.slice(0, 7).map((app: any) => (
-                  <tr key={app.id} className="hover:bg-slate-50/70">
-                    <td className="py-2.5 px-3 font-mono font-bold text-slate-900">
+                  <tr key={app.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/60 transition">
+                    <td className="py-2.5 px-3 font-mono font-bold text-slate-900 dark:text-white">
                       {app.application_no}
                     </td>
                     <td className="py-2.5 px-3">
-                      <span className="font-semibold text-slate-800">{app.seller?.name_bn || 'বিক্রেতা'}</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{app.seller?.name_bn || 'বিক্রেতা'}</span>
                       <span className="text-slate-400 mx-1">→</span>
-                      <span className="text-slate-700">{app.buyer?.name_bn || 'ক্রেতা'}</span>
+                      <span className="text-slate-700 dark:text-slate-300">{app.buyer?.name_bn || 'ক্রেতা'}</span>
                     </td>
-                    <td className="py-2.5 px-3 text-slate-600">
+                    <td className="py-2.5 px-3 text-slate-600 dark:text-slate-400">
                       {app.parcel?.mouza || app.parcel?.mouza_bn}, দাগ: {app.parcel?.dag_no} ({app.proposed_area_decimal} শতক)
                     </td>
                     <td className="py-2.5 px-3">
@@ -433,33 +433,33 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Pending KYC Approval (1 col) */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-2xs p-5">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <UserCheck size={16} className="text-amber-600" />
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xs p-5 transition-colors">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+            <h3 className="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+              <UserCheck size={16} className="text-amber-600 dark:text-amber-400" />
               {t('admin.kycQueue', 'কেওয়াইসি ভেরিফিকেশন কিউ', 'KYC Verification Queue')} ({kycQueue.length})
             </h3>
-            <Link to="/admin/users" className="text-xs text-amber-600 hover:text-amber-800 font-bold">
+            <Link to="/admin/users" className="text-xs text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 font-bold">
               {t('common.viewAll', 'সম্পূর্ণ তালিকা →', 'View All →')}
             </Link>
           </div>
 
           <div className="space-y-3">
             {kycQueue.length === 0 ? (
-              <p className="text-xs text-slate-500 py-6 text-center italic">
+              <p className="text-xs text-slate-500 dark:text-slate-400 py-6 text-center italic">
                 {t('admin.noPendingKyc', 'কোন অপেক্ষমাণ কেওয়াইসি নেই।', 'No pending KYC applications.')}
               </p>
             ) : (
               kycQueue.slice(0, 4).map((u: any) => (
-                <div key={u.id} className="p-3 rounded-lg border border-slate-200 bg-slate-50/60 text-xs space-y-1">
+                <div key={u.id} className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/50 text-xs space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900">{u.name_bn || u.name}</span>
-                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+                    <span className="font-bold text-slate-900 dark:text-white">{u.name_bn || u.name}</span>
+                    <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/80 px-2 py-0.5 rounded">
                       যাচাই অপেক্ষমাণ
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-500">এনআইডি: {u.nid_no || u.nid || 'যাচাইযোগ্য'}</p>
-                  <p className="text-[11px] text-slate-500">মোবাইল: {u.mobile || '০১৭xxxxxxxx'}</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">এনআইডি: {u.nid_no || u.nid || 'যাচাইযোগ্য'}</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">মোবাইল: {u.mobile || '০১৭xxxxxxxx'}</p>
                 </div>
               ))
             )}

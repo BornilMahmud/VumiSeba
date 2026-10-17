@@ -4,7 +4,7 @@
       "id": "usr-seller-01",
       "citizen_id": "BHM-CIT-882194",
       "email": "seller@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "রফিকুল ইসলাম",
       "name_en": "Rafiqul Islam",
       "mobile": "01711000001",
@@ -25,7 +25,7 @@
       "id": "usr-buyer-01",
       "citizen_id": "BHM-CIT-419203",
       "email": "buyer@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "ফারহান আহমেদ",
       "name_en": "Farhan Ahmed",
       "mobile": "01811000002",
@@ -46,7 +46,7 @@
       "id": "usr-seller-taxdue",
       "citizen_id": "BHM-CIT-339102",
       "email": "latif.taxdue@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "আব্দুল লতিফ",
       "name_en": "Abdul Latif",
       "mobile": "01911000003",
@@ -67,7 +67,7 @@
       "id": "usr-seller-oversell",
       "citizen_id": "BHM-CIT-771920",
       "email": "nazrul.share@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "নজরুল ইসলাম",
       "name_en": "Nazrul Islam",
       "mobile": "01611000004",
@@ -88,7 +88,7 @@
       "id": "usr-seller-sylhet",
       "citizen_id": "BHM-CIT-551902",
       "email": "badrul.sylhet@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "বদরুল আলম",
       "name_en": "Badrul Alam",
       "mobile": "01711998877",
@@ -108,7 +108,7 @@
       "id": "usr-seller-rajshahi",
       "citizen_id": "BHM-CIT-662810",
       "email": "anisur.rajshahi@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "ড. আনিসুর রহমান",
       "name_en": "Dr. Anisur Rahman",
       "mobile": "01712887766",
@@ -128,7 +128,7 @@
       "id": "usr-seller-khulna",
       "citizen_id": "BHM-CIT-773921",
       "email": "goutam.khulna@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "গৌতম কুমার সেন",
       "name_en": "Goutam Kumar Sen",
       "mobile": "01912776655",
@@ -147,7 +147,7 @@
     {
       "id": "usr-officer-union",
       "email": "union.officer@land.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "মোহাম্মদ কামাল হোসেন",
       "name_en": "Md. Kamal Hossain",
       "mobile": "01711223344",
@@ -167,7 +167,7 @@
     {
       "id": "usr-officer-acland",
       "email": "ac.land@land.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "তানভীর হাসান চৌধুরী",
       "name_en": "Tanvir Hasan Chowdhury",
       "mobile": "01711334455",
@@ -187,7 +187,7 @@
     {
       "id": "usr-officer-registry",
       "email": "sub.registrar@land.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "সৈয়দা রোকসানা পারভীন",
       "name_en": "Syeda Roksana Parveen",
       "mobile": "01711445566",
@@ -207,7 +207,7 @@
     {
       "id": "usr-admin-central",
       "email": "admin@landtech.gov.bd",
-      "password_hash": "$2b$10$NCTo9hw7cptZhuGT7fPOQeLVnh5EwmmmSJqyGmjGoXGLJ1X2GeRHy",
+      "password_hash": "$2b$10$./TyP8yFspJx8jr7mrshO.27d1lRyjMyJW/3dZBtNwM4SGV99awzu",
       "name_bn": "এ. কে. এম. রেজওয়ানুল হক",
       "name_en": "A. K. M. Rezwanul Haque",
       "mobile": "01711556677",
@@ -239,10 +239,10 @@
       "upazila": "গুলশান",
       "role": "citizen",
       "kyc_status": "verified",
-      "created_at": "2026-10-17T11:32:20.560Z",
-      "updated_at": "2026-10-17T11:32:20.561Z",
-      "citizen_id": "BHM-CIT-669037",
-      "kyc_verified_at": "2026-10-17T11:32:20.561Z"
+      "created_at": "2026-10-17T11:47:51.611Z",
+      "updated_at": "2026-10-17T11:47:51.612Z",
+      "citizen_id": "BHM-CIT-616143",
+      "kyc_verified_at": "2026-10-17T11:47:51.612Z"
     }
   ],
   "land_parcels": [
@@ -763,7 +763,7 @@
       "status": "partial_transferred",
       "acquired_type_bn": "পৈতৃক ওয়ারিশসূত্রে",
       "created_at": "2024-01-10T00:00:00Z",
-      "updated_at": "2026-10-17T11:32:20.565Z"
+      "updated_at": "2026-10-17T11:47:51.617Z"
     },
     {
       "id": "own-clean-cosharer",
@@ -1047,7 +1047,7 @@
       "updated_at": "2024-05-20T00:00:00Z"
     },
     {
-      "id": "OWN-NEW-1792236740566",
+      "id": "OWN-NEW-1792237671617",
       "parcel_id": "pcl-clean-405",
       "owner_id": "usr-buyer-01",
       "owner_name_bn": "ফারহান আহমেদ",
@@ -1057,8 +1057,8 @@
       "khatian_ref": "নামজারি-৮৮৯৯",
       "status": "active",
       "acquired_type_bn": "খরিদসূত্রে (নামজারি সম্পন্ন)",
-      "created_at": "2026-10-17T11:32:20.566Z",
-      "updated_at": "2026-10-17T11:32:20.566Z"
+      "created_at": "2026-10-17T11:47:51.617Z",
+      "updated_at": "2026-10-17T11:47:51.617Z"
     }
   ],
   "khatian_records": [
@@ -1223,7 +1223,7 @@
       "created_at": "2024-05-20T00:00:00Z"
     },
     {
-      "id": "KHT-NEW-1792236740565",
+      "id": "KHT-NEW-1792237671616",
       "khatian_no": "নামজারি-৮৮৯৯",
       "khatian_type": "Mutation",
       "mouza": "বাড্ডা",
@@ -1236,7 +1236,7 @@
       "dags_summary_bn": "দাগ ৪০৫ (১.০০ শতক)",
       "total_area_decimal": 1,
       "is_archived": false,
-      "created_at": "2026-10-17T11:32:20.565Z"
+      "created_at": "2026-10-17T11:47:51.616Z"
     }
   ],
   "land_documents": [
@@ -1729,7 +1729,7 @@
       "updated_at": "2026-03-01T08:00:00Z"
     },
     {
-      "id": "SA-TEST-1792236740562",
+      "id": "SA-TEST-1792237671614",
       "application_no": "BHM-SA-2026-TEST",
       "parcel_id": "pcl-clean-405",
       "seller_id": "usr-seller-01",
@@ -1746,8 +1746,8 @@
       "union_verified": true,
       "registry_completed": true,
       "mutation_created": true,
-      "created_at": "2026-10-17T11:32:20.562Z",
-      "updated_at": "2026-10-17T11:32:20.565Z"
+      "created_at": "2026-10-17T11:47:51.614Z",
+      "updated_at": "2026-10-17T11:47:51.616Z"
     }
   ],
   "risk_assessments": [
@@ -1865,7 +1865,7 @@
       "generated_at": "2026-03-01T00:00:00Z"
     },
     {
-      "id": "RISK-1792236740562-304",
+      "id": "RISK-1792237671613-172",
       "parcel_id": "pcl-clean-405",
       "overall_risk_level": "low",
       "risk_score": 100,
@@ -1971,10 +1971,10 @@
       "duplicate_sale_risk": false,
       "acquisition_risk": false,
       "document_discrepancy": false,
-      "generated_at": "2026-10-17T11:32:20.562Z"
+      "generated_at": "2026-10-17T11:47:51.613Z"
     },
     {
-      "id": "RISK-1792236740562-167",
+      "id": "RISK-1792237671613-399",
       "parcel_id": "pcl-court-710",
       "overall_risk_level": "critical",
       "risk_score": 0,
@@ -2095,7 +2095,7 @@
       "duplicate_sale_risk": false,
       "acquisition_risk": true,
       "document_discrepancy": false,
-      "generated_at": "2026-10-17T11:32:20.562Z"
+      "generated_at": "2026-10-17T11:47:51.613Z"
     }
   ],
   "office_reviews": [
@@ -2191,14 +2191,14 @@
       "disclaimer_bn": "অত্র দলিলটি দ্য রেজিস্ট্রেশন অ্যাক্ট ১৯০৮-এর আওতায় ডিজিটালভাবে নিবন্ধিত এবং স্বয়ংক্রিয় ই-নামজারি প্রক্রিয়ার সাথে সরাসরি সংযুক্ত।"
     },
     {
-      "id": "REG-TEST-1792236740564",
-      "application_id": "SA-TEST-1792236740562",
+      "id": "REG-TEST-1792237671615",
+      "application_id": "SA-TEST-1792237671614",
       "registry_office_bn": "গুলশান সাব-রেজিস্ট্রি অফিস",
       "registration_serial_no": "REG-GLS-TEST",
       "deed_no": "99120/2026",
       "deed_volume_no": "৪৫/১০২",
       "deed_year": "২০২৬",
-      "completion_timestamp": "2026-10-17T11:32:20.564Z",
+      "completion_timestamp": "2026-10-17T11:47:51.615Z",
       "officer_id": "usr-officer-registry",
       "deed_draft_url": "/drafts/test.pdf",
       "is_official_record": true,
@@ -2267,9 +2267,9 @@
       "updated_at": "2025-12-15T16:00:00Z"
     },
     {
-      "id": "MUT-TEST-1792236740564",
+      "id": "MUT-TEST-1792237671615",
       "mutation_case_no": "MUT-AC-2026-TEST",
-      "sale_application_id": "SA-TEST-1792236740562",
+      "sale_application_id": "SA-TEST-1792237671614",
       "parcel_id": "pcl-clean-405",
       "applicant_id": "usr-buyer-01",
       "previous_khatian_no": "১২০৪",
@@ -2277,8 +2277,8 @@
       "current_stage": "application_submitted",
       "status": "active",
       "order_summary_bn": "সাফ-কবলা দলিল নং 99120/2026 সূত্রে নামজারি রুজু।",
-      "created_at": "2026-10-17T11:32:20.564Z",
-      "updated_at": "2026-10-17T11:32:20.564Z"
+      "created_at": "2026-10-17T11:47:51.615Z",
+      "updated_at": "2026-10-17T11:47:51.615Z"
     }
   ],
   "notifications": [

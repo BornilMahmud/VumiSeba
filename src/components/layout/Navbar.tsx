@@ -49,7 +49,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800 sticky top-[33px] z-40 shadow-xs transition-colors duration-200">
+    <header className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800 sticky top-0 z-40 shadow-xs transition-colors duration-200">
       {/* Top Ministry Banner & Language / Theme Switcher Strip */}
       <div className="bg-slate-900 text-slate-200 text-[11px] py-1 px-4 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
