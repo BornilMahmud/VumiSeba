@@ -1,4 +1,4 @@
-import rawDb from '../../data/db.json';
+import rawDb from './offlineSnapshot.json';
 import { UserProfile } from '../types';
 
 export const OFFLINE_DB = rawDb;

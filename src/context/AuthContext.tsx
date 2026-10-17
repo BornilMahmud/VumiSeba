@@ -13,7 +13,6 @@ import { auth, googleProvider, isFirebaseConfigured } from '../lib/firebase';
 import { firestoreService } from '../services/firestoreService';
 
 import { DEMO_CREDENTIALS, findOfflineDemoUser, createOfflineDemoToken } from '../types/demoCredentials';
-export { DEMO_CREDENTIALS };
 
 interface AuthContextType {
   user: UserProfile | null;
