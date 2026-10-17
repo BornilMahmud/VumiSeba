@@ -50,7 +50,7 @@ export const getUserAvatarUrl = (user: UserProfile | null | undefined): string |
   ) {
     return '/avatars/nid_farhan_ahmed.jpg';
   }
-  return '/avatars/nid_rafiqul_islam.jpg';
+  return '/avatars/default_nid.jpg';
 };
 
 export const AVAILABLE_AVATAR_PRESETS = [

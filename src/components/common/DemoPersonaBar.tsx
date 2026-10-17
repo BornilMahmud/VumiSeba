@@ -17,7 +17,7 @@ export const DemoPersonaBar: React.FC = () => {
   const [resetting, setResetting] = useState(false);
 
   const personas = [
-    { id: 'seller', labelBn: 'বিক্রেতা (রফিকুল)', labelEn: 'Seller (Rafiqul)', role: 'citizen', icon: User, path: '/citizen/dashboard' },
+    { id: 'seller', labelBn: 'বিক্রেতা (আরমান)', labelEn: 'Seller (Arman)', role: 'citizen', icon: User, path: '/citizen/dashboard' },
     { id: 'buyer', labelBn: 'ক্রেতা (ফারহান)', labelEn: 'Buyer (Farhan)', role: 'citizen', icon: UserCheck, path: '/citizen/dashboard' },
     { id: 'taxdue', labelBn: 'কর বকেয়া (লতিফ)', labelEn: 'Tax Due (Latif)', role: 'citizen', icon: FileText, path: '/citizen/dashboard' },
     { id: 'oversell', labelBn: 'অতিরিক্ত হিস্যা (নজরুল)', labelEn: 'Excess Share (Nazrul)', role: 'citizen', icon: FileText, path: '/citizen/dashboard' },

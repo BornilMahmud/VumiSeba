@@ -335,7 +335,7 @@ export const Navbar: React.FC = () => {
                   </div>
                   <div className="relative shrink-0">
                     <img
-                      src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                      src={avatarUrl || '/avatars/default_nid.jpg'}
                       alt={user.name_bn || 'User'}
                       className="w-8 h-8 rounded-xl object-cover ring-2 ring-emerald-500/40 shadow-2xs group-hover:scale-105 transition-transform"
                     />
@@ -503,7 +503,7 @@ export const Navbar: React.FC = () => {
                   className="flex items-center gap-3 p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
                 >
                   <img
-                    src={avatarUrl || '/avatars/nid_rafiqul_islam.jpg'}
+                    src={avatarUrl || '/avatars/default_nid.jpg'}
                     alt="User"
                     className="w-10 h-10 rounded-xl object-cover ring-2 ring-emerald-500/50 shrink-0"
                   />
