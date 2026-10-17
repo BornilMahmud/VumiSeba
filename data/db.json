@@ -257,7 +257,7 @@
       "photo_url": "/avatars/default_nid.jpg",
       "nid_photo_url": "/avatars/default_nid.jpg",
       "created_at": "2025-02-18T10:00:00Z",
-      "updated_at": "2025-02-18T10:00:00Z"
+      "updated_at": "2026-10-17T20:48:32.287Z"
     },
     {
       "id": "usr-pending-03",
@@ -368,13 +368,13 @@
       "upazila": "তেজগাঁও",
       "role": "union_officer",
       "citizen_id": "BHM-CIT-728193",
-      "designation_bn": "সার্ভেয়ার ও কানুনগো কর্মকর্তা",
-      "office_name_bn": "ঢাকা জেলা রাজস্ব প্রশাসন ও রেকর্ড রুম",
+      "designation_bn": "জ্যেষ্ঠ রাজস্ব সার্ভেয়ার ও কানুনগো",
+      "office_name_bn": "ঢাকা জেলা রাজস্ব প্রশাসন",
       "photo_url": "/avatars/default_nid.jpg",
       "nid_photo_url": "/avatars/default_nid.jpg",
       "kyc_status": "verified",
       "created_at": "2024-12-10T08:00:00Z",
-      "updated_at": "2024-12-10T08:00:00Z"
+      "updated_at": "2026-10-17T20:48:32.297Z"
     }
   ],
   "land_parcels": [
@@ -15895,6 +15895,36 @@
         ]
       },
       "timestamp": "2026-10-17T20:01:49.727Z"
+    },
+    {
+      "id": "AUDIT-1792270112290-768",
+      "user_id": "usr-admin-central",
+      "user_name_bn": "এ. কে. এম. রেজওয়ানুল হক",
+      "user_role": "central_admin",
+      "action": "ADMIN_APPROVE_KYC",
+      "target_entity": "profiles",
+      "target_id": "usr-pending-02",
+      "ip_address": "::1",
+      "details": {
+        "citizen_id": "BHM-CIT-412789"
+      },
+      "timestamp": "2026-10-17T20:48:32.290Z"
+    },
+    {
+      "id": "AUDIT-1792270112300-338",
+      "user_id": "usr-admin-central",
+      "user_name_bn": "এ. কে. এম. রেজওয়ানুল হক",
+      "user_role": "central_admin",
+      "action": "ADMIN_UPDATE_USER_ROLE",
+      "target_entity": "profiles",
+      "target_id": "usr-officer-surveyor",
+      "ip_address": "::1",
+      "details": {
+        "previous_role": "union_officer",
+        "new_role": "union_land_officer",
+        "target_user": "মোঃ শাহ আলম ভুঁইয়া"
+      },
+      "timestamp": "2026-10-17T20:48:32.300Z"
     }
   ]
 }
