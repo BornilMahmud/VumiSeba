@@ -80,56 +80,63 @@ export const NotFoundPage: React.FC = () => {
   ];
 
   return (
-    <div className={`min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative overflow-hidden ${isBn ? 'font-bengali' : 'font-sans'}`}>
+    <div className={`min-h-[calc(100vh-80px)] w-full py-10 sm:py-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative overflow-hidden ${isBn ? 'font-bengali' : 'font-sans'}`}>
       {/* Background Decorative Glow Gradients */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-emerald-500/15 via-teal-500/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-emerald-500/15 via-teal-500/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      <div className="max-w-3xl w-full text-center space-y-8 relative">
-        {/* Animated Digital Land Survey 404 Visual */}
-        <div className="relative inline-flex items-center justify-center mx-auto mb-2">
-          {/* Concentric Pulsing Radar Rings */}
-          <div className="absolute w-44 h-44 sm:w-56 sm:h-56 rounded-full border border-emerald-500/20 dark:border-emerald-500/20 animate-ping opacity-30 pointer-events-none" />
-          <div className="absolute w-36 h-36 sm:w-48 sm:h-48 rounded-full border border-teal-500/30 dark:border-teal-500/30 animate-pulse pointer-events-none" />
-          
-          <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-br from-white to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-800 shadow-xl flex items-center justify-center p-4">
-            {/* Corner Markers for Digital Survey Feel */}
-            <div className="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-emerald-500" />
-            <div className="absolute top-2 right-2 w-2 h-2 border-t-2 border-r-2 border-emerald-500" />
-            <div className="absolute bottom-2 left-2 w-2 h-2 border-b-2 border-l-2 border-emerald-500" />
-            <div className="absolute bottom-2 right-2 w-2 h-2 border-b-2 border-r-2 border-emerald-500" />
+      <div className="max-w-5xl w-full text-center space-y-8 relative">
+        {/* Animated Digital Land Survey 404 Visual - Box removed, Big Hero Number */}
+        <div className="relative inline-flex items-center justify-center mx-auto select-none my-2 sm:my-4">
+          {/* Concentric Pulsing Radar Rings extending across */}
+          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 md:w-[30rem] md:h-[30rem] rounded-full border border-emerald-500/20 dark:border-emerald-500/20 animate-ping opacity-25 pointer-events-none" />
+          <div className="absolute w-56 h-56 sm:w-72 sm:h-72 md:w-[22rem] md:h-[22rem] rounded-full border border-teal-500/25 dark:border-teal-500/30 animate-pulse pointer-events-none" />
 
-            <div className="flex flex-col items-center justify-center text-center">
-              <Compass className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-600 dark:text-emerald-400 animate-[spin_12s_linear_infinite]" />
-              <span className="font-mono font-black text-2xl sm:text-3xl tracking-tighter text-slate-800 dark:text-white mt-1">
-                4<span className="text-emerald-600 dark:text-emerald-400">0</span>4
+          {/* Giant 404 Hero Number Display without enclosing box */}
+          <div className="relative flex items-center justify-center font-mono font-black text-8xl sm:text-9xl md:text-[11rem] lg:text-[13rem] tracking-tighter leading-none">
+            <span className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-300 bg-clip-text text-transparent drop-shadow-sm">
+              4
+            </span>
+
+            {/* Glowing Center Zero with Integrated Compass */}
+            <div className="relative inline-flex items-center justify-center mx-1 sm:mx-3">
+              <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-600 bg-clip-text text-transparent">
+                0
               </span>
+              <Compass
+                className="absolute inset-0 m-auto w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 text-emerald-600/80 dark:text-emerald-400/90 animate-[spin_16s_linear_infinite]"
+                strokeWidth={1.75}
+              />
             </div>
+
+            <span className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-300 bg-clip-text text-transparent drop-shadow-sm">
+              4
+            </span>
           </div>
 
-          {/* Floating Badges */}
-          <div className="absolute -top-3 -right-4 sm:-right-6 bg-emerald-600 text-white text-[10px] sm:text-xs font-mono font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1 border border-emerald-400/30 animate-bounce">
-            <MapPin size={12} />
+          {/* Floating Context Badges */}
+          <div className="absolute -top-2 -right-4 sm:-right-8 bg-emerald-600 text-white text-[11px] sm:text-xs font-mono font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-emerald-400/40 animate-bounce">
+            <MapPin size={13} />
             <span>{isBn ? 'দাগ অপসারিত' : 'Plot Unmapped'}</span>
           </div>
 
-          <div className="absolute -bottom-3 -left-4 sm:-left-6 bg-slate-800 dark:bg-slate-700 text-slate-200 text-[10px] sm:text-xs font-mono px-2.5 py-1 rounded-full shadow-md border border-slate-600/40">
+          <div className="absolute -bottom-2 -left-4 sm:-left-8 bg-slate-900/90 dark:bg-slate-800/95 text-slate-200 text-[10px] sm:text-xs font-mono px-3 py-1.5 rounded-full shadow-lg border border-slate-700/60 backdrop-blur-md">
             <span>23.8103° N, 90.4125° E</span>
           </div>
         </div>
 
         {/* Heading & Friendly Explanations */}
         <div className="space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
             <Sparkles size={13} />
             <span>{isBn ? '৪০৪ ত্রুটি — পৃষ্ঠাটি পাওয়া যায়নি' : 'HTTP 404 — Route Not Found'}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {isBn ? 'দুঃখিত! পৃষ্ঠাটি খুঁজে পাওয়া যায়নি' : 'Oops! Page Not Found'}
           </h1>
 
-          <p className="max-w-xl mx-auto text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
             {isBn
               ? 'আপনি যে পৃষ্ঠাটি খুঁজছেন তা স্থানান্তরিত হয়েছে, মুছে ফেলা হয়েছে অথবা ভুল ইউআরএল (URL) টাইপ করা হয়েছে।'
               : "The page you are looking for doesn't exist, may have been relocated, or the URL was mistyped."}
@@ -143,7 +150,7 @@ export const NotFoundPage: React.FC = () => {
         </div>
 
         {/* Search Field */}
-        <div className="max-w-md mx-auto">
+        <div className="max-w-lg mx-auto">
           <form onSubmit={handleSearch} className="relative flex items-center">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
