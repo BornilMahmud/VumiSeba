@@ -257,18 +257,19 @@ router.post('/demo-login', async (req, res) => {
     targetUser = allProfiles.find((p) => p.id === 'usr-seller-taxdue');
   } else if (persona === 'oversell') {
     targetUser = allProfiles.find((p) => p.id === 'usr-seller-oversell');
-  } else if (role === 'union_officer') {
-    targetUser = allProfiles.find((p) => p.role === 'union_officer');
-  } else if (role === 'ac_land') {
-    targetUser = allProfiles.find((p) => p.role === 'ac_land');
-  } else if (role === 'sub_registrar') {
-    targetUser = allProfiles.find((p) => p.role === 'sub_registrar');
-  } else if (role === 'central_admin') {
-    targetUser = allProfiles.find((p) => p.role === 'central_admin');
+  } else if (role === 'union_officer' || role === 'union_land_officer' || persona === 'union_officer' || persona === 'union_land_officer') {
+    targetUser = allProfiles.find((p) => p.role === 'union_officer' || (p.role as string) === 'union_land_officer' || p.id === 'usr-officer-union');
+  } else if (role === 'ac_land' || persona === 'ac_land') {
+    targetUser = allProfiles.find((p) => p.role === 'ac_land' || p.id === 'usr-officer-acland');
+  } else if (role === 'sub_registrar' || persona === 'sub_registrar') {
+    targetUser = allProfiles.find((p) => p.role === 'sub_registrar' || p.id === 'usr-officer-registry');
+  } else if (role === 'central_admin' || persona === 'central_admin') {
+    targetUser = allProfiles.find((p) => p.role === 'central_admin' || p.id === 'usr-admin-central');
   }
 
   if (!targetUser) {
-    targetUser = allProfiles.find((p) => p.role === (role || 'citizen'));
+    const normalizedRole = (role === 'union_land_officer') ? 'union_officer' : (role || 'citizen');
+    targetUser = allProfiles.find((p) => p.role === normalizedRole || (p.role as string) === role);
   }
 
   if (!targetUser) {

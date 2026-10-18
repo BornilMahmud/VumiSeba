@@ -73,7 +73,7 @@ export async function requireAuth(
   }
 }
 
-export function requireRole(...allowedRoles: UserRole[]) {
+export function requireRole(...allowedRoles: (UserRole | string)[]) {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     if (!req.user) {
       res.status(401).json({
@@ -84,7 +84,24 @@ export function requireRole(...allowedRoles: UserRole[]) {
       return;
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const normalizeRole = (r: string) => {
+      if (r === 'union_land_officer') return 'union_officer';
+      if (r === 'ac_land_officer') return 'ac_land';
+      if (r === 'sub_registry_officer') return 'sub_registrar';
+      if (r === 'admin') return 'central_admin';
+      return r;
+    };
+
+    const currentRole = req.user.role;
+    const normalizedCurrent = normalizeRole(currentRole);
+    const normalizedAllowed = allowedRoles.map((r) => normalizeRole(r));
+
+    const isMatch =
+      allowedRoles.includes(currentRole as UserRole) ||
+      normalizedAllowed.includes(normalizedCurrent) ||
+      normalizedCurrent === 'central_admin';
+
+    if (!isMatch) {
       res.status(403).json({
         success: false,
         message_bn: 'এই কার্যক্রম পরিচালনার জন্য আপনার প্রয়োজনীয় সরকারি অনুমোদন বা ভূমিকা নেই।',

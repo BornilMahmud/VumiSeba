@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { getUserAvatarUrl } from '../../utils/userUtils';
+import { ErrorBoundary } from '../common/ErrorBoundary';
 
 export const UnionOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -305,7 +306,9 @@ export const UnionOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
 
         {/* Content Outlet */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 w-full min-w-0">
-          {children || <Outlet />}
+          <ErrorBoundary>
+            {children || <Outlet />}
+          </ErrorBoundary>
         </main>
       </div>
     </div>
