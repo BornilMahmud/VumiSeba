@@ -127,7 +127,7 @@ export const UnionReportsPage: React.FC = () => {
           </div>
         ) : (
           filteredApps.map((app) => {
-            const sellerName = formatName(app.seller, isBn, 'Md. Arman Hossen Ripon');
+            const sellerName = formatName(app.seller, isBn, 'Md. Rafiqul Islam');
             const buyerName = formatName(app.buyer, isBn, 'Farhan Ahmed');
             const mouza = formatMouza(app.parcel, isBn);
 

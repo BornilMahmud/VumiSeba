@@ -47,8 +47,8 @@ const UPAZILA_MAP_EN: Record<string, string> = {
 };
 
 const NAME_MAP_EN: Record<string, string> = {
-  'মোঃ আরমান হোসেন রিপন': 'Md. Arman Hossen Ripon',
-  'আরমান হোসেন': 'Arman Hossen',
+  'মোঃ রফিকুল ইসলাম': 'Md. Rafiqul Islam',
+  'রফিকুল ইসলাম': 'Rafiqul Islam',
   'ফারহান আহমেদ': 'Farhan Ahmed',
   'মো: ফারহান আহমেদ': 'Md. Farhan Ahmed',
   'আব্দুল লতিফ': 'Abdul Latif',

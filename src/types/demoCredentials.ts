@@ -1,7 +1,7 @@
 export { OFFLINE_DEMO_USERS, findOfflineDemoUser, createOfflineDemoToken } from '../data/offlineDemoData';
 
 export const DEMO_CREDENTIALS = {
-  seller: { email: 'seller@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'বিক্রেতা (আরমান)', role: 'citizen' },
+  seller: { email: 'seller@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'বিক্রেতা (রফিক)', role: 'citizen' },
   buyer: { email: 'buyer@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'ক্রেতা (ফারহান)', role: 'citizen' },
   taxdue: { email: 'latif.taxdue@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'কর বকেয়া (লতিফ)', role: 'citizen' },
   oversell: { email: 'nazrul.share@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'অতিরিক্ত হিস্যা (নজরুল)', role: 'citizen' },

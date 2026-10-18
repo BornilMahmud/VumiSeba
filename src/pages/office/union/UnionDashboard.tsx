@@ -300,8 +300,8 @@ export const UnionDashboard: React.FC = () => {
                     </td>
                     <td className="py-2 px-2.5">
                       <div className="leading-tight max-w-[150px]">
-                        <div className="font-semibold text-slate-900 dark:text-white truncate" title={formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}>
-                          {formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}
+                        <div className="font-semibold text-slate-900 dark:text-white truncate" title={formatName(app.seller, isBn, 'Md. Rafiqul Islam')}>
+                          {formatName(app.seller, isBn, 'Md. Rafiqul Islam')}
                         </div>
                         <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate flex items-center gap-0.5" title={formatName(app.buyer, isBn, 'Farhan Ahmed')}>
                           <span className="text-slate-400">→</span>
@@ -399,7 +399,7 @@ export const UnionDashboard: React.FC = () => {
               <div>
                 <span className="text-[10px] text-slate-500 dark:text-slate-400 block">{isBn ? 'বিক্রেতা' : 'Seller'}</span>
                 <span className="font-semibold text-slate-900 dark:text-white">
-                  {isBn ? (previewApp.seller?.name_bn || 'মোঃ আরমান হোসেন রিপন') : (previewApp.seller?.name_en || 'Md. Arman Hossen Ripon')}
+                  {isBn ? (previewApp.seller?.name_bn || 'মোঃ রফিকুল ইসলাম') : (previewApp.seller?.name_en || 'Md. Rafiqul Islam')}
                 </span>
                 <span className="text-[10px] text-slate-400 block font-mono">
                   NID: {previewApp.seller?.nid_no || '19852691029384756'}

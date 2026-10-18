@@ -14,7 +14,7 @@
 |---|---|---|---|
 | **00:00 - 00:20** | `http://localhost:3000/` (Home) | Show Home headline & dual solutions: *Check Before You Buy* & *Smart Registry to e-Mutation*. Click **"৩-মিনিট লাইভ ডেমো শুরু করুন"**. | "বাংলাদেশে জমি কিনে মানুষ সবচেয়ে বেশি প্রতারিত হয় বায়নার আগে স্বত্ব যাচাই না করতে পেরে এবং রেজিস্ট্রেশনের পর নামজারি না করায়। ভূমিসেবা এই দুই মারাত্মক ফাঁক বন্ধ করেছে।" / *"In Bangladesh, 70% of civil litigation stems from land fraud before earnest money and un-mutated deeds. VumiSeba solves both."* |
 | **00:20 - 00:45** | `/verify-land` | 1. Click preset button: **"✓ নিরাপদ জমি (দাগ ৪০৫)"** -> Score: 90/100 (নিরাপদ).<br>2. Click preset button: **"⛔ আদালত মামলা ও মর্টগেজ (দাগ ৭১০)"** -> Watch **Critical Override Banner** trigger instantly! | "আমাদের স্বচ্ছ রিস্ক ইঞ্জিন শুধু স্কোর দেখায় না, ৭টি পৃথক ফ্যাক্টর এবং ক্রিটিক্যাল ওভাররাইড প্রদর্শন করে। দাগ ৭১০-এ অন্যান্য রেকর্ড ভালো থাকলেও আদালতের স্থগিতাদেশের কারণে সিস্টেম একে সরাসরি 'সংকটাপন্ন ঝুঁকি' হিসেবে চিহ্নিত করেছে।" / *"Notice the Critical Factor Override: active court injunctions strictly cap the score and prevent false 'Low Risk' ratings."* |
-| **00:45 - 01:10** | Demo Persona Bar -> **"বিক্রেতা (আরমান)"** -> `/citizen/sell` | Select Dag **১০২** -> Enter proposed share `0.25` (Seller only owns `0.125`) -> Click Submit. | "ডাবল-সেল ও অতিরিক্ত বিক্রি রোধ: দাগ ১০২-এ নজরুল ০.১২৫ অংশের মালিক হয়ে ০.২৫ বিক্রির চেষ্টা করলে আমাদের ইনটিজার বেসিস-পয়েন্ট লেজার তাৎক্ষণিক 400 ত্রুটিতে আবেদন আটকে দেয়।" / *"Our integer basis-point ledger strictly blocks over-selling upon submission."* |
+| **00:45 - 01:10** | Demo Persona Bar -> **"বিক্রেতা (রফিক)"** -> `/citizen/sell` | Select Dag **১০২** -> Enter proposed share `0.25` (Seller only owns `0.125`) -> Click Submit. | "ডাবল-সেল ও অতিরিক্ত বিক্রি রোধ: দাগ ১০২-এ নজরুল ০.১২৫ অংশের মালিক হয়ে ০.২৫ বিক্রির চেষ্টা করলে আমাদের ইনটিজার বেসিস-পয়েন্ট লেজার তাৎক্ষণিক 400 ত্রুটিতে আবেদন আটকে দেয়।" / *"Our integer basis-point ledger strictly blocks over-selling upon submission."* |
 | **01:10 - 01:30** | Demo Persona Bar -> **"সাব-রেজিস্ট্রার"** -> `/office/registry/dashboard` | Click application `APP-2026-9041` -> Click **"দলিল সম্পাদন নিশ্চিত করুন"**. | "রেজিস্ট্রেশন সম্পূর্ণ হওয়ার সাথে সাথেই একটি পারমাণবিক ট্রানজ্যাকশনে সরাসরি ই-নামজারি কেস ও ক্রেতার নতুন খতিয়ান তৈরি হয়ে যায়। নাগরিকের কোনো নতুন আবেদন বা দালাল ধরার প্রয়োজন নেই।" / *"Deed registration atomically spawns the linked e-Mutation case and updates the khatian. Zero citizen delay."* |
 
 ---
@@ -23,7 +23,7 @@
 
 ### Persona Access Cheat-Sheet (Always Visible on Top Demo Bar)
 - **Buyer (Citizen)**: Farhan Ahmed (`farhan@demo.land.gov.bd`)
-- **Seller (Citizen)**: Md. Arman Hossen Ripon (`seller@bhumisathi.gov.bd`)
+- **Seller (Citizen)**: Md. Rafiqul Islam (`seller@bhumisathi.gov.bd`)
 - **Tax-Due Seller**: Latif Hossain (`latif@demo.land.gov.bd`)
 - **Excess Share Seller**: Nazrul Islam (`nazrul@demo.land.gov.bd`)
 - **Union Land Officer (ULAO)**: Najma Akter (`union.officer@land.gov.bd`)
@@ -74,7 +74,7 @@
    - Enter proposed share `0.25` (25% = 6.0 decimal).
    - Click **"বিক্রয় আবেদন দাখিল করুন"**.
    - **Show Judges:** Server rejects with `400 Bad Request`: *"প্রস্তাবিত অংশ (০.২৫) বিক্রেতার বৈধ হিস্যা (০.১২৫) অপেক্ষা বেশি। আবেদন বাতিল।"*
-4. Now switch to **"বিক্রেতা (আরমান)"** and submit a valid `0.05` share on clean plot **৪০৫**.
+4. Now switch to **"বিক্রেতা (রফিক)"** and submit a valid `0.05` share on clean plot **৪০৫**.
    - Show that submission immediately places an uncommitted reservation on the seller's active interest.
 
 ---

@@ -76,7 +76,7 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
           <div className="grid grid-cols-2 gap-6 mb-6 bg-slate-50 p-4 rounded border border-slate-200">
             <div>
               <h4 className="font-bold text-slate-900 border-b pb-1 mb-2">১ম পক্ষ (বিক্রেতা / দাতা):</h4>
-              <p><strong>নাম:</strong> {seller?.name_bn || 'মোঃ আরমান হোসেন রিপন'}</p>
+              <p><strong>নাম:</strong> {seller?.name_bn || 'মোঃ রফিকুল ইসলাম'}</p>
               <p><strong>সিটিজেন আইডি:</strong> {seller?.citizen_id || 'BHM-CIT-882194'}</p>
               <p><strong>এনআইডি:</strong> {seller?.nid_no || '১৯৮৫২৬৯১০২৯৩৮৪৭৫৬'}</p>
               <p><strong>মোবাইল:</strong> {seller?.mobile || '০১৭১১০০০০০১'}</p>

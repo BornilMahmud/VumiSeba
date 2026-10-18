@@ -34,17 +34,17 @@ export const ProfileKycPage: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
 
   // Profile & NID Information State (defaults to authentic NID card data)
-  const [nameBn, setNameBn] = useState(user?.name_bn || 'মোঃ আরমান হোসেন রিপন');
-  const [nameEn, setNameEn] = useState(user?.name_en || 'MD. ARMAN HOSSEN RIPON');
-  const [fatherNameBn, setFatherNameBn] = useState(user?.father_name_bn || 'মোঃ ফেরদৌস হাসান খান');
-  const [motherNameBn, setMotherNameBn] = useState(user?.mother_name_bn || 'মোছাঃ মহসিনা আকতার শান্তনা');
-  const [dateOfBirth, setDateOfBirth] = useState(user?.date_of_birth || '2005-06-01');
-  const [nidNo, setNidNo] = useState(user?.nid_no || '6847057587');
+  const [nameBn, setNameBn] = useState(user?.name_bn || 'মোঃ রফিকুল ইসলাম');
+  const [nameEn, setNameEn] = useState(user?.name_en || 'MD. RAFIQUL ISLAM');
+  const [fatherNameBn, setFatherNameBn] = useState(user?.father_name_bn || 'মোঃ আবুল কাসেম');
+  const [motherNameBn, setMotherNameBn] = useState(user?.mother_name_bn || 'মোছাঃ রহিমা খাতুন');
+  const [dateOfBirth, setDateOfBirth] = useState(user?.date_of_birth || '1985-04-12');
+  const [nidNo, setNidNo] = useState(user?.nid_no || '19852691029384756');
   const [signatureUrl, setSignatureUrl] = useState<string>('');
-  const [signatureText, setSignatureText] = useState<string>(() => (user?.name_bn ? (user.name_bn.split(' ').slice(-1)[0] || 'আরমান') : 'আরমান'));
+  const [signatureText, setSignatureText] = useState<string>(() => (user?.name_bn ? (user.name_bn.split(' ').slice(-1)[0] || 'রফিক') : 'রফিক'));
   const [tableNidMasked, setTableNidMasked] = useState(true);
   const [cardType, setCardType] = useState<'smart' | 'laminated'>(() => {
-    const rawNid = (user?.nid_no || '6847057587').replace(/\D/g, '');
+    const rawNid = (user?.nid_no || '19852691029384756').replace(/\D/g, '');
     return rawNid.length === 10 ? 'smart' : 'laminated';
   });
 
@@ -59,12 +59,12 @@ export const ProfileKycPage: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      setNameBn(user.name_bn || 'মোঃ আরমান হোসেন রিপন');
-      setNameEn(user.name_en || 'MD. ARMAN HOSSEN RIPON');
-      setFatherNameBn(user.father_name_bn || 'মোঃ ফেরদৌস হাসান খান');
-      setMotherNameBn(user.mother_name_bn || 'মোছাঃ মহসিনা আকতার শান্তনা');
-      setDateOfBirth(user.date_of_birth || '2005-06-01');
-      setNidNo(user.nid_no || '6847057587');
+      setNameBn(user.name_bn || 'মোঃ রফিকুল ইসলাম');
+      setNameEn(user.name_en || 'MD. RAFIQUL ISLAM');
+      setFatherNameBn(user.father_name_bn || 'মোঃ আবুল কাসেম');
+      setMotherNameBn(user.mother_name_bn || 'মোছাঃ রহিমা খাতুন');
+      setDateOfBirth(user.date_of_birth || '1985-04-12');
+      setNidNo(user.nid_no || '19852691029384756');
       const clean = (user.nid_no || '').replace(/\D/g, '');
       if (clean.length === 10) setCardType('smart');
       else if (clean.length > 10) setCardType('laminated');
@@ -74,7 +74,7 @@ export const ProfileKycPage: React.FC = () => {
       setDistrict(user.district || 'ঢাকা');
       setUpazila(user.upazila || 'গুলশান');
       const parts = (user.name_bn || '').trim().split(/\s+/);
-      const shortSig = parts.length > 1 ? parts[parts.length - 1] : (user.name_bn || 'আরমান');
+      const shortSig = parts.length > 1 ? parts[parts.length - 1] : (user.name_bn || 'রফিক');
       setSignatureText(shortSig);
     }
   }, [user]);
@@ -352,7 +352,7 @@ export const ProfileKycPage: React.FC = () => {
                   required
                   value={nameBn}
                   onChange={(e) => setNameBn(e.target.value)}
-                  placeholder="মোঃ আরমান হোসেন রিপন"
+                  placeholder="মোঃ রফিকুল ইসলাম"
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
@@ -366,7 +366,7 @@ export const ProfileKycPage: React.FC = () => {
                   required
                   value={nameEn}
                   onChange={(e) => setNameEn(e.target.value.toUpperCase())}
-                  placeholder="MD. ARMAN HOSSEN RIPON"
+                  placeholder="MD. RAFIQUL ISLAM"
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono uppercase"
                 />
               </div>
@@ -379,7 +379,7 @@ export const ProfileKycPage: React.FC = () => {
                   type="text"
                   value={fatherNameBn}
                   onChange={(e) => setFatherNameBn(e.target.value)}
-                  placeholder="মোঃ ফেরদৌস হাসান খান"
+                  placeholder="মোঃ আবুল কাসেম"
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
@@ -392,7 +392,7 @@ export const ProfileKycPage: React.FC = () => {
                   type="text"
                   value={motherNameBn}
                   onChange={(e) => setMotherNameBn(e.target.value)}
-                  placeholder="মোছাঃ মহসিনা আকতার শান্তনা"
+                  placeholder="মোছাঃ রহিমা খাতুন"
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
@@ -405,7 +405,7 @@ export const ProfileKycPage: React.FC = () => {
                   type="text"
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
-                  placeholder="01 Jun 2005 অথবা 2005-06-01"
+                  placeholder="12 Apr 1985 অথবা 1985-04-12"
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono"
                 />
                 <span className="text-[10px] text-slate-400 mt-0.5 block">ফরম্যাট: 01 Jun 2005 অথবা YYYY-MM-DD</span>
@@ -420,7 +420,7 @@ export const ProfileKycPage: React.FC = () => {
                   required
                   value={nidNo}
                   onChange={(e) => setNidNo(e.target.value)}
-                  placeholder="6847057587"
+                  placeholder="19852691029384756"
                   className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono"
                 />
                 <span className="text-[10px] text-slate-400 mt-0.5 block">১০, ১৩ বা ১৭ ডিজিট</span>

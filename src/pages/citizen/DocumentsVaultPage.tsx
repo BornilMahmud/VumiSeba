@@ -242,12 +242,12 @@ export default function DocumentsVaultPage() {
 
             <div className="py-2">
               <BangladeshNidCard
-                nameBn={user?.name_bn || 'মোঃ আরমান হোসেন রিপন'}
-                nameEn={user?.name_en || 'MD. ARMAN HOSSEN RIPON'}
-                fatherNameBn={user?.father_name_bn || 'মোঃ ফেরদৌস হাসান খান'}
-                motherNameBn={user?.mother_name_bn || 'মোছাঃ মহসিনা আকতার শান্তনা'}
-                dateOfBirth={user?.date_of_birth || '2005-06-01'}
-                nidNo={user?.nid_no || '6847057587'}
+                nameBn={user?.name_bn || 'মোঃ রফিকুল ইসলাম'}
+                nameEn={user?.name_en || 'MD. RAFIQUL ISLAM'}
+                fatherNameBn={user?.father_name_bn || 'মোঃ আবুল কাসেম'}
+                motherNameBn={user?.mother_name_bn || 'মোছাঃ রহিমা খাতুন'}
+                dateOfBirth={user?.date_of_birth || '1985-04-12'}
+                nidNo={user?.nid_no || '19852691029384756'}
                 photoUrl={getUserAvatarUrl(user) || '/avatars/default_nid.jpg'}
                 signatureUrl=""
                 signatureText="স্বাক্ষর"

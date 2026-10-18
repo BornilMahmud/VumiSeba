@@ -8,13 +8,13 @@ export const OFFLINE_DEMO_USERS: Record<string, UserProfile> = {
     id: 'usr-seller-01',
     citizen_id: 'BHM-CIT-882194',
     email: 'seller@bhumisathi.gov.bd',
-    name_bn: 'মোঃ আরমান হোসেন রিপন',
-    name_en: 'MD. ARMAN HOSSEN RIPON',
+    name_bn: 'মোঃ রফিকুল ইসলাম',
+    name_en: 'MD. RAFIQUL ISLAM',
     mobile: '01711000001',
-    nid_no: '6847057587',
-    date_of_birth: '2005-06-01',
-    father_name_bn: 'মোঃ ফেরদৌস হাসান খান',
-    mother_name_bn: 'মোছাঃ মহসিনা আকতার শান্তনা',
+    nid_no: '19852691029384756',
+    date_of_birth: '1985-04-12',
+    father_name_bn: 'মোঃ আবুল কাসেম',
+    mother_name_bn: 'মোছাঃ রহিমা খাতুন',
     address_bn: 'বাড়ি ১২, রোড ৪, ব্লক সি, বাড্ডা, ঢাকা',
     district: 'ঢাকা',
     upazila: 'গুলশান',
@@ -209,7 +209,7 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
   const cleanRole = (role || '').trim().toLowerCase();
 
   // 1. Exact or partial match on persona keys
-  if (cleanId === 'seller' || cleanId === 'arman') return OFFLINE_DEMO_USERS.seller;
+  if (cleanId === 'seller' || cleanId === 'rafiq') return OFFLINE_DEMO_USERS.seller;
   if (cleanId === 'buyer' || cleanId === 'farhan') return OFFLINE_DEMO_USERS.buyer;
   if (cleanId === 'taxdue' || cleanId === 'latif') return OFFLINE_DEMO_USERS.taxdue;
   if (cleanId === 'oversell' || cleanId === 'nazrul') return OFFLINE_DEMO_USERS.oversell;
