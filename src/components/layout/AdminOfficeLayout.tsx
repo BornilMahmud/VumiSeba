@@ -14,6 +14,12 @@ export const AdminOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
   const location = useLocation();
   const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    setSidebarOpen(false);
+    await logout();
+    navigate('/login', { replace: true });
+  };
+
   const avatarUrl = getUserAvatarUrl(user);
 
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
@@ -132,10 +138,7 @@ export const AdminOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
             </button>
           </div>
           <button
-            onClick={async () => {
-              await logout();
-              navigate('/login');
-            }}
+            onClick={handleLogout}
             className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200/60 dark:border-rose-900/40 cursor-pointer active:scale-95"
           >
             <i className="bx bx-log-out text-base"></i>
@@ -209,11 +212,7 @@ export const AdminOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
 
             <div className="p-3 border-t border-slate-200 dark:border-slate-800">
               <button
-                onClick={async () => {
-                  setSidebarOpen(false);
-                  await logout();
-                  navigate('/login');
-                }}
+                onClick={handleLogout}
                 className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition border border-rose-200/60 cursor-pointer"
               >
                 <i className="bx bx-log-out text-base"></i>
@@ -277,10 +276,7 @@ export const AdminOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
 
             {/* Direct Logout Option in Top Bar */}
             <button
-              onClick={async () => {
-                await logout();
-                navigate('/login');
-              }}
+              onClick={handleLogout}
               className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
               title={isBn ? 'লগআউট' : 'Logout'}
             >

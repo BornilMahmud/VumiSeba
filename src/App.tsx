@@ -98,6 +98,27 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const [isAutoSwitching, setIsAutoSwitching] = useState(false);
   const [switchAttempted, setSwitchAttempted] = useState(false);
 
+  // 1. If auth state is still resolving or actively switching, show loading state
+  if (loading || isAutoSwitching) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white font-bengali p-6 text-center">
+        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <h2 className="text-lg font-bold text-emerald-400 mb-1">
+          অফিস ড্যাশবোর্ড লোড হচ্ছে...
+        </h2>
+        <p className="text-xs text-slate-400">
+          সুরক্ষিত সরকারি কর্মকর্তা সেশন ও ভূমি রেকর্ড ভেরিফিকেশন সম্পন্ন হচ্ছে
+        </p>
+      </div>
+    );
+  }
+
+  // 2. CRITICAL: If user is not authenticated (or just logged out), immediately redirect to login!
+  // Do NOT execute auto-switch or display protected gateway to unauthenticated visitors.
+  if (!user) {
+    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
+  }
+
   const currentRole = (user?.role || '').toLowerCase();
   const normalizedAllowed = (allowedRoles || []).map((r) => r.toLowerCase());
 
@@ -111,6 +132,11 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
     (normalizedAllowed.includes('union_land_officer') && currentRole === 'union_officer') ||
     (normalizedAllowed.includes('ac_land') && currentRole === 'ac_land_officer') ||
     (normalizedAllowed.includes('sub_registrar') && currentRole === 'sub_registry_officer');
+
+  // 3. User is authorized for this role
+  if (isAllowed) {
+    return <>{children}</>;
+  }
 
   const pathname = location.pathname;
   let targetPersona: string | null = null;
@@ -138,11 +164,13 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const isDemo =
     import.meta.env.VITE_DEMO_MODE !== 'false' ||
     localStorage.getItem('bhumisathi_is_demo') === 'true' ||
-    !user ||
     (user.id && user.id.startsWith('usr-'));
 
+  const justLoggedOut = sessionStorage.getItem('bhumisathi_just_logged_out') === 'true';
+
   useEffect(() => {
-    if (loading || isAllowed || switchAttempted || !targetPersona || !isDemo) return;
+    // Only auto-switch if user is already an authenticated demo persona actively switching dockets
+    if (loading || !user || isAllowed || switchAttempted || !targetPersona || !isDemo || justLoggedOut) return;
 
     setSwitchAttempted(true);
     setIsAutoSwitching(true);
@@ -150,28 +178,10 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
       .finally(() => {
         setIsAutoSwitching(false);
       });
-  }, [loading, isAllowed, switchAttempted, targetPersona, targetRole, isDemo, switchDemoPersona]);
-
-  if (loading || isAutoSwitching) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white font-bengali p-6 text-center">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <h2 className="text-lg font-bold text-emerald-400 mb-1">
-          {officeNameBn} লোড হচ্ছে...
-        </h2>
-        <p className="text-xs text-slate-400">
-          সুরক্ষিত সরকারি কর্মকর্তা সেশন ও ভূমি রেকর্ড ভেরিফিকেশন সম্পন্ন হচ্ছে
-        </p>
-      </div>
-    );
-  }
-
-  if (isAllowed) {
-    return <>{children}</>;
-  }
+  }, [loading, user, isAllowed, switchAttempted, targetPersona, targetRole, isDemo, justLoggedOut, switchDemoPersona]);
 
   // If in demo mode and not yet allowed, show clear gateway instead of bouncing away
-  if (isDemo && targetPersona) {
+  if (isDemo && targetPersona && !justLoggedOut) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-bengali">
         <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl relative overflow-hidden">
@@ -213,10 +223,6 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
         </div>
       </div>
     );
-  }
-
-  if (!user) {
-    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
 
   if (currentRole === 'citizen') {
