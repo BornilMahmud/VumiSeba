@@ -7,6 +7,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { DemoStoryOverlay } from './components/common/DemoStoryOverlay';
 import { ChatbotBubble } from './components/common/ChatbotBubble';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 
@@ -136,7 +137,9 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-bengali transition-colors duration-200">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </main>
       <Footer />
     </div>
   );
@@ -159,8 +162,9 @@ export default function App() {
               {/* Floating Gemini AI Chatbot Bubble (Right Side) */}
               <ChatbotBubble />
 
-              {/* Application Routes */}
-              <Routes>
+              {/* Application Routes wrapped with ErrorBoundary to prevent blank white crashes */}
+              <ErrorBoundary>
+                <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
                 <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
@@ -316,6 +320,7 @@ export default function App() {
                 {/* Catch-all redirect */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
+              </ErrorBoundary>
             </div>
           </NotificationProvider>
         </AuthProvider>

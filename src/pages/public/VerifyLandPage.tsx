@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import { RiskAssessment, LandParcel, RiskFactorDetail } from '../../types';
 import { useLanguage } from '../../context/LanguageContext';
@@ -16,6 +16,9 @@ import {
   UserCheck,
   Search,
   ArrowRight,
+  ArrowLeft,
+  Home,
+  RefreshCw,
   ShieldAlert,
   HelpCircle,
   Database,
@@ -206,9 +209,22 @@ export const VerifyLandPage: React.FC = () => {
   const { language } = useLanguage();
   const isBn = language === 'bn';
 
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const initialParcelId = queryParams.get('parcel_id') || 'pcl-clean-405';
+
+  const handleGoBack = () => {
+    try {
+      if (window.history.length > 1 && window.history.state && (window.history.state as any).idx > 0) {
+        navigate(-1);
+      } else {
+        navigate('/');
+      }
+    } catch {
+      navigate('/');
+    }
+  };
 
   const [parcels, setParcels] = useState<LandParcel[]>(DEFAULT_DEMO_PARCELS);
   const [selectedParcelId, setSelectedParcelId] = useState(initialParcelId);
@@ -298,38 +314,64 @@ export const VerifyLandPage: React.FC = () => {
 
   return (
     <div className={`${isBn ? 'font-bengali' : 'font-sans'} min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8 xl:px-10 w-full transition-colors`}>
-      {/* Header */}
-      <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-1">
-            <Link to="/" className="hover:underline">
-              {isBn ? 'হোম' : 'Home'}
+      {/* Header with Back Navigation */}
+      <div className="mb-6 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleGoBack}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all shadow-sm cursor-pointer group active:scale-95"
+              title={isBn ? 'হোমপেজে ফিরে যান' : 'Go back to Home'}
+            >
+              <ArrowLeft size={15} className="text-emerald-600 dark:text-emerald-400 transition-transform group-hover:-translate-x-1" />
+              <span>{isBn ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <Link to="/" className="hover:underline flex items-center gap-1 hover:text-emerald-700 dark:hover:text-emerald-400">
+              <Home size={13} />
+              <span>{isBn ? 'হোম' : 'Home'}</span>
             </Link>
             <span>/</span>
             <span className="text-slate-900 dark:text-slate-200 font-semibold">
               {isBn ? 'কেনার আগে জমি যাচাই' : 'Check Before You Buy'}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <ShieldCheck className="text-teal-600 dark:text-teal-400" size={28} />
-            {isBn ? 'কেনার আগে জমি যাচাই (Check Before You Buy)' : 'Check Before You Buy (Land Pre-Purchase Verification)'}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
-            {isBn
-              ? 'বায়নার পূর্বে প্রস্তাবিত বিক্রেতা, খতিয়ানের হিস্যা, বকেয়া খাজনা এবং আদালতের মামলা ও লিয়েন স্বয়ংক্রিয়ভাবে পরীক্ষা করুন'
-              : 'Automated pre-purchase audit of seller ownership, khatian share sufficiency, land taxes, injunctions and mortgage liens.'}
-          </p>
         </div>
 
-        {assessment && (
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-xs font-semibold shadow-sm transition no-print"
-          >
-            <Printer size={15} />
-            <span>{isBn ? 'প্রতিবেদন প্রিন্ট করুন' : 'Print Assessment'}</span>
-          </button>
-        )}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-1">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <ShieldCheck className="text-teal-600 dark:text-teal-400 shrink-0" size={30} />
+              <span>{isBn ? 'কেনার আগে জমি যাচাই (Check Before You Buy)' : 'Check Before You Buy (Land Pre-Purchase Verification)'}</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+              {isBn
+                ? 'বায়নার পূর্বে প্রস্তাবিত বিক্রেতা, খতিয়ানের হিস্যা, বকেয়া খাজনা এবং আদালতের মামলা ও লিয়েন স্বয়ংক্রিয়ভাবে পরীক্ষা করুন'
+                : 'Automated pre-purchase audit of seller ownership, khatian share sufficiency, land taxes, injunctions and mortgage liens.'}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 no-print shrink-0">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-lg text-xs font-semibold shadow-sm transition"
+            >
+              <Home size={14} className="text-emerald-600 dark:text-emerald-400" />
+              <span>{isBn ? 'হোমপেজ' : 'Home Page'}</span>
+            </Link>
+            {assessment && (
+              <button
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-lg text-xs font-semibold shadow-sm transition"
+              >
+                <Printer size={14} />
+                <span>{isBn ? 'প্রতিবেদন প্রিন্ট করুন' : 'Print Assessment'}</span>
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Input Selector Card */}
@@ -747,14 +789,14 @@ export const VerifyLandPage: React.FC = () => {
               <AlertTriangle className="text-amber-600 dark:text-amber-400" size={16} />
               <span>{isBn ? '৩. শনাক্তকৃত অসঙ্গতি ও ঝুঁকি (Identified Issues)' : '3. Identified Discrepancies & Issues'}</span>
             </h3>
-            {assessment.identified_issues_bn.length === 0 ? (
+            {(assessment.identified_issues_bn || []).length === 0 ? (
               <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 rounded-lg text-xs font-medium flex items-center gap-2 border border-emerald-200 dark:border-emerald-800/60">
                 <CheckCircle2 size={16} />
                 <span>{isBn ? 'কোনো প্রাথমিক স্বত্ব বিরোধ বা গুরুতর ত্রুটি শনাক্ত হয়নি।' : 'No primary title disputes or severe discrepancies identified.'}</span>
               </div>
             ) : (
               <ul className="space-y-2 text-xs">
-                {assessment.identified_issues_bn.map((issue, idx) => (
+                {(assessment.identified_issues_bn || []).map((issue, idx) => (
                   <li key={idx} className="flex items-start gap-2 bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-200 p-3 rounded-md border border-red-200 dark:border-red-800/60">
                     <AlertTriangle size={15} className="text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
                     <span className="font-medium">{issue}</span>
@@ -771,7 +813,7 @@ export const VerifyLandPage: React.FC = () => {
               <span>{isBn ? '৪. সতর্কতার তথ্যসূত্র ও প্রমাণপত্র (Warning Basis & Evidential Sources)' : '4. Evidential Sources & Grounds'}</span>
             </h3>
             <ul className="space-y-2 text-xs">
-              {assessment.warning_basis_bn.map((basis, idx) => (
+              {(assessment.warning_basis_bn || []).map((basis, idx) => (
                 <li key={idx} className="flex items-center gap-2 text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded border border-slate-200 dark:border-slate-700">
                   <span className="w-1.5 h-1.5 rounded-full bg-gov-blue dark:bg-blue-400"></span>
                   <span>{basis}</span>
@@ -790,7 +832,7 @@ export const VerifyLandPage: React.FC = () => {
               <strong>{isBn ? 'সতর্কতা:' : 'Notice:'}</strong> {isBn ? 'শুধুমাত্র অনলাইন ডেটাবেজের তথ্য পরিষ্কার থাকার অর্থ এই নয় যে জমিতে কোনো শারীরিক দখল বিরোধ বা পারিবারিক দ্বন্দ্ব নেই।' : 'Clean digital records do not guarantee absence of physical boundary encroachment or unregistered family disputes.'}
             </div>
             <ul className="space-y-2 text-xs">
-              {assessment.unverified_data_bn.map((item, idx) => (
+              {(assessment.unverified_data_bn || []).map((item, idx) => (
                 <li key={idx} className="flex items-center gap-2 text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded border border-slate-200 dark:border-slate-700">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                   <span>{item}</span>
@@ -820,7 +862,7 @@ export const VerifyLandPage: React.FC = () => {
               )}
             </div>
             <ol className="list-decimal list-inside space-y-2 text-xs text-slate-800 dark:text-slate-200">
-              {assessment.recommended_actions_bn.map((action, idx) => (
+              {(assessment.recommended_actions_bn || []).map((action, idx) => (
                 <li key={idx} className="p-2.5 bg-teal-50/60 dark:bg-teal-950/30 rounded border border-teal-200 dark:border-teal-800/60">
                   <span className="font-medium">{action}</span>
                 </li>
@@ -848,7 +890,39 @@ export const VerifyLandPage: React.FC = () => {
             </p>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="bg-white dark:bg-slate-900 rounded-xl p-12 text-center border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div className="w-14 h-14 bg-emerald-50 dark:bg-emerald-950/50 rounded-full flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
+            <ShieldCheck size={28} />
+          </div>
+          <div className="max-w-md mx-auto space-y-2">
+            <h3 className="font-bold text-slate-800 dark:text-slate-100 text-base">
+              {isBn ? 'স্বয়ংক্রিয় ঝুঁকি অডিট প্রস্তুত' : 'Automated Risk Audit Ready'}
+            </h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {isBn
+                ? 'উপরের তালিকা থেকে যেকোনো জমি নির্বাচন করুন অথবা "মূল্যায়ন পরিচালনা করুন" বাটনে ক্লিক করুন।'
+                : 'Select any test parcel above or click "Run Audit" to generate the transparent legal risk audit report.'}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => handleRunAssessment()}
+              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow transition cursor-pointer"
+            >
+              <RefreshCw size={14} />
+              <span>{isBn ? 'পুনরায় মূল্যায়ন করুন' : 'Run Audit'}</span>
+            </button>
+            <button
+              onClick={handleGoBack}
+              className="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer"
+            >
+              <ArrowLeft size={14} />
+              <span>{isBn ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

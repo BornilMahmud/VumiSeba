@@ -8,6 +8,7 @@ import {
   getOfflineAcLandQueue,
   getOfflineRegistryQueue,
   getOfflineAdminQueue,
+  getOfflineRiskAssessment,
   OFFLINE_DB,
   OFFLINE_DEMO_USERS,
 } from '../data/offlineDemoData';
@@ -208,33 +209,14 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
 
   // 12. Risk Assessment Evaluation
   if (endpoint === '/risk/evaluate') {
-    const parcelId = body.parcel_id || 'pcl-badda-01';
-    const parcel: any = (OFFLINE_DB.land_parcels || []).find((p: any) => p.id === parcelId) || (OFFLINE_DB.land_parcels || [])[0];
-    const isDisputed = parcel?.dispute_status && parcel.dispute_status !== 'none';
-    const isMortgaged = parcel?.mortgage_status && parcel.mortgage_status !== 'none';
-    const riskLevel = isDisputed ? 'CRITICAL' : (isMortgaged ? 'HIGH' : 'LOW');
-    const riskScore = isDisputed ? 25 : (isMortgaged ? 58 : 94);
+    return getOfflineRiskAssessment(body || {});
+  }
 
-    return {
-      success: true,
-      data: {
-        id: `rsk-${Date.now()}`,
-        parcel_id: parcelId,
-        risk_level: riskLevel,
-        risk_score: riskScore,
-        confidence_score: 98,
-        factors: [
-          { name_bn: 'মালিকানা ধারাবাহিকতা ও খতিয়ান রেকর্ড', status: 'verified', weight: 30 },
-          { name_bn: 'ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ', status: 'verified', weight: 20 },
-          { name_bn: 'আদালতের কোনো স্থিতাবস্থা/নিষেধাজ্ঞা নেই', status: isDisputed ? 'disputed' : 'clear', weight: 25 },
-          { name_bn: 'ব্যাংক দায়বদ্ধতা বা বন্ধকহীনতা', status: isMortgaged ? 'encumbered' : 'clear', weight: 25 },
-        ],
-        recommendation_bn: isDisputed
-          ? 'এই দাগে আদালতের নিষেধাজ্ঞা বহাল আছে। বায়না বা ক্রয় প্রক্রিয়া থেকে বিরত থাকুন।'
-          : 'জমির সকল রেকর্ড ও খতিয়ান নির্ভুল। বায়না ও রেজিস্ট্রেশন প্রক্রিয়া সম্পন্ন করতে পারেন।',
-        evaluated_at: new Date().toISOString(),
-      },
-    };
+  if (endpoint.startsWith('/risk/')) {
+    const rskId = endpoint.replace('/risk/', '');
+    const found = (OFFLINE_DB.risk_assessments || []).find((r: any) => r.id === rskId || r.parcel_id === rskId);
+    if (found) return { success: true, data: found };
+    return getOfflineRiskAssessment({ parcel_id: rskId });
   }
 
   // 13. Holding Tax Inquiries & Payments
