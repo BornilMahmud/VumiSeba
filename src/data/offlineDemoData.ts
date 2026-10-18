@@ -254,7 +254,7 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
 export const getOfflineMyHoldings = (userId: string = 'usr-seller-01') => {
   const targetId = userId || 'usr-seller-01';
   let ownerships = (rawDb.land_ownerships || []).filter(
-    (o: any) => (o.owner_id === targetId || (targetId === 'usr-seller-01' && o.owner_id.includes('seller'))) && (o.status === 'active' || o.status === 'partial_transferred')
+    (o: any) => (o.owner_id === targetId || (targetId === 'usr-seller-01' && typeof o.owner_id === 'string' && o.owner_id.includes('seller'))) && (o.status === 'active' || o.status === 'partial_transferred')
   );
 
   if (ownerships.length === 0) {
@@ -324,6 +324,7 @@ export const getOfflineAcLandQueue = () => {
       completed_count: 12,
     },
     all_applications: apps,
+    applications: apps,
     queue: apps,
     pre_registration_all: apps,
     pre_registration_queue: apps,
