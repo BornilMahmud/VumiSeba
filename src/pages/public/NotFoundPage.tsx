@@ -5,9 +5,7 @@ import {
   Home,
   ArrowLeft,
   Search,
-  Compass,
   FileCheck2,
-  MapPin,
   FileText,
   LifeBuoy,
   Layers,
@@ -86,42 +84,18 @@ export const NotFoundPage: React.FC = () => {
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-5xl w-full text-center space-y-8 relative">
-        {/* Animated Digital Land Survey 404 Visual - Box removed, Big Hero Number */}
+        {/* Clean 404 Display - Only the 404 text remains */}
         <div className="relative inline-flex items-center justify-center mx-auto select-none my-2 sm:my-4">
-          {/* Concentric Pulsing Radar Rings extending across */}
-          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 md:w-[30rem] md:h-[30rem] rounded-full border border-emerald-500/20 dark:border-emerald-500/20 animate-ping opacity-25 pointer-events-none" />
-          <div className="absolute w-56 h-56 sm:w-72 sm:h-72 md:w-[22rem] md:h-[22rem] rounded-full border border-teal-500/25 dark:border-teal-500/30 animate-pulse pointer-events-none" />
-
-          {/* Giant 404 Hero Number Display without enclosing box */}
           <div className="relative flex items-center justify-center font-mono font-black text-8xl sm:text-9xl md:text-[11rem] lg:text-[13rem] tracking-tighter leading-none">
             <span className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-300 bg-clip-text text-transparent drop-shadow-sm">
               4
             </span>
-
-            {/* Glowing Center Zero with Integrated Compass */}
-            <div className="relative inline-flex items-center justify-center mx-1 sm:mx-3">
-              <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-600 bg-clip-text text-transparent">
-                0
-              </span>
-              <Compass
-                className="absolute inset-0 m-auto w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 text-emerald-600/80 dark:text-emerald-400/90 animate-[spin_16s_linear_infinite]"
-                strokeWidth={1.75}
-              />
-            </div>
-
+            <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-600 bg-clip-text text-transparent mx-1 sm:mx-3">
+              0
+            </span>
             <span className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-300 bg-clip-text text-transparent drop-shadow-sm">
               4
             </span>
-          </div>
-
-          {/* Floating Context Badges */}
-          <div className="absolute -top-2 -right-4 sm:-right-8 bg-emerald-600 text-white text-[11px] sm:text-xs font-mono font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-emerald-400/40 animate-bounce">
-            <MapPin size={13} />
-            <span>{isBn ? 'দাগ অপসারিত' : 'Plot Unmapped'}</span>
-          </div>
-
-          <div className="absolute -bottom-2 -left-4 sm:-left-8 bg-slate-900/90 dark:bg-slate-800/95 text-slate-200 text-[10px] sm:text-xs font-mono px-3 py-1.5 rounded-full shadow-lg border border-slate-700/60 backdrop-blur-md">
-            <span>23.8103° N, 90.4125° E</span>
           </div>
         </div>
 

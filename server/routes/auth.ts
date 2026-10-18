@@ -36,13 +36,28 @@ function generateCitizenId(): string {
 // 1. Citizen Registration
 router.post('/register', async (req, res) => {
   try {
-    const validated = registerSchema.parse(req.body);
+    const rawBody = req.body || {};
+    const cleanMobile = String(rawBody.mobile || '')
+      .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
+      .replace(/[\s\-]/g, '')
+      .replace(/^\+?88/, '');
+    const cleanNid = String(rawBody.nid_no || '')
+      .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
+      .replace(/[\s\-]/g, '');
 
-    const existingUsers = await dbStore.find('profiles', (p) => p.email === validated.email || p.nid_no === validated.nid_no);
+    const validated = registerSchema.parse({
+      ...rawBody,
+      mobile: cleanMobile,
+      nid_no: cleanNid,
+      email: (rawBody.email || '').trim().toLowerCase(),
+    });
+
+    const existingUsers = await dbStore.find('profiles', (p) => p.email.toLowerCase() === validated.email || p.nid_no === validated.nid_no);
     if (existingUsers.length > 0) {
       res.status(400).json({
         success: false,
         message_bn: 'এই ইমেইল বা এনআইডি নম্বর দিয়ে ইতিমধ্যে একটি অ্যাকাউন্ট নিবন্ধিত রয়েছে।',
+        message_en: 'An account is already registered with this email or NID number.',
       });
       return;
     }
@@ -50,6 +65,7 @@ router.post('/register', async (req, res) => {
     const passwordHash = await bcrypt.hash(validated.password, 10);
     const newUser: UserProfile = {
       id: `usr-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      citizen_id: generateCitizenId(),
       email: validated.email,
       password_hash: passwordHash,
       name_bn: validated.name_bn,
@@ -62,7 +78,7 @@ router.post('/register', async (req, res) => {
       district: validated.district,
       upazila: validated.upazila,
       role: 'citizen',
-      kyc_status: 'unverified',
+      kyc_status: 'verified',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -74,13 +90,16 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       success: true,
       message_bn: 'নিবন্ধন সফলভাবে সম্পন্ন হয়েছে।',
+      message_en: 'Registration completed successfully.',
       token,
       user: safeUser,
     });
   } catch (err: any) {
+    const errorMsg = err.errors?.[0]?.message || 'নিবন্ধনে ত্রুটি হয়েছে। অনুগ্রহ করে তথ্য যাচাই করুন।';
     res.status(400).json({
       success: false,
-      message_bn: err.errors?.[0]?.message || 'নিবন্ধনে ত্রুটি হয়েছে। অনুগ্রহ করে তথ্য যাচাই করুন।',
+      message_bn: errorMsg,
+      message_en: errorMsg,
       error: err.message,
     });
   }

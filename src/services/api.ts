@@ -52,6 +52,55 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
     }
   }
 
+  // 0. Citizen Registration offline fallback
+  if (endpoint === '/auth/register') {
+    const rawMobile = String(body.mobile || '')
+      .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
+      .replace(/[\s\-]/g, '')
+      .replace(/^\+?88/, '');
+    const rawNid = String(body.nid_no || '')
+      .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
+      .replace(/[\s\-]/g, '');
+
+    const newUser: any = {
+      id: `usr-cit-${Date.now()}`,
+      citizen_id: `BHM-CIT-${Math.floor(100000 + Math.random() * 900000)}`,
+      email: (body.email || `citizen.${Math.floor(1000 + Math.random() * 9000)}@bhumisathi.test`).trim().toLowerCase(),
+      name_bn: body.name_bn?.trim() || 'নাগরিক',
+      name_en: body.name_en?.trim() || 'Citizen',
+      mobile: rawMobile || '01712219266',
+      nid_no: rawNid || '19913938981916446',
+      father_name_bn: body.father_name_bn?.trim() || 'পিতা',
+      mother_name_bn: body.mother_name_bn?.trim() || 'মাতা',
+      address_bn: body.address_bn?.trim() || 'বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা',
+      district: body.district?.trim() || 'ঢাকা',
+      upazila: body.upazila?.trim() || 'গুলশান',
+      role: 'citizen',
+      kyc_status: 'verified',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    try {
+      if (Array.isArray(OFFLINE_DB.profiles)) {
+        OFFLINE_DB.profiles.push(newUser);
+      }
+      localStorage.setItem('bhumisathi_demo_user', JSON.stringify(newUser));
+      localStorage.setItem('bhumisathi_is_demo', 'true');
+    } catch {
+      // ignore
+    }
+
+    const token = createOfflineDemoToken(newUser);
+    return {
+      success: true,
+      message_bn: 'নাগরিক নিবন্ধন সফলভাবে সম্পন্ন হয়েছে।',
+      message_en: 'Citizen registration completed successfully.',
+      token,
+      user: newUser,
+    };
+  }
+
   // 1. Demo Login offline fallback
   if (endpoint === '/auth/demo-login') {
     const user = findOfflineDemoUser(body.persona, body.role);
@@ -60,20 +109,45 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
       return {
         success: true,
         message_bn: `ডেমো লগইন সফল হয়েছে (${user.name_bn})।`,
+        message_en: `Demo login successful (${user.name_en || user.name_bn}).`,
         token,
         user,
       };
     }
   }
 
-  // 2. Standard Login offline fallback for demo emails
+  // 2. Standard Login offline fallback for demo emails or registered user
   if (endpoint === '/auth/login') {
+    const cachedUserStr = localStorage.getItem('bhumisathi_demo_user');
+    if (cachedUserStr) {
+      try {
+        const cachedUser = JSON.parse(cachedUserStr);
+        const ident = (body.email || body.identifier || '').toString().toLowerCase().trim();
+        if (
+          (cachedUser.email && cachedUser.email.toLowerCase() === ident) ||
+          cachedUser.mobile === ident ||
+          cachedUser.nid_no === ident ||
+          (cachedUser.citizen_id && cachedUser.citizen_id.toLowerCase() === ident)
+        ) {
+          const token = createOfflineDemoToken(cachedUser);
+          return {
+            success: true,
+            message_bn: `লগইন সফল হয়েছে (${cachedUser.name_bn})।`,
+            message_en: `Login successful (${cachedUser.name_en || cachedUser.name_bn}).`,
+            token,
+            user: cachedUser,
+          };
+        }
+      } catch {}
+    }
+
     const user = findOfflineDemoUser(body.email);
     if (user) {
       const token = createOfflineDemoToken(user);
       return {
         success: true,
         message_bn: `লগইন সফল হয়েছে (${user.name_bn})।`,
+        message_en: `Login successful (${user.name_en || user.name_bn}).`,
         token,
         user,
       };
@@ -84,7 +158,7 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
   if (endpoint === '/auth/me') {
     const isDemo = localStorage.getItem('bhumisathi_is_demo') === 'true';
     const cachedUser = localStorage.getItem('bhumisathi_demo_user');
-    if (isDemo && cachedUser) {
+    if (cachedUser) {
       try {
         return {
           success: true,
