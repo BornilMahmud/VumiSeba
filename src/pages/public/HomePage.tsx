@@ -18,6 +18,7 @@ import {
   FileCheck,
   BadgeCheck,
   Zap,
+  Play,
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { toBengaliDigits, toEnglishDigits } from '../../utils/bilingual';
@@ -108,15 +109,16 @@ export const HomePage: React.FC = () => {
               <span>{t('hero.ctaVerify', 'কেনার আগে জমি যাচাই করুন', 'Verify Land Before Buying')}</span>
             </Link>
 
-            <button
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('vumiseba:start-demo-story'));
-              }}
+            <a
+              href="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-600 via-cyan-700 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
+              title={language === 'en' ? 'Watch project demo video on YouTube' : 'ইউটিউবে প্রজেক্ট ডেমো ভিডিও দেখুন'}
             >
-              <Sparkles size={18} className="text-yellow-300 animate-spin-slow shrink-0" />
-              <span>{t('hero.tryDemo', '৩-মিনিট লাইভ ডেমো শুরু করুন', 'Try 3-Min Live Demo')}</span>
-            </button>
+              <Play size={16} className="fill-current text-white shrink-0" />
+              <span>{t('hero.demoVideo', 'ডেমো ভিডিও দেখুন', 'Watch Demo Video')}</span>
+            </a>
 
             <Link
               to="/citizen/sell"
