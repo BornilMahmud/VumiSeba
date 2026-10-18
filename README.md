@@ -17,7 +17,7 @@
 ![Locale](https://img.shields.io/badge/locale-bn--BD%20%7C%20en--US-1e3a5f)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-[🌐 Live Demo](#) · [🎬 Demo Video](#) · [📊 Pitch Deck](#) · [🚀 Quick Start](#-quick-start) · [🧪 Real vs Simulated](#-real-vs-simulated)
+[🌐 Live Demo](https://vumi-seba.vercel.app) · [🎬 Demo Video](https://youtu.be/lvudKKWMx6k) 
 
 <br/>
 
@@ -491,9 +491,9 @@ git push origin feature/your-feature  # then open a PR
 ## 👤 Team
 
 | Name | Role | Links |
-|---|---|---|
-| **Arman Hossen** | Developer | [GitHub](https://github.com/armanhossen-dev) · [LinkedIn](https://www.linkedin.com/in/armanhossenripon) |
-| **Bornil Mahmud** | Developer | [GitHub](https://github.com/BornilMahmud) · [LinkedIn](https://www.linkedin.com/in/bornilmahmud/) |
+|---|---|---|---|  
+| **Arman Hossen** | Frontend | [GitHub](https://github.com/armanhossen-dev) | [LinkedIn](https://www.linkedin.com/in/armanhossenripon) |
+| **Bornil Mahmud** | Backend | [GitHub](https://github.com/BornilMahmud) | [LinkedIn](https://www.linkedin.com/in/bornilmahmud/) |
 
 ---
 
