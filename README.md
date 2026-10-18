@@ -2,22 +2,34 @@
 
 # 🏛️ VumiSeba (ভূমিসেবা)
 
-### Check before you buy. Register once. Mutate automatically.
+### Check Before You Buy. Register Once. Mutate Automatically.
 
-**A unified LandTech platform for Bangladesh: pre-purchase due diligence, <br/> smart registry, and automated e-Mutation, in one auditable workflow.**
+**A unified LandTech platform for Bangladesh—bringing pre-purchase due diligence, smart registry, and automated e-Mutation into one auditable workflow.**
 
 *বাংলাদেশ নাগরিক ভূমি সেবা · স্বত্ব যাচাই · স্মার্ট রেজিস্ট্রি · স্বয়ংক্রিয় ই-নামজারি*
 
-![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![Core](https://img.shields.io/badge/core%20tests-7%2F7-success)
-![Risk Engine](https://img.shields.io/badge/risk%20engine-7%2F7-success)
-![E2E](https://img.shields.io/badge/e2e-100%25-14b8a6)
-![Firebase Rules](https://img.shields.io/badge/firebase%20rules-26%2F26-blue)
-![Bundle](https://img.shields.io/badge/main%20chunk-113%20kB%20gzip-10b981)
-![Locale](https://img.shields.io/badge/locale-bn--BD%20%7C%20en--US-1e3a5f)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+<p align="center">
+  <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square" alt="Build Passing" />
+  <img src="https://img.shields.io/badge/Core%20Tests-7%2F7-success?style=flat-square" alt="Core Tests 7/7" />
+  <img src="https://img.shields.io/badge/Risk%20Engine-7%2F7-success?style=flat-square" alt="Risk Engine 7/7" />
+  <img src="https://img.shields.io/badge/E2E-100%25-14b8a6?style=flat-square" alt="E2E 100%" />
+  <img src="https://img.shields.io/badge/Firebase%20Rules-26%2F26-blue?style=flat-square" alt="Firebase Rules 26/26" />
+  <img src="https://img.shields.io/badge/Bundle-113%20kB%20gzip-10b981?style=flat-square" alt="Bundle 113 kB gzip" />
+  <img src="https://img.shields.io/badge/Locale-bn--BD%20%7C%20en--US-1e3a5f?style=flat-square" alt="Bangla and English Support" />
+  <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square" alt="MIT License" />
+</p>
 
-[🌐 Live Demo](https://vumi-seba.vercel.app) · [🎬 Demo Video](https://youtu.be/lvudKKWMx6k) 
+## 🌐 Live Demo & Project Walkthrough
+
+<p align="center">
+  <a href="https://vumi-seba.vercel.app">
+    <img src="https://img.shields.io/badge/🌐%20Live%20Demo-Explore%20VumiSeba-0D9488?style=for-the-badge" alt="Explore VumiSeba Live Demo" />
+  </a>
+  &nbsp;
+  <a href="https://youtu.be/lvudKKWMx6k">
+    <img src="https://img.shields.io/badge/▶%20Demo%20Video-Watch%20Walkthrough-DC2626?style=for-the-badge" alt="Watch VumiSeba Demo Video" />
+  </a>
+</p> 
 
 <br/>
 
