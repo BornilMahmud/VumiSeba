@@ -321,17 +321,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     sessionStorage.removeItem('bhumisathi_just_logged_out');
     const res = await api.register(userData);
-    if (res.success && res.token) {
+    if (res.success && res.token && res.user) {
       localStorage.setItem('bhumisathi_token', res.token);
-      localStorage.removeItem('bhumisathi_is_demo');
-      setIsDemoSession(false);
+      localStorage.setItem('vumiseba_token', res.token);
+      localStorage.setItem('bhumisathi_is_demo', 'true');
+      localStorage.setItem('bhumisathi_demo_user', JSON.stringify(res.user));
+      setIsDemoSession(true);
       setToken(res.token);
       setUser(res.user);
       setIsLoading(false);
       return { success: true };
     }
     setIsLoading(false);
-    return { success: false, message_bn: res.message_bn, message_en: res.message_en };
+    return {
+      success: false,
+      message_bn: res.message_bn || 'নিবন্ধন সম্পন্ন করা যায়নি। তথ্য সঠিকভাবে পূরণ করুন।',
+      message_en: res.message_en || 'Registration failed. Please check the entered data.',
+    };
   };
 
   // Fast 1-Click Demo Persona Switcher (Works 100% offline without requiring connection to the server)
