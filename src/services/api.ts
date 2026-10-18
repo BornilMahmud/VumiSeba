@@ -209,7 +209,7 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
   // 12. Risk Assessment Evaluation
   if (endpoint === '/risk/evaluate') {
     const parcelId = body.parcel_id || 'pcl-badda-01';
-    const parcel = (OFFLINE_DB.land_parcels || []).find((p: any) => p.id === parcelId) || (OFFLINE_DB.land_parcels || [])[0];
+    const parcel: any = (OFFLINE_DB.land_parcels || []).find((p: any) => p.id === parcelId) || (OFFLINE_DB.land_parcels || [])[0];
     const isDisputed = parcel?.dispute_status && parcel.dispute_status !== 'none';
     const isMortgaged = parcel?.mortgage_status && parcel.mortgage_status !== 'none';
     const riskLevel = isDisputed ? 'CRITICAL' : (isMortgaged ? 'HIGH' : 'LOW');
@@ -334,7 +334,55 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
     return { success: true, message_bn: 'নামজারি মামলার চূড়ান্ত আদেশ প্রদান করা হয়েছে।' };
   }
 
-  // 17. AI Chatbot Message
+  // 17. Single Application Details
+  if (endpoint.startsWith('/sale/') && !endpoint.includes('/admin-review') && !endpoint.includes('/union-review') && !endpoint.includes('/union-report') && !endpoint.includes('/acland-review') && !endpoint.includes('/schedule-appointment') && !endpoint.includes('/complete-registration') && !endpoint.includes('/pre-check')) {
+    const appId = endpoint.replace('/sale/', '').trim();
+    if (appId && appId !== 'my') {
+      const app = (OFFLINE_DB.sale_applications || []).find((a: any) => a.id === appId || a.application_no === appId);
+      return { success: true, data: app || OFFLINE_DB.sale_applications?.[0] };
+    }
+  }
+
+  // 18. Single Parcel Details
+  if (endpoint.startsWith('/land/') && !endpoint.startsWith('/land/search') && !endpoint.startsWith('/land/my')) {
+    const pid = endpoint.replace('/land/', '').trim();
+    const parcel = (OFFLINE_DB.land_parcels || []).find((p: any) => p.id === pid);
+    return { success: true, data: parcel || OFFLINE_DB.land_parcels?.[0] };
+  }
+
+  // 19. Tax Payment History
+  if (endpoint === '/tax/my/history') {
+    return {
+      success: true,
+      data: (OFFLINE_DB.tax_payments || []).slice(0, 15),
+    };
+  }
+
+  // 20. Officer Users & Management
+  if (endpoint === '/officer/users') {
+    return {
+      success: true,
+      count: (OFFLINE_DB.profiles || []).length,
+      users: OFFLINE_DB.profiles || [],
+    };
+  }
+
+  if (endpoint === '/auth/kyc/pending') {
+    const pending = (OFFLINE_DB.profiles || []).filter((p: any) => p.kyc_status === 'pending');
+    return {
+      success: true,
+      data: pending.length > 0 ? pending : (OFFLINE_DB.profiles || []).slice(0, 3),
+    };
+  }
+
+  if (endpoint === '/officer/update-role') {
+    return {
+      success: true,
+      message_bn: 'ব্যবহারকারীর ভূমিকা ও দপ্তর সফলভাবে হালনাগাদ করা হয়েছে।',
+    };
+  }
+
+  // 21. AI Chatbot Message
   if (endpoint === '/chat/message') {
     return {
       success: true,
@@ -342,7 +390,7 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
     };
   }
 
-  // 18. Reset Demo
+  // 22. Reset Demo
   if (endpoint === '/officer/reset-demo') {
     return {
       success: true,
