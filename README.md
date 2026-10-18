@@ -491,7 +491,7 @@ git push origin feature/your-feature  # then open a PR
 ## 👤 Team
 
 | Name | Role | Links |
-|---|---|---|---|  
+|:-:|:-:|:-:|:-:|  
 | **Arman Hossen** | Frontend | [GitHub](https://github.com/armanhossen-dev) | [LinkedIn](https://www.linkedin.com/in/armanhossenripon) |
 | **Bornil Mahmud** | Backend | [GitHub](https://github.com/BornilMahmud) | [LinkedIn](https://www.linkedin.com/in/bornilmahmud/) |
 
