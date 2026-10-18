@@ -384,7 +384,7 @@ export const VerifyLandPage: React.FC = () => {
         </h2>
 
         {/* Demo Fast Preset Buttons */}
-        <div className="mb-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700/60">
+        <div className="mb-5 bg-slate-50 dark:bg-slate-800/50 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700/60">
           <p className="text-xs text-slate-600 dark:text-slate-300 font-semibold mb-2">
             {isBn ? '১-ক্লিক ডেমো দৃশ্যপট (Judge Test Scenarios):' : '1-Click Judge Test Scenarios:'}
           </p>
@@ -397,7 +397,7 @@ export const VerifyLandPage: React.FC = () => {
                 setProposedArea('1.0');
                 handleRunAssessment('pcl-clean-405', '19852691029384756');
               }}
-              className="px-3 py-1.5 rounded-md font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition"
+              className="px-3.5 py-1.5 rounded-full font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition shadow-xs cursor-pointer"
             >
               ✓ {isBn ? 'নিরাপদ জমি (দাগ ৪০৫, বাড্ডা)' : 'Clean Title (Plot 405, Badda)'}
             </button>
@@ -409,7 +409,7 @@ export const VerifyLandPage: React.FC = () => {
                 setProposedArea('15.0');
                 handleRunAssessment('pcl-taxdue-882', '19782691099381726');
               }}
-              className="px-3 py-1.5 rounded-md font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition"
+              className="px-3.5 py-1.5 rounded-full font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/60 transition shadow-xs cursor-pointer"
             >
               ⚠️ {isBn ? 'খাজনা বকেয়া (দাগ ৮৮২, সাঁতারকুল)' : 'Tax Overdue (Plot 882)'}
             </button>
@@ -421,7 +421,7 @@ export const VerifyLandPage: React.FC = () => {
                 setProposedArea('3.0');
                 handleRunAssessment('pcl-oversell-102', '19822695028371948');
               }}
-              className="px-3 py-1.5 rounded-md font-medium bg-orange-50 dark:bg-orange-950/40 text-orange-900 dark:text-orange-300 border border-orange-300 dark:border-orange-700 hover:bg-orange-100 dark:hover:bg-orange-900/60 transition"
+              className="px-3.5 py-1.5 rounded-full font-medium bg-orange-50 dark:bg-orange-950/40 text-orange-900 dark:text-orange-300 border border-orange-300 dark:border-orange-700 hover:bg-orange-100 dark:hover:bg-orange-900/60 transition shadow-xs cursor-pointer"
             >
               ⚠️ {isBn ? 'হিস্যা ঘাটতি / অতিরিক্ত বিক্রি (দাগ ১০২)' : 'Over-Sale Share Limit (Plot 102)'}
             </button>
@@ -431,7 +431,7 @@ export const VerifyLandPage: React.FC = () => {
                 setSellerNid('');
                 handleRunAssessment('pcl-court-710', '');
               }}
-              className="px-3 py-1.5 rounded-md font-medium bg-red-100 dark:bg-red-950/40 text-red-900 dark:text-red-300 border border-red-400 dark:border-red-700 hover:bg-red-200 dark:hover:bg-red-900/60 transition font-bold"
+              className="px-3.5 py-1.5 rounded-full font-bold bg-red-100 dark:bg-red-950/40 text-red-900 dark:text-red-300 border border-red-400 dark:border-red-700 hover:bg-red-200 dark:hover:bg-red-900/60 transition shadow-xs cursor-pointer"
             >
               ⛔ {isBn ? 'আদালতের স্থগিতাদেশ ও মর্টগেজ (দাগ ৭১০)' : 'Court Injunction & Mortgage (Plot 710)'}
             </button>
@@ -441,25 +441,27 @@ export const VerifyLandPage: React.FC = () => {
                 setSellerNid('');
                 handleRunAssessment('pcl-khas-999', '');
               }}
-              className="px-3 py-1.5 rounded-md font-medium bg-rose-100 dark:bg-rose-950/40 text-rose-900 dark:text-rose-300 border border-rose-400 dark:border-rose-700 hover:bg-rose-200 dark:hover:bg-rose-900/60 transition font-bold"
+              className="px-3.5 py-1.5 rounded-full font-bold bg-rose-100 dark:bg-rose-950/40 text-rose-900 dark:text-rose-300 border border-rose-400 dark:border-rose-700 hover:bg-rose-200 dark:hover:bg-rose-900/60 transition shadow-xs cursor-pointer"
             >
               🚫 {isBn ? '১০০% সরকারি খাস জমি (দাগ ৯৯৯)' : 'Government Khas Land (Plot 999)'}
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-          <div>
-            <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+        {/* Unified 1-Line Input & Audit Bar */}
+        <div className="flex flex-col md:flex-row items-stretch gap-2.5 text-xs w-full">
+          {/* Box 1: Parcel & Mouza */}
+          <div className="flex-[1.4] min-w-0 bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 min-h-[52px] flex flex-col justify-center focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500 transition shadow-xs">
+            <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate mb-0.5">
               {isBn ? 'যাচাইযোগ্য দাগ ও মৌজা' : 'Select Parcel & Mouza'}
             </label>
             <select
               value={selectedParcelId}
               onChange={(e) => setSelectedParcelId(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-md p-2.5 font-medium focus:ring-2 focus:ring-emerald-500 transition"
+              className="w-full bg-transparent text-slate-900 dark:text-slate-100 font-semibold text-xs border-0 p-0 focus:ring-0 outline-none cursor-pointer truncate"
             >
               {parcels.map((p) => (
-                <option key={p.id} value={p.id}>
+                <option key={p.id} value={p.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                   {isBn
                     ? `দাগ ${p.dag_no} — খতিয়ান ${p.khatian_no} (${p.mouza}, ${p.total_area_decimal} শতক)`
                     : `Plot ${p.dag_no} — Khatian ${p.khatian_no} (${p.mouza}, ${p.total_area_decimal} Dec)`}
@@ -468,8 +470,9 @@ export const VerifyLandPage: React.FC = () => {
             </select>
           </div>
 
-          <div>
-            <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
+          {/* Box 2: Seller NID */}
+          <div className="flex-1 min-w-0 bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 min-h-[52px] flex flex-col justify-center focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500 transition shadow-xs">
+            <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate mb-0.5">
               {isBn ? 'বিক্রেতার এনআইডি / পরিচিতি (ঐচ্ছিক)' : 'Seller NID (Optional)'}
             </label>
             <input
@@ -477,13 +480,14 @@ export const VerifyLandPage: React.FC = () => {
               placeholder={isBn ? 'যেমন: ১৯৮৫২৬৯১০২৯৩৮৪৭৫৬' : 'e.g. 19852691029384756'}
               value={sellerNid}
               onChange={(e) => setSellerNid(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-md p-2 focus:ring-2 focus:ring-emerald-500 transition outline-none"
+              className="w-full bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 font-semibold text-xs border-0 p-0 focus:ring-0 outline-none"
             />
           </div>
 
-          <div>
-            <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">
-              {isBn ? 'প্রস্তাবিত বিক্রয় অংশ (Share 0.0 - 1.0)' : 'Proposed Sale Share (0.0 - 1.0)'}
+          {/* Box 3: Proposed Sale Share */}
+          <div className="w-full md:w-56 min-w-0 bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 min-h-[52px] flex flex-col justify-center focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500 transition shadow-xs">
+            <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate mb-0.5">
+              {isBn ? 'প্রস্তাবিত বিক্রয় অংশ (0.0 - 1.0)' : 'Proposed Share (0.0 - 1.0)'}
             </label>
             <input
               type="number"
@@ -492,18 +496,21 @@ export const VerifyLandPage: React.FC = () => {
               placeholder={isBn ? 'যেমন: ০.০৫ (৫%)' : 'e.g. 0.05'}
               value={proposedShare}
               onChange={(e) => setProposedShare(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-md p-2 focus:ring-2 focus:ring-emerald-500 transition outline-none"
+              className="w-full bg-transparent text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 font-semibold text-xs border-0 p-0 focus:ring-0 outline-none"
             />
           </div>
 
-          <div className="flex items-end">
+          {/* Box 4: Action Button */}
+          <div className="w-full md:w-auto shrink-0 flex items-stretch">
             <button
               onClick={() => handleRunAssessment()}
               disabled={loading}
-              className="w-full bg-gov-blue hover:bg-slate-900 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-md shadow transition flex items-center justify-center gap-1.5"
+              className="w-full md:w-auto px-6 py-2.5 min-h-[52px] rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 hover:from-emerald-700 hover:to-cyan-800 text-white font-bold text-xs shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
-              <ShieldCheck size={16} />
-              <span>{loading ? (isBn ? 'যাচাই হচ্ছে...' : 'Auditing...') : (isBn ? 'মূল্যায়ন পরিচালনা করুন' : 'Run Audit')}</span>
+              <ShieldCheck size={18} className="shrink-0 text-emerald-200" />
+              <span className="whitespace-nowrap">
+                {loading ? (isBn ? 'যাচাই হচ্ছে...' : 'Auditing...') : (isBn ? 'মূল্যায়ন পরিচালনা করুন' : 'Run Audit')}
+              </span>
             </button>
           </div>
         </div>
