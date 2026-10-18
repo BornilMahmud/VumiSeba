@@ -219,22 +219,22 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
   if (cleanId.includes('admin')) return OFFLINE_DEMO_USERS.central_admin;
 
   // 2. Email matching
-  if (cleanId.includes('seller@') || cleanId === 'demo-citizen@bhumisathi.gov.bd') {
+  if (cleanId.includes('seller') || cleanId === 'demo-citizen@bhumisathi.gov.bd') {
     return cleanId.includes('buyer') ? OFFLINE_DEMO_USERS.buyer : OFFLINE_DEMO_USERS.seller;
   }
-  if (cleanId.includes('buyer@')) return OFFLINE_DEMO_USERS.buyer;
+  if (cleanId.includes('buyer')) return OFFLINE_DEMO_USERS.buyer;
   if (cleanId.includes('latif') || cleanId.includes('taxdue')) return OFFLINE_DEMO_USERS.taxdue;
-  if (cleanId.includes('nazrul') || cleanId.includes('share')) return OFFLINE_DEMO_USERS.oversell;
-  if (cleanId.includes('union.officer') || cleanId === 'demo-union@bhumisathi.gov.bd') {
+  if (cleanId.includes('nazrul') || cleanId.includes('share') || cleanId.includes('oversell')) return OFFLINE_DEMO_USERS.oversell;
+  if (cleanId.includes('union') || cleanId.includes('kamal') || cleanId === 'demo-union@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.union_officer;
   }
-  if (cleanId.includes('ac.land') || cleanId === 'demo-acland@bhumisathi.gov.bd') {
+  if (cleanId.includes('ac.land') || cleanId.includes('acland') || cleanId.includes('tanvir') || cleanId === 'demo-acland@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.ac_land;
   }
-  if (cleanId.includes('sub.registrar') || cleanId === 'demo-subreg@bhumisathi.gov.bd') {
+  if (cleanId.includes('registrar') || cleanId.includes('registry') || cleanId.includes('roksana') || cleanId === 'demo-subreg@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.sub_registrar;
   }
-  if (cleanId.includes('admin@') || cleanId === 'demo-admin@bhumisathi.gov.bd') {
+  if (cleanId.includes('admin') || cleanId === 'demo-admin@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.central_admin;
   }
 
