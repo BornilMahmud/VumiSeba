@@ -22,7 +22,14 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
   };
 
   const avatarUrl = getUserAvatarUrl(user);
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (location.pathname === path) return true;
+    if (path === '/citizen/tax' && (location.pathname === '/citizen/tax-clearance' || location.pathname.startsWith('/citizen/tax'))) return true;
+    if (path === '/citizen/sell' && (location.pathname === '/citizen/sell-land' || location.pathname.startsWith('/citizen/sell'))) return true;
+    if (path === '/citizen/mutation' && (location.pathname.startsWith('/citizen/mutation') || location.pathname === '/citizen/mutation-tracking')) return true;
+    if (path === '/citizen/my-applications' && (location.pathname === '/citizen/applications' || location.pathname === '/citizen/sale-applications')) return true;
+    return false;
+  };
 
   const menuItems = [
     { path: '/citizen/dashboard', labelBn: 'ড্যাশবোর্ড', labelEn: 'Dashboard', iconClass: 'bx bxs-dashboard' },

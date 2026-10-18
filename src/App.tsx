@@ -299,7 +299,9 @@ export default function App() {
                           <Route path="land/:id" element={<LandDetailPage />} />
                           <Route path="land-details/:id" element={<LandDetailPage />} />
                           <Route path="tax" element={<TaxClearancePage />} />
+                          <Route path="tax-clearance" element={<TaxClearancePage />} />
                           <Route path="sell" element={<SellLandPage />} />
+                          <Route path="sell-land" element={<SellLandPage />} />
                           <Route path="applications" element={<MyApplicationsPage />} />
                           <Route path="sale-applications" element={<MyApplicationsPage />} />
                           <Route path="my-applications" element={<MyApplicationsPage />} />
@@ -422,6 +424,13 @@ export default function App() {
                 <Route path="/officer/ac-land" element={<Navigate to="/office/ac-land/dashboard" replace />} />
                 <Route path="/officer/registry" element={<Navigate to="/office/registry/dashboard" replace />} />
                 <Route path="/officer/*" element={<Navigate to="/office/union/dashboard" replace />} />
+
+                {/* Convenience redirects for citizen services */}
+                <Route path="/tax" element={<Navigate to="/citizen/tax" replace />} />
+                <Route path="/tax-clearance" element={<Navigate to="/citizen/tax-clearance" replace />} />
+                <Route path="/sell" element={<Navigate to="/citizen/sell" replace />} />
+                <Route path="/sell-land" element={<Navigate to="/citizen/sell-land" replace />} />
+                <Route path="/mutation-tracking" element={<Navigate to="/citizen/mutation-tracking" replace />} />
 
                 {/* Dedicated Error Pages */}
                 <Route path="/404" element={<PublicLayout><NotFoundPage /></PublicLayout>} />
