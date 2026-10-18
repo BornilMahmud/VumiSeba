@@ -46,6 +46,27 @@ export const OFFLINE_DEMO_USERS: Record<string, UserProfile> = {
     photo_url: '/avatars/nid_farhan_ahmed.jpg',
     created_at: '2025-01-20T09:00:00Z',
   },
+  tania: {
+    id: 'usr-buyer-tania',
+    citizen_id: 'BHM-CIT-691823',
+    email: 'tania.sultana@bhumisathi.gov.bd',
+    name_bn: 'তানিয়া সুলতানা',
+    name_en: 'Tania Sultana',
+    mobile: '01717507705',
+    nid_no: '19983918291432601',
+    date_of_birth: '1998-05-14',
+    father_name_bn: 'শফিকুল ইসলাম',
+    mother_name_bn: 'রোকসানা আক্তার',
+    address_bn: 'বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, গুলশান, ঢাকা',
+    district: 'ঢাকা',
+    upazila: 'গুলশান',
+    role: 'citizen',
+    kyc_status: 'verified',
+    kyc_verified_at: '2025-02-10T10:00:00Z',
+    nid_photo_url: '/avatars/nid_female_tania.jpg',
+    photo_url: '/avatars/nid_female_tania.jpg',
+    created_at: '2025-01-25T09:00:00Z',
+  },
   taxdue: {
     id: 'usr-seller-taxdue',
     citizen_id: 'BHM-CIT-339102',
@@ -210,6 +231,7 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
 
   // 1. Exact or partial match on persona keys
   if (cleanId === 'seller' || cleanId === 'rafiq') return OFFLINE_DEMO_USERS.seller;
+  if (cleanId === 'tania' || cleanId.includes('tania') || cleanId.includes('তানিয়া')) return OFFLINE_DEMO_USERS.tania;
   if (cleanId === 'buyer' || cleanId === 'farhan') return OFFLINE_DEMO_USERS.buyer;
   if (cleanId === 'taxdue' || cleanId === 'latif') return OFFLINE_DEMO_USERS.taxdue;
   if (cleanId === 'oversell' || cleanId === 'nazrul') return OFFLINE_DEMO_USERS.oversell;
