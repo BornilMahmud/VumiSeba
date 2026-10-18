@@ -418,6 +418,44 @@
       "updated_at": "2026-10-18T06:51:42.002Z",
       "citizen_id": "BHM-CIT-908039",
       "kyc_verified_at": "2026-10-18T06:51:42.002Z"
+    },
+    {
+      "id": "usr-1792306713305-985",
+      "citizen_id": "BHM-CIT-0200033",
+      "email": "tania.4394@bhumisathi.test",
+      "password_hash": "$2b$10$7ABw2Wb3NMpJrkFX0rY4JOxlY68ot3fEZcSFjiZZqjsSzIQVGI36u",
+      "name_bn": "তানিয়া সুলতানা",
+      "name_en": "Tania Sultana",
+      "mobile": "01718653609",
+      "nid_no": "19985863627078686",
+      "father_name_bn": "শফিকুল ইসলাম",
+      "mother_name_bn": "রোকসানা আক্তার",
+      "address_bn": "বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা",
+      "district": "ঢাকা",
+      "upazila": "গুলশান",
+      "role": "citizen",
+      "kyc_status": "verified",
+      "created_at": "2026-10-18T06:58:33.305Z",
+      "updated_at": "2026-10-18T06:58:33.305Z"
+    },
+    {
+      "id": "usr-1792306720895-681",
+      "citizen_id": "BHM-CIT-0300061",
+      "email": "tania.9365@bhumisathi.test",
+      "password_hash": "$2b$10$9xwZd3gqXI8sUTmFvJzZyu68bbKOL9j8zw3bCCDYvXgSoRc5QLlCC",
+      "name_bn": "তানিয়া সুলতানা",
+      "name_en": "Tania Sultana",
+      "mobile": "01717460283",
+      "nid_no": "19961409828473826",
+      "father_name_bn": "শফিকুল ইসলাম",
+      "mother_name_bn": "রোকসানা আক্তার",
+      "address_bn": "বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা",
+      "district": "ঢাকা",
+      "upazila": "গুলশান",
+      "role": "citizen",
+      "kyc_status": "verified",
+      "created_at": "2026-10-18T06:58:40.895Z",
+      "updated_at": "2026-10-18T06:58:40.895Z"
     }
   ],
   "land_parcels": [
@@ -2313,6 +2351,240 @@
       "acquisition_risk": true,
       "document_discrepancy": false,
       "generated_at": "2026-10-18T06:51:42.003Z"
+    },
+    {
+      "id": "RISK-1792306681447-772",
+      "parcel_id": "pcl-clean-405",
+      "overall_risk_level": "high",
+      "risk_score": 48,
+      "engine_version": "v2.2-transparency",
+      "data_as_of": "2026-10-15",
+      "disclaimer_bn": "অত্র ঝুঁকি মূল্যায়ন প্রতিবেদনটি ডিজিটাল ভূমি রেকর্ডসমূহের প্রাথমিক স্বয়ংক্রিয় পর্যবেক্ষণীয় বিশ্লেষণ, কোনো চূড়ান্ত আইনি দলিল, প্রত্যয়নপত্র বা টাইটেল গ্যারান্টি নয়। যেকোনো জমি ক্রয়ের পূর্বে উপযুক্ত বিজ্ঞ আইনজীবী দ্বারা সরেজমিন দলিল ও শারীরিক দখল যাচাইকরণ আবশ্যক। (Advisory, not a formal legal opinion)",
+      "disclaimer_en": "This advisory risk assessment is an automated analytical check against digital public land records, not a formal legal certificate or title guarantee. Physical due diligence and formal legal counsel are strongly advised before purchase.",
+      "critical_override_triggered": true,
+      "critical_override_reasons": [
+        "প্রস্তাবিত বিক্রেতার মালিকানা রেকর্ড অনুপস্থিত"
+      ],
+      "factors": [
+        {
+          "factor_key": "court_injunction",
+          "title_bn": "আদালতের নিষেধাজ্ঞা ও দেওয়ানি বিরোধ",
+          "title_en": "Court Injunction & Civil Litigation",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 0,
+          "explanation_bn": "জাতীয় বিচার বিভাগীয় ডাটাবেজ মোতাবেক এই জমিতে কোনো সক্রিয় দেওয়ানি মোকদ্দমা বা আদালতের স্থগিতাদেশ নেই।",
+          "explanation_en": "No active court dispute or civil injunction found in national judicial databases."
+        },
+        {
+          "factor_key": "government_land",
+          "title_bn": "সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তি সংরক্ষণ",
+          "title_en": "Government Khas / Acquired / Vested Property",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 0,
+          "explanation_bn": "জমিটি সম্পূর্ণ ব্যক্তিগত খতিয়ানভুক্ত; সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তির আওতামুক্ত।",
+          "explanation_en": "Property is verified private land, cleared of government khas, acquisition, or vested encumbrance."
+        },
+        {
+          "factor_key": "share_validation",
+          "title_bn": "বিক্রেতার মালিকানা হিস্যা ও বৈধতা",
+          "title_en": "Seller Share Verification & Over-Sale Guard",
+          "status": "failed",
+          "is_critical": true,
+          "weight_max_points": 30,
+          "deducted_points": 30,
+          "explanation_bn": "প্রস্তাবিত বিক্রেতার এনআইডি বা সিটিজেন আইডি সরকারি খতিয়ান রেকর্ডের সাথে মিলছে না।",
+          "explanation_en": "Proposed seller ID does not match any active ownership record in the official khatian."
+        },
+        {
+          "factor_key": "bank_mortgage",
+          "title_bn": "ব্যাংক মর্টগেজ ও আর্থিক দায়বদ্ধতা",
+          "title_en": "Bank Mortgage & Lien Encumbrance",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 25,
+          "deducted_points": 0,
+          "explanation_bn": "সাব-রেজিস্ট্রি ইনডেক্স ও তফসিলি ব্যাংক ডাটাবেজ অনুযায়ী জমিটিতে কোনো মর্টগেজ লিয়েন নেই।",
+          "explanation_en": "No registered bank mortgage, charge, or institutional financial lien recorded against parcel."
+        },
+        {
+          "factor_key": "tax_compliance",
+          "title_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ",
+          "title_en": "Land Development Tax Compliance",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 0,
+          "explanation_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ পরিশোধিত রয়েছে (দাখিলা নং সংরক্ষিত)।",
+          "explanation_en": "Land development tax fully cleared with authentic e-Dakhila certificate on record."
+        },
+        {
+          "factor_key": "duplicate_sales",
+          "title_bn": "দ্বৈত বা সমান্তরাল বিক্রয় লেনদেন",
+          "title_en": "Concurrent Conflicting Sales",
+          "status": "failed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 15,
+          "explanation_bn": "এই দাগে ইতিমধ্যে 2টি সক্রিয় বিক্রয় আবেদন প্রক্রিয়াধীন রয়েছে।",
+          "explanation_en": "Multiple (2) concurrent pending sale applications detected on this parcel."
+        },
+        {
+          "factor_key": "document_consistency",
+          "title_bn": "নথিপত্রের সঙ্গতি ও পর্চা যাচাই",
+          "title_en": "Document Consistency & Boundary Harmony",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 10,
+          "deducted_points": 0,
+          "explanation_bn": "সংযুক্ত সকল খতিয়ান ও দলিলের রেকর্ড পরস্পর সামঞ্জস্যপূর্ণ।",
+          "explanation_en": "All uploaded deeds, porcha maps, and khatian schedules are internally consistent."
+        }
+      ],
+      "summary_bn": "উচ্চ ঝুঁকি শনাক্ত হয়েছে! বিক্রেতার মালিকানা হিস্যা অতিক্রমণ বা ব্যাংক মর্টগেজ দায়বদ্ধতার প্রমাণ রয়েছে। সন্তোষজনক দায়মুক্তি সনদ ব্যতিরেকে কোনো আর্থিক লেনদেন করবেন না।",
+      "summary_en": "High risk detected! Share quota discrepancy or active bank mortgage identified. Do not disburse funds without clearance.",
+      "identified_issues_bn": [
+        "প্রস্তাবিত বিক্রেতার পরিচিতি সরকারি মালিকানা রেকর্ডের সাথে মিলছে না।",
+        "দাগে একাধিক (2টি) সক্রিয় বিক্রয় আবেদন চলমান।"
+      ],
+      "warning_basis_bn": [],
+      "unverified_data_bn": [
+        "সরেজমিন শারীরিক সীমানা ও তৃতীয় পক্ষের অবৈধ দখলদারিত্ব (ম্যানুয়াল মাঠ তদন্ত প্রয়োজন)",
+        "উত্তরাধিকারীদের মধ্যে অপ্রকাশিত পারিবারিক বিরোধ বা গোপন দানপত্র"
+      ],
+      "recommended_actions_bn": [
+        "বিক্রেতার হালনাগাদ উত্তরাধিকার বা নামজারি খতিয়ান যাচাই করুন।",
+        "পূর্ববর্তী কোনো বায়না বা চুক্তি চলমান আছে কি না রেজিস্ট্রেশন কর্মকর্তার মাধ্যমে যাচাই করুন।"
+      ],
+      "seller_match": false,
+      "share_valid": false,
+      "tax_cleared": true,
+      "court_dispute": false,
+      "mortgage_encumbrance": false,
+      "duplicate_sale_risk": true,
+      "acquisition_risk": false,
+      "document_discrepancy": false,
+      "generated_at": "2026-10-18T06:58:01.447Z"
+    },
+    {
+      "id": "RISK-1792306681450-757",
+      "parcel_id": "pcl-clean-405",
+      "overall_risk_level": "high",
+      "risk_score": 48,
+      "engine_version": "v2.2-transparency",
+      "data_as_of": "2026-10-15",
+      "disclaimer_bn": "অত্র ঝুঁকি মূল্যায়ন প্রতিবেদনটি ডিজিটাল ভূমি রেকর্ডসমূহের প্রাথমিক স্বয়ংক্রিয় পর্যবেক্ষণীয় বিশ্লেষণ, কোনো চূড়ান্ত আইনি দলিল, প্রত্যয়নপত্র বা টাইটেল গ্যারান্টি নয়। যেকোনো জমি ক্রয়ের পূর্বে উপযুক্ত বিজ্ঞ আইনজীবী দ্বারা সরেজমিন দলিল ও শারীরিক দখল যাচাইকরণ আবশ্যক। (Advisory, not a formal legal opinion)",
+      "disclaimer_en": "This advisory risk assessment is an automated analytical check against digital public land records, not a formal legal certificate or title guarantee. Physical due diligence and formal legal counsel are strongly advised before purchase.",
+      "critical_override_triggered": true,
+      "critical_override_reasons": [
+        "প্রস্তাবিত বিক্রেতার মালিকানা রেকর্ড অনুপস্থিত"
+      ],
+      "factors": [
+        {
+          "factor_key": "court_injunction",
+          "title_bn": "আদালতের নিষেধাজ্ঞা ও দেওয়ানি বিরোধ",
+          "title_en": "Court Injunction & Civil Litigation",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 0,
+          "explanation_bn": "জাতীয় বিচার বিভাগীয় ডাটাবেজ মোতাবেক এই জমিতে কোনো সক্রিয় দেওয়ানি মোকদ্দমা বা আদালতের স্থগিতাদেশ নেই।",
+          "explanation_en": "No active court dispute or civil injunction found in national judicial databases."
+        },
+        {
+          "factor_key": "government_land",
+          "title_bn": "সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তি সংরক্ষণ",
+          "title_en": "Government Khas / Acquired / Vested Property",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 35,
+          "deducted_points": 0,
+          "explanation_bn": "জমিটি সম্পূর্ণ ব্যক্তিগত খতিয়ানভুক্ত; সরকারি খাস, অধিগ্রহণ বা অর্পিত সম্পত্তির আওতামুক্ত।",
+          "explanation_en": "Property is verified private land, cleared of government khas, acquisition, or vested encumbrance."
+        },
+        {
+          "factor_key": "share_validation",
+          "title_bn": "বিক্রেতার মালিকানা হিস্যা ও বৈধতা",
+          "title_en": "Seller Share Verification & Over-Sale Guard",
+          "status": "failed",
+          "is_critical": true,
+          "weight_max_points": 30,
+          "deducted_points": 30,
+          "explanation_bn": "প্রস্তাবিত বিক্রেতার এনআইডি বা সিটিজেন আইডি সরকারি খতিয়ান রেকর্ডের সাথে মিলছে না।",
+          "explanation_en": "Proposed seller ID does not match any active ownership record in the official khatian."
+        },
+        {
+          "factor_key": "bank_mortgage",
+          "title_bn": "ব্যাংক মর্টগেজ ও আর্থিক দায়বদ্ধতা",
+          "title_en": "Bank Mortgage & Lien Encumbrance",
+          "status": "passed",
+          "is_critical": true,
+          "weight_max_points": 25,
+          "deducted_points": 0,
+          "explanation_bn": "সাব-রেজিস্ট্রি ইনডেক্স ও তফসিলি ব্যাংক ডাটাবেজ অনুযায়ী জমিটিতে কোনো মর্টগেজ লিয়েন নেই।",
+          "explanation_en": "No registered bank mortgage, charge, or institutional financial lien recorded against parcel."
+        },
+        {
+          "factor_key": "tax_compliance",
+          "title_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ",
+          "title_en": "Land Development Tax Compliance",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 0,
+          "explanation_bn": "ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ পরিশোধিত রয়েছে (দাখিলা নং সংরক্ষিত)।",
+          "explanation_en": "Land development tax fully cleared with authentic e-Dakhila certificate on record."
+        },
+        {
+          "factor_key": "duplicate_sales",
+          "title_bn": "দ্বৈত বা সমান্তরাল বিক্রয় লেনদেন",
+          "title_en": "Concurrent Conflicting Sales",
+          "status": "failed",
+          "is_critical": false,
+          "weight_max_points": 15,
+          "deducted_points": 15,
+          "explanation_bn": "এই দাগে ইতিমধ্যে 2টি সক্রিয় বিক্রয় আবেদন প্রক্রিয়াধীন রয়েছে।",
+          "explanation_en": "Multiple (2) concurrent pending sale applications detected on this parcel."
+        },
+        {
+          "factor_key": "document_consistency",
+          "title_bn": "নথিপত্রের সঙ্গতি ও পর্চা যাচাই",
+          "title_en": "Document Consistency & Boundary Harmony",
+          "status": "passed",
+          "is_critical": false,
+          "weight_max_points": 10,
+          "deducted_points": 0,
+          "explanation_bn": "সংযুক্ত সকল খতিয়ান ও দলিলের রেকর্ড পরস্পর সামঞ্জস্যপূর্ণ।",
+          "explanation_en": "All uploaded deeds, porcha maps, and khatian schedules are internally consistent."
+        }
+      ],
+      "summary_bn": "উচ্চ ঝুঁকি শনাক্ত হয়েছে! বিক্রেতার মালিকানা হিস্যা অতিক্রমণ বা ব্যাংক মর্টগেজ দায়বদ্ধতার প্রমাণ রয়েছে। সন্তোষজনক দায়মুক্তি সনদ ব্যতিরেকে কোনো আর্থিক লেনদেন করবেন না।",
+      "summary_en": "High risk detected! Share quota discrepancy or active bank mortgage identified. Do not disburse funds without clearance.",
+      "identified_issues_bn": [
+        "প্রস্তাবিত বিক্রেতার পরিচিতি সরকারি মালিকানা রেকর্ডের সাথে মিলছে না।",
+        "দাগে একাধিক (2টি) সক্রিয় বিক্রয় আবেদন চলমান।"
+      ],
+      "warning_basis_bn": [],
+      "unverified_data_bn": [
+        "সরেজমিন শারীরিক সীমানা ও তৃতীয় পক্ষের অবৈধ দখলদারিত্ব (ম্যানুয়াল মাঠ তদন্ত প্রয়োজন)",
+        "উত্তরাধিকারীদের মধ্যে অপ্রকাশিত পারিবারিক বিরোধ বা গোপন দানপত্র"
+      ],
+      "recommended_actions_bn": [
+        "বিক্রেতার হালনাগাদ উত্তরাধিকার বা নামজারি খতিয়ান যাচাই করুন।",
+        "পূর্ববর্তী কোনো বায়না বা চুক্তি চলমান আছে কি না রেজিস্ট্রেশন কর্মকর্তার মাধ্যমে যাচাই করুন।"
+      ],
+      "seller_match": false,
+      "share_valid": false,
+      "tax_cleared": true,
+      "court_dispute": false,
+      "mortgage_encumbrance": false,
+      "duplicate_sale_risk": true,
+      "acquisition_risk": false,
+      "document_discrepancy": false,
+      "generated_at": "2026-10-18T06:58:01.450Z"
     }
   ],
   "office_reviews": [
