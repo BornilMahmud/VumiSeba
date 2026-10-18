@@ -39,6 +39,10 @@ export const CitizenDashboard: React.FC = () => {
   const [mutations, setMutations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [copiedCitizenId, setCopiedCitizenId] = useState(false);
+  const [lastRefreshedAt, setLastRefreshedAt] = useState<string>(() => {
+    return new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+  });
+  const [refreshSuccess, setRefreshSuccess] = useState(false);
 
   const handleCopyCitizenId = () => {
     const cid = user?.citizen_id || 'BHM-CIT-882194';
@@ -53,6 +57,7 @@ export const CitizenDashboard: React.FC = () => {
 
   const loadDashboardData = async () => {
     setLoading(true);
+    setRefreshSuccess(false);
     try {
       const [hRes, aRes, mRes] = await Promise.all([
         api.getMyHoldings(),
@@ -62,6 +67,12 @@ export const CitizenDashboard: React.FC = () => {
       if (hRes.success && hRes.data) setHoldings(hRes.data);
       if (aRes.success && aRes.data) setApplications(aRes.data);
       if (mRes.success && mRes.data) setMutations(mRes.data);
+      const now = new Date();
+      setLastRefreshedAt(
+        now.toLocaleTimeString(isBn ? 'bn-BD' : 'en-US', { hour: '2-digit', minute: '2-digit' })
+      );
+      setRefreshSuccess(true);
+      setTimeout(() => setRefreshSuccess(false), 2500);
     } catch (err) {
       console.error('Failed loading citizen dashboard data', err);
     } finally {
@@ -92,29 +103,29 @@ export const CitizenDashboard: React.FC = () => {
 
   return (
     <div className={`${isBn ? 'font-bengali' : 'font-sans'} space-y-6`}>
-      {/* 1. Welcome & Citizen ID Header Card - Redesigned Executive Banner */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-emerald-500/20 dark:border-teal-500/20 bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/20 dark:from-[#081020] dark:via-[#0c182b] dark:to-[#071d24] p-5 sm:p-6 lg:p-7 shadow-lg shadow-emerald-950/5 dark:shadow-2xl dark:shadow-black/50 transition-all">
+      {/* 1. Welcome & Citizen ID Header Card - Fully Responsive for Mobile & Desktop with New Refresh Button */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-emerald-500/20 dark:border-teal-500/20 bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/20 dark:from-[#081020] dark:via-[#0c182b] dark:to-[#071d24] p-4 sm:p-6 lg:p-7 shadow-lg shadow-emerald-950/5 dark:shadow-2xl dark:shadow-black/50 transition-all">
         {/* Subtle Ambient Decorative Glows */}
         <div className="absolute -top-16 -right-16 w-64 h-64 bg-teal-500/10 dark:bg-teal-400/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-emerald-500/10 dark:bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
           {/* Left: Citizen Profile Details */}
-          <div className="flex items-start sm:items-center gap-4 sm:gap-5 min-w-0">
+          <div className="flex items-start sm:items-center gap-3.5 sm:gap-5 min-w-0 pr-28 sm:pr-32 lg:pr-0">
             {getUserAvatarUrl(user) ? (
               <div className="relative shrink-0">
                 <div className="p-0.5 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-400 to-cyan-500 shadow-md">
                   <img
                     src={getUserAvatarUrl(user)!}
                     alt={userName}
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-[14px] sm:rounded-[22px] object-cover bg-white dark:bg-slate-900"
+                    className="w-14 h-14 sm:w-20 sm:h-20 rounded-[14px] sm:rounded-[22px] object-cover bg-white dark:bg-slate-900"
                   />
                 </div>
                 <span
-                  className="absolute -bottom-1.5 -right-1.5 bg-emerald-600 dark:bg-teal-500 text-white dark:text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full border-2 border-white dark:border-slate-900 flex items-center gap-0.5 shadow-sm"
+                  className="absolute -bottom-1 -right-1 bg-emerald-600 dark:bg-teal-500 text-white dark:text-slate-950 text-[9px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-full border-2 border-white dark:border-slate-900 flex items-center gap-0.5 shadow-sm"
                   title="জাতীয় পরিচয়পত্র ডাটাবেজ ভেরিফায়েড ছবি"
                 >
-                  <CheckCircle2 size={11} className="shrink-0" />
+                  <CheckCircle2 size={10} className="shrink-0" />
                   <span>NID</span>
                 </span>
               </div>
@@ -122,7 +133,7 @@ export const CitizenDashboard: React.FC = () => {
 
             <div className="min-w-0 flex-1">
               {/* Header Badge Row */}
-              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1 sm:mb-1.5">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 dark:bg-teal-500/15 text-emerald-800 dark:text-teal-300 border border-emerald-500/20 dark:border-teal-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-teal-400 animate-pulse" />
                   {isBn ? 'স্বাগতম, নাগরিক' : 'Welcome, Citizen'}
@@ -137,7 +148,7 @@ export const CitizenDashboard: React.FC = () => {
               </div>
 
               {/* Citizen Name */}
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex flex-wrap items-baseline gap-2">
+              <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex flex-wrap items-baseline gap-1.5 sm:gap-2 leading-snug">
                 <span>{userName}</span>
                 {user?.name_en && user?.name_bn && (
                   <span className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 font-sans tracking-normal">
@@ -146,8 +157,8 @@ export const CitizenDashboard: React.FC = () => {
                 )}
               </h1>
 
-              {/* Metadata Badges Row */}
-              <div className="flex flex-wrap items-center gap-2 pt-2.5 text-xs text-slate-600 dark:text-slate-300">
+              {/* Metadata Badges Row - Clean and Responsive for Mobile */}
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-2 text-xs text-slate-600 dark:text-slate-300">
                 {/* Mobile Chip */}
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 font-mono text-[11px] shadow-2xs">
                   <Phone size={12} className="text-emerald-600 dark:text-teal-400 shrink-0" />
@@ -179,10 +190,10 @@ export const CitizenDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Smart Citizen ID Card Widget & Refresh Sync */}
-          <div className="flex items-center gap-3 self-stretch lg:self-auto shrink-0">
+          {/* Right: Smart Citizen ID Card Widget & Redesigned Refresh Button */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
             {/* Holographic Digital Citizen ID Mini-Card */}
-            <div className="group relative flex-1 sm:flex-initial overflow-hidden rounded-2xl p-4 bg-gradient-to-b from-white via-slate-50/80 to-emerald-50/40 dark:from-slate-900/95 dark:via-[#0c192d] dark:to-[#072421] border border-emerald-300/60 dark:border-teal-500/30 shadow-md shadow-emerald-950/5 dark:shadow-xl dark:shadow-teal-950/20 min-w-[240px] sm:min-w-[270px] transition-all hover:border-emerald-400 dark:hover:border-teal-400/50">
+            <div className="group relative w-full sm:w-auto sm:min-w-[270px] overflow-hidden rounded-2xl p-4 bg-gradient-to-b from-white via-slate-50/80 to-emerald-50/40 dark:from-slate-900/95 dark:via-[#0c192d] dark:to-[#072421] border border-emerald-300/60 dark:border-teal-500/30 shadow-md shadow-emerald-950/5 dark:shadow-xl dark:shadow-teal-950/20 transition-all hover:border-emerald-400 dark:hover:border-teal-400/50">
               {/* Top Accent Gradient Bar */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500" />
 
@@ -236,13 +247,46 @@ export const CitizenDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Refresh Sync Button */}
+            {/* New Redesigned Refresh & Live Sync Button (Responsive: Top-Right on Mobile, Aligned on Tablet/Desktop) */}
             <button
+              type="button"
               onClick={loadDashboardData}
-              className="p-3.5 rounded-2xl bg-white hover:bg-slate-100 dark:bg-slate-900/90 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200/90 dark:border-slate-800 hover:border-emerald-300 dark:hover:border-teal-500/50 transition cursor-pointer shadow-sm hover:shadow active:scale-95 shrink-0"
+              disabled={loading}
+              className={`group inline-flex items-center gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl transition-all duration-300 cursor-pointer shadow-xs hover:shadow-md active:scale-95 disabled:opacity-60 border shrink-0 absolute top-3.5 right-3.5 sm:top-5 sm:right-5 lg:static ${
+                refreshSuccess
+                  ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-400 text-emerald-800 dark:text-emerald-300 ring-2 ring-emerald-400/20'
+                  : 'bg-white/95 dark:bg-slate-900/95 hover:bg-emerald-50/80 dark:hover:bg-teal-950/60 border-slate-200/90 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-teal-500/50 text-slate-700 dark:text-slate-200'
+              }`}
               title={isBn ? 'তথ্য রিফ্রেশ করুন' : 'Refresh dashboard data'}
             >
-              <RefreshCw size={17} className={loading ? 'animate-spin text-emerald-600 dark:text-teal-400' : ''} />
+              <RefreshCw
+                size={15}
+                className={`transition-transform duration-700 shrink-0 ${
+                  loading
+                    ? 'animate-spin text-emerald-600 dark:text-teal-400'
+                    : refreshSuccess
+                    ? 'text-emerald-600 dark:text-teal-400 scale-110'
+                    : 'text-emerald-600 dark:text-teal-400 group-hover:rotate-180'
+                }`}
+              />
+              <div className="flex flex-col text-left">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px] sm:text-xs font-bold leading-tight">
+                    {loading
+                      ? (isBn ? 'সিঙ্ক হচ্ছে...' : 'Syncing...')
+                      : refreshSuccess
+                      ? (isBn ? 'হালনাগাদ সম্পন্ন' : 'Synced!')
+                      : (isBn ? 'তথ্য রিফ্রেশ' : 'Refresh')}
+                  </span>
+                  <span className="relative flex h-2 w-2">
+                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${refreshSuccess ? 'bg-emerald-400' : 'bg-teal-400'}`}></span>
+                    <span className={`relative inline-flex rounded-full h-2 w-2 ${refreshSuccess ? 'bg-emerald-500' : 'bg-teal-500'}`}></span>
+                  </span>
+                </div>
+                <span className="text-[9px] text-slate-400 dark:text-slate-500 font-mono hidden sm:block">
+                  {isBn ? `সিঙ্ক: ${lastRefreshedAt}` : `Sync: ${lastRefreshedAt}`}
+                </span>
+              </div>
             </button>
           </div>
         </div>
@@ -313,58 +357,156 @@ export const CitizenDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. Fast Action Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link
-          to="/citizen/verify-land"
-          className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-teal-200 dark:border-teal-900/60 shadow-gov-sm hover:border-teal-400 dark:hover:border-teal-500 hover:shadow-md transition group"
-        >
-          <div className="w-10 h-10 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 flex items-center justify-center mb-3 group-hover:scale-105 transition">
-            <ShieldCheck size={22} />
+      {/* 3. Fast Action Cards - Completely Redesigned (No P4/P5, Premium Aesthetics, Smartphone Responsive) */}
+      <div className="space-y-3.5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-2.5 h-6 rounded-full bg-gradient-to-b from-teal-500 to-emerald-600 shadow-sm" />
+            <div>
+              <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">
+                {isBn ? 'নাগরিক দ্রুত সেবা ও যাচাইকরণ' : 'Quick Citizen Services & Verification'}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
+                {isBn ? 'বায়না ও জমি লেনদেনের পূর্বে স্বত্ব অডিট ও অনলাইন সরকারি সেবাসমূহ' : 'Official digital registry services & pre-purchase due diligence'}
+              </p>
+            </div>
           </div>
-          <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">
-            {isBn ? 'কেনার আগে জমি যাচাই (P5)' : 'Pre-Purchase Risk Audit (P5)'}
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            {isBn 
-              ? 'বায়নার পূর্বে বিক্রেতার সঠিক হিস্যা, বকেয়া খাজনা এবং ব্যাংক লিয়েন বা দেওয়ানি মামলা পরীক্ষা করুন।' 
-              : 'Verify seller legitimate share portion, pending tax dues, and bank liens or court injunctions.'}
-          </p>
-        </Link>
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 dark:text-teal-300 bg-emerald-50 dark:bg-teal-950/50 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-teal-800/60 shadow-2xs">
+            <Sparkles size={12} className="text-emerald-600 dark:text-teal-400 animate-pulse" />
+            <span>{isBn ? 'স্মার্ট সেবা পোর্টাল' : 'Smart Portal'}</span>
+          </div>
+        </div>
 
-        <Link
-          to="/citizen/sell"
-          className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-indigo-200 dark:border-indigo-900/60 shadow-gov-sm hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-md transition group"
-        >
-          <div className="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center mb-3 group-hover:scale-105 transition">
-            <FilePlus2 size={22} />
-          </div>
-          <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">
-            {isBn ? 'জমি বিক্রির আবেদন প্রণয়ন (P4)' : 'Apply to Sell Land (P4)'}
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            {isBn 
-              ? 'মালিকানা হিস্যা ও দাগ সিলেক্ট করে ক্রেতার বরাবরে অনলাইন বিক্রয় আবেদন দাখিল করুন।' 
-              : 'Select ownership share and plot to submit a digital sale application to your verified buyer.'}
-          </p>
-        </Link>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {/* Card 1: Check Before You Buy (Pre-Purchase Land Audit) - NO P5 */}
+          <Link
+            to="/citizen/verify-land"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-5 sm:p-6 border border-slate-200/90 dark:border-slate-800/90 hover:border-emerald-400 dark:hover:border-teal-400/60 shadow-sm hover:shadow-xl hover:shadow-emerald-950/5 dark:hover:shadow-black/40 hover:-translate-y-1 transition-all duration-300"
+          >
+            {/* Top Hover Accent Bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400 group-hover:h-1.5 transition-all duration-300" />
+            
+            {/* Ambient Background Glow */}
+            <div className="absolute -top-12 -right-12 w-28 h-28 bg-emerald-500/5 dark:bg-emerald-400/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-all pointer-events-none" />
 
-        <Link
-          to="/citizen/tax"
-          className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/60 shadow-gov-sm hover:border-emerald-400 dark:hover:border-emerald-500 hover:shadow-md transition group"
-        >
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center mb-3 group-hover:scale-105 transition">
-            <Receipt size={22} />
-          </div>
-          <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">
-            {isBn ? 'ভূমি উন্নয়ন কর ও দাখিলা' : 'Land Tax & Dakhila'}
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            {isBn 
-              ? '১-ক্লিকে বকেয়া খাজনা পরিশোধ করুন ও বিক্রয় ছাড়পত্র সনদ সংগ্রহ করুন।' 
-              : 'Pay tax dues instantly and obtain a tamper-proof digital tax clearance certificate.'}
-          </p>
-        </Link>
+            <div>
+              {/* Header: Icon + Category Badge */}
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-md shadow-emerald-500/20 group-hover:scale-105 group-hover:rotate-2 transition-all duration-300">
+                  <ShieldCheck size={24} />
+                </div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-teal-300 border border-emerald-200 dark:border-teal-800/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-teal-400 animate-pulse" />
+                  {isBn ? 'ঝুঁকি যাচাই অডিট' : 'Due Diligence'}
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-700 dark:group-hover:text-teal-300 transition-colors leading-snug">
+                {isBn ? 'কেনার আগে জমি যাচাই' : 'Pre-Purchase Risk Audit'}
+              </h3>
+              <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isBn 
+                  ? 'বায়নার পূর্বে বিক্রেতার সঠিক হিস্যা, বকেয়া খাজনা এবং ব্যাংক লিয়েন বা দেওয়ানি মামলা পরীক্ষা করুন।' 
+                  : 'Verify seller legitimate share portion, pending tax dues, and bank liens or court injunctions.'}
+              </p>
+            </div>
+
+            {/* Action Footer */}
+            <div className="pt-4 mt-5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-emerald-700 dark:text-teal-300">
+              <span className="group-hover:underline">{isBn ? 'যাচাই শুরু করুন' : 'Start Verification'}</span>
+              <div className="w-7 h-7 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-teal-300 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 2: Apply to Sell Land (Smart Registry) - NO P4 */}
+          <Link
+            to="/citizen/sell"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-5 sm:p-6 border border-slate-200/90 dark:border-slate-800/90 hover:border-indigo-400 dark:hover:border-indigo-400/60 shadow-sm hover:shadow-xl hover:shadow-indigo-950/5 dark:hover:shadow-black/40 hover:-translate-y-1 transition-all duration-300"
+          >
+            {/* Top Hover Accent Bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-blue-500 group-hover:h-1.5 transition-all duration-300" />
+            
+            {/* Ambient Background Glow */}
+            <div className="absolute -top-12 -right-12 w-28 h-28 bg-indigo-500/5 dark:bg-indigo-400/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all pointer-events-none" />
+
+            <div>
+              {/* Header: Icon + Category Badge */}
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 group-hover:rotate-2 transition-all duration-300">
+                  <FilePlus2 size={24} />
+                </div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 dark:bg-indigo-400 animate-pulse" />
+                  {isBn ? 'স্মার্ট রেজিস্ট্রি' : 'Smart Registry'}
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors leading-snug">
+                {isBn ? 'জমি বিক্রির আবেদন প্রণয়ন' : 'Apply to Sell Land'}
+              </h3>
+              <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isBn 
+                  ? 'মালিকানা হিস্যা ও দাগ সিলেক্ট করে ক্রেতার বরাবরে অনলাইন বিক্রয় আবেদন দাখিল করুন।' 
+                  : 'Select ownership share and plot to submit a digital sale application to your verified buyer.'}
+              </p>
+            </div>
+
+            {/* Action Footer */}
+            <div className="pt-4 mt-5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-indigo-700 dark:text-indigo-300">
+              <span className="group-hover:underline">{isBn ? 'আবেদন শুরু করুন' : 'Draft Sale Application'}</span>
+              <div className="w-7 h-7 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 3: Land Tax & Dakhila */}
+          <Link
+            to="/citizen/tax"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-5 sm:p-6 border border-slate-200/90 dark:border-slate-800/90 hover:border-teal-400 dark:hover:border-teal-400/60 shadow-sm hover:shadow-xl hover:shadow-teal-950/5 dark:hover:shadow-black/40 hover:-translate-y-1 transition-all duration-300"
+          >
+            {/* Top Hover Accent Bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-cyan-500 group-hover:h-1.5 transition-all duration-300" />
+            
+            {/* Ambient Background Glow */}
+            <div className="absolute -top-12 -right-12 w-28 h-28 bg-teal-500/5 dark:bg-teal-400/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-all pointer-events-none" />
+
+            <div>
+              {/* Header: Icon + Category Badge */}
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 text-white flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:scale-105 group-hover:rotate-2 transition-all duration-300">
+                  <Receipt size={24} />
+                </div>
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-cyan-300 border border-teal-200 dark:border-teal-800/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-cyan-400 animate-pulse" />
+                  {isBn ? 'ই-পেমেন্ট ও সনদ' : 'e-Payment & QR'}
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition-colors leading-snug">
+                {isBn ? 'ভূমি উন্নয়ন কর ও দাখিলা' : 'Land Tax & Dakhila'}
+              </h3>
+              <p className="text-xs sm:text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isBn 
+                  ? '১-ক্লিকে বকেয়া খাজনা পরিশোধ করুন ও বিক্রয় ছাড়পত্র সনদ সংগ্রহ করুন।' 
+                  : 'Pay tax dues instantly and obtain a tamper-proof digital tax clearance certificate.'}
+              </p>
+            </div>
+
+            {/* Action Footer */}
+            <div className="pt-4 mt-5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs font-bold text-teal-700 dark:text-cyan-300">
+              <span className="group-hover:underline">{isBn ? 'কর পরিশোধ ও দাখিলা দেখুন' : 'Pay Tax & View Dakhila'}</span>
+              <div className="w-7 h-7 rounded-full bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-cyan-300 flex items-center justify-center group-hover:bg-teal-600 group-hover:text-white transition-all duration-300">
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+          </Link>
+        </div>
       </div>
 
       {/* 4. My Holdings Table */}

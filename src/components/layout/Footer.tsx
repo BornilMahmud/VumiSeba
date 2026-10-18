@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
                 </li>
                 <li>
                   <Link to="/verify-land" className="text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-400 hover:translate-x-0.5 transition-all inline-block font-medium">
-                    {language === 'en' ? 'Pre-Purchase Risk Audit (P5)' : 'কেনার আগে ঝুঁকি যাচাই (Risk Audit)'}
+                    {language === 'en' ? 'Pre-Purchase Risk Audit' : 'কেনার আগে ঝুঁকি যাচাই (Risk Audit)'}
                   </Link>
                 </li>
                 <li>
