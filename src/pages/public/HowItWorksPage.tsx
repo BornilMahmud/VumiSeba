@@ -360,8 +360,8 @@ export const HowItWorksPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Flowing Connected Timeline */}
-      <div className="relative pl-4 sm:pl-8 before:absolute before:top-4 before:bottom-4 before:left-8 sm:before:left-12 before:w-0.5 before:bg-gradient-to-b before:from-emerald-500 before:via-teal-500 before:to-cyan-600 space-y-8">
+      {/* Flowing Connected Timeline with mathematically centered vertical spine */}
+      <div className="relative space-y-8 before:absolute before:top-4 before:bottom-4 before:left-5 sm:before:left-6 before:-translate-x-1/2 before:w-0.5 before:bg-gradient-to-b before:from-emerald-500 before:via-teal-500 before:to-cyan-600">
         {filteredSteps.map((s, idx) => {
           const StepIcon = s.icon;
           const isPhaseStart = idx === 0 || filteredSteps[idx - 1].phaseId !== s.phaseId;
@@ -369,10 +369,10 @@ export const HowItWorksPage: React.FC = () => {
 
           return (
             <div key={idx} className="relative space-y-4">
-              {/* Optional Phase Milestone Marker */}
+              {/* Phase Milestone Marker centered with timeline axis */}
               {isPhaseStart && phaseMeta && activeFilter === 'all' && (
-                <div className="relative -left-2 sm:-left-4 pt-4 pb-2">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-emerald-500/15 via-teal-500/15 to-transparent text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-md shadow-xs">
+                <div className="relative pt-4 pb-1">
+                  <div className="inline-flex items-center gap-2 pl-4 sm:pl-5 pr-4 py-1.5 rounded-full text-xs font-bold bg-white/95 dark:bg-slate-900/95 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-md shadow-xs relative z-10">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                     <span>{phaseMeta.title}</span>
                     <span className="text-[10px] font-semibold opacity-70">({phaseMeta.stepsCount})</span>
@@ -382,7 +382,7 @@ export const HowItWorksPage: React.FC = () => {
 
               {/* Step Card with Organic Curves (rounded-3xl, no boxy feel) */}
               <div className="relative flex items-start gap-4 sm:gap-6 group">
-                {/* Timeline Step Orb */}
+                {/* Timeline Step Orb (Strictly centered on the vertical line axis) */}
                 <div className="relative z-10 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 text-white font-extrabold text-sm sm:text-base shadow-lg shadow-emerald-600/30 ring-4 ring-slate-50 dark:ring-slate-950 shrink-0 group-hover:scale-110 transition-transform duration-300">
                   <span>{s.step}</span>
                 </div>
