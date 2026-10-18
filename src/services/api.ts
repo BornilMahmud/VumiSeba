@@ -12,6 +12,7 @@ import {
   OFFLINE_DB,
   OFFLINE_DEMO_USERS,
 } from '../data/offlineDemoData';
+import { isFemaleName } from '../utils/userUtils';
 
 const getApiBase = (): string => {
   try {
@@ -62,12 +63,23 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
       .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
       .replace(/[\s\-]/g, '');
 
+    const isFemale = isFemaleName(`${body.name_bn || ''} ${body.name_en || ''} ${body.email || ''}`);
+    const photoUrl =
+      body.photo_url ||
+      (isFemale
+        ? String(body.name_en || '').toLowerCase().includes('tania') || String(body.name_bn || '').includes('তানিয়া')
+          ? '/avatars/nid_female_tania.jpg'
+          : '/avatars/nid_female_citizen.jpg'
+        : '/avatars/default_nid.jpg');
+
     const newUser: any = {
       id: `usr-cit-${Date.now()}`,
       citizen_id: `BHM-CIT-${Math.floor(100000 + Math.random() * 900000)}`,
       email: (body.email || `citizen.${Math.floor(1000 + Math.random() * 9000)}@bhumisathi.test`).trim().toLowerCase(),
       name_bn: body.name_bn?.trim() || 'নাগরিক',
       name_en: body.name_en?.trim() || 'Citizen',
+      photo_url: photoUrl,
+      nid_photo_url: photoUrl,
       mobile: rawMobile || '01712219266',
       nid_no: rawNid || '19913938981916446',
       father_name_bn: body.father_name_bn?.trim() || 'পিতা',

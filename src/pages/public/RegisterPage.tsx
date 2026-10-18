@@ -4,6 +4,8 @@ import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { UserPlus, ArrowRight, ShieldCheck, Sparkles, CheckCircle2, User, RefreshCw } from 'lucide-react';
 
+import { isFemaleName } from '../../utils/userUtils';
+
 export const RegisterPage: React.FC = () => {
   const { language } = useLanguage();
   const isBn = language === 'bn';
@@ -20,10 +22,13 @@ export const RegisterPage: React.FC = () => {
     address_bn: '',
     district: 'ঢাকা',
     upazila: 'গুলশান',
+    photo_url: '',
+    nid_photo_url: '',
   });
 
   const [error, setError] = useState<string | null>(null);
   const [autoFilledName, setAutoFilledName] = useState<string | null>(null);
+  const [currentAvatarPreview, setCurrentAvatarPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +38,19 @@ export const RegisterPage: React.FC = () => {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    const nextForm = { ...formData, [name]: value };
+    setFormData(nextForm);
+
+    if (name === 'name_bn' || name === 'name_en') {
+      const isFemale = isFemaleName(`${name === 'name_bn' ? value : nextForm.name_bn} ${name === 'name_en' ? value : nextForm.name_en}`);
+      const preview = isFemale
+        ? ((value.toLowerCase().includes('tania') || value.includes('তানিয়া') || nextForm.name_en.toLowerCase().includes('tania'))
+            ? '/avatars/nid_female_tania.jpg'
+            : '/avatars/nid_female_citizen.jpg')
+        : '/avatars/default_nid.jpg';
+      setCurrentAvatarPreview(preview);
+    }
   };
 
   const generateCleanDemoData = (type: 'buyer' | 'seller' | 'random') => {
@@ -55,8 +72,11 @@ export const RegisterPage: React.FC = () => {
           address_bn: 'বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা',
           district: 'ঢাকা',
           upazila: 'গুলশান',
+          photo_url: '/avatars/nid_female_tania.jpg',
+          nid_photo_url: '/avatars/nid_female_tania.jpg',
         },
-        label: isBn ? 'নমুনা ক্রেতা (তানিয়া সুলতানা)' : 'Demo Buyer (Tania Sultana)',
+        label: isBn ? 'নমুনা নারী ক্রেতা (তানিয়া সুলতানা)' : 'Demo Buyer (Tania Sultana)',
+        avatar: '/avatars/nid_female_tania.jpg',
       };
     } else if (type === 'seller') {
       return {
@@ -72,47 +92,111 @@ export const RegisterPage: React.FC = () => {
           address_bn: 'বাড়ি ১৭, রোড ৮, ব্লক ডি, বাড্ডা, ঢাকা',
           district: 'ঢাকা',
           upazila: 'গুলশান',
+          photo_url: '/avatars/default_nid.jpg',
+          nid_photo_url: '/avatars/default_nid.jpg',
         },
-        label: isBn ? 'নমুনা বিক্রেতা (কাজী মিজানুর রহমান)' : 'Demo Seller (Kazi Mijanur Rahman)',
+        label: isBn ? 'নমুনা পুরুষ বিক্রেতা (কাজী মিজানুর রহমান)' : 'Demo Seller (Kazi Mijanur Rahman)',
+        avatar: '/avatars/default_nid.jpg',
       };
     } else {
-      const namesBn = ['আরিফুল ইসলাম', 'মাহমুদা আক্তার', 'সোহেল রানা', 'ফারজানা হক', 'জাকির হোসেন'];
-      const namesEn = ['Ariful Islam', 'Mahmuda Akter', 'Sohel Rana', 'Farzana Haque', 'Zakir Hossain'];
-      const idx = Math.floor(Math.random() * namesBn.length);
-
-      return {
-        data: {
-          name_bn: namesBn[idx],
-          name_en: namesEn[idx],
-          email: `citizen.${randId}@bhumisathi.test`,
-          password: 'password123',
-          mobile: randMobile,
-          nid_no: randNid,
+      const randomPersonas = [
+        {
+          name_bn: 'তানিয়া সুলতানা',
+          name_en: 'Tania Sultana',
+          photo_url: '/avatars/nid_female_tania.jpg',
+          father_name_bn: 'শফিকুল ইসলাম',
+          mother_name_bn: 'রোকসানা আক্তার',
+          address_bn: 'বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা',
+        },
+        {
+          name_bn: 'মাহমুদা আক্তার',
+          name_en: 'Mahmuda Akter',
+          photo_url: '/avatars/nid_female_citizen.jpg',
           father_name_bn: 'আব্দুর রহিম',
           mother_name_bn: 'সাহানা বেগম',
           address_bn: 'বাড়ি ১২, ব্লক বি, গুলশান-১, ঢাকা',
+        },
+        {
+          name_bn: 'ফারজানা হক',
+          name_en: 'Farzana Haque',
+          photo_url: '/avatars/nid_female_citizen.jpg',
+          father_name_bn: 'মোফাজ্জল হোসেন',
+          mother_name_bn: 'আমেনা খাতুন',
+          address_bn: 'ফ্ল্যাট ৪বি, রোড ৬, ধানমন্ডি, ঢাকা',
+        },
+        {
+          name_bn: 'নুসরাত জাহান',
+          name_en: 'Nusrat Jahan',
+          photo_url: '/avatars/nid_female_citizen.jpg',
+          father_name_bn: 'সাইফুল ইসলাম',
+          mother_name_bn: 'ফরিদা বেগম',
+          address_bn: 'বাড়ি ৯, রোড ২, বনানী, ঢাকা',
+        },
+        {
+          name_bn: 'ফারহান আহমেদ',
+          name_en: 'Farhan Ahmed',
+          photo_url: '/avatars/nid_farhan_ahmed.jpg',
+          father_name_bn: 'মোঃ আসাদুজ্জামান',
+          mother_name_bn: 'নাসরিন সুলতানা',
+          address_bn: 'বাড়ি ২২, সেক্টর ৪, উত্তরা, ঢাকা',
+        },
+        {
+          name_bn: 'আরিফুল ইসলাম',
+          name_en: 'Ariful Islam',
+          photo_url: '/avatars/nid_farhan_ahmed.jpg',
+          father_name_bn: 'মোহাম্মদ রফিক',
+          mother_name_bn: 'রোকেয়া বেগম',
+          address_bn: 'বাড়ি ১৫, ব্লক সি, মিরপুর, ঢাকা',
+        },
+        {
+          name_bn: 'সোহেল রানা',
+          name_en: 'Sohel Rana',
+          photo_url: '/avatars/default_nid.jpg',
+          father_name_bn: 'আমজাদ হোসেন',
+          mother_name_bn: 'মনিরা আক্তার',
+          address_bn: 'বাড়ি ৭, রোড ১, শান্তিনগর, ঢাকা',
+        },
+      ];
+
+      const p = randomPersonas[Math.floor(Math.random() * randomPersonas.length)];
+      return {
+        data: {
+          name_bn: p.name_bn,
+          name_en: p.name_en,
+          email: `${p.name_en.toLowerCase().replace(/[^a-z]/g, '')}.${randId}@bhumisathi.test`,
+          password: 'password123',
+          mobile: randMobile,
+          nid_no: randNid,
+          father_name_bn: p.father_name_bn,
+          mother_name_bn: p.mother_name_bn,
+          address_bn: p.address_bn,
           district: 'ঢাকা',
           upazila: 'গুলশান',
+          photo_url: p.photo_url,
+          nid_photo_url: p.photo_url,
         },
-        label: isBn ? `ইউনিক নাগরিক (${namesBn[idx]})` : `Unique Citizen (${namesEn[idx]})`,
+        label: isBn ? `নাগরিক (${p.name_bn})` : `Citizen (${p.name_en})`,
+        avatar: p.photo_url,
       };
     }
   };
 
   const handleQuickFill = (type: 'buyer' | 'seller' | 'random') => {
     setError(null);
-    const { data, label } = generateCleanDemoData(type);
+    const { data, label, avatar } = generateCleanDemoData(type);
     setFormData(data);
     setAutoFilledName(label);
+    setCurrentAvatarPreview(avatar);
   };
 
   const handleInstantRegister = async (type: 'buyer' | 'seller' | 'random' = 'buyer') => {
     if (loading) return;
     setError(null);
     setLoading(true);
-    const { data, label } = generateCleanDemoData(type);
+    const { data, label, avatar } = generateCleanDemoData(type);
     setFormData(data);
     setAutoFilledName(label);
+    setCurrentAvatarPreview(avatar);
 
     const res = await register(data);
     if (res.success) {
@@ -161,11 +245,22 @@ export const RegisterPage: React.FC = () => {
       return;
     }
 
+    const isFemale = isFemaleName(`${formData.name_bn} ${formData.name_en}`);
+    const assignedPhotoUrl =
+      formData.photo_url ||
+      (isFemale
+        ? formData.name_en.toLowerCase().includes('tania') || formData.name_bn.includes('তানিয়া')
+          ? '/avatars/nid_female_tania.jpg'
+          : '/avatars/nid_female_citizen.jpg'
+        : '/avatars/default_nid.jpg');
+
     const submissionData = {
       ...formData,
       mobile: cleanMobile,
       nid_no: cleanNid,
       email: formData.email.trim(),
+      photo_url: assignedPhotoUrl,
+      nid_photo_url: assignedPhotoUrl,
     };
 
     const res = await register(submissionData);
@@ -203,16 +298,23 @@ export const RegisterPage: React.FC = () => {
               {isBn ? '১-ক্লিক ডেমো অটো-ফিল (পরীক্ষক ও বিচারক):' : '1-Click Demo Auto-Fill (Evaluators & Judges):'}
             </span>
             {autoFilledName && (
-              <span className="text-[10px] text-emerald-800 dark:text-emerald-300 font-bold bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700 flex items-center gap-1">
+              <span className="text-[10px] text-emerald-800 dark:text-emerald-300 font-bold bg-white dark:bg-slate-800 pl-1 pr-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-700 flex items-center gap-1.5 shadow-2xs">
+                {currentAvatarPreview && (
+                  <img
+                    src={currentAvatarPreview}
+                    alt="avatar"
+                    className="w-5 h-5 rounded-full object-cover ring-1 ring-emerald-500 shrink-0"
+                  />
+                )}
                 <CheckCircle2 size={11} className="text-emerald-600" />
-                {autoFilledName} {isBn ? 'পূরণ হয়েছে' : 'Loaded'}
+                <span>{autoFilledName} {isBn ? 'পূরণ হয়েছে' : 'Loaded'}</span>
               </span>
             )}
           </div>
           <p className="text-[11px] text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">
             {isBn
-              ? 'নিবন্ধনের ১১টি ঘর হাতে টাইপ না করে নিচের যেকোনো বাটনে ট্যাপ করুন। সঠিক এনআইডি ও মোবাইল নম্বর স্বয়ংক্রিয়ভাবে লোড হবে:'
-              : 'Skip manual typing by tapping any button below. Verified demo citizen credentials, NID & phone will load instantly:'}
+              ? 'নিবন্ধনের ১১টি ঘর হাতে টাইপ না করে নিচের যেকোনো বাটনে ট্যাপ করুন। সঠিক এনআইডি, মোবাইল ও জেন্ডার-অনুযায়ী ছবি স্বয়ংক্রিয়ভাবে লোড হবে:'
+              : 'Skip manual typing by tapping any button below. Verified demo citizen credentials, NID & gender-accurate photo will load instantly:'}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             <button
@@ -221,7 +323,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-emerald-200 dark:border-emerald-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>🛒</span>
-              <span>{isBn ? 'ক্রেতা তথ্য পূরণ' : 'Fill Demo Buyer'}</span>
+              <span>{isBn ? 'নারী ক্রেতা (তানিয়া)' : 'Female Buyer (Tania)'}</span>
             </button>
             <button
               type="button"
@@ -229,7 +331,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-teal-200 dark:border-teal-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>📜</span>
-              <span>{isBn ? 'বিক্রেতা তথ্য পূরণ' : 'Fill Demo Seller'}</span>
+              <span>{isBn ? 'পুরুষ বিক্রেতা (মিজানুর)' : 'Male Seller (Mijanur)'}</span>
             </button>
             <button
               type="button"
@@ -237,7 +339,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <RefreshCw size={12} className="text-emerald-600 dark:text-emerald-400" />
-              <span>{isBn ? 'র‍্যান্ডম তথ্য' : 'Fill Random Citizen'}</span>
+              <span>{isBn ? 'র‍্যান্ডম নারী/পুরুষ' : 'Random Citizen'}</span>
             </button>
             <button
               type="button"
@@ -246,7 +348,7 @@ export const RegisterPage: React.FC = () => {
               className="py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
             >
               <span>⚡</span>
-              <span>{isBn ? '১-ক্লিকে নিবন্ধন' : 'Instant Register'}</span>
+              <span>{isBn ? '১-ক্লিকে তাৎক্ষণিক নিবন্ধন' : '1-Click Register'}</span>
             </button>
           </div>
         </div>

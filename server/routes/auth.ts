@@ -63,6 +63,17 @@ router.post('/register', async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(validated.password, 10);
+    const isFemale =
+      /তানিয়া|সুলতানা|আক্তার|বেগম|খাতুন|ফারজানা|মাহমুদা|রোকসানা|নাসরিন|পারভীন|ফাতেমা|মারিয়া|আয়েশা|সাদিয়া|জান্নাত|ফারহানা|নুসরাত/i.test(validated.name_bn) ||
+      /tania|sultana|akter|aktar|begum|khatun|farzana|mahmuda|roksana|nasreen|parveen|fatema|maria|ayesha|sadia|jannat|farhana|nusrat/i.test(validated.name_en);
+    const photoUrl =
+      rawBody.photo_url ||
+      (isFemale
+        ? validated.name_en.toLowerCase().includes('tania') || validated.name_bn.includes('তানিয়া')
+          ? '/avatars/nid_female_tania.jpg'
+          : '/avatars/nid_female_citizen.jpg'
+        : '/avatars/default_nid.jpg');
+
     const newUser: UserProfile = {
       id: `usr-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       citizen_id: generateCitizenId(),
@@ -70,6 +81,8 @@ router.post('/register', async (req, res) => {
       password_hash: passwordHash,
       name_bn: validated.name_bn,
       name_en: validated.name_en,
+      photo_url: photoUrl,
+      nid_photo_url: photoUrl,
       mobile: validated.mobile,
       nid_no: validated.nid_no,
       father_name_bn: validated.father_name_bn,
