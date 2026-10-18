@@ -175,6 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Standard email/password login (with offline fallback for demo accounts)
   const login = async (credentials: any): Promise<{ success: boolean; user?: UserProfile; message_bn?: string; message_en?: string }> => {
     setIsLoading(true);
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
     const demoUser = findOfflineDemoUser(credentials.email);
 
     try {
@@ -245,6 +246,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     setIsLoading(true);
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
     try {
       let result;
       try {
@@ -317,6 +319,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Register citizen
   const register = async (userData: any) => {
     setIsLoading(true);
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
     const res = await api.register(userData);
     if (res.success && res.token) {
       localStorage.setItem('bhumisathi_token', res.token);
@@ -334,6 +337,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Fast 1-Click Demo Persona Switcher (Works 100% offline without requiring connection to the server)
   const switchDemoPersona = async (persona: string, role?: string): Promise<{ success: boolean; message_bn?: string; message_en?: string }> => {
     setIsLoading(true);
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
 
     // 1. Immediately match offline persona profile
     const offlineUser = findOfflineDemoUser(persona, role);
@@ -407,6 +411,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.warn('[Firebase SignOut]', e);
       }
     }
+    sessionStorage.setItem('bhumisathi_just_logged_out', 'true');
     localStorage.removeItem('bhumisathi_token');
     localStorage.removeItem('vumiseba_token');
     localStorage.removeItem('bhumisathi_is_demo');

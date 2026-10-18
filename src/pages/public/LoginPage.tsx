@@ -49,6 +49,10 @@ export const LoginPage: React.FC = () => {
 
   // Role-based routing after authentication
   useEffect(() => {
+    if (sessionStorage.getItem('bhumisathi_just_logged_out') === 'true') {
+      return;
+    }
+
     if (user) {
       const role = (user.role || '').toLowerCase();
       if (role === 'citizen') {
@@ -78,6 +82,7 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
     setError(null);
     setLoading(true);
     const res = await login({ email, password });
@@ -109,6 +114,7 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleGoogleSignIn = async () => {
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
     setError(null);
     setGoogleLoading(true);
     const res = await loginWithGoogle();
@@ -132,6 +138,7 @@ export const LoginPage: React.FC = () => {
     labelEn?: string
   ) => {
     if (loading || googleLoading) return;
+    sessionStorage.removeItem('bhumisathi_just_logged_out');
     setError(null);
     setEmail(targetEmail);
     setPassword(targetPassword);

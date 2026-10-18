@@ -307,7 +307,7 @@ export const Navbar: React.FC = () => {
                 <button
                   onClick={async () => {
                     await logout();
-                    navigate('/login');
+                    navigate('/login', { replace: true });
                   }}
                   className="h-9 inline-flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 transition active:scale-95 cursor-pointer"
                   title={t('nav.logout', 'লগআউট', 'Logout')}
@@ -445,9 +445,9 @@ export const Navbar: React.FC = () => {
                   onClick={async () => {
                     await logout();
                     setMobileMenuOpen(false);
-                    navigate('/login');
+                    navigate('/login', { replace: true });
                   }}
-                  className="w-full inline-flex items-center justify-center gap-2 border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 py-2.5 rounded-lg text-xs font-bold"
+                  className="w-full inline-flex items-center justify-center gap-2 border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:hover:bg-rose-950/30 text-rose-600 dark:text-rose-400 py-2.5 rounded-lg text-xs font-bold"
                 >
                   <LogOut size={15} />
                   <span>{t('nav.logout', 'লগআউট', 'Logout')}</span>

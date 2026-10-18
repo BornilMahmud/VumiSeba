@@ -125,7 +125,7 @@ export const ProfileKycPage: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/login', { replace: true });
   };
 
   const handleInstantKycVerify = async () => {
