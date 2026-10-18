@@ -90,7 +90,7 @@ export const CitizenDashboard: React.FC = () => {
                 className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-sm bg-white dark:bg-slate-800"
               />
               <span
-                className="absolute -bottom-1 -right-1 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white dark:border-slate-850 flex items-center gap-0.5 shadow-2xs"
+                className="absolute -bottom-1 -right-1 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white dark:border-slate-800 flex items-center gap-0.5 shadow-2xs"
                 title="এনআইডি ডাটাবেজ ভেরিফায়েড ফটো"
               >
                 <CheckCircle2 size={10} /> NID

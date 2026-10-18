@@ -336,9 +336,9 @@ export const ProfileKycPage: React.FC = () => {
 
         <form onSubmit={handleProfileSubmit} className="space-y-6">
           {/* NID Card Information Section */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-850/60 border border-slate-200/90 dark:border-slate-800 space-y-4">
-            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wide">
-              <CreditCard size={14} className="text-emerald-600" />
+          <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/70 border border-slate-200/90 dark:border-slate-800/80 space-y-4">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-emerald-400 flex items-center gap-1.5 uppercase tracking-wide">
+              <CreditCard size={14} className="text-emerald-600 dark:text-emerald-400" />
               <span>১. জাতীয় পরিচয়পত্র বিবরণী (NID Details)</span>
             </h4>
 
@@ -353,7 +353,7 @@ export const ProfileKycPage: React.FC = () => {
                   value={nameBn}
                   onChange={(e) => setNameBn(e.target.value)}
                   placeholder="মোঃ রফিকুল ইসলাম"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 outline-hidden transition-colors"
                 />
               </div>
 
@@ -367,7 +367,7 @@ export const ProfileKycPage: React.FC = () => {
                   value={nameEn}
                   onChange={(e) => setNameEn(e.target.value.toUpperCase())}
                   placeholder="MD. RAFIQUL ISLAM"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono uppercase"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 font-mono uppercase outline-hidden transition-colors"
                 />
               </div>
 
@@ -380,7 +380,7 @@ export const ProfileKycPage: React.FC = () => {
                   value={fatherNameBn}
                   onChange={(e) => setFatherNameBn(e.target.value)}
                   placeholder="মোঃ আবুল কাসেম"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 outline-hidden transition-colors"
                 />
               </div>
 
@@ -393,7 +393,7 @@ export const ProfileKycPage: React.FC = () => {
                   value={motherNameBn}
                   onChange={(e) => setMotherNameBn(e.target.value)}
                   placeholder="মোছাঃ রহিমা খাতুন"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 outline-hidden transition-colors"
                 />
               </div>
 
@@ -406,9 +406,9 @@ export const ProfileKycPage: React.FC = () => {
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   placeholder="12 Apr 1985 অথবা 1985-04-12"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 font-mono outline-hidden transition-colors"
                 />
-                <span className="text-[10px] text-slate-400 mt-0.5 block">ফরম্যাট: 01 Jun 2005 অথবা YYYY-MM-DD</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block">ফরম্যাট: 01 Jun 2005 অথবা YYYY-MM-DD</span>
               </div>
 
               <div>
@@ -421,9 +421,9 @@ export const ProfileKycPage: React.FC = () => {
                   value={nidNo}
                   onChange={(e) => setNidNo(e.target.value)}
                   placeholder="19852691029384756"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 font-mono outline-hidden transition-colors"
                 />
-                <span className="text-[10px] text-slate-400 mt-0.5 block">১০, ১৩ বা ১৭ ডিজিট</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block">১০, ১৩ বা ১৭ ডিজিট</span>
               </div>
             </div>
           </div>
@@ -431,9 +431,9 @@ export const ProfileKycPage: React.FC = () => {
 
 
           {/* Contact Details Section */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-850/60 border border-slate-200/90 dark:border-slate-800 space-y-4">
-            <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5 uppercase tracking-wide">
-              <Phone size={14} className="text-emerald-600" />
+          <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-950/70 border border-slate-200/90 dark:border-slate-800/80 space-y-4">
+            <h4 className="text-xs font-bold text-slate-800 dark:text-emerald-400 flex items-center gap-1.5 uppercase tracking-wide">
+              <Phone size={14} className="text-emerald-600 dark:text-emerald-400" />
               <span>২. যোগাযোগ ও ঠিকানা বিবরণ</span>
             </h4>
 
@@ -443,7 +443,7 @@ export const ProfileKycPage: React.FC = () => {
                   মোবাইল নম্বর <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                     <Phone size={14} />
                   </div>
                   <input
@@ -452,7 +452,7 @@ export const ProfileKycPage: React.FC = () => {
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
                     placeholder="017XXXXXXXX"
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-mono"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 font-mono outline-hidden transition-colors"
                   />
                 </div>
               </div>
@@ -462,7 +462,7 @@ export const ProfileKycPage: React.FC = () => {
                   ইমেইল ঠিকানা <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
                     <Mail size={14} />
                   </div>
                   <input
@@ -471,7 +471,7 @@ export const ProfileKycPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="citizen@example.com"
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 font-sans"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 font-sans outline-hidden transition-colors"
                   />
                 </div>
               </div>
@@ -485,7 +485,7 @@ export const ProfileKycPage: React.FC = () => {
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
                   placeholder="ঢাকা"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 outline-hidden transition-colors"
                 />
               </div>
 
@@ -498,7 +498,7 @@ export const ProfileKycPage: React.FC = () => {
                   value={upazila}
                   onChange={(e) => setUpazila(e.target.value)}
                   placeholder="গুলশান"
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 outline-hidden transition-colors"
                 />
               </div>
 
@@ -507,7 +507,7 @@ export const ProfileKycPage: React.FC = () => {
                   বর্তমান ঠিকানা (বাংলায়)
                 </label>
                 <div className="relative">
-                  <div className="absolute top-2.5 left-3 pointer-events-none text-slate-400">
+                  <div className="absolute top-2.5 left-3 pointer-events-none text-slate-400 dark:text-slate-500">
                     <MapPin size={14} />
                   </div>
                   <textarea
@@ -515,7 +515,7 @@ export const ProfileKycPage: React.FC = () => {
                     value={addressBn}
                     onChange={(e) => setAddressBn(e.target.value)}
                     placeholder="বাড়ি নং, রোড নং, এলাকা/গ্রাম..."
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 dark:focus:ring-teal-500 outline-hidden transition-colors"
                   />
                 </div>
               </div>
@@ -536,7 +536,7 @@ export const ProfileKycPage: React.FC = () => {
                   setEditFeedback(null);
                 }
               }}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
             >
               <RotateCcw size={14} />
               <span>পূর্বাবস্থায় ফেরান</span>
