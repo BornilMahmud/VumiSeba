@@ -27,6 +27,8 @@ import { HowItWorksPage } from './pages/public/HowItWorksPage';
 import { HelpPage } from './pages/public/HelpPage';
 import { LoginPage } from './pages/public/LoginPage';
 import { RegisterPage } from './pages/public/RegisterPage';
+import { NotFoundPage } from './pages/public/NotFoundPage';
+import { ErrorPage } from './pages/public/ErrorPage';
 
 // Citizen Pages
 import { CitizenDashboard } from './pages/citizen/CitizenDashboard';
@@ -144,7 +146,7 @@ function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
 
     setSwitchAttempted(true);
     setIsAutoSwitching(true);
-    switchDemoPersona(targetPersona, targetRole)
+    switchDemoPersona(targetPersona, targetRole || undefined)
       .finally(() => {
         setIsAutoSwitching(false);
       });
@@ -304,7 +306,7 @@ export default function App() {
                           <Route path="notifications" element={<NotificationsPage />} />
                           <Route path="help" element={<HelpPage />} />
                           <Route path="faq" element={<HelpPage />} />
-                          <Route path="*" element={<Navigate to="/citizen/dashboard" replace />} />
+                          <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                       </CitizenLayout>
                     </ProtectedRoute>
@@ -327,7 +329,7 @@ export default function App() {
                             <Route path="reports" element={<UnionReportsPage />} />
                             <Route path="history" element={<UnionHistoryPage />} />
                             <Route path="profile" element={<OfficerProfilePage />} />
-                            <Route path="*" element={<Navigate to="/office/union/dashboard" replace />} />
+                            <Route path="*" element={<NotFoundPage />} />
                           </Routes>
                         </Suspense>
                       </UnionOfficeLayout>
@@ -351,7 +353,7 @@ export default function App() {
                             <Route path="decisions" element={<AcLandDecisionsPage />} />
                             <Route path="history" element={<AcLandHistoryPage />} />
                             <Route path="profile" element={<OfficerProfilePage />} />
-                            <Route path="*" element={<Navigate to="/office/ac-land/dashboard" replace />} />
+                            <Route path="*" element={<NotFoundPage />} />
                           </Routes>
                         </Suspense>
                       </AcLandOfficeLayout>
@@ -375,7 +377,7 @@ export default function App() {
                             <Route path="completed" element={<RegistryCompletedPage />} />
                             <Route path="history" element={<RegistryHistoryPage />} />
                             <Route path="profile" element={<OfficerProfilePage />} />
-                            <Route path="*" element={<Navigate to="/office/registry/dashboard" replace />} />
+                            <Route path="*" element={<NotFoundPage />} />
                           </Routes>
                         </Suspense>
                       </RegistryOfficeLayout>
@@ -401,7 +403,7 @@ export default function App() {
                             <Route path="demo-data" element={<AdminMonitoringPage />} />
                             <Route path="settings" element={<AdminMonitoringPage />} />
                             <Route path="profile" element={<OfficerProfilePage />} />
-                            <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+                            <Route path="*" element={<NotFoundPage />} />
                           </Routes>
                         </Suspense>
                       </AdminOfficeLayout>
@@ -415,8 +417,16 @@ export default function App() {
                 <Route path="/officer/registry" element={<Navigate to="/office/registry/dashboard" replace />} />
                 <Route path="/officer/*" element={<Navigate to="/office/union/dashboard" replace />} />
 
-                {/* Catch-all redirect */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+                {/* Dedicated Error Pages */}
+                <Route path="/404" element={<PublicLayout><NotFoundPage /></PublicLayout>} />
+                <Route path="/401" element={<PublicLayout><ErrorPage status="401" /></PublicLayout>} />
+                <Route path="/403" element={<PublicLayout><ErrorPage status="403" /></PublicLayout>} />
+                <Route path="/500" element={<PublicLayout><ErrorPage status="500" /></PublicLayout>} />
+                <Route path="/error" element={<PublicLayout><ErrorPage /></PublicLayout>} />
+                <Route path="/network-error" element={<PublicLayout><ErrorPage status="network" /></PublicLayout>} />
+
+                {/* Catch-all Not Found Route */}
+                <Route path="*" element={<PublicLayout><NotFoundPage /></PublicLayout>} />
               </Routes>
               </ErrorBoundary>
             </div>

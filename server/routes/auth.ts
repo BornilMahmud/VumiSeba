@@ -258,7 +258,7 @@ router.post('/demo-login', async (req, res) => {
   } else if (persona === 'oversell') {
     targetUser = allProfiles.find((p) => p.id === 'usr-seller-oversell');
   } else if (role === 'union_officer' || role === 'union_land_officer' || persona === 'union_officer' || persona === 'union_land_officer') {
-    targetUser = allProfiles.find((p) => p.role === 'union_officer' || p.role === 'union_land_officer' || p.id === 'usr-officer-union');
+    targetUser = allProfiles.find((p) => p.role === 'union_officer' || (p.role as string) === 'union_land_officer' || p.id === 'usr-officer-union');
   } else if (role === 'ac_land' || persona === 'ac_land') {
     targetUser = allProfiles.find((p) => p.role === 'ac_land' || p.id === 'usr-officer-acland');
   } else if (role === 'sub_registrar' || persona === 'sub_registrar') {
@@ -269,7 +269,7 @@ router.post('/demo-login', async (req, res) => {
 
   if (!targetUser) {
     const normalizedRole = (role === 'union_land_officer') ? 'union_officer' : (role || 'citizen');
-    targetUser = allProfiles.find((p) => p.role === normalizedRole || p.role === role);
+    targetUser = allProfiles.find((p) => p.role === normalizedRole || (p.role as string) === role);
   }
 
   if (!targetUser) {
