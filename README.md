@@ -103,106 +103,17 @@ npm run seed:firestore   # idempotent; demo accounts + parcel records
 
 Experience the modern, responsive interface and institutional dashboards of **VumiSeba (ভূমিসেবা)**:
 
-### 🌟 Citizen & Public Services Portal (নাগরিক ও পাবলিক পোর্টাল)
-
-#### 1. 🏠 VumiSeba Landing Page & Live Search Portal (মূল হোমপেজ ও লাইভ অনুসন্ধান)
-> *Citizen gateway featuring instant due diligence verification, interactive demo video player, and real-time live Khatian & Dag plot search.*
-
-<p align="center">
-  <img src="screenshots/00-home-page.png" alt="VumiSeba Landing Page & Live Search" width="92%" />
-</p>
-
----
-
-#### 2. 📝 Citizen Registration & Fast Demo Auto-Fill (নাগরিক নিবন্ধন)
-> *Instant 1-click demographic loading for buyers and sellers, National ID (NID) validation, and responsive bilingual registration forms.*
-
-<p align="center">
-  <img src="screenshots/01-citizen-registration.png" alt="Citizen Registration & 1-Click Auto-Fill" width="92%" />
-</p>
-
----
-
-#### 3. 🔐 Unified Role-Based Portal Access (ভূমিসেবা পোর্টালে প্রবেশ)
-> *Instant single-click access for all 5 governance stakeholders: Citizen, Union Land Assistant Officer (ULAO), AC Land, Sub-Registrar, and Central System Admin.*
-
-<p align="center">
-  <img src="screenshots/02-portal-login.png" alt="Unified Portal Login & Role Switcher" width="92%" />
-</p>
-
----
-
-#### 4. 👤 Citizen Interactive Dashboard (নাগরিক ড্যাশবোর্ড)
-> *Personalized citizen hub displaying total landholdings, live sync status, tax clearance alerts, e-mutation tracker, and pre-purchase due-diligence tools.*
-
-<p align="center">
-  <img src="screenshots/06-citizen-dashboard.png" alt="Citizen Interactive Dashboard" width="92%" />
-</p>
-
----
-
-#### 5. 🏛️ Digital Land Services Directory (সকল ডিজিটাল ভূমি সেবা)
-> *Centralized citizen directory for pre-purchase risk audits, khatian searches, online sale applications, land development tax clearance, e-mutation tracking, and deed appointments.*
-
-<p align="center">
-  <img src="screenshots/04-digital-land-services.png" alt="Digital Land Services Directory" width="92%" />
-</p>
-
----
-
-#### 6. 📚 Citizen Knowledge Base & Land Term Glossary (সহায়তা ও ভূমি পরিভাষা কোষ)
-> *Interactive FAQ answering critical land-buying questions alongside a comprehensive 16-point bilingual land terminology dictionary (Porcha, Khatian, Dag, Baya Deed, e-Mutation, Anna Shares, Tahsil).*
-
-<p align="center">
-  <img src="screenshots/03-faq-and-glossary.png" alt="Citizen FAQ and Land Term Glossary" width="92%" />
-</p>
-
----
-
-#### 7. 🔄 9-Stage End-to-End Workflow Lifecycle (কীভাবে কাজ করে ভূমিসাথী)
-> *Interactive visual roadmap illustrating the complete citizen journey from pre-purchase due diligence and union field inquiry to Sub-Registry deed registration and instant automated e-mutation.*
-
-<p align="center">
-  <img src="screenshots/05-how-it-works-workflow.png" alt="How It Works 9-Stage Workflow" width="92%" />
-</p>
-
----
-
-### 🏛️ Multi-Office Governance & Revenue Court Dashboards (দাপ্তরিক ও রাজস্ব আদালত প্যানেল)
-
-#### 8. 🌿 Union Land Assistant Officer (ULAO) Tahsil Dashboard (ইউনিয়ন ভূমি অফিস ড্যাশবোর্ড)
-> *Field-level review console for tax clearance (`কর ও দাখিলা`), title and dag recordroom verification, on-ground inquiry reports, and forward/return actions.*
-
-<p align="center">
-  <img src="screenshots/07-union-land-office-dashboard.png" alt="Union Land Office Dashboard" width="92%" />
-</p>
-
----
-
-#### 9. ⚖️ AC Land Revenue Court & Mutation Docket (সহকারী কমিশনার (ভূমি) রাজস্ব আদালত)
-> *Judicial review console for Pre-Registration Title NOCs, contested hearing scheduling, daily cause lists, order sheet generation, and final mutation khatian issuance.*
-
-<p align="center">
-  <img src="screenshots/08-ac-land-revenue-court-dashboard.png" alt="AC Land Revenue Court Dashboard" width="92%" />
-</p>
-
----
-
-#### 10. 📜 Sub-Registry Office Deed Execution & Balam Registry (সাব-রেজিস্ট্রি কার্যালয়)
-> *Deed verification desk for appointment scheduling, stamp duty verification, deed volume tracking (বালাম রেজিস্ট্রি), and atomic registration completion.*
-
-<p align="center">
-  <img src="screenshots/09-sub-registry-office-dashboard.png" alt="Sub-Registry Office Dashboard" width="92%" />
-</p>
-
----
-
-#### 11. 🛡️ National Central Administration & Fraud Prevention Audit Dashboard (কেন্দ্রীয় নিয়ন্ত্রণ ও অডিট ড্যাশবোর্ড)
-> *National command center featuring real-time transaction pipelines, fraud-prevention telemetry, SLA stage tracking, role management, and immutable audit logs.*
-
-<p align="center">
-  <img src="screenshots/10-central-admin-audit-dashboard.png" alt="Central Administration & Audit Dashboard" width="92%" />
-</p>
+- [Landing Page](screenshots/00-home-page.png)
+- [Citizen Registration](screenshots/01-citizen-registration.png)
+- [Portal Login](screenshots/02-portal-login.png)
+- [FAQ & Glossary](screenshots/03-faq-and-glossary.png)
+- [Digital Land Services](screenshots/04-digital-land-services.png)
+- [How It Works](screenshots/05-how-it-works-workflow.png)
+- [Citizen Dashboard](screenshots/06-citizen-dashboard.png)
+- [Union Land Office](screenshots/07-union-land-office-dashboard.png)
+- [AC Land Revenue Court](screenshots/08-ac-land-revenue-court-dashboard.png)
+- [Sub-Registry Office](screenshots/09-sub-registry-office-dashboard.png)
+- [Central Admin & Audit](screenshots/10-central-admin-audit-dashboard.png)
 
 ---
 
