@@ -83,7 +83,7 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
               <div className="overflow-hidden min-w-0 flex-1">
                 <div className="flex items-center justify-between">
                   <p className="font-bold text-slate-900 dark:text-white text-xs truncate group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-                    {user?.name_bn || 'মোঃ আরমান হোসেন রিপন'}
+                    {user?.name_bn || 'মোঃ রফিকুল ইসলাম'}
                   </p>
                   <i className="bx bx-cog text-slate-400 group-hover:text-emerald-600 transition-colors text-sm"></i>
                 </div>
@@ -196,11 +196,11 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
                   />
                 ) : (
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-sm shadow-2xs shrink-0">
-                    {user?.name_bn?.slice(0, 1) || 'আ'}
+                    {user?.name_bn?.slice(0, 1) || 'র'}
                   </div>
                 )}
                 <div className="overflow-hidden min-w-0">
-                  <p className="font-bold text-slate-900 dark:text-white text-xs truncate">{user?.name_bn || 'মোঃ আরমান হোসেন রিপন'}</p>
+                  <p className="font-bold text-slate-900 dark:text-white text-xs truncate">{user?.name_bn || 'মোঃ রফিকুল ইসলাম'}</p>
                   <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono font-medium truncate">{user?.citizen_id || 'BHM-CIT-882194'}</p>
                 </div>
               </div>
@@ -288,7 +288,7 @@ export const CitizenLayout: React.FC<{ children?: React.ReactNode }> = ({ childr
             >
               <div className="text-right">
                 <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-                  {user?.name_bn || 'মোঃ আরমান হোসেন রিপন'}
+                  {user?.name_bn || 'মোঃ রফিকুল ইসলাম'}
                 </p>
                 <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono font-semibold leading-tight">
                   {user?.citizen_id || 'BHM-CIT-882194'}

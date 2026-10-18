@@ -203,32 +203,21 @@ export const Footer: React.FC = () => {
                   {t('footer.faq', 'সচরাচর জিজ্ঞাসা', 'FAQ')}
                 </Link>
               </div>
-
-              {/* Circled To-the-Top Button in Footer */}
-              <button
-                type="button"
-                onClick={scrollToTop}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-emerald-600 dark:bg-slate-800 dark:hover:bg-emerald-600 text-slate-600 hover:text-white dark:text-slate-300 dark:hover:text-white border border-slate-200 dark:border-slate-700 hover:border-emerald-500 shadow-2xs hover:shadow transition-all duration-200 flex items-center justify-center cursor-pointer group active:scale-90 shrink-0 ml-1"
-                title={language === 'bn' ? 'পৃষ্ঠার শীর্ষে যান' : 'Scroll to top'}
-                aria-label={language === 'bn' ? 'পৃষ্ঠার শীর্ষে যান' : 'Scroll to top'}
-              >
-                <ArrowUp size={14} className="group-hover:-translate-y-0.5 transition-transform" />
-              </button>
             </div>
           </div>
         </div>
       </footer>
 
-      {/* Floating Circled To-the-Top Button (Appears when scrolled down > 300px, positioned cleanly above Chatbot Bubble) */}
+      {/* Floating Circled To-the-Top Button (Appears when scrolled down > 300px, matches w-14 h-14 chatbot circle size and vertical alignment) */}
       {showFloatingTop && (
         <button
           type="button"
           onClick={scrollToTop}
-          className="fixed bottom-[86px] right-[26px] sm:bottom-[92px] sm:right-[30px] z-40 w-11 h-11 rounded-full bg-white dark:bg-slate-900 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border border-slate-200 dark:border-slate-700 hover:border-emerald-500 shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer group active:scale-95 animate-in fade-in zoom-in-75"
+          className="fixed bottom-[88px] right-5 sm:bottom-[96px] sm:right-6 z-40 w-14 h-14 rounded-full bg-white dark:bg-slate-900 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border-2 border-slate-200/90 dark:border-slate-700 hover:border-emerald-500 shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center cursor-pointer group active:scale-95 animate-in fade-in zoom-in-75"
           title={language === 'bn' ? 'পৃষ্ঠার শীর্ষে যান' : 'Scroll to top'}
           aria-label={language === 'bn' ? 'পৃষ্ঠার শীর্ষে যান' : 'Scroll to top'}
         >
-          <ArrowUp size={18} className="group-hover:-translate-y-0.5 transition-transform drop-shadow-xs" />
+          <ArrowUp size={22} className="group-hover:-translate-y-1 transition-transform drop-shadow-xs stroke-[2.25]" />
         </button>
       )}
     </>

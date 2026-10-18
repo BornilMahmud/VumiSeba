@@ -344,7 +344,7 @@ export const BangladeshSmartNidCard: React.FC<{
   const displayNid = formatMaskedNid(nidNo, isMasked);
 
   return (
-    <div className="relative w-full aspect-[1.586/1] min-h-[240px] sm:min-h-[290px] rounded-2xl bg-gradient-to-tr from-[#eef9f2] via-[#e5f5ea] to-[#effaf3] border-2 border-slate-200/90 dark:border-slate-700/80 shadow-xl overflow-hidden select-none text-slate-900 font-sans">
+    <div className="nid-card-surface keep-color relative w-full aspect-[1.586/1] min-h-[240px] sm:min-h-[290px] rounded-2xl bg-gradient-to-tr from-[#eef9f2] via-[#e5f5ea] to-[#effaf3] border-2 border-slate-200/90 dark:border-slate-700/80 shadow-xl overflow-hidden select-none text-slate-900 font-sans">
       {/* 1. Fine Security Guilloche Background */}
       <GuillocheWavesSvg />
 
@@ -360,14 +360,14 @@ export const BangladeshSmartNidCard: React.FC<{
 
         {/* Center: Official Title Text */}
         <div className="flex-1 text-center px-1">
-          <h2 className="text-[12px] sm:text-[15px] font-extrabold text-[#064e3b] tracking-tight leading-tight">
+          <h2 className="nid-gov-title-bn keep-color text-[12px] sm:text-[15px] font-extrabold !text-[#064e3b] tracking-tight leading-tight">
             গণপ্রজাতন্ত্রী বাংলাদেশ সরকার
           </h2>
-          <p className="text-[8.5px] sm:text-[10.5px] font-semibold text-[#047857] tracking-tight leading-tight pt-0.5">
+          <p className="nid-gov-title-en keep-color text-[8.5px] sm:text-[10.5px] font-semibold !text-[#047857] tracking-tight leading-tight pt-0.5">
             Government of the People's Republic of Bangladesh
           </p>
           <div className="pt-0.5 border-b border-red-500/80 pb-0.5 inline-block">
-            <span className="text-red-600 font-extrabold text-[9px] sm:text-[11.5px] tracking-tight">
+            <span className="nid-card-title-red keep-color !text-red-600 font-extrabold text-[9px] sm:text-[11.5px] tracking-tight">
               জাতীয় পরিচয়পত্র / National ID Card
             </span>
           </div>
@@ -407,7 +407,7 @@ export const BangladeshSmartNidCard: React.FC<{
                 }}
               />
             ) : (
-              <span className="font-serif italic text-xs sm:text-sm text-slate-900 font-bold tracking-wider">
+              <span className="nid-signature-text keep-color font-serif italic text-xs sm:text-sm !text-slate-900 font-bold tracking-wider">
                 {signatureText || nameBn?.split(' ')[0] || 'মারজাহান'}
               </span>
             )}
@@ -422,32 +422,32 @@ export const BangladeshSmartNidCard: React.FC<{
             <div className="space-y-0.5 sm:space-y-1 min-w-0 flex-1">
               {/* নাম */}
               <div>
-                <span className="text-[9.5px] sm:text-[11px] text-slate-700 font-medium block leading-none">নাম</span>
-                <span className="font-bold text-slate-950 text-xs sm:text-[15px] leading-tight block">
+                <span className="nid-label keep-color text-[9.5px] sm:text-[11px] !text-slate-700 font-medium block leading-none">নাম</span>
+                <span className="nid-value-bold keep-color font-bold !text-slate-950 text-xs sm:text-[15px] leading-tight block">
                   {nameBn}
                 </span>
               </div>
 
               {/* Name */}
               <div>
-                <span className="text-[8.5px] sm:text-[10px] text-slate-700 font-medium block leading-none">Name</span>
-                <span className="font-bold text-slate-950 text-[11px] sm:text-[13.5px] uppercase tracking-wide leading-tight block">
+                <span className="nid-label keep-color text-[8.5px] sm:text-[10px] !text-slate-700 font-medium block leading-none">Name</span>
+                <span className="nid-value-bold keep-color font-bold !text-slate-950 text-[11px] sm:text-[13.5px] uppercase tracking-wide leading-tight block">
                   {nameEn}
                 </span>
               </div>
 
               {/* পিতা */}
               <div>
-                <span className="text-[9.5px] sm:text-[11px] text-slate-700 font-medium block leading-none">পিতা</span>
-                <span className="font-semibold text-slate-900 text-xs sm:text-[13.5px] leading-tight block">
+                <span className="nid-label keep-color text-[9.5px] sm:text-[11px] !text-slate-700 font-medium block leading-none">পিতা</span>
+                <span className="nid-value-secondary keep-color font-semibold !text-slate-900 text-xs sm:text-[13.5px] leading-tight block">
                   {fatherNameBn}
                 </span>
               </div>
 
               {/* মাতা */}
               <div>
-                <span className="text-[9.5px] sm:text-[11px] text-slate-700 font-medium block leading-none">মাতা</span>
-                <span className="font-semibold text-slate-900 text-xs sm:text-[13.5px] leading-tight block">
+                <span className="nid-label keep-color text-[9.5px] sm:text-[11px] !text-slate-700 font-medium block leading-none">মাতা</span>
+                <span className="nid-value-secondary keep-color font-semibold !text-slate-900 text-xs sm:text-[13.5px] leading-tight block">
                   {motherNameBn}
                 </span>
               </div>
@@ -462,15 +462,15 @@ export const BangladeshSmartNidCard: React.FC<{
           {/* Bottom Row: Date of Birth & NID No. */}
           <div className="pt-1.5 border-t border-emerald-900/10 space-y-0.5 text-[10.5px] sm:text-xs">
             <div className="flex items-baseline gap-2">
-              <span className="text-slate-800 font-medium">Date of Birth</span>
-              <span className="font-bold text-slate-900 font-mono text-xs sm:text-[14.5px]">
+              <span className="nid-label keep-color !text-slate-800 font-medium">Date of Birth</span>
+              <span className="nid-value-secondary keep-color font-bold !text-slate-900 font-mono text-xs sm:text-[14.5px]">
                 {formattedDob}
               </span>
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-slate-900 font-bold">NID No.</span>
-              <span className="font-extrabold text-slate-950 font-mono text-xs sm:text-[15.5px] tracking-wider">
+              <span className="nid-label keep-color !text-slate-900 font-bold">NID No.</span>
+              <span className="nid-value-bold keep-color font-extrabold !text-slate-950 font-mono text-xs sm:text-[15.5px] tracking-wider">
                 {displayNid}
               </span>
             </div>
@@ -497,12 +497,12 @@ export const BangladeshLaminatedNidCard: React.FC<{
   signatureText?: string;
   isMasked?: boolean;
 }> = ({
-  nameBn = 'মোঃ আরমান হোসেন রিপন',
-  nameEn = 'MD. ARMAN HOSSEN RIPON',
-  fatherNameBn = 'মোঃ ফেরদৌস হাসান খান',
-  motherNameBn = 'মোছাঃ মহসিনা আকতার শান্তনা',
-  dateOfBirth = '01 Jun 2005',
-  nidNo = '6847057587',
+  nameBn = 'মোঃ রফিকুল ইসলাম',
+  nameEn = 'MD. RAFIQUL ISLAM',
+  fatherNameBn = 'মোঃ আবুল কাসেম',
+  motherNameBn = 'মোছাঃ রহিমা খাতুন',
+  dateOfBirth = '12 Apr 1985',
+  nidNo = '19852691029384756',
   photoUrl = '/avatars/default_nid.jpg',
   signatureUrl = '',
   signatureText = 'স্বাক্ষর',
@@ -512,7 +512,7 @@ export const BangladeshLaminatedNidCard: React.FC<{
   const displayNid = formatMaskedNid(nidNo, isMasked);
 
   return (
-    <div className="relative bg-[#fcfdfd] text-slate-900 border-2 border-slate-950 rounded-[2px] shadow-sm overflow-hidden select-none w-full">
+    <div className="nid-card-surface keep-color relative bg-[#fcfdfd] text-slate-900 border-2 border-slate-950 rounded-[2px] shadow-sm overflow-hidden select-none w-full">
       {/* 1. Header Section */}
       <div className="border-b-2 border-slate-950 px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2 sm:gap-3 bg-[#fbfdfc]">
         <div className="relative shrink-0">
@@ -520,15 +520,15 @@ export const BangladeshLaminatedNidCard: React.FC<{
         </div>
 
         <div className="flex-1 text-center pr-2">
-          <h2 className="text-xs sm:text-[15px] font-bold text-slate-900 tracking-tight leading-tight">
+          <h2 className="nid-gov-title-bn keep-color text-xs sm:text-[15px] font-bold !text-slate-900 tracking-tight leading-tight">
             গণপ্রজাতন্ত্রী বাংলাদেশ সরকার
           </h2>
-          <p className="text-[9px] sm:text-[11px] font-medium text-emerald-800 tracking-tight leading-tight pt-0.5">
+          <p className="nid-gov-title-en keep-color text-[9px] sm:text-[11px] font-medium !text-emerald-800 tracking-tight leading-tight pt-0.5">
             Government of the People's Republic of Bangladesh
           </p>
           <div className="text-[9px] sm:text-[11px] font-bold leading-tight pt-0.5">
-            <span className="text-red-600">National ID Card</span>
-            <span className="text-slate-900"> / জাতীয় পরিচয় পত্র</span>
+            <span className="nid-card-title-red keep-color !text-red-600">National ID Card</span>
+            <span className="nid-value-secondary keep-color !text-slate-900"> / জাতীয় পরিচয় পত্র</span>
           </div>
         </div>
       </div>
@@ -561,7 +561,7 @@ export const BangladeshLaminatedNidCard: React.FC<{
                 }}
               />
             ) : (
-              <span className="font-serif italic text-xs sm:text-sm text-slate-800 font-semibold tracking-wide">
+              <span className="nid-signature-text keep-color font-serif italic text-xs sm:text-sm !text-slate-800 font-semibold tracking-wide">
                 {signatureText || nameEn?.split(' ')[0] || 'Signature'}
               </span>
             )}
@@ -577,55 +577,55 @@ export const BangladeshLaminatedNidCard: React.FC<{
           <div className="relative z-10 space-y-1.5 sm:space-y-2 text-left">
             {/* নাম */}
             <div className="flex items-baseline gap-2">
-              <span className="text-slate-800 font-bold text-xs sm:text-sm shrink-0">নাম:</span>
-              <span className="font-black text-slate-950 text-sm sm:text-base md:text-[17px] tracking-tight leading-tight">
+              <span className="nid-label keep-color !text-slate-800 font-bold text-xs sm:text-sm shrink-0">নাম:</span>
+              <span className="nid-value-bold keep-color font-black !text-slate-950 text-sm sm:text-base md:text-[17px] tracking-tight leading-tight">
                 {nameBn}
               </span>
             </div>
 
             {/* Name */}
             <div className="flex items-baseline gap-2">
-              <span className="text-slate-800 font-bold text-xs sm:text-sm shrink-0">Name:</span>
-              <span className="font-extrabold text-slate-950 text-xs sm:text-[14.5px] md:text-base uppercase tracking-wider leading-tight">
+              <span className="nid-label keep-color !text-slate-800 font-bold text-xs sm:text-sm shrink-0">Name:</span>
+              <span className="nid-value-bold keep-color font-extrabold !text-slate-950 text-xs sm:text-[14.5px] md:text-base uppercase tracking-wider leading-tight">
                 {nameEn}
               </span>
             </div>
 
             {/* পিতা */}
             <div className="flex items-baseline gap-2">
-              <span className="text-slate-800 font-semibold text-xs sm:text-sm shrink-0">পিতা:</span>
-              <span className="font-bold text-slate-900 text-xs sm:text-sm md:text-[15px] leading-tight">
+              <span className="nid-label keep-color !text-slate-800 font-semibold text-xs sm:text-sm shrink-0">পিতা:</span>
+              <span className="nid-value-secondary keep-color font-bold !text-slate-900 text-xs sm:text-sm md:text-[15px] leading-tight">
                 {fatherNameBn}
               </span>
             </div>
 
             {/* মাতা */}
             <div className="flex items-baseline gap-2">
-              <span className="text-slate-800 font-semibold text-xs sm:text-sm shrink-0">মাতা:</span>
-              <span className="font-bold text-slate-900 text-xs sm:text-sm md:text-[15px] leading-tight">
+              <span className="nid-label keep-color !text-slate-800 font-semibold text-xs sm:text-sm shrink-0">মাতা:</span>
+              <span className="nid-value-secondary keep-color font-bold !text-slate-900 text-xs sm:text-sm md:text-[15px] leading-tight">
                 {motherNameBn}
               </span>
             </div>
 
             {/* Date of Birth - RED FONT */}
             <div className="flex items-baseline gap-2 pt-0.5">
-              <span className="text-slate-900 font-bold text-xs sm:text-sm shrink-0">Date of Birth:</span>
-              <span className="font-bold text-red-600 font-mono text-sm sm:text-base md:text-[17px] tracking-wide">
+              <span className="nid-label keep-color !text-slate-900 font-bold text-xs sm:text-sm shrink-0">Date of Birth:</span>
+              <span className="nid-red-highlight keep-color font-bold !text-red-600 font-mono text-sm sm:text-base md:text-[17px] tracking-wide">
                 {formattedDob}
               </span>
             </div>
 
             {/* ID NO - Masked with * by default */}
             <div className="flex items-baseline gap-2 pt-0.5">
-              <span className="text-slate-950 font-black text-xs sm:text-sm shrink-0">ID NO:</span>
-              <span className="font-black text-red-600 font-mono text-sm sm:text-[16.5px] md:text-[19px] tracking-widest">
+              <span className="nid-label keep-color !text-slate-950 font-black text-xs sm:text-sm shrink-0">ID NO:</span>
+              <span className="nid-red-highlight keep-color font-black !text-red-600 font-mono text-sm sm:text-[16.5px] md:text-[19px] tracking-widest">
                 {displayNid}
               </span>
             </div>
           </div>
 
           <div className="relative z-10 pt-1 text-right">
-            <span className="text-[8px] sm:text-[9.5px] text-slate-400 font-mono tracking-tighter">
+            <span className="nid-subtle keep-color text-[8px] sm:text-[9.5px] !text-slate-500 font-mono tracking-tighter">
               নির্বাচন কমিশন বাংলাদেশ • EC-BD
             </span>
           </div>
@@ -644,15 +644,15 @@ export const BangladeshLaminatedNidCard: React.FC<{
 export const BangladeshNidCard: React.FC<BangladeshNidCardProps> = ({
   cardType = 'auto',
   isSmartCard,
-  nameBn = 'মোঃ আরমান হোসেন রিপন',
-  nameEn = 'MD. ARMAN HOSSEN RIPON',
-  fatherNameBn = 'মোঃ ফেরদৌস হাসান খান',
-  motherNameBn = 'মোছাঃ মহসিনা আকতার শান্তনা',
-  dateOfBirth = '01 Jun 2005',
-  nidNo = '6847057587',
+  nameBn = 'মোঃ রফিকুল ইসলাম',
+  nameEn = 'MD. RAFIQUL ISLAM',
+  fatherNameBn = 'মোঃ আবুল কাসেম',
+  motherNameBn = 'মোছাঃ রহিমা খাতুন',
+  dateOfBirth = '12 Apr 1985',
+  nidNo = '19852691029384756',
   photoUrl = '/avatars/default_nid.jpg',
   signatureUrl = '',
-  signatureText = 'মারজাহান',
+  signatureText = 'রফিক',
   showLaminationBorder = true,
   showControls = true,
   maskNid = true,

@@ -37,9 +37,9 @@ export const getUserAvatarUrl = (user: UserProfile | null | undefined): string |
 
   // Citizens
   if (
-    user.email?.toLowerCase().includes('arman') ||
-    user.name_bn?.includes('আরমান') ||
-    user.name_en?.toLowerCase().includes('arman')
+    user.email?.toLowerCase().includes('seller') ||
+    user.name_bn?.includes('রফিক') ||
+    user.name_en?.toLowerCase().includes('rafiq')
   ) {
     return '/avatars/default_nid.jpg';
   }
@@ -55,7 +55,7 @@ export const getUserAvatarUrl = (user: UserProfile | null | undefined): string |
 
 export const AVAILABLE_AVATAR_PRESETS = [
   { id: 'default', labelBn: 'ডিফল্ট নাগরিক পোর্ট্রেট', labelEn: 'Default Citizen Portrait', url: '/avatars/default_nid.jpg' },
-  { id: 'arman', labelBn: 'নাগরিক পোর্ট্রেট ১ (মোঃ আরমান হোসেন রিপন)', labelEn: 'Citizen Portrait 1 (Md. Arman Hossen Ripon)', url: '/avatars/default_nid.jpg' },
+  { id: 'rafiq', labelBn: 'নাগরিক পোর্ট্রেট ১ (মোঃ রফিকুল ইসলাম)', labelEn: 'Citizen Portrait 1 (Md. Rafiqul Islam)', url: '/avatars/default_nid.jpg' },
   { id: 'farhan', labelBn: 'নাগরিক পোর্ট্রেট ২ (ফারহান আহমেদ)', labelEn: 'Citizen Portrait 2 (Farhan Ahmed)', url: '/avatars/nid_farhan_ahmed.jpg' },
   { id: 'kamal', labelBn: 'ইউনিয়ন কর্মকর্তা (মোহাম্মদ কামাল হোসেন)', labelEn: 'Union Land Officer (Mohammad Kamal Hossain)', url: '/avatars/officer_kamal_union.jpg' },
   { id: 'tanvir', labelBn: 'এসি ল্যান্ড / নির্বাহী ম্যাজিস্ট্রেট (তানভীর হাসান চৌধুরী)', labelEn: 'AC Land Magistrate (Tanvir Hasan Chowdhury)', url: '/avatars/officer_tanvir_acland.jpg' },

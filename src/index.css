@@ -465,55 +465,98 @@ button:disabled,
 }
 
 /* 3. Global Typography & Font Visibility (Absolute Legibility on Dark Surfaces) */
-.dark h1:not(.keep-color):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
-.dark h2:not(.keep-color):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
-.dark h3:not(.keep-color):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
-.dark h4:not(.keep-color):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
-.dark h5:not(.keep-color),
-.dark h6:not(.keep-color) {
+.dark h1:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
+.dark h2:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
+.dark h3:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
+.dark h4:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-transparent"]),
+.dark h5:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *),
+.dark h6:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *) {
   color: #f8fafc !important;
 }
 
-.dark strong:not(.keep-color),
-.dark b:not(.keep-color) {
+.dark strong:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *),
+.dark b:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *) {
   color: #f8fafc !important;
 }
 
-.dark label:not(.keep-color):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-blue-"]):not([class*="text-indigo-"]) {
+.dark label:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not([class*="text-emerald-"]):not([class*="text-teal-"]):not([class*="text-amber-"]):not([class*="text-rose-"]):not([class*="text-cyan-"]):not([class*="text-blue-"]):not([class*="text-indigo-"]) {
   color: #e2e8f0 !important;
 }
 
-.dark .text-slate-900:not(.keep-color):not(.text-white),
-.dark .text-slate-950:not(.keep-color):not(.text-white),
-.dark .text-gray-900:not(.keep-color):not(.text-white),
-.dark .text-gray-950:not(.keep-color):not(.text-white),
-.dark .text-black:not(.keep-color):not(.text-white) {
+.dark .text-slate-900:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-slate-950:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-900:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-950:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-black:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white) {
   color: #f8fafc !important;
 }
 
-.dark .text-slate-800:not(.keep-color):not(.text-white),
-.dark .text-gray-800:not(.keep-color):not(.text-white) {
+.dark .text-slate-800:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-800:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white) {
   color: #f1f5f9 !important;
 }
 
-.dark .text-slate-700:not(.keep-color):not(.text-white),
-.dark .text-gray-700:not(.keep-color):not(.text-white) {
+.dark .text-slate-700:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-700:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white) {
   color: #e2e8f0 !important;
 }
 
-.dark .text-slate-600:not(.keep-color):not(.text-white),
-.dark .text-gray-600:not(.keep-color):not(.text-white) {
+.dark .text-slate-600:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-600:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white) {
   color: #cbd5e1 !important;
 }
 
-.dark .text-slate-500:not(.keep-color):not(.text-white),
-.dark .text-gray-500:not(.keep-color):not(.text-white) {
+.dark .text-slate-500:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-500:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white) {
   color: #94a3b8 !important;
 }
 
-.dark .text-slate-400:not(.keep-color):not(.text-white),
-.dark .text-gray-400:not(.keep-color):not(.text-white) {
+.dark .text-slate-400:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white),
+.dark .text-gray-400:not(.keep-color):not(.nid-card-surface):not(.nid-card-surface *):not(.text-white) {
   color: #94a3b8 !important;
+}
+
+/* Authentic Bangladesh National ID Card - Preserve dark ink & authentic colors in Dark Theme */
+.dark .nid-card-surface {
+  color: #0f172a !important;
+}
+
+.dark .nid-card-surface h2,
+.dark .nid-card-surface .nid-gov-title-bn {
+  color: #064e3b !important;
+}
+
+.dark .nid-card-surface p.nid-gov-title-en,
+.dark .nid-card-surface .nid-gov-title-en {
+  color: #047857 !important;
+}
+
+.dark .nid-card-surface .nid-card-title-red {
+  color: #dc2626 !important;
+}
+
+.dark .nid-card-surface .nid-label {
+  color: #334155 !important;
+}
+
+.dark .nid-card-surface .nid-value-bold {
+  color: #020617 !important;
+}
+
+.dark .nid-card-surface .nid-value-secondary {
+  color: #0f172a !important;
+}
+
+.dark .nid-card-surface .nid-red-highlight {
+  color: #dc2626 !important;
+}
+
+.dark .nid-card-surface .nid-subtle {
+  color: #64748b !important;
+}
+
+.dark .nid-card-surface .nid-signature-text {
+  color: #0f172a !important;
 }
 
 /* 4. Form Controls (Input, Select, Textarea, Option) */

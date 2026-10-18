@@ -4,14 +4,14 @@
       "id": "usr-seller-01",
       "citizen_id": "BHM-CIT-882194",
       "email": "seller@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
-      "name_bn": "মোঃ আরমান হোসেন রিপন",
-      "name_en": "MD. ARMAN HOSSEN RIPON",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
+      "name_bn": "মোঃ রফিকুল ইসলাম",
+      "name_en": "MD. RAFIQUL ISLAM",
       "mobile": "01711000001",
-      "nid_no": "6847057587",
-      "date_of_birth": "2005-06-01",
-      "father_name_bn": "মোঃ ফেরদৌস হাসান খান",
-      "mother_name_bn": "মোছাঃ মহসিনা আকতার শান্তনা",
+      "nid_no": "19852691029384756",
+      "date_of_birth": "1985-04-12",
+      "father_name_bn": "মোঃ আবুল কাসেম",
+      "mother_name_bn": "মোছাঃ রহিমা খাতুন",
       "address_bn": "বাড়ি ১২, রোড ৪, ব্লক সি, বাড্ডা, ঢাকা",
       "district": "ঢাকা",
       "upazila": "গুলশান",
@@ -27,7 +27,7 @@
       "id": "usr-buyer-01",
       "citizen_id": "BHM-CIT-419203",
       "email": "buyer@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "ফারহান আহমেদ",
       "name_en": "Farhan Ahmed",
       "mobile": "01811000002",
@@ -50,7 +50,7 @@
       "id": "usr-seller-taxdue",
       "citizen_id": "BHM-CIT-339102",
       "email": "latif.taxdue@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "আব্দুল লতিফ",
       "name_en": "Abdul Latif",
       "mobile": "01911000003",
@@ -71,7 +71,7 @@
       "id": "usr-seller-oversell",
       "citizen_id": "BHM-CIT-771920",
       "email": "nazrul.share@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "নজরুল ইসলাম",
       "name_en": "Nazrul Islam",
       "mobile": "01611000004",
@@ -92,7 +92,7 @@
       "id": "usr-seller-sylhet",
       "citizen_id": "BHM-CIT-551902",
       "email": "badrul.sylhet@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "বদরুল আলম",
       "name_en": "Badrul Alam",
       "mobile": "01711998877",
@@ -112,7 +112,7 @@
       "id": "usr-seller-rajshahi",
       "citizen_id": "BHM-CIT-662810",
       "email": "anisur.rajshahi@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "ড. আনিসুর রহমান",
       "name_en": "Dr. Anisur Rahman",
       "mobile": "01712887766",
@@ -132,7 +132,7 @@
       "id": "usr-seller-khulna",
       "citizen_id": "BHM-CIT-773921",
       "email": "goutam.khulna@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "গৌতম কুমার সেন",
       "name_en": "Goutam Kumar Sen",
       "mobile": "01912776655",
@@ -151,7 +151,7 @@
     {
       "id": "usr-officer-union",
       "email": "union.officer@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "মোহাম্মদ কামাল হোসেন",
       "name_en": "Md. Kamal Hossain",
       "mobile": "01711223344",
@@ -174,7 +174,7 @@
     {
       "id": "usr-officer-acland",
       "email": "ac.land@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "তানভীর হাসান চৌধুরী",
       "name_en": "Tanvir Hasan Chowdhury",
       "mobile": "01711334455",
@@ -197,7 +197,7 @@
     {
       "id": "usr-officer-registry",
       "email": "sub.registrar@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "সৈয়দা রোকসানা পারভীন",
       "name_en": "Syeda Roksana Parveen",
       "mobile": "01711445566",
@@ -220,7 +220,7 @@
     {
       "id": "usr-admin-central",
       "email": "admin@landtech.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "এ. কে. এম. রেজওয়ানুল হক",
       "name_en": "A. K. M. Rezwanul Haque",
       "mobile": "01711556677",
@@ -243,7 +243,7 @@
     {
       "id": "usr-pending-01",
       "email": "kazi.mijanur@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "কাজী মিজানুর রহমান",
       "name_en": "Kazi Mijanur Rahman",
       "mobile": "01819334455",
@@ -264,7 +264,7 @@
     {
       "id": "usr-pending-02",
       "email": "tania.akter@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "মোসাঃ তানিয়া আক্তার",
       "name_en": "Mst. Tania Akter",
       "mobile": "01718992211",
@@ -285,7 +285,7 @@
     {
       "id": "usr-pending-03",
       "email": "sohel.rana@bhumisathi.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "সোহেল রানা",
       "name_en": "Sohel Rana",
       "mobile": "01912445566",
@@ -306,7 +306,7 @@
     {
       "id": "usr-officer-sylhet",
       "email": "mozammel.ulao@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "মোজাম্মেল হক চৌধুরী",
       "name_en": "Mozammel Haque Chowdhury",
       "mobile": "01711778899",
@@ -330,7 +330,7 @@
     {
       "id": "usr-officer-ctg-acland",
       "email": "farhana.acland@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "ড. ফারহানা ইয়াসমিন",
       "name_en": "Dr. Farhana Yasmin",
       "mobile": "01711889900",
@@ -354,7 +354,7 @@
     {
       "id": "usr-officer-raj-registry",
       "email": "kabir.registry@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "কবীর আহমেদ",
       "name_en": "Kabir Ahmed",
       "mobile": "01711990011",
@@ -378,7 +378,7 @@
     {
       "id": "usr-officer-surveyor",
       "email": "shahalam.surveyor@land.gov.bd",
-      "password_hash": "$2b$10$e5cbflokUOaTwEddV7mmCOOODtc6R3uQ/fRG7pklnufhy9Pf4wque",
+      "password_hash": "$2b$10$eGpblUMWoyd8SLqJqajg4u8z4U2MViGYLeCETyPcDb1oZLcEyKokW",
       "name_bn": "মোঃ শাহ আলম ভুঁইয়া",
       "name_en": "Md. Shah Alam Bhuiyan",
       "mobile": "01712001122",
@@ -414,10 +414,10 @@
       "upazila": "গুলশান",
       "role": "citizen",
       "kyc_status": "verified",
-      "created_at": "2026-10-17T23:19:22.595Z",
-      "updated_at": "2026-10-17T23:19:22.596Z",
-      "citizen_id": "BHM-CIT-969369",
-      "kyc_verified_at": "2026-10-17T23:19:22.596Z"
+      "created_at": "2026-10-18T00:09:32.696Z",
+      "updated_at": "2026-10-18T00:09:32.697Z",
+      "citizen_id": "BHM-CIT-465729",
+      "kyc_verified_at": "2026-10-18T00:09:32.697Z"
     }
   ],
   "land_parcels": [
@@ -930,15 +930,15 @@
       "id": "own-clean-01",
       "parcel_id": "pcl-clean-405",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 0.45,
       "area_decimal": 9,
       "khatian_ref": "RS-1204",
       "status": "partial_transferred",
       "acquired_type_bn": "পৈতৃক ওয়ারিশসূত্রে",
       "created_at": "2024-01-10T00:00:00Z",
-      "updated_at": "2026-10-17T23:19:22.601Z"
+      "updated_at": "2026-10-18T00:09:32.702Z"
     },
     {
       "id": "own-clean-cosharer",
@@ -957,8 +957,8 @@
       "id": "own-ret-01",
       "parcel_id": "pcl-returned-502",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 0.5,
       "area_decimal": 9,
       "khatian_ref": "RS-1205",
@@ -971,8 +971,8 @@
       "id": "own-union-01",
       "parcel_id": "pcl-union-appr-603",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 0.5,
       "area_decimal": 6,
       "khatian_ref": "RS-1206",
@@ -985,8 +985,8 @@
       "id": "own-acland-01",
       "parcel_id": "pcl-acland-appr-704",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 0.5,
       "area_decimal": 5,
       "khatian_ref": "RS-1207",
@@ -999,8 +999,8 @@
       "id": "own-reg-01",
       "parcel_id": "pcl-reg-comp-805",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 0.5,
       "area_decimal": 8,
       "khatian_ref": "RS-1208",
@@ -1155,8 +1155,8 @@
       "id": "own-stage1-01",
       "parcel_id": "pcl-stage1-sub-601",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 1,
       "area_decimal": 16,
       "khatian_ref": "RS-511",
@@ -1169,8 +1169,8 @@
       "id": "own-stage5-01",
       "parcel_id": "pcl-stage5-sched-801",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 1,
       "area_decimal": 12.5,
       "khatian_ref": "BS-654",
@@ -1183,8 +1183,8 @@
       "id": "own-stage7-01",
       "parcel_id": "pcl-stage7-mut-sub-902",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 1,
       "area_decimal": 14,
       "khatian_ref": "BS-832",
@@ -1197,8 +1197,8 @@
       "id": "own-stage8-01",
       "parcel_id": "pcl-stage8-hear-915",
       "owner_id": "usr-seller-01",
-      "owner_name_bn": "মোঃ আরমান হোসেন রিপন",
-      "owner_nid": "6847057587",
+      "owner_name_bn": "মোঃ রফিকুল ইসলাম",
+      "owner_nid": "19852691029384756",
       "share_portion": 1,
       "area_decimal": 18,
       "khatian_ref": "RS-940",
@@ -1222,7 +1222,7 @@
       "updated_at": "2024-05-20T00:00:00Z"
     },
     {
-      "id": "OWN-NEW-1792279162601",
+      "id": "OWN-NEW-1792282172702",
       "parcel_id": "pcl-clean-405",
       "owner_id": "usr-buyer-01",
       "owner_name_bn": "ফারহান আহমেদ",
@@ -1232,8 +1232,8 @@
       "khatian_ref": "নামজারি-৮৮৯৯",
       "status": "active",
       "acquired_type_bn": "খরিদসূত্রে (নামজারি সম্পন্ন)",
-      "created_at": "2026-10-17T23:19:22.601Z",
-      "updated_at": "2026-10-17T23:19:22.601Z"
+      "created_at": "2026-10-18T00:09:32.702Z",
+      "updated_at": "2026-10-18T00:09:32.702Z"
     }
   ],
   "khatian_records": [
@@ -1245,9 +1245,9 @@
       "jl_no": "২৮",
       "upazila": "গুলশান",
       "district": "ঢাকা",
-      "recorded_owner_bn": "মোজাম্মেল হক (মৃত), ওয়ারিশসূত্রে মোঃ আরমান হোসেন রিপন ও শফিকুল ইসলাম",
-      "recorded_father_bn": "মোঃ ফেরদৌস হাসান খান",
-      "shares_summary_bn": "মোঃ আরমান হোসেন রিপন (০.৫০০০ অংশ), শফিকুল ইসলাম (০.৫০০০ অংশ)",
+      "recorded_owner_bn": "মোজাম্মেল হক (মৃত), ওয়ারিশসূত্রে মোঃ রফিকুল ইসলাম ও শফিকুল ইসলাম",
+      "recorded_father_bn": "মোঃ আবুল কাসেম",
+      "shares_summary_bn": "মোঃ রফিকুল ইসলাম (০.৫০০০ অংশ), শফিকুল ইসলাম (০.৫০০০ অংশ)",
       "dags_summary_bn": "দাগ ৪০৫ (বাস্তু, ২০.০০ শতাংশ)",
       "total_area_decimal": 20,
       "is_archived": false,
@@ -1261,9 +1261,9 @@
       "jl_no": "২৮",
       "upazila": "গুলশান",
       "district": "ঢাকা",
-      "recorded_owner_bn": "মোঃ আরমান হোসেন রিপন",
-      "recorded_father_bn": "মোঃ ফেরদৌস হাসান খান",
-      "shares_summary_bn": "মোঃ আরমান হোসেন রিপন (১.০০০০ অংশ)",
+      "recorded_owner_bn": "মোঃ রফিকুল ইসলাম",
+      "recorded_father_bn": "মোঃ আবুল কাসেম",
+      "shares_summary_bn": "মোঃ রফিকুল ইসলাম (১.০০০০ অংশ)",
       "dags_summary_bn": "দাগ ৫০২ (বাস্তু, ১৮.০০ শতাংশ)",
       "total_area_decimal": 18,
       "is_archived": false,
@@ -1277,9 +1277,9 @@
       "jl_no": "২৮",
       "upazila": "গুলশান",
       "district": "ঢাকা",
-      "recorded_owner_bn": "মোঃ আরমান হোসেন রিপন",
-      "recorded_father_bn": "মোঃ ফেরদৌস হাসান খান",
-      "shares_summary_bn": "মোঃ আরমান হোসেন রিপন (১.০০০০ অংশ)",
+      "recorded_owner_bn": "মোঃ রফিকুল ইসলাম",
+      "recorded_father_bn": "মোঃ আবুল কাসেম",
+      "shares_summary_bn": "মোঃ রফিকুল ইসলাম (১.০০০০ অংশ)",
       "dags_summary_bn": "দাগ ৬০৩ (বাস্তু, ১২.০০ শতাংশ)",
       "total_area_decimal": 12,
       "is_archived": false,
@@ -1293,9 +1293,9 @@
       "jl_no": "২৮",
       "upazila": "গুলশান",
       "district": "ঢাকা",
-      "recorded_owner_bn": "মোঃ আরমান হোসেন রিপন",
-      "recorded_father_bn": "মোঃ ফেরদৌস হাসান খান",
-      "shares_summary_bn": "মোঃ আরমান হোসেন রিপন (১.০০০০ অংশ)",
+      "recorded_owner_bn": "মোঃ রফিকুল ইসলাম",
+      "recorded_father_bn": "মোঃ আবুল কাসেম",
+      "shares_summary_bn": "মোঃ রফিকুল ইসলাম (১.০০০০ অংশ)",
       "dags_summary_bn": "দাগ ৭০৪ (বাস্তু, ১০.০০ শতাংশ)",
       "total_area_decimal": 10,
       "is_archived": false,
@@ -1309,9 +1309,9 @@
       "jl_no": "২৮",
       "upazila": "গুলশান",
       "district": "ঢাকা",
-      "recorded_owner_bn": "মোঃ আরমান হোসেন রিপন",
-      "recorded_father_bn": "মোঃ ফেরদৌস হাসান খান",
-      "shares_summary_bn": "মোঃ আরমান হোসেন রিপন (১.০০০০ অংশ)",
+      "recorded_owner_bn": "মোঃ রফিকুল ইসলাম",
+      "recorded_father_bn": "মোঃ আবুল কাসেম",
+      "shares_summary_bn": "মোঃ রফিকুল ইসলাম (১.০০০০ অংশ)",
       "dags_summary_bn": "দাগ ৮০৫ (বাস্তু, ১৬.০০ শতাংশ)",
       "total_area_decimal": 16,
       "is_archived": false,
@@ -1398,7 +1398,7 @@
       "created_at": "2024-05-20T00:00:00Z"
     },
     {
-      "id": "KHT-NEW-1792279162601",
+      "id": "KHT-NEW-1792282172701",
       "khatian_no": "নামজারি-৮৮৯৯",
       "khatian_type": "Mutation",
       "mouza": "বাড্ডা",
@@ -1411,7 +1411,7 @@
       "dags_summary_bn": "দাগ ৪০৫ (১.০০ শতক)",
       "total_area_decimal": 1,
       "is_archived": false,
-      "created_at": "2026-10-17T23:19:22.601Z"
+      "created_at": "2026-10-18T00:09:32.701Z"
     }
   ],
   "land_documents": [
@@ -1946,7 +1946,7 @@
       "updated_at": "2026-03-01T08:00:00Z"
     },
     {
-      "id": "SA-TEST-1792279162598",
+      "id": "SA-TEST-1792282172699",
       "application_no": "BHM-SA-2026-TEST",
       "parcel_id": "pcl-clean-405",
       "seller_id": "usr-seller-01",
@@ -1963,8 +1963,8 @@
       "union_verified": true,
       "registry_completed": true,
       "mutation_created": true,
-      "created_at": "2026-10-17T23:19:22.598Z",
-      "updated_at": "2026-10-17T23:19:22.600Z"
+      "created_at": "2026-10-18T00:09:32.699Z",
+      "updated_at": "2026-10-18T00:09:32.701Z"
     }
   ],
   "risk_assessments": [
@@ -2082,7 +2082,7 @@
       "generated_at": "2026-03-01T00:00:00Z"
     },
     {
-      "id": "RISK-1792279162597-191",
+      "id": "RISK-1792282172698-423",
       "parcel_id": "pcl-clean-405",
       "overall_risk_level": "low",
       "risk_score": 100,
@@ -2123,8 +2123,8 @@
           "is_critical": true,
           "weight_max_points": 30,
           "deducted_points": 0,
-          "explanation_bn": "বিক্রেতার মালিকানা যাচাইকৃত (মোঃ আরমান হোসেন রিপন) এবং প্রস্তাবিত অংশ অবশিষ্ট বৈধ সীমার মধ্যে রয়েছে।",
-          "explanation_en": "Seller identity confirmed (মোঃ আরমান হোসেন রিপন). Proposed share is fully within uncommitted title quota."
+          "explanation_bn": "বিক্রেতার মালিকানা যাচাইকৃত (মোঃ রফিকুল ইসলাম) এবং প্রস্তাবিত অংশ অবশিষ্ট বৈধ সীমার মধ্যে রয়েছে।",
+          "explanation_en": "Seller identity confirmed (মোঃ রফিকুল ইসলাম). Proposed share is fully within uncommitted title quota."
         },
         {
           "factor_key": "bank_mortgage",
@@ -2188,10 +2188,10 @@
       "duplicate_sale_risk": false,
       "acquisition_risk": false,
       "document_discrepancy": false,
-      "generated_at": "2026-10-17T23:19:22.597Z"
+      "generated_at": "2026-10-18T00:09:32.698Z"
     },
     {
-      "id": "RISK-1792279162597-521",
+      "id": "RISK-1792282172698-984",
       "parcel_id": "pcl-court-710",
       "overall_risk_level": "critical",
       "risk_score": 0,
@@ -2312,7 +2312,7 @@
       "duplicate_sale_risk": false,
       "acquisition_risk": true,
       "document_discrepancy": false,
-      "generated_at": "2026-10-17T23:19:22.597Z"
+      "generated_at": "2026-10-18T00:09:32.698Z"
     }
   ],
   "office_reviews": [
@@ -2466,14 +2466,14 @@
       "disclaimer_bn": "অত্র দলিলটি দ্য রেজিস্ট্রেশন অ্যাক্ট ১৯০৮-এর আওতায় ডিজিটালভাবে নিবন্ধিত এবং নামজারি সফলভাবে সৃজিত হয়েছে।"
     },
     {
-      "id": "REG-TEST-1792279162599",
-      "application_id": "SA-TEST-1792279162598",
+      "id": "REG-TEST-1792282172700",
+      "application_id": "SA-TEST-1792282172699",
       "registry_office_bn": "গুলশান সাব-রেজিস্ট্রি অফিস",
       "registration_serial_no": "REG-GLS-TEST",
       "deed_no": "99120/2026",
       "deed_volume_no": "৪৫/১০২",
       "deed_year": "২০২৬",
-      "completion_timestamp": "2026-10-17T23:19:22.599Z",
+      "completion_timestamp": "2026-10-18T00:09:32.700Z",
       "officer_id": "usr-officer-registry",
       "deed_draft_url": "/drafts/test.pdf",
       "is_official_record": true,
@@ -2542,9 +2542,9 @@
       "updated_at": "2025-12-15T16:00:00Z"
     },
     {
-      "id": "MUT-TEST-1792279162600",
+      "id": "MUT-TEST-1792282172700",
       "mutation_case_no": "MUT-AC-2026-TEST",
-      "sale_application_id": "SA-TEST-1792279162598",
+      "sale_application_id": "SA-TEST-1792282172699",
       "parcel_id": "pcl-clean-405",
       "applicant_id": "usr-buyer-01",
       "previous_khatian_no": "১২০৪",
@@ -2552,8 +2552,8 @@
       "current_stage": "application_submitted",
       "status": "active",
       "order_summary_bn": "সাফ-কবলা দলিল নং 99120/2026 সূত্রে নামজারি রুজু।",
-      "created_at": "2026-10-17T23:19:22.600Z",
-      "updated_at": "2026-10-17T23:19:22.600Z"
+      "created_at": "2026-10-18T00:09:32.700Z",
+      "updated_at": "2026-10-18T00:09:32.700Z"
     }
   ],
   "notifications": [
@@ -2698,7 +2698,7 @@
     {
       "id": "audit-fraud-003",
       "user_id": "usr-seller-01",
-      "user_name_bn": "মোঃ আরমান হোসেন রিপন",
+      "user_name_bn": "মোঃ রফিকুল ইসলাম",
       "user_role": "citizen",
       "action": "FRAUD_ATTEMPT_BLOCKED",
       "target_entity": "sale_applications",
@@ -2749,7 +2749,7 @@
     {
       "id": "audit-fraud-006",
       "user_id": "usr-seller-01",
-      "user_name_bn": "মোঃ আরমান হোসেন রিপন",
+      "user_name_bn": "মোঃ রফিকুল ইসলাম",
       "user_role": "citizen",
       "action": "FRAUD_ATTEMPT_BLOCKED",
       "target_entity": "sale_applications",

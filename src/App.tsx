@@ -218,7 +218,7 @@ export default function App() {
                         <Suspense fallback={<OfficeLoadingFallback />}>
                           <Routes>
                             <Route path="dashboard" element={<UnionDashboard />} />
-                            <Route path="applications" element={<UnionDashboard />} />
+                            <Route path="applications" element={<Navigate to="/office/union/dashboard" replace />} />
                             <Route path="applications/:id" element={<UnionApplicationDetailPage />} />
                             <Route path="tax-verification" element={<UnionTaxVerificationPage />} />
                             <Route path="record-verification" element={<UnionRecordVerificationPage />} />
@@ -242,7 +242,7 @@ export default function App() {
                         <Suspense fallback={<OfficeLoadingFallback />}>
                           <Routes>
                             <Route path="dashboard" element={<AcLandDashboard />} />
-                            <Route path="applications" element={<AcLandDashboard />} />
+                            <Route path="applications" element={<Navigate to="/office/ac-land/dashboard" replace />} />
                             <Route path="applications/:id" element={<AcLandApplicationDetailPage />} />
                             <Route path="hearings" element={<AcLandHearingsPage />} />
                             <Route path="mutation" element={<AcLandMutationPage />} />
@@ -266,7 +266,7 @@ export default function App() {
                         <Suspense fallback={<OfficeLoadingFallback />}>
                           <Routes>
                             <Route path="dashboard" element={<RegistryDashboard />} />
-                            <Route path="applications" element={<RegistryDashboard />} />
+                            <Route path="applications" element={<Navigate to="/office/registry/dashboard" replace />} />
                             <Route path="applications/:id" element={<RegistryApplicationDetailPage />} />
                             <Route path="appointments" element={<RegistryAppointmentsPage />} />
                             <Route path="documents" element={<RegistryDocumentsPage />} />

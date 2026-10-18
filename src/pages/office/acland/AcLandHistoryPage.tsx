@@ -79,7 +79,7 @@ export const AcLandHistoryPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4">
                       <span className="font-semibold text-slate-900 dark:text-white block">
-                        {isBn ? 'বিক্রেতা:' : 'Seller:'} {formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}
+                        {isBn ? 'বিক্রেতা:' : 'Seller:'} {formatName(app.seller, isBn, 'Md. Rafiqul Islam')}
                       </span>
                       <span className="text-slate-500 dark:text-slate-400 text-[11px]">
                         {isBn ? 'ক্রেতা:' : 'Buyer:'} {formatName(app.buyer, isBn, 'Farhan Ahmed')}

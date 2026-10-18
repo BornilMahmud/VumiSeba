@@ -157,7 +157,7 @@ export const AdminApplicationsPage: React.FC = () => {
               ) : (
                 filtered.map((app) => {
                   const office = getResponsibleOffice(app.stage);
-                  const sellerName = formatName(app.seller, isBn, 'Md. Arman Hossen Ripon');
+                  const sellerName = formatName(app.seller, isBn, 'Md. Rafiqul Islam');
                   const buyerName = formatName(app.buyer, isBn, 'Farhan Ahmed');
                   const mouzaName = formatMouza(app.parcel, isBn);
                   const dagLabel = formatPlot(app.parcel?.dag_no, isBn);

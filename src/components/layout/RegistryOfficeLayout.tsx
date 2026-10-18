@@ -15,11 +15,19 @@ export const RegistryOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({
 
   const avatarUrl = getUserAvatarUrl(user);
 
-  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+  const isActive = (path: string) => {
+    if (path === '/office/registry/dashboard') {
+      return (
+        location.pathname === '/office/registry/dashboard' ||
+        location.pathname === '/office/registry/applications' ||
+        location.pathname.startsWith('/office/registry/applications/')
+      );
+    }
+    return location.pathname === path || location.pathname.startsWith(path + '/');
+  };
 
   const navItems = [
     { path: '/office/registry/dashboard', label: 'ড্যাশবোর্ড', labelEn: 'Dashboard', iconClass: 'bx bxs-dashboard' },
-    { path: '/office/registry/applications', label: 'রেজিস্ট্রেশন শিডিউলিং কিউ', labelEn: 'Scheduling Queue', iconClass: 'bx bx-list-check' },
     { path: '/office/registry/appointments', label: 'নির্ধারিত অ্যাপয়েন্টমেন্ট', labelEn: 'Registry Appointments', iconClass: 'bx bx-calendar' },
     { path: '/office/registry/documents', label: 'দলিল ও স্ট্যাম্প নিরীক্ষা', labelEn: 'Deed & Stamp Audit', iconClass: 'bx bx-certification' },
     { path: '/office/registry/completed', label: 'রেজিস্ট্রিকৃত কবলা বালাম', labelEn: 'Completed Deeds & Balam', iconClass: 'bx bx-archive' },

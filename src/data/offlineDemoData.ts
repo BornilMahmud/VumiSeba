@@ -1,4 +1,4 @@
-import rawDb from '../../data/db.json';
+import rawDb from './offlineSnapshot.json';
 import { UserProfile } from '../types';
 
 export const OFFLINE_DB = rawDb;
@@ -8,13 +8,13 @@ export const OFFLINE_DEMO_USERS: Record<string, UserProfile> = {
     id: 'usr-seller-01',
     citizen_id: 'BHM-CIT-882194',
     email: 'seller@bhumisathi.gov.bd',
-    name_bn: 'মোঃ আরমান হোসেন রিপন',
-    name_en: 'MD. ARMAN HOSSEN RIPON',
+    name_bn: 'মোঃ রফিকুল ইসলাম',
+    name_en: 'MD. RAFIQUL ISLAM',
     mobile: '01711000001',
-    nid_no: '6847057587',
-    date_of_birth: '2005-06-01',
-    father_name_bn: 'মোঃ ফেরদৌস হাসান খান',
-    mother_name_bn: 'মোছাঃ মহসিনা আকতার শান্তনা',
+    nid_no: '19852691029384756',
+    date_of_birth: '1985-04-12',
+    father_name_bn: 'মোঃ আবুল কাসেম',
+    mother_name_bn: 'মোছাঃ রহিমা খাতুন',
     address_bn: 'বাড়ি ১২, রোড ৪, ব্লক সি, বাড্ডা, ঢাকা',
     district: 'ঢাকা',
     upazila: 'গুলশান',
@@ -209,7 +209,7 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
   const cleanRole = (role || '').trim().toLowerCase();
 
   // 1. Exact or partial match on persona keys
-  if (cleanId === 'seller' || cleanId === 'arman') return OFFLINE_DEMO_USERS.seller;
+  if (cleanId === 'seller' || cleanId === 'rafiq') return OFFLINE_DEMO_USERS.seller;
   if (cleanId === 'buyer' || cleanId === 'farhan') return OFFLINE_DEMO_USERS.buyer;
   if (cleanId === 'taxdue' || cleanId === 'latif') return OFFLINE_DEMO_USERS.taxdue;
   if (cleanId === 'oversell' || cleanId === 'nazrul') return OFFLINE_DEMO_USERS.oversell;
@@ -219,22 +219,22 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
   if (cleanId.includes('admin')) return OFFLINE_DEMO_USERS.central_admin;
 
   // 2. Email matching
-  if (cleanId.includes('seller@') || cleanId === 'demo-citizen@bhumisathi.gov.bd') {
+  if (cleanId.includes('seller') || cleanId === 'demo-citizen@bhumisathi.gov.bd') {
     return cleanId.includes('buyer') ? OFFLINE_DEMO_USERS.buyer : OFFLINE_DEMO_USERS.seller;
   }
-  if (cleanId.includes('buyer@')) return OFFLINE_DEMO_USERS.buyer;
+  if (cleanId.includes('buyer')) return OFFLINE_DEMO_USERS.buyer;
   if (cleanId.includes('latif') || cleanId.includes('taxdue')) return OFFLINE_DEMO_USERS.taxdue;
-  if (cleanId.includes('nazrul') || cleanId.includes('share')) return OFFLINE_DEMO_USERS.oversell;
-  if (cleanId.includes('union.officer') || cleanId === 'demo-union@bhumisathi.gov.bd') {
+  if (cleanId.includes('nazrul') || cleanId.includes('share') || cleanId.includes('oversell')) return OFFLINE_DEMO_USERS.oversell;
+  if (cleanId.includes('union') || cleanId.includes('kamal') || cleanId === 'demo-union@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.union_officer;
   }
-  if (cleanId.includes('ac.land') || cleanId === 'demo-acland@bhumisathi.gov.bd') {
+  if (cleanId.includes('ac.land') || cleanId.includes('acland') || cleanId.includes('tanvir') || cleanId === 'demo-acland@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.ac_land;
   }
-  if (cleanId.includes('sub.registrar') || cleanId === 'demo-subreg@bhumisathi.gov.bd') {
+  if (cleanId.includes('registrar') || cleanId.includes('registry') || cleanId.includes('roksana') || cleanId === 'demo-subreg@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.sub_registrar;
   }
-  if (cleanId.includes('admin@') || cleanId === 'demo-admin@bhumisathi.gov.bd') {
+  if (cleanId.includes('admin') || cleanId === 'demo-admin@bhumisathi.gov.bd') {
     return OFFLINE_DEMO_USERS.central_admin;
   }
 
@@ -253,9 +253,13 @@ export const findOfflineDemoUser = (identifier?: string, role?: string): UserPro
 
 export const getOfflineMyHoldings = (userId: string = 'usr-seller-01') => {
   const targetId = userId || 'usr-seller-01';
-  const ownerships = (rawDb.land_ownerships || []).filter(
-    (o: any) => (o.owner_id === targetId || o.owner_id === 'usr-seller-01') && (o.status === 'active' || o.status === 'partial_transferred')
+  let ownerships = (rawDb.land_ownerships || []).filter(
+    (o: any) => (o.owner_id === targetId || (targetId === 'usr-seller-01' && typeof o.owner_id === 'string' && o.owner_id.includes('seller'))) && (o.status === 'active' || o.status === 'partial_transferred')
   );
+
+  if (ownerships.length === 0) {
+    ownerships = (rawDb.land_ownerships || []).slice(0, 3);
+  }
 
   return ownerships.map((own: any) => {
     const parcel = (rawDb.land_parcels || []).find((p: any) => p.id === own.parcel_id);
@@ -271,69 +275,125 @@ export const getOfflineMyHoldings = (userId: string = 'usr-seller-01') => {
 export const getOfflineMyApplications = (userId: string = 'usr-seller-01') => {
   const targetId = userId || 'usr-seller-01';
   const myApps = (rawDb.sale_applications || []).filter(
-    (a: any) => a.seller_id === targetId || a.buyer_id === targetId
+    (a: any) => a.seller_id === targetId || a.buyer_id === targetId || a.applicant_id === targetId
   );
   if (myApps.length > 0) return myApps;
-  return (rawDb.sale_applications || []).slice(0, 5);
+  return (rawDb.sale_applications || []).slice(0, 8);
 };
 
 export const getOfflineMutations = (userId?: string) => {
+  if (userId) {
+    const userMutations = (rawDb.mutation_applications || []).filter(
+      (m: any) => m.applicant_id === userId || m.buyer_id === userId || m.seller_id === userId
+    );
+    if (userMutations.length > 0) return userMutations;
+  }
   return rawDb.mutation_applications || [];
 };
 
 export const getOfflineUnionQueue = () => {
+  const apps = rawDb.sale_applications || [];
   return {
     success: true,
     stats: {
-      new_applications_count: 3,
+      new_applications_count: apps.filter((a: any) => a.stage === 'UNION_LAND_OFFICE_VERIFICATION').length || 3,
       pending_review_count: 5,
       returned_count: 1,
       approved_count: 12,
       rejected_count: 1,
       tax_issue_count: 2,
     },
-    applications: (rawDb.sale_applications || []).slice(0, 10),
+    all_applications: apps,
+    queue: apps,
+    applications: apps,
   };
 };
 
 export const getOfflineAcLandQueue = () => {
+  const apps = rawDb.sale_applications || [];
+  const mutations = rawDb.mutation_applications || [];
   return {
     success: true,
     stats: {
-      pending_hearings_count: 4,
-      today_hearings_count: 2,
-      completed_this_month: 18,
-      appeal_cases_count: 1,
+      awaiting_review_count: apps.filter((a: any) => a.stage === 'AC_LAND_PRE_REGISTRATION_AUDIT').length || 4,
+      returned_count: 1,
+      approved_count: 18,
+      rejected_count: 1,
+      mutation_pending_count: mutations.length || 6,
+      hearings_scheduled_count: 2,
+      completed_count: 12,
     },
-    applications: (rawDb.sale_applications || []).slice(0, 10),
-    mutations: rawDb.mutation_applications || [],
+    all_applications: apps,
+    applications: apps,
+    queue: apps,
+    pre_registration_all: apps,
+    pre_registration_queue: apps,
+    mutation_cases: mutations,
+    mutations: mutations,
+    hearings: mutations.filter((m: any) => m.hearing_date || m.current_stage === 'hearing_scheduled'),
   };
 };
 
 export const getOfflineRegistryQueue = () => {
+  const apps = rawDb.sale_applications || [];
+  const appointments = rawDb.registration_appointments || [];
   return {
     success: true,
     stats: {
+      ready_for_scheduling_count: apps.filter((a: any) => a.stage === 'SUB_REGISTRY_SCHEDULING').length || 3,
+      appointments_scheduled_count: appointments.length || 4,
+      awaiting_completion_count: 2,
+      completed_registrations_count: 26,
+      total_cases: apps.length,
       today_appointments: 3,
       pending_verification: 4,
       registered_this_month: 26,
       stamp_duty_collected_bdt: 450000,
     },
-    appointments: rawDb.registration_appointments || [],
-    applications: (rawDb.sale_applications || []).slice(0, 10),
+    ready_queue: apps.filter((a: any) => a.stage === 'SUB_REGISTRY_SCHEDULING' || a.stage === 'SUB_REGISTRY_VERIFICATION'),
+    scheduled_queue: apps.filter((a: any) => a.appointment_details || a.stage === 'DEED_REGISTRATION_IN_PROGRESS'),
+    completed_queue: apps.filter((a: any) => a.stage === 'REGISTRATION_COMPLETE' || a.stage === 'MUTATION_APPROVED'),
+    completed_records: apps.filter((a: any) => a.stage === 'REGISTRATION_COMPLETE' || a.stage === 'MUTATION_APPROVED'),
+    appointments: appointments,
+    all_applications: apps,
+    applications: apps,
   };
 };
 
 export const getOfflineAdminQueue = () => {
+  const apps = rawDb.sale_applications || [];
+  const profiles = rawDb.profiles || [];
+  const logs = rawDb.audit_logs || [];
   return {
     success: true,
     stats: {
-      total_users: (rawDb.profiles || []).length || 1240,
-      active_cases: (rawDb.sale_applications || []).length || 42,
-      system_health: 'optimal',
-      audit_alerts: 0,
+      total_citizens: profiles.filter((p: any) => p.role === 'citizen').length || 1240,
+      pending_kyc_count: 2,
+      total_applications: apps.length || 42,
+      union_pending_count: apps.filter((a: any) => a.stage === 'UNION_LAND_OFFICE_VERIFICATION').length || 5,
+      acland_pending_count: apps.filter((a: any) => a.stage === 'AC_LAND_PRE_REGISTRATION_AUDIT').length || 4,
+      registry_pending_count: apps.filter((a: any) => a.stage === 'SUB_REGISTRY_SCHEDULING').length || 3,
+      completed_registrations: 26,
+      mutation_approved_count: 14,
+      returned_count: 2,
+      rejected_count: 1,
+      applications_by_stage: [
+        { stage: 'UNION_LAND_OFFICE_VERIFICATION', count: 5, label_bn: 'ইউনিয়ন যাচাই' },
+        { stage: 'AC_LAND_PRE_REGISTRATION_AUDIT', count: 4, label_bn: 'এসি ল্যান্ড অডিট' },
+        { stage: 'SUB_REGISTRY_SCHEDULING', count: 3, label_bn: 'সাব-রেজিস্ট্রি' },
+        { stage: 'MUTATION_APPROVED', count: 14, label_bn: 'নামজারি সম্পন্ন' },
+      ],
+      blocked_fraud_attempts: { total_blocked: 12, by_reason: [{ reason_bn: 'ভুয়া খতিয়ান রেকর্ড', count: 6 }, { reason_bn: 'আদালতের নিষেধাজ্ঞা গোপন', count: 4 }, { reason_bn: 'কর বকেয়া', count: 2 }] },
+      average_days_per_stage: [
+        { stage_bn: 'ইউনিয়ন প্রতিবেদন', avg_days: 1.8 },
+        { stage_bn: 'এসি ল্যান্ড অডিট', avg_days: 1.2 },
+        { stage_bn: 'সাব-রেজিস্ট্রি', avg_days: 2.1 },
+      ],
     },
-    users: rawDb.profiles || [],
-    audit_logs: (rawDb.audit_logs || []).slice(0, 20),
+    sales_queue: apps,
+    applications: apps,
+    pending_kyc: profiles.filter((p: any) => p.kyc_status === 'pending' || !p.kyc_status),
+    users: profiles,
+    audit_logs: logs,
   };
 };

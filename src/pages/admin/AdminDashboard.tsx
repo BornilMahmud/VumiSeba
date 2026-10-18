@@ -510,7 +510,7 @@ export const AdminDashboard: React.FC = () => {
                             : `/office/ac-land/applications/${app.id}`;
 
                         const isBn = language === 'bn';
-                        const sellerName = formatName(app.seller, isBn, 'Md. Arman Hossen Ripon');
+                        const sellerName = formatName(app.seller, isBn, 'Md. Rafiqul Islam');
                         const buyerName = formatName(app.buyer, isBn, 'Mst. Tania Akter');
                         const mouzaName = formatMouza(app.parcel, isBn);
 
@@ -652,7 +652,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-800">
                   <span className="text-slate-400 text-[10px] block">{language === 'en' ? 'Seller:' : 'বিক্রেতা:'}</span>
                   <p className="font-bold text-slate-800 dark:text-slate-200">
-                    {language === 'en' ? (inspectApp.seller?.name_en || inspectApp.seller?.name_bn || 'Md. Arman Hossen Ripon') : (inspectApp.seller?.name_bn || 'মোঃ আরমান হোসেন রিপন')}
+                    {language === 'en' ? (inspectApp.seller?.name_en || inspectApp.seller?.name_bn || 'Md. Rafiqul Islam') : (inspectApp.seller?.name_bn || 'মোঃ রফিকুল ইসলাম')}
                   </p>
                   <p className="text-[10px] text-slate-400">{language === 'en' ? 'NID:' : 'এনআইডি:'} {inspectApp.seller?.nid_no || inspectApp.seller?.nid || '19852692475187632'}</p>
                 </div>

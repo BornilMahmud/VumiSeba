@@ -256,7 +256,7 @@ export const RegistryDashboard: React.FC = () => {
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
                         <span className="font-semibold text-slate-800 dark:text-slate-200">
-                          {isBn ? 'বি: ' : 'S: '}{formatName(app.seller, isBn, 'Md. Arman Hossen Ripon')}
+                          {isBn ? 'বি: ' : 'S: '}{formatName(app.seller, isBn, 'Md. Rafiqul Islam')}
                         </span>
                         <span className="text-slate-400 mx-1.5">→</span>
                         <span className="font-semibold text-amber-950 dark:text-amber-400">
@@ -351,7 +351,7 @@ export const RegistryDashboard: React.FC = () => {
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
                         <span className="font-semibold text-slate-800 dark:text-slate-200">
-                          {isBn ? 'বি: ' : 'S: '}{isBn ? (app.seller?.name_bn || 'মোঃ আরমান হোসেন রিপন') : (app.seller?.name_en || 'Md. Arman Hossen Ripon')}
+                          {isBn ? 'বি: ' : 'S: '}{isBn ? (app.seller?.name_bn || 'মোঃ রফিকুল ইসলাম') : (app.seller?.name_en || 'Md. Rafiqul Islam')}
                         </span>
                         <span className="text-slate-400 mx-1.5">→</span>
                         <span className="font-semibold text-amber-950 dark:text-amber-400">
@@ -431,7 +431,7 @@ export const RegistryDashboard: React.FC = () => {
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
                         <p className="font-semibold text-slate-800 dark:text-slate-200">
-                          {isBn ? (app.seller?.name_bn || 'মোঃ আরমান হোসেন রিপন') : (app.seller?.name_en || 'Md. Arman Hossen Ripon')} →{' '}
+                          {isBn ? (app.seller?.name_bn || 'মোঃ রফিকুল ইসলাম') : (app.seller?.name_en || 'Md. Rafiqul Islam')} →{' '}
                           {isBn ? (app.buyer?.name_bn || 'মোসা: তানিয়া আক্তার') : (app.buyer?.name_en || 'Tania Akter')}
                         </p>
                       </td>
@@ -510,7 +510,7 @@ export const RegistryDashboard: React.FC = () => {
                 <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] block">{isBn ? 'বিক্রেতা (উপস্থিতি ও বায়োমেট্রিক):' : 'Seller (Biometrics):'}</span>
                   <p className="font-bold text-slate-800 dark:text-slate-200">
-                    {isBn ? (inspectItem.seller?.name_bn || 'মোঃ আরমান হোসেন রিপন') : (inspectItem.seller?.name_en || 'Md. Arman Hossen Ripon')}
+                    {isBn ? (inspectItem.seller?.name_bn || 'মোঃ রফিকুল ইসলাম') : (inspectItem.seller?.name_en || 'Md. Rafiqul Islam')}
                   </p>
                   <p className="text-[10px] text-slate-400">NID: {inspectItem.seller?.nid_no || '19852692475187632'}</p>
                   <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded">

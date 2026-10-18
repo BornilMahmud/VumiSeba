@@ -15,11 +15,19 @@ export const AcLandOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ c
 
   const avatarUrl = getUserAvatarUrl(user);
 
-  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+  const isActive = (path: string) => {
+    if (path === '/office/ac-land/dashboard') {
+      return (
+        location.pathname === '/office/ac-land/dashboard' ||
+        location.pathname === '/office/ac-land/applications' ||
+        location.pathname.startsWith('/office/ac-land/applications/')
+      );
+    }
+    return location.pathname === path || location.pathname.startsWith(path + '/');
+  };
 
   const navItems = [
     { path: '/office/ac-land/dashboard', label: 'ড্যাশবোর্ড', labelEn: 'Dashboard', iconClass: 'bx bxs-dashboard' },
-    { path: '/office/ac-land/applications', label: 'প্রাক-রেজিস্ট্রেশন যাচাই', labelEn: 'Pre-Registration Audit', iconClass: 'bx bx-task' },
     { path: '/office/ac-land/mutation', label: 'ই-নামজারি নথি (e-Mutation)', labelEn: 'e-Mutation Cases', iconClass: 'bx bx-git-branch' },
     { path: '/office/ac-land/hearings', label: 'শুনানি ব্যবস্থাপনা', labelEn: 'Hearing Docket', iconClass: 'bx bx-calendar-event' },
     { path: '/office/ac-land/decisions', label: 'আদেশ ও সিদ্ধান্তসমূহ', labelEn: 'Orders & Decrees', iconClass: 'bx bx-badge-check' },

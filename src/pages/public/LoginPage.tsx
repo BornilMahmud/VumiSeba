@@ -367,8 +367,8 @@ export const LoginPage: React.FC = () => {
                   'demo123456',
                   activeCitizenType,
                   'citizen',
-                  isBuyer ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা আরমান)',
-                  isBuyer ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Arman)'
+                  isBuyer ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা রফিক)',
+                  isBuyer ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Rafiq)'
                 );
               }}
               className={`p-2.5 rounded-xl border transition-all cursor-pointer hover:border-emerald-500 hover:shadow-sm active:scale-[0.99] ${
@@ -387,7 +387,7 @@ export const LoginPage: React.FC = () => {
                       {isBn ? '১. ডেমো নাগরিক' : '1. Demo Citizen'}
                     </span>
                     <span className="text-[10px] text-slate-500 dark:text-slate-400 block leading-tight truncate">
-                      {activeCitizenType === 'seller' ? (isBn ? 'বিক্রেতা আরমান' : 'Seller Arman') : (isBn ? 'ক্রেতা ফারহান' : 'Buyer Farhan')}
+                      {activeCitizenType === 'seller' ? (isBn ? 'বিক্রেতা রফিক' : 'Seller Rafiq') : (isBn ? 'ক্রেতা ফারহান' : 'Buyer Farhan')}
                     </span>
                   </div>
                 </div>
@@ -402,8 +402,8 @@ export const LoginPage: React.FC = () => {
                       'demo123456',
                       activeCitizenType,
                       'citizen',
-                      isBuyer ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা আরমান)',
-                      isBuyer ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Arman)'
+                      isBuyer ? '১. ডেমো নাগরিক (ক্রেতা ফারহান)' : '১. ডেমো নাগরিক (বিক্রেতা রফিক)',
+                      isBuyer ? '1. Demo Citizen (Buyer Farhan)' : '1. Demo Citizen (Seller Rafiq)'
                     );
                   }}
                   className="text-[10px] text-emerald-700 dark:text-emerald-400 hover:underline font-bold shrink-0 flex items-center gap-1"
@@ -429,8 +429,8 @@ export const LoginPage: React.FC = () => {
                       'demo123456',
                       'seller',
                       'citizen',
-                      '১. ডেমো নাগরিক (বিক্রেতা আরমান)',
-                      '1. Demo Citizen (Seller Arman)'
+                      '১. ডেমো নাগরিক (বিক্রেতা রফিক)',
+                      '1. Demo Citizen (Seller Rafiq)'
                     );
                   }}
                   className={`px-1.5 py-0.5 rounded text-[10px] font-medium transition cursor-pointer ${
@@ -439,7 +439,7 @@ export const LoginPage: React.FC = () => {
                       : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'
                   }`}
                 >
-                  {isBn ? 'আরমান' : 'Arman'}
+                  {isBn ? 'রফিক' : 'Rafiq'}
                 </button>
                 <button
                   type="button"

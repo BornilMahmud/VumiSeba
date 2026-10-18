@@ -56,6 +56,9 @@ export default {
           muted: '#64748B',
           dark: '#020617',
         },
+        slate: {
+          850: '#151f32',
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

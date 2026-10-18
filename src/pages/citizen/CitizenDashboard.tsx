@@ -21,6 +21,11 @@ import {
   FileText,
   MapPin,
   RefreshCw,
+  Phone,
+  CreditCard,
+  Copy,
+  Check,
+  Sparkles,
 } from 'lucide-react';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { getUserAvatarUrl } from '../../utils/userUtils';
@@ -33,6 +38,14 @@ export const CitizenDashboard: React.FC = () => {
   const [applications, setApplications] = useState<any[]>([]);
   const [mutations, setMutations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [copiedCitizenId, setCopiedCitizenId] = useState(false);
+
+  const handleCopyCitizenId = () => {
+    const cid = user?.citizen_id || 'BHM-CIT-882194';
+    navigator.clipboard.writeText(cid);
+    setCopiedCitizenId(true);
+    setTimeout(() => setCopiedCitizenId(false), 2000);
+  };
 
   // Quick View Modal State
   const [selectedHolding, setSelectedHolding] = useState<any | null>(null);
@@ -79,67 +92,159 @@ export const CitizenDashboard: React.FC = () => {
 
   return (
     <div className={`${isBn ? 'font-bengali' : 'font-sans'} space-y-6`}>
-      {/* 1. Welcome & Citizen ID Header Card */}
-      <div className="bg-gradient-to-r from-emerald-50/90 via-teal-50/50 to-white dark:from-[#0b1329] dark:to-[#071d24] text-slate-900 dark:text-white rounded-2xl p-6 shadow-gov-sm border border-emerald-200/90 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
-        <div className="flex items-center gap-4">
-          {getUserAvatarUrl(user) ? (
-            <div className="relative shrink-0">
-              <img
-                src={getUserAvatarUrl(user)!}
-                alt={userName}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover ring-2 ring-emerald-500/50 shadow-sm bg-white dark:bg-slate-800"
-              />
-              <span
-                className="absolute -bottom-1 -right-1 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white dark:border-slate-850 flex items-center gap-0.5 shadow-2xs"
-                title="এনআইডি ডাটাবেজ ভেরিফায়েড ফটো"
-              >
-                <CheckCircle2 size={10} /> NID
-              </span>
-            </div>
-          ) : null}
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs text-teal-700 dark:text-teal-400 font-bold uppercase tracking-wider">
-                {isBn ? 'স্বাগতম, নাগরিক' : 'Welcome, Citizen'}
-              </span>
-              {user?.kyc_status === 'verified' && (
-                <span className="inline-flex items-center gap-1 bg-emerald-100 dark:bg-teal-500/20 text-emerald-800 dark:text-teal-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-300 dark:border-teal-400/30">
-                  <CheckCircle2 size={11} />
-                  {isBn ? 'স্মার্ট কেওয়াইসি ভেরিফায়েড' : 'Smart KYC Verified'}
+      {/* 1. Welcome & Citizen ID Header Card - Redesigned Executive Banner */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-emerald-500/20 dark:border-teal-500/20 bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/20 dark:from-[#081020] dark:via-[#0c182b] dark:to-[#071d24] p-5 sm:p-6 lg:p-7 shadow-lg shadow-emerald-950/5 dark:shadow-2xl dark:shadow-black/50 transition-all">
+        {/* Subtle Ambient Decorative Glows */}
+        <div className="absolute -top-16 -right-16 w-64 h-64 bg-teal-500/10 dark:bg-teal-400/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-emerald-500/10 dark:bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          {/* Left: Citizen Profile Details */}
+          <div className="flex items-start sm:items-center gap-4 sm:gap-5 min-w-0">
+            {getUserAvatarUrl(user) ? (
+              <div className="relative shrink-0">
+                <div className="p-0.5 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-400 to-cyan-500 shadow-md">
+                  <img
+                    src={getUserAvatarUrl(user)!}
+                    alt={userName}
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-[14px] sm:rounded-[22px] object-cover bg-white dark:bg-slate-900"
+                  />
+                </div>
+                <span
+                  className="absolute -bottom-1.5 -right-1.5 bg-emerald-600 dark:bg-teal-500 text-white dark:text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full border-2 border-white dark:border-slate-900 flex items-center gap-0.5 shadow-sm"
+                  title="জাতীয় পরিচয়পত্র ডাটাবেজ ভেরিফায়েড ছবি"
+                >
+                  <CheckCircle2 size={11} className="shrink-0" />
+                  <span>NID</span>
                 </span>
-              )}
+              </div>
+            ) : null}
+
+            <div className="min-w-0 flex-1">
+              {/* Header Badge Row */}
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 dark:bg-teal-500/15 text-emerald-800 dark:text-teal-300 border border-emerald-500/20 dark:border-teal-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-teal-400 animate-pulse" />
+                  {isBn ? 'স্বাগতম, নাগরিক' : 'Welcome, Citizen'}
+                </span>
+
+                {user?.kyc_status === 'verified' && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-2xs">
+                    <ShieldCheck size={12} className="text-emerald-600 dark:text-teal-400 shrink-0" />
+                    <span>{isBn ? 'স্মার্ট কেওয়াইসি ভেরিফায়েড' : 'Smart KYC Verified'}</span>
+                  </span>
+                )}
+              </div>
+
+              {/* Citizen Name */}
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex flex-wrap items-baseline gap-2">
+                <span>{userName}</span>
+                {user?.name_en && user?.name_bn && (
+                  <span className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 font-sans tracking-normal">
+                    ({user.name_en})
+                  </span>
+                )}
+              </h1>
+
+              {/* Metadata Badges Row */}
+              <div className="flex flex-wrap items-center gap-2 pt-2.5 text-xs text-slate-600 dark:text-slate-300">
+                {/* Mobile Chip */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 font-mono text-[11px] shadow-2xs">
+                  <Phone size={12} className="text-emerald-600 dark:text-teal-400 shrink-0" />
+                  <span>{user?.mobile || '017XXXXXXXX'}</span>
+                </div>
+
+                {/* NID Chip */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 font-mono text-[11px] shadow-2xs">
+                  <CreditCard size={12} className="text-emerald-600 dark:text-teal-400 shrink-0" />
+                  <span className="text-slate-500 dark:text-slate-400">{isBn ? 'এনআইডি: ' : 'NID: '}</span>
+                  <span className="font-bold text-slate-900 dark:text-white">
+                    {user?.nid_no
+                      ? user.nid_no.length > 8
+                        ? `${user.nid_no.slice(0, 4)}••••${user.nid_no.slice(-4)}`
+                        : user.nid_no
+                      : (isBn ? 'স্মার্ট কার্ড ভেরিফাইড' : 'Smart Card')}
+                  </span>
+                </div>
+
+                {/* Location Chip */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 text-[11px] shadow-2xs">
+                  <MapPin size={12} className="text-emerald-600 dark:text-teal-400 shrink-0" />
+                  <span className="font-medium text-slate-700 dark:text-slate-200">
+                    {user?.upazila ? `${user.upazila}, ` : ''}
+                    {isBn ? (user?.district || 'ঢাকা') : (user?.district_en || 'Dhaka')}
+                  </span>
+                </div>
+              </div>
             </div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">{userName}</h1>
-            <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
-              {isBn ? 'মোবাইল: ' : 'Mobile: '}{user?.mobile || '017xxxxxxxx'} | {isBn ? 'এনআইডি: ' : 'NID: '}{user?.nid_no || (isBn ? 'স্মার্ট কার্ড ভেরিফাইড' : 'Smart Card Verified')} | {isBn ? 'জেলা: ' : 'District: '}{isBn ? (user?.district || 'ঢাকা') : (user?.district_en || 'Dhaka')}
-            </p>
           </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <div className="bg-white dark:bg-slate-800/80 border border-emerald-200/90 dark:border-slate-700 p-3.5 rounded-xl shadow-xs text-left md:text-right">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 block font-medium">
-              {isBn ? 'ইউনিক সিটিজেন আইডি' : 'Unique Citizen ID'}
-            </span>
-            <span className="text-base sm:text-lg font-mono font-bold text-emerald-700 dark:text-teal-400 block">
-              {user?.citizen_id || 'BHM-CIT-882194'}
-            </span>
-            <Link
-              to="/citizen/profile"
-              className="text-[11px] text-emerald-700 dark:text-teal-300 hover:underline inline-flex items-center gap-1 mt-1 font-semibold"
+          {/* Right: Smart Citizen ID Card Widget & Refresh Sync */}
+          <div className="flex items-center gap-3 self-stretch lg:self-auto shrink-0">
+            {/* Holographic Digital Citizen ID Mini-Card */}
+            <div className="group relative flex-1 sm:flex-initial overflow-hidden rounded-2xl p-4 bg-gradient-to-b from-white via-slate-50/80 to-emerald-50/40 dark:from-slate-900/95 dark:via-[#0c192d] dark:to-[#072421] border border-emerald-300/60 dark:border-teal-500/30 shadow-md shadow-emerald-950/5 dark:shadow-xl dark:shadow-teal-950/20 min-w-[240px] sm:min-w-[270px] transition-all hover:border-emerald-400 dark:hover:border-teal-400/50">
+              {/* Top Accent Gradient Bar */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-500" />
+
+              {/* Card Header */}
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200/80 dark:border-slate-800/80">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-teal-400 animate-pulse" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    {isBn ? 'ইউনিক সিটিজেন আইডি' : 'Unique Citizen ID'}
+                  </span>
+                </div>
+
+                {/* Instant Copy Button */}
+                <button
+                  type="button"
+                  onClick={handleCopyCitizenId}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-teal-300 hover:bg-emerald-100/60 dark:hover:bg-slate-800 transition cursor-pointer"
+                  title={isBn ? 'আইডি কপি করুন' : 'Copy ID'}
+                >
+                  {copiedCitizenId ? (
+                    <>
+                      <Check size={11} className="text-emerald-600 dark:text-teal-400" />
+                      <span className="text-emerald-600 dark:text-teal-400 font-bold">{isBn ? 'কপি হয়েছে' : 'Copied'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={11} />
+                      <span>{isBn ? 'কপি' : 'Copy'}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Citizen ID Monospace Display */}
+              <div className="my-1.5 flex items-baseline justify-between">
+                <span className="text-lg sm:text-xl font-mono font-extrabold tracking-wider text-emerald-700 dark:text-teal-300 drop-shadow-2xs">
+                  {user?.citizen_id || 'BHM-CIT-882194'}
+                </span>
+              </div>
+
+              {/* Card Footer Link */}
+              <div className="pt-2 mt-1 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                <span className="text-[10px] text-slate-400 font-mono tracking-wider">SECURE • BHM-ID</span>
+                <Link
+                  to="/citizen/profile"
+                  className="inline-flex items-center gap-1 font-bold text-emerald-700 hover:text-emerald-800 dark:text-teal-300 dark:hover:text-teal-200 group-hover:translate-x-0.5 transition"
+                >
+                  <span>{isBn ? 'প্রোফাইল ও কেওয়াইসি' : 'Profile & KYC'}</span>
+                  <ArrowRight size={12} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Refresh Sync Button */}
+            <button
+              onClick={loadDashboardData}
+              className="p-3.5 rounded-2xl bg-white hover:bg-slate-100 dark:bg-slate-900/90 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200/90 dark:border-slate-800 hover:border-emerald-300 dark:hover:border-teal-500/50 transition cursor-pointer shadow-sm hover:shadow active:scale-95 shrink-0"
+              title={isBn ? 'তথ্য রিফ্রেশ করুন' : 'Refresh dashboard data'}
             >
-              <span>{isBn ? 'প্রোফাইল ও কেওয়াইসি' : 'Profile & KYC'}</span>
-              <ArrowRight size={12} />
-            </Link>
+              <RefreshCw size={17} className={loading ? 'animate-spin text-emerald-600 dark:text-teal-400' : ''} />
+            </button>
           </div>
-
-          <button
-            onClick={loadDashboardData}
-            className="p-2.5 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition cursor-pointer shadow-xs"
-            title={isBn ? 'রিফ্রেশ করুন' : 'Refresh'}
-          >
-            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
-          </button>
         </div>
       </div>
 
@@ -379,7 +484,7 @@ export const CitizenDashboard: React.FC = () => {
         ) : (
           <div className="space-y-3">
             {applications.map((app) => {
-              const sellerName = formatName(app.seller, isBn, 'Md. Arman Hossen Ripon');
+              const sellerName = formatName(app.seller, isBn, 'Md. Rafiqul Islam');
               const buyerName = formatName(app.buyer, isBn, 'Farhan Ahmed');
               const mouzaName = formatMouza(app.parcel, isBn);
               const plotLabel = formatPlot(app.parcel?.dag_no, isBn);
