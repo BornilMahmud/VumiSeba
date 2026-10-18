@@ -1,777 +1,652 @@
-# VumiSeba (ভূমিসেবা)
-### বাংলাদেশ নাগরিক ভূমি সেবা, স্বত্ব যাচাই, স্মার্ট রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি প্ল্যাটফর্ম
-**Bangladesh Citizen Land Services, Pre-Purchase Due Diligence, Smart Registry & Automated e-Mutation**
+<div align="center">
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Core Correctness](https://img.shields.io/badge/core%20correctness-7%2F7%20passed-success.svg)]()
-[![Risk Engine Tests](https://img.shields.io/badge/risk%20engine-7%2F7%20passed-success.svg)]()
-[![E2E Workflow](https://img.shields.io/badge/acceptance%20tests-100%25%20passing-teal.svg)]()
-[![Firebase Rules Tests](https://img.shields.io/badge/firebase%20rules-26%20passed-blue.svg)]()
-[![Bundle Size](https://img.shields.io/badge/main%20chunk-113%20kB%20gzip-emerald.svg)]()
-[![Locale](https://img.shields.io/badge/locale-bn--BD%20%2F%20en--US-navy.svg)]()
+# 🏛️ VumiSeba (ভূমিসেবা)
 
----
+**Bangladesh Citizen Land Services · Pre-Purchase Due Diligence · Smart Registry · Automated e-Mutation**
 
-## 1. The Problem
-In Bangladesh, over 70% of all ongoing civil court litigations originate from land disputes. This tragedy stems from two systemic gaps:
-1. **Pre-Purchase Information Blackout (বায়নার পূর্বে স্বত্ব অন্ধত্ব):** Buyers enter binding earnest money agreements (*বায়না*) without knowing whether the seller actually owns the stated inheritance share, whether taxes are overdue, or whether a civil court injunction or bank mortgage encumbers the plot.
-2. **The 40-Year Registry-Mutation Chasm (রেজিস্ট্রেশন ও নামজারির ফারাক):** After paying registration taxes at the Sub-Registry Office (Ministry of Law), citizens must manually initiate a separate mutation case at the AC Land Office (Ministry of Land). The resulting delays, middlemen, and unmutated deeds allow rogue sellers to sell the same plot multiple times (*ডাবল-সেল জালিয়াতি*).
+*বাংলাদেশ নাগরিক ভূমি সেবা, স্বত্ব যাচাই, স্মার্ট রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি প্ল্যাটফর্ম*
 
----
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Core](https://img.shields.io/badge/core%20correctness-7%2F7-success)
+![Risk Engine](https://img.shields.io/badge/risk%20engine-7%2F7-success)
+![E2E](https://img.shields.io/badge/acceptance%20tests-100%25-14b8a6)
+![Firebase Rules](https://img.shields.io/badge/firebase%20rules-26%20passed-blue)
+![Bundle](https://img.shields.io/badge/main%20chunk-113%20kB%20gzip-10b981)
+![Locale](https://img.shields.io/badge/locale-bn--BD%20%7C%20en--US-1e3a5f)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-## 2. The Solution
-VumiSeba is a unified, production-grade LandTech platform built on **pure problem-solving**, architectural honesty, and cryptographic rigor:
-- **P5: Check Before You Buy (কেনার আগে জমি যাচাই):** Instant, transparent 7-factor due diligence with **Critical Factor Overrides**. Active court injunctions, government khas land, and unrecorded seller shares automatically cap safety scores and prevent false "Low Risk" ratings.
-- **P4: Smart Registry to Automated e-Mutation (স্মার্ট রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি):** Completing deed registration at the Sub-Registry Office atomically spawns an official e-Mutation case into the AC Land judicial docket—eliminating manual citizen paperwork, reducing delays from months to 24 hours, and locking transferred shares in real time.
+[Quick Start](#-quick-start) · [Workflow](#-the-9-stage-lifecycle) · [Real vs Simulated](#-real-vs-simulated) · [Roles](#-roles--office-panels) · [API](#-api-reference) · [Deploy](#-deployment)
+
+</div>
 
 ---
 
-## 3. How It Works (The 9-Stage Integrated Lifecycle)
+## 📑 Table of Contents
+
+1. [The Problem](#-the-problem)
+2. [The Solution](#-the-solution)
+3. [Quick Start](#-quick-start)
+4. [The 9-Stage Lifecycle](#-the-9-stage-lifecycle)
+5. [Real vs Simulated](#-real-vs-simulated)
+6. [Features](#-features)
+7. [Roles & Office Panels](#-roles--office-panels)
+8. [Demo Accounts & Scenarios](#-demo-accounts--scenarios)
+9. [Tech Stack](#-tech-stack)
+10. [Architecture](#-architecture)
+11. [Repository Structure](#-repository-structure)
+12. [Database Schema](#-database-schema)
+13. [API Reference](#-api-reference)
+14. [Configuration](#-configuration)
+15. [Testing](#-testing)
+16. [Deployment](#-deployment)
+17. [Security & Privacy](#-security--privacy)
+18. [Known Limitations](#-known-limitations)
+19. [Roadmap & Contributing](#-roadmap--contributing)
+
+---
+
+## 🎯 The Problem
+
+In Bangladesh, over 70% of ongoing civil court litigation originates from land disputes. Two systemic gaps drive this:
+
+| Gap | Impact |
+|---|---|
+| **Pre-purchase information blackout** (বায়নার পূর্বে স্বত্ব অন্ধত্ব) | Buyers sign binding earnest-money agreements (*বায়না*) without knowing whether the seller owns the stated share, whether taxes are overdue, or whether an injunction or bank mortgage encumbers the plot. |
+| **Registry–mutation chasm** (রেজিস্ট্রেশন ও নামজারির ফারাক) | After registering at the Sub-Registry Office (Ministry of Law), citizens must manually open a separate mutation case at the AC Land Office (Ministry of Land). Delays and middlemen let rogue sellers sell the same plot repeatedly (*ডাবল-সেল জালিয়াতি*). |
+
+## 💡 The Solution
+
+A unified LandTech platform built on problem-solving, architectural honesty, and verifiable correctness.
+
+- **🔍 P5: Check Before You Buy** (কেনার আগে জমি যাচাই) — Transparent 7-factor due diligence with **Critical Factor Overrides**. Active injunctions, government khas land, and unrecorded seller shares cap the safety score so a risky parcel can never read "Low Risk".
+- **⚡ P4: Smart Registry → Automated e-Mutation** (স্মার্ট রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি) — Completing deed registration atomically spawns an e-Mutation case in the AC Land docket. No manual paperwork, delays cut from months to ~24 hours, and transferred shares are locked in real time.
+
+---
+
+## 🚀 Quick Start
+
+**Prerequisites:** Node.js v20 LTS (v18.18+ works), npm v9+, Git v2.30+
+
+```bash
+# 1. Clone and install
+git clone https://github.com/BornilMahmud/VumiSeba.git && cd VumiSeba && npm install
+
+# 2. Seed the demo dataset (21 synthetic parcels across 12 districts)
+npm run seed:demo
+
+# 3. Start backend API (port 5050) + frontend SPA (port 3000)
+npm run dev
+```
+
+Open **http://localhost:3000/** and click the floating **"৩-মিনিট ডেমো গল্প (3-Min Judge Demo Story)"** button for a guided walkthrough.
+
+> Default settings work with zero configuration. To customize, run `cp .env.example .env` (see [Configuration](#-configuration)).
+
+<details>
+<summary><b>Optional: seed Cloud Firestore</b></summary>
+
+```bash
+npm run seed:firestore   # idempotent; demo accounts + parcel records
+```
+</details>
+
+---
+
+## 🔄 The 9-Stage Lifecycle
+
 ```mermaid
 graph LR
-    S1["1. Tax Clearance"] --> S2["2. Citizen Submission & Share Guard"]
+    S1["1. Tax Clearance"] --> S2["2. Submission & Share Guard"]
     S2 --> S3["3. Union Field Report"]
-    S3 --> S4["4. AC Land NOC Approval"]
-    S4 --> S5["5. Sub-Registry Deed Execution"]
+    S3 --> S4["4. AC Land NOC"]
+    S4 --> S5["5. Sub-Registry Deed"]
     S5 --> S6["6. Auto e-Mutation Spawn"]
     S6 --> S7["7. Tahsil Proposal"]
     S7 --> S8["8. AC Land Hearing & Order"]
-    S8 --> S9["9. Final Mutation Khatian"]
+    S8 --> S9["9. Final Khatian"]
 ```
-1. **Tax Clearance & Dakhila:** Holding arrears strictly block sale submission at the server level until cleared.
-2. **Citizen Submission with Basis-Point Share Guard:** Proposed shares are locked with integer arithmetic (`10,000 BPS`) to prevent fractional drift and double-selling.
-3. **Union Field Investigation:** Union officers submit on-ground possession, boundary, and tenant rights reports.
-4. **AC Land Title NOC:** State re-validation runs before AC Land approval to guarantee clean title.
-5. **Sub-Registry Deed Registration:** Biometric sign-off commits deed records.
-6. **Automated e-Mutation Case Generation:** Registry execution triggers atomic mutation case initialization.
-7. **Tahsil Proposal:** Automated docket routing to the relevant field circle.
-8. **Hearing & Order:** AC Land issues formal mutation judgment.
-9. **Final Record of Rights (Khatian):** Generates new digital Khatian with verifiable QR code and decrements seller share.
 
----
-
-## 4. What is Real vs. Simulated (Honest Architecture Boundary)
-
-> We believe hackathon judges value operational honesty over artificial claims. For full details, see [docs/LIMITATIONS.md](docs/LIMITATIONS.md).
-
-| Component | Status | Reality vs. Simulation Boundary |
+| # | Stage | What happens |
 |---|---|---|
-| **Risk Engine & Critical Overrides** | **100% Real Code** | Evaluates 7 distinct factors; active injunctions and khas land strictly override scores. |
-| **Share Math (BPS Arithmetic)** | **100% Real Code** | Uses integer basis points (`10,000 BPS`), ensuring 0.000% rounding drift across generations. |
-| **Double-Sale Guard & Mutex** | **100% Real Code** | Active reservation locks pending shares; store transactions are serialized via mutex. |
-| **Downstream State Re-Validation** | **100% Real Code** | Automatically re-checks tax, injunction, and share validity before each officer approval. |
-| **9-Stage Inter-Office Workflow** | **100% Real Code** | Full RBAC for 5 roles (Citizen, Union, AC Land, Sub-Registrar, Admin) with live dashboards. |
-| **National NID / Porichoy** | *Simulated* | Uses realistic synthetic NIDs and deterministic validation (real API requires Gov NDA). |
-| **Sonali e-Challan / Payment** | *Simulated* | Real ledger demands and payment receipts; simulated payment gateway callback. |
-| **Judicial Case Registers** | *Simulated* | Seeded with realistic court cases and injunctions across 21 synthetic parcels. |
-
----
-
-## 5. Quick Start (Run in 3 Commands)
-
-```bash
-# 1. Clone repository & install dependencies
-git clone https://github.com/BornilMahmud/VumiSeba.git && cd VumiSeba && npm install
-
-# 2. Seed synthetic demonstration dataset (21 realistic parcels across 12 districts)
-npm run seed:demo
-
-# 3. Launch both backend API (port 5050) and frontend SPA (port 3000)
-npm run dev
-```
-Open **`http://localhost:3000/`** in your browser.  
-Use the floating **"৩-মিনিট ডেমো গল্প (3-Min Judge Demo Story)"** button for an automated, guided walkthrough.
-
----
-
-## 6. Verification & Test Results Table
-
-All test suites run synchronously via `npm test` and `npm run test:firebase`:
-
-| Test Suite | File | Tests / Assertions | Result |
-|---|---|---|---|
-| **Phase 1: Core Correctness** | `server/tests/core-correctness.test.ts` | 7 critical groups (BPS drift, ID collisions, double-sale guard, injunction blocks, re-validation, production JWT safety, serialized mutex) | **100% PASS** |
-| **Phase 3: Risk Engine Transparency** | `server/tests/risk-engine.test.ts` | 7 transparent factor groups + 6 table-driven boundary scenarios | **100% PASS** |
-| **End-to-End Acceptance Tests** | `server/tests/e2e-workflow.test.ts` | 7 full lifecycle stages (KYC, search, risk check, tax guard, over-sell guard, 9-stage registry to mutation) | **100% PASS** |
-| **Firebase Security Rules** | `server/tests/firebase-auth-rules.test.ts` | 26 assertions (role elevation guards, immutable audit logs, public search, index coverage) | **26/26 PASS** |
-| **TypeScript & Build Performance** | `npx tsc --noEmit && npm run build` | Code-split production bundle | **0 errors (Main chunk 113 kB gzip)** |
-
----
-
-## D. Project Features
-
-### Implemented & Verified Capabilities
-- [x] **Public Land Record Search:** Querying by administrative boundaries, Khatian, and Dag.
-- [x] **Multi-Factor Risk Assessment Engine:** Computes risk score, weighted indicators, and plain-Bengali legal recommendations.
-- [x] **Citizen Registration & Mock NID KYC:** Automated issuance of unique Citizen ID.
-- [x] **Citizen Land Portfolio:** Real-time summary of owned parcels, shares, and land development tax status.
-- [x] **Holding Tax Payment & e-Dakhila Generation:** Simulated instant tax clearance.
-- [x] **Sale Application Creation Wizard:** Validates parcel ownership, enforces tax clearance, and prevents over-selling.
-- [x] **Printable Preparatory Deed Draft Modal:** High-density legal deed preview with statutory non-government watermarks.
-- [x] **Integrated Officer Workspace:** Specialized operational panels for Union Land Assistant Officer (ULAO), AC Land, Sub-Registrar, and Central Admin.
-- [x] **Field Inspection Reporting:** Union officers submit physical boundary and possession verification reports.
-- [x] **Sub-Registry Execution Docket:** Deed verification and biometric sign-off triggering automated e-Mutation.
-- [x] **AC Land Judicial Order & Khatian Issuance:** Generates new mutation Khatian (e.g., `নামজারি-৮৮৯৯`), updates buyer/seller shares, and recalculates holdings.
-- [x] **Immutable Security Audit Log:** Server-side audit logging for administrative accountability.
-- [x] **Dual Database Architecture:** Dual-engine supporting Google Firebase Cloud Firestore and persistent zero-dependency ACID JSON store.
-- [x] **Firebase Authentication & Demo Switcher:** Google Sign-In with popup/redirect and 1-click persona switching bar.
-
-### Simulated / Future Features (Transparent Scope)
-- *Live National NID Election Commission Server:* Simulated through deterministic NID/DOB validation.
-- *Real-time Banking Gateway (e-Challan):* Automated simulated transaction receipts.
-- *Live Judicial Case Database:* Seeded with real-world case scenarios for demonstration.
-
----
-
-## E. Five Separate Functional Office Panels & Role System
-
-VumiSeba enforces strict Role-Based Access Control (RBAC) across five completely distinct application areas, each with its own route namespace, dedicated institutional color-themed layout, sub-navigation, and authorized actions:
-
-### 1. Citizen Panel (`/citizen/*`)
-- **Theme:** Government Teal & Indigo (`bg-slate-50`)
-- **Primary Routes:**
-  - `/citizen/dashboard` — Citizen overview, holding stats, fast actions
-  - `/citizen/my-land` — Owned land parcels, khatian references, recorded shares
-  - `/citizen/search-land` — Land search by Mouza, Khatian, and Dag
-  - `/citizen/verify-land` — P5 multi-factor risk assessment and due-diligence report
-  - `/citizen/tax` — Land development tax calculation, arrears payment, e-Dakhila
-  - `/citizen/sale-applications` — New sale application creation wizard with tax guard
-  - `/citizen/my-applications` — Real-time 8-step application timeline, return notices, and modal resubmission
-  - `/citizen/mutation-applications` — Post-registration e-Mutation case tracking
-  - `/citizen/notifications` — In-app alerts, hearing notifications, and appointment checklists
-  - `/citizen/profile` — KYC status, verified NID info, unique Citizen ID (`BHM-CIT-XXXXXX`)
-- **Security Boundaries:** Citizens cannot access any officer review queues, private inspection notes, or administrative controls.
-
-### 2. Union Land Office Panel (`/office/union/*`)
-- **Role Identifier:** `union_officer` (ইউনিয়ন ভূমি সহকারী কর্মকর্তা / তহশিলদার)
-- **Theme:** Emerald Green Institutional Theme (`emerald-700` / `emerald-900`)
-- **Primary Routes:**
-  - `/office/union/dashboard` — Live database stats: New, Pending, Returned, Approved, Rejected, Tax Issues
-  - `/office/union/applications` — Full application queue with search, status filters, and pagination
-  - `/office/union/applications/:id` — Detailed application inspection, tax dues check, parcel documents, and review modal:
-    - **Approve and Forward to AC Land** (persists field findings)
-    - **Return for Correction** (enforces mandatory Bengali explanation)
-    - **Reject Application** (enforces mandatory legal rejection reason)
-  - `/office/union/tax-verification` — Direct holding tax & arrears verification docket
-  - `/office/union/record-verification` — Physical recordroom comparison docket
-  - `/office/union/reports` — Field investigation inspection logs
-  - `/office/union/history` — Audit trail of processed Union Land cases
-
-### 3. AC Land Office Panel (`/office/ac-land/*`)
-- **Role Identifier:** `ac_land` (সহকারী কমিশনার (ভূমি) / AC Land Office)
-- **Theme:** Royal Judicial Indigo Theme (`indigo-800` / `indigo-950`)
-- **Primary Routes:**
-  - `/office/ac-land/dashboard` — Live statistics: Awaiting Review, Pre-reg Approved, Hearings Scheduled, Mutation Pending
-  - `/office/ac-land/applications` — Applications forwarded from Union Land Office
-  - `/office/ac-land/applications/:id` — Full dossier review, Union report inspection, risk score verification, and review modal:
-    - **Approve Pre-Registration** (routes application to Sub-Registry queue)
-    - **Return for Correction** (enforces mandatory Bengali explanation)
-    - **Reject Application** (enforces mandatory judicial reason)
-  - `/office/ac-land/mutation` — **Post-registration e-Mutation docket** (strictly separated from pre-registration review):
-    - **Schedule Judicial Hearing** (records date, time, court room, issues summons)
-    - **Approve Mutation** (generates new Khatian `নামজারি-XXXX`, updates ownership shares, recalculates holding)
-    - **Reject Mutation** (records formal dismissal order)
-  - `/office/ac-land/hearings` — Active hearing calendar and summons management
-  - `/office/ac-land/decisions` — Signed mutation orders archive
-  - `/office/ac-land/history` — Historical case repository
-
-### 4. Sub-Registry Office Panel (`/office/registry/*`)
-- **Role Identifier:** `sub_registrar` (সাব-রেজিস্ট্রার / Sub-Registry Office)
-- **Theme:** Amber & Bronze Registrar Theme (`amber-700` / `amber-950`)
-- **Primary Routes:**
-  - `/office/registry/dashboard` — Live stats: Ready for Scheduling, Scheduled, Pending Completion, Completed
-  - `/office/registry/applications` — Applications approved by AC Land ready for deed execution
-  - `/office/registry/applications/:id` — Deed transaction review, stamp duty verification, and operational actions:
-    - **Schedule Appointment** (records date, time slot, office room, mandatory checklist, and sends notifications to buyer/seller)
-    - **Complete Registration** (records statutory deed number, volume, fees, and **automatically spawns linked e-Mutation case**)
-    - **Postpone / Cancel Appointment** (records postponement reason)
-  - `/office/registry/appointments` — Live daily appointment roster
-  - `/office/registry/documents` — Registered deed drafts & checklist archive
-  - `/office/registry/completed` — Archive of completed statutory registrations
-  - `/office/registry/history` — Complete office execution history
-
-### 5. Central Administration Panel (`/admin/*`)
-- **Role Identifier:** `central_admin` (কেন্দ্রীয় ভূমি প্রশাসন ও সিস্টেম অডিটর)
-- **Theme:** Dark Slate & Cyan Governance Theme (`slate-900` / `cyan-500`)
-- **Primary Routes:**
-  - `/admin/dashboard` — National operational overview, office funnel breakdown, pending KYC queue
-  - `/admin/users` — Citizen user directory, NID status, KYC approval action issuing Citizen ID
-  - `/admin/roles` — Role assignment console (trusted provisioning for officer designations)
-  - `/admin/applications` — Cross-office oversight, case progression monitoring, stuck case alerts
-  - `/admin/offices` — District, Upazila, and Union land office directory
-  - `/admin/monitoring` — Real-time system health, database persistence, and API uptime
-  - `/admin/audit-logs` — Immutable, server-side tamper-proof audit trail
-  - `/admin/demo-data` — Seed status and synthetic scenario monitor
-  - `/admin/settings` — Platform parameters, deadlines, and notification providers
-
----
-
-## F. Technology Stack
-
-- **Frontend Framework:** React 18 (SPA) with TypeScript
-- **Build Tool:** Vite 6
-- **Routing:** React Router DOM v7
-- **Styling & Design System:** Tailwind CSS v3 with customized government color tokens (`gov-navy`, `gov-teal`, `gov-amber`, `gov-blue`), tactile physics, and shimmer button animations.
-- **Typography:** Google Fonts (*Hind Siliguri*, *Noto Sans Bengali*, *Inter*)
-- **Icons:** Lucide React
-- **Backend API:** Node.js v20+ with Express 4, TypeScript, and TSX
-- **Schema Validation:** Zod
-- **Authentication:** Dual — Firebase Authentication (Google Sign-In) + Stateless JWT with BCrypt password hashing
-- **Database & Cloud:** 
-  - Google Firebase Cloud Firestore (`landtech-e5773`)
-  - Persistent ACID Local JSON Store (`data/db.json` with transactional atomic locks)
-- **Deployment Targets:**
-  - **Vercel:** Frontend Client Single Page Application (`dist/`)
-  - **Render:** Backend REST API Web Service (`server/`)
-  - **Firebase:** Auth, Firestore Rules, Firestore Indexes, Hosting
-
----
-
-## G. Languages Used
-
-- **TypeScript:** Core language for frontend UI, backend API controllers, data models, seeding, and automated test suites.
-- **JavaScript (ES Modules):** Tooling, Vite configuration, PostCSS, and build orchestration.
-- **HTML5:** Semantic markup, print media query wrappers, accessibility tags.
-- **CSS3:** Custom Tailwind utility extensions, micro-animations (`@keyframes button-shimmer`, `@keyframes pulse-glow`), custom webkit scrollbars.
-- **Bengali (বাংলা - bn-BD):** Complete localized citizen experience, legal terminology, government notices, and error messages.
-
----
-
-## H. Repository Architecture
-
-The project is structured as a single cohesive monorepo:
-
-```
-VumiSeba/
-├── .env.example             # Sanitized environment variable template
-├── .gitignore               # Strict secret and build artifact exclusion
-├── firebase.json            # Firebase CLI configuration (Firestore rules/indexes & hosting)
-├── firestore.rules          # Hardened role-based Firestore security rules
-├── firestore.indexes.json   # Composite Firestore query indexes
-├── package.json             # Root monorepo scripts & dependencies
-├── render.yaml              # Render Blueprint deployment definition
-├── vercel.json              # Vercel SPA routing and build output configuration
-├── tsconfig.json            # TypeScript configuration
-├── vite.config.ts           # Vite frontend configuration
-├── tailwind.config.js       # Tailwind theme and custom government palette
-├── data/
-│   └── db.json              # Persistent local JSON database (seeded with 6 core scenarios)
-├── scripts/
-│   ├── seedFirestore.ts     # Idempotent Cloud Firestore data seeder
-│   └── bootstrapAdmin.ts    # Secure CLI utility for administrator role provisioning
-├── server/                  # Backend Node.js / Express API
-│   ├── index.ts             # Express entry point, health check, middleware, CORS
-│   ├── tsconfig.json        # Backend TypeScript compiler configuration
-│   ├── db/
-│   │   ├── seed.ts          # Comprehensive local database seeder
-│   │   └── store.ts         # Atomic transactional JSON store engine
-│   ├── middleware/
-│   │   ├── auth.ts          # JWT authentication and RBAC guard middleware
-│   │   └── audit.ts         # Server-side security audit logging
-│   ├── routes/              # Modular Express API controllers
-│   │   ├── auth.ts          # Login, Register, Google sync, KYC
-│   │   ├── land.ts          # Parcel queries, holdings, ownership
-│   │   ├── risk.ts          # Multi-factor due diligence risk scoring
-│   │   ├── tax.ts           # Holding tax dues & e-Dakhila payment
-│   │   ├── sale.ts          # Sale application workflow & share verification
-│   │   ├── mutation.ts      # e-Mutation lifecycle & Khatian issuance
-│   │   ├── officer.ts       # Unified office queues & reporting
-│   │   ├── notifications.ts # Citizen alerts and status notifications
-│   │   └── audit.ts         # Audit trail reporting
-│   └── tests/
-│       ├── e2e-workflow.test.ts          # Full acceptance test suite (P5 + P4)
-│       └── firebase-auth-rules.test.ts   # Firebase Auth, security rules & index validation
-└── src/                     # Frontend React TypeScript Application
-    ├── main.tsx             # React DOM root entry point
-    ├── App.tsx              # Application router, role guards, layout wrappers
-    ├── index.css            # Base Tailwind imports, font definitions, button animations
-    ├── lib/
-    │   └── firebase.ts      # Universal Firebase singleton resolver (Vite + Node safe)
-    ├── context/
-    │   ├── AuthContext.tsx  # Dual Firebase Google Auth & Demo session state
-    │   └── NotificationContext.tsx # Global in-app notification center
-    ├── services/
-    │   ├── api.ts           # Configurable REST API client with environment fallback
-    │   └── firestoreService.ts # Cloud Firestore CRUD service
-    ├── types/               # TypeScript interfaces, enums, data contracts
-    ├── components/
-    │   ├── common/          # Reusable UI widgets (DemoPersonaBar, DeedDraftModal)
-    │   └── layout/          # Navbar, Footer, CitizenLayout, OfficerLayout
-    └── pages/
-        ├── public/          # HomePage, SearchLandPage, VerifyLandPage, LoginPage, RegisterPage
-        ├── citizen/         # Dashboard, MyLand, TaxClearance, SellLand, Deals, Mutations
-        └── officer/         # UnifiedOfficerWorkspace, UnionLand, AcLand, SubRegistry, CentralAdmin
-```
-
----
-
-## I. System Architecture
-
-The following Mermaid diagram illustrates how citizens, administrative officers, Vercel, Render, Firebase Auth, and Cloud Firestore communicate:
-
-```mermaid
-flowchart TD
-    subgraph Clients["নাগরিক ও কর্মকর্তা ব্রাউজার (Clients)"]
-        Citizen[নাগরিক / Citizen Browser]
-        Officer[কর্মকর্তা / Officer Browser]
-    end
-
-    subgraph VercelHost["Frontend Hosting (Vercel)"]
-        VercelApp[VumiSeba Vite React SPA\n- Bengali Typography & Animated Buttons\n- Due-Diligence UI\n- 1-Click Demo Persona Bar]
-    end
-
-    subgraph FirebaseCloud["Google Firebase (landtech-e5773)"]
-        FirebaseAuth[Firebase Authentication\n- Google Sign-In Provider\n- Pre-provisioned Demo Accounts]
-        Firestore[Cloud Firestore\n- users, land_parcels, sale_applications\n- mutation_cases, tax_records, audit_logs\n- Role-based Security Rules]
-    end
-
-    subgraph RenderHost["Backend API (Render)"]
-        ExpressApp[Node.js / Express API Server\n- Port 10000 / Dynamic PORT\n- Tax Clearance Guard\n- Over-selling Validation Guard\n- Automated Mutation Trigger Engine]
-        JSONDB[(Persistent Store / Fallback\ndata/db.json)]
-    end
-
-    Citizen -->|HTTP GET / Router| VercelApp
-    Officer -->|HTTP GET / Router| VercelApp
-
-    VercelApp -->|Google Sign-In / Auth Tokens| FirebaseAuth
-    VercelApp -->|Direct Reads / Public Parcels| Firestore
-    VercelApp -->|REST API Requests /api/*| ExpressApp
-
-    ExpressApp -->|Dual Data Synchronization| Firestore
-    ExpressApp -->|Atomic Local ACID Persistence| JSONDB
-    FirebaseAuth -.->|Token Verification| ExpressApp
-```
-
----
-
-## J. Database Structure
-
-Cloud Firestore collections and data fields:
-
-### 1. `users` (Citizen & Staff Profiles)
-- `id` / `uid` (string, primary key)
-- `email` (string)
-- `name_bn` (string, citizen full name)
-- `nid` (string, 10 or 17 digit national identity)
-- `citizen_id` (string, e.g., `BHM-CIT-254787`)
-- `role` (enum: `citizen`, `union_officer`, `ac_land`, `sub_registrar`, `central_admin`)
-- `kyc_status` (enum: `pending`, `verified`, `rejected`)
-- `created_at` (timestamp)
-
-### 2. `land_parcels` (Land Due Diligence Records)
-- `id` (string)
-- `district` (string, e.g., `ঢাকা`)
-- `upazila` (string, e.g., `গুলশান`)
-- `mouza` (string, e.g., `বাড্ডা`)
-- `jl_no` (string)
-- `khatian_no` (string, e.g., `১২০৪`)
-- `khatian_type` (enum: `RS`, `City Survey`, `Mutation`)
-- `dag_no` (string, e.g., `৪০৫`)
-- `land_class` (string, e.g., `নাল`, `বাণিজ্যিক`)
-- `total_area_decimal` (number)
-- `ownerships` (array of `{ owner_name, share_fraction, recorded_area_decimal, citizen_id }`)
-- `tax_status` (object: `{ is_cleared, last_paid_fiscal_year, dues_amount }`)
-- `litigation` (object: `{ has_injunction, case_number, court_name }`)
-- `encumbrance` (object: `{ is_mortgaged, bank_name, mortgage_amount }`)
-- `acquisition_status` (boolean)
-
-### 3. `sale_applications` (Transaction Dockets)
-- `id` (string, e.g., `SALE-2026-001`)
-- `parcel_id` (string, foreign key)
-- `seller_id` (string, citizen_id)
-- `buyer_id` (string, citizen_id)
-- `proposed_share` (number)
-- `proposed_area_decimal` (number)
-- `total_consideration_bdt` (number)
-- `status` (enum: `draft`, `submitted`, `union_verified`, `admin_approved`, `registered`, `rejected`)
-- `created_at`, `updated_at` (timestamp)
-
-### 4. `mutation_cases` (Post-Registration e-Mutations)
-- `id` (string, e.g., `MUT-2026-7841`)
-- `sale_application_id` (string, foreign key)
-- `parcel_id` (string)
-- `buyer_id` (string)
-- `status` (enum: `initiated`, `hearing_scheduled`, `approved`, `khatian_issued`, `rejected`)
-- `resulting_khatian_no` (string, generated upon approval, e.g., `নামজারি-৮৮৯৯`)
-- `resulting_holding_no` (string)
-- `approved_at` (timestamp)
-
-### 5. `audit_logs` (Immutable Administrative Audit Trail)
-- `id` (string)
-- `action` (string, e.g., `SALE_SUBMITTED`, `DEED_REGISTERED`, `MUTATION_APPROVED`)
-- `actor_role` (string)
-- `actor_id` (string)
-- `details` (map/object)
-- `timestamp` (string / ISO)
-
----
-
-## K. Installation and Local Development
-
-### 1. Prerequisites
-- **Node.js:** v18.18+ or v20.x (Recommended: v20 LTS)
-- **npm:** v9.x or v10.x
-- **Git:** v2.30+
-
-### 2. Clone Repository
-```bash
-git clone https://github.com/BornilMahmud/VumiSeba.git
-cd VumiSeba
-```
-
-### 3. Install Dependencies
-```bash
-npm install
-```
-
-### 4. Environment Setup
-```bash
-# Create local environment file from example template
-cp .env.example .env
-```
-*(Default settings run seamlessly with zero configuration).*
-
-### 5. Database Seeding & Verification
-```bash
-# 1. Seed local database with 6 comprehensive test scenarios
-npm run seed
-
-# 2. (Optional) Seed Cloud Firestore with demo accounts & parcel records
-npm run seed:firestore
-```
-
-### 6. Run Automated Tests
-```bash
-# Run End-to-End acceptance test suite
-npm test
-
-# Run Firebase Authentication & Firestore Security Rules tests
-npm run test:firebase
-```
-
-### 7. Run Full Application Locally
-```bash
-# Concurrently start backend API (port 5000) and Vite frontend (port 3000)
-npm run dev
-```
-Open your browser at **`http://localhost:3000/`**.
-
----
-
-## L. Environment Variables
-
-All variables are documented in `.env.example`.
-
-### Frontend Variables (Vercel)
-| Variable | Description | Example / Default |
-| :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | Production Render API base URL | `https://vumiseba-backend.onrender.com/api` (Leave empty for local proxy) |
-| `VITE_FIREBASE_API_KEY` | Firebase Web API Key for project `landtech-e5773` | `AIzaSy...` |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Authentication Domain | `landtech-e5773.firebaseapp.com` |
-| `VITE_FIREBASE_PROJECT_ID` | Firebase Project ID | `landtech-e5773` |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Cloud Storage Bucket | `landtech-e5773.firebasestorage.app` |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | FCM Messaging Sender ID | `1234567890` |
-| `VITE_FIREBASE_APP_ID` | Firebase Web App ID | `1:1234567890:web:...` |
-
-### Backend Variables (Render)
-| Variable | Description | Example / Default |
-| :--- | :--- | :--- |
-| `PORT` | Dynamic web port assigned by Render | `10000` |
-| `NODE_ENV` | Environment mode | `production` |
-| `CORS_ORIGIN` | Permitted frontend origins (comma-separated or `*`) | `https://vumi-seba.vercel.app` |
-| `JWT_SECRET` | Secret key for stateless API session tokens | Random 64-character string |
-| `FIREBASE_PROJECT_ID` | Firebase Project Identifier | `landtech-e5773` |
-| `SIMULATE_SMS` | Enable mock SMS notification adapter | `true` |
-| `SIMULATE_EMAIL` | Enable mock email notification adapter | `true` |
-
----
-
-## M. Login Entry Points, Dummy Accounts & 9 Real-World Scenarios
-
-### 1. Dedicated Role-Based Login Routes
-- `/login/citizen` — Citizen authentication portal (supports Email/Password and Google Sign-In)
-- `/login/office` — Institutional portal for Union Land Officers, AC Land, and Sub-Registrars
-- `/login/admin` — Central Administration governance console
-
-*A 1-Click Demo Persona Bar is pinned to the top of the interface for immediate persona switching.*
-
-### 2. Configured Test Identities
-| Demo Persona | Name (বাংলা) | Email | Role | Pre-configured Testing Scenario |
-| :--- | :--- | :--- | :--- | :--- |
-| **১. ক্রেতা (Buyer)** | ফারহান আহমেদ | `buyer@bhumisathi.gov.bd` | `citizen` | Verified buyer; owns holding in Banasree; receives appointment & mutation alerts. |
-| **২. বিক্রেতা (Clean)** | মোঃ রফিকুল ইসলাম | `seller@bhumisathi.gov.bd` | `citizen` | Owns Dag 405 (10 decimal / 50% share); tax cleared; clean sale flow. |
-| **৩. বিক্রেতা (Tax Due)** | আব্দুল লতিফ | `latif.taxdue@bhumisathi.gov.bd` | `citizen` | Owns Dag 882; ৳4,850 tax arrears; triggers server tax-clearance block. |
-| **৪. বিক্রেতা (Over-Seller)** | নজরুল ইসলাম | `nazrul.oversell@bhumisathi.gov.bd` | `citizen` | Owns Dag 102 (12.5% share); attempts to sell 80%; blocked by share validation. |
-| **৫. তহশিলদার (ULAO)** | মো. কামাল হোসেন | `kamal.union@bhumisathi.gov.bd` | `union_officer` | Union Land Officer; reviews Dag 405, submits field findings, forwards to AC Land. |
-| **৬. এসি ল্যান্ড (AC Land)** | তানভীর হাসান চৌধুরী | `tanvir.acland@bhumisathi.gov.bd` | `ac_land` | AC Land Officer; approves pre-registration to Sub-Registry & manages e-Mutation court. |
-| **৭. সাব-রেজিস্ট্রার** | সৈয়দা রোকসানা পারভীন | `roksana.registry@bhumisathi.gov.bd` | `sub_registrar` | Sub-Registrar; schedules appointments with document checklists & completes deeds. |
-| **৮. কেন্দ্রীয় অ্যাডমিন** | কাজী শাহেদুজ্জামান | `admin@bhumisathi.gov.bd` | `central_admin` | Central Supervisor; KYC approvals, role provisioning, and audit logs. |
-
-*Pre-provisioned Firebase / Local Demo Password:* `DemoCitizen2026!` / `demo123456`.
-
-### 3. Nine Pre-Seeded Realistic Demo Scenarios
-1. **Scenario A (Clean Submission Awaiting Union Review):** `sa-clean-demo` (Dag ৪০৫, Khatian ১২০৪, বাড্ডা) — Newly submitted application ready for Union Land Office verification.
-2. **Scenario B (Returned for Correction):** `sa-returned-demo` (Dag ৫০২, Khatian ১২০৫, বাড্ডা) — Returned by officer with mandatory Bengali explanation; citizen can view note and resubmit.
-3. **Scenario C (Union Approved, Awaiting AC Land Review):** `sa-union-approved-demo` (Dag ৬০৩, Khatian ১২০৬, বাড্ডা) — Union inspection completed; queued in AC Land pre-registration docket.
-4. **Scenario D (AC Land Approved, Ready for Scheduling):** `sa-acland-approved-demo` (Dag ৭০৪, Khatian ১২০৭, বাড্ডা) — Pre-registration approved; queued in Sub-Registry scheduling docket.
-5. **Scenario E (Appointment Scheduled):** `sa-scheduled-demo` (Dag ৩০২, Khatian ৭৮০, বাড্ডা) — Scheduled by Sub-Registrar for 22 April 2026; buyer/seller received in-app notifications with document checklist.
-6. **Scenario F (Registration Completed, Awaiting Mutation Review):** `sa-registered-demo` (Dag ৮০৫, Khatian ১২০৮, বাড্ডা) — Deed No `৪৫১২/২০২৬` executed; automatically spawned linked mutation case `MUT-AC-2026-9921` in AC Land mutation queue.
-7. **Scenario G (Application Rejected with Reason):** `sa-rejected-demo` (Dag ৭১০, আফতাবনগর) — Injunction & mortgage parcel; formally rejected with recorded legal explanation.
-8. **Scenario H (Share Mismatch / Oversell Attempt):** `sa-share-mismatch-demo` (Dag ১০২, ভাটারা) — Seller attempts to sell 80% when owning only 12.5%; flagged in risk report.
-9. **Scenario I (Tax Arrears Liability):** `sa-taxdue-demo` (Dag ৮৮২, সাঁতারকুল) — Unpaid tax arrears of ৳4,850; flagged for local tax settlement.
-
----
-
-## N. Complete 9-Stage End-to-End Workflow State Machine
-
-The transaction lifecycle strictly enforces the following sequence:
+| 1 | **Tax Clearance & Dakhila** | Arrears block sale submission at the server level until cleared. |
+| 2 | **Submission + Basis-Point Share Guard** | Proposed shares are locked with integer arithmetic (`10,000 BPS`) to prevent fractional drift and double-selling. |
+| 3 | **Union Field Investigation** | Union officers file on-ground possession, boundary, and tenant-rights reports. |
+| 4 | **AC Land Title NOC** | State is re-validated before AC Land approval to guarantee clean title. |
+| 5 | **Sub-Registry Deed Registration** | Biometric sign-off commits the deed record. |
+| 6 | **Auto e-Mutation Case** | Registry execution atomically initializes the mutation case. |
+| 7 | **Tahsil Proposal** | Automated docket routing to the relevant field circle. |
+| 8 | **Hearing & Order** | AC Land issues the formal mutation judgment. |
+| 9 | **Final Khatian** | New digital Khatian with verifiable QR code; seller share is decremented. |
+
+<details>
+<summary><b>Full state machine</b></summary>
 
 ```
 [Citizen: Submit Application]
-             │
-             ▼
-[Stage 1: UNION_REVIEW_PENDING] (ইউনিয়ন ভূমি অফিসে প্রাথমিক যাচাই)
-       │                        │
-       ├─► [RETURNED_FOR_CORRECTION] (সংশোধন প্রয়োজন - citizen resubmits)
-       ├─► [UNION_REJECTED] (ইউনিয়ন ভূমি অফিসে বাতিল)
-       ▼
-[Stage 2: AC_LAND_REVIEW_PENDING] (এসি ল্যান্ড অফিসে প্রাক-রেজিস্ট্রেশন পর্যালোচনা)
-       │                        │
-       ├─► [RETURNED_FOR_CORRECTION] (সংশোধন প্রয়োজন)
-       ├─► [AC_LAND_REJECTED] (এসি ল্যান্ড অফিসে বাতিল)
-       ▼
-[Stage 3: REGISTRATION_READY] (সাব-রেজিস্ট্রি অফিসে শিডিউলের জন্য প্রস্তুত)
-             │
-             ▼
-[Stage 4: APPOINTMENT_SCHEDULED] (রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট নির্ধারিত - triggers in-app alerts)
-             │
-             ▼
-[Stage 5: REGISTRATION_COMPLETED] (দলিল নিবন্ধন সম্পন্ন - deed no/volume recorded)
-             │
-             ▼ (Auto-spawn linked e-Mutation case)
-[Stage 6: MUTATION_PENDING] (নামজারি পর্যালোচনা ও শুনানির অপেক্ষমাণ)
-             │
-             ▼
-[Stage 7: HEARING_SCHEDULED] (শুনানির তারিখ ও সময় নির্ধারিত)
-       │                        │
-       ├─► [MUTATION_REJECTED] (নামজারি মোকাদ্দমা বাতিল)
-       ▼
-[Stage 8: MUTATION_APPROVED] (নামজারি অনুমোদিত - new Khatian & shares updated)
-             │
-             ▼
-[Stage 9: KHATIAN_DELIVERED] (নতুন নামজারি খতিয়ান হস্তান্তর ও হোল্ডিং হালনাগাদ)
+        │
+        ▼
+[1 UNION_REVIEW_PENDING] ── ► RETURNED_FOR_CORRECTION (citizen resubmits)
+        │                 └─► UNION_REJECTED
+        ▼
+[2 AC_LAND_REVIEW_PENDING] ─► RETURNED_FOR_CORRECTION
+        │                  └─► AC_LAND_REJECTED
+        ▼
+[3 REGISTRATION_READY]        সাব-রেজিস্ট্রি অফিসে শিডিউলের জন্য প্রস্তুত
+        ▼
+[4 APPOINTMENT_SCHEDULED]     triggers in-app alerts
+        ▼
+[5 REGISTRATION_COMPLETED]    deed no. / volume recorded
+        ▼  (auto-spawn linked e-Mutation case)
+[6 MUTATION_PENDING]
+        ▼
+[7 HEARING_SCHEDULED] ─────── ► MUTATION_REJECTED
+        ▼
+[8 MUTATION_APPROVED]         new Khatian & shares updated
+        ▼
+[9 KHATIAN_DELIVERED]         holding updated
+```
+</details>
+
+---
+
+## ⚖️ Real vs Simulated
+
+> Operational honesty over artificial claims. Full details: [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md).
+
+| Component | Status | Boundary |
+|---|:---:|---|
+| Risk Engine & Critical Overrides | ✅ Real | 7 factors; injunctions and khas land strictly override scores. |
+| Share Math (BPS) | ✅ Real | Integer basis points, zero rounding drift across generations. |
+| Double-Sale Guard & Mutex | ✅ Real | Active reservations lock pending shares; store transactions are serialized. |
+| Downstream Re-Validation | ✅ Real | Tax, injunction, and share validity re-checked before each officer approval. |
+| 9-Stage Inter-Office Workflow | ✅ Real | Full RBAC for 5 roles with live dashboards. |
+| National NID / Porichoy | 🧪 Simulated | Synthetic NIDs + deterministic validation (real API requires Gov NDA). |
+| Sonali e-Challan / Payment | 🧪 Simulated | Real ledger demands and receipts; simulated gateway callback. |
+| Judicial Case Registers | 🧪 Simulated | Realistic seeded cases and injunctions across 21 synthetic parcels. |
+
+---
+
+## ✨ Features
+
+### Implemented & verified
+
+- [x] **Public land record search** by administrative boundary, Khatian, and Dag
+- [x] **Multi-factor risk engine** — score, weighted indicators, plain-Bengali legal recommendations
+- [x] **Citizen registration & mock NID KYC** with unique Citizen ID issuance
+- [x] **Citizen land portfolio** — parcels, shares, and tax status
+- [x] **Holding tax payment & e-Dakhila** (simulated instant clearance)
+- [x] **Sale application wizard** — ownership validation, tax clearance, over-sell prevention
+- [x] **Printable deed draft** with statutory non-government watermark
+- [x] **Integrated officer workspace** — ULAO, AC Land, Sub-Registrar, Central Admin
+- [x] **Field inspection reporting** by Union officers
+- [x] **Sub-Registry execution docket** — biometric sign-off triggers e-Mutation
+- [x] **AC Land judicial order & Khatian issuance** (e.g. `নামজারি-৮৮৯৯`) with share recalculation
+- [x] **Immutable server-side audit log**
+- [x] **Dual database** — Cloud Firestore + zero-dependency ACID JSON store
+- [x] **Firebase Auth (Google Sign-In)** with 1-click demo persona switcher
+
+### Simulated / future scope
+
+- Live National NID (Election Commission) server → deterministic NID/DOB validation
+- Real-time banking gateway (e-Challan) → simulated receipts
+- Live judicial case database → seeded scenarios
+
+---
+
+## 🏢 Roles & Office Panels
+
+Strict RBAC across five separate application areas, each with its own route namespace, themed layout, and authorized actions.
+
+| Panel | Role ID | Route prefix | Theme |
+|---|---|---|---|
+| 🧑 Citizen | `citizen` | `/citizen/*` | Teal & Indigo |
+| 🌿 Union Land Office | `union_officer` | `/office/union/*` | Emerald |
+| ⚖️ AC Land Office | `ac_land` | `/office/ac-land/*` | Judicial Indigo |
+| 📜 Sub-Registry Office | `sub_registrar` | `/office/registry/*` | Amber & Bronze |
+| 🛡️ Central Admin | `central_admin` | `/admin/*` | Slate & Cyan |
+
+<details>
+<summary><b>🧑 Citizen Panel</b> — <code>/citizen/*</code></summary>
+
+| Route | Purpose |
+|---|---|
+| `/citizen/dashboard` | Overview, holding stats, fast actions |
+| `/citizen/my-land` | Owned parcels, khatian references, recorded shares |
+| `/citizen/search-land` | Search by Mouza, Khatian, Dag |
+| `/citizen/verify-land` | P5 risk assessment and due-diligence report |
+| `/citizen/tax` | Tax calculation, arrears payment, e-Dakhila |
+| `/citizen/sale-applications` | Sale application wizard with tax guard |
+| `/citizen/my-applications` | 8-step timeline, return notices, modal resubmission |
+| `/citizen/mutation-applications` | Post-registration e-Mutation tracking |
+| `/citizen/notifications` | Alerts, hearing notices, appointment checklists |
+| `/citizen/profile` | KYC status, verified NID, Citizen ID (`BHM-CIT-XXXXXX`) |
+
+**Boundary:** citizens cannot access officer queues, private inspection notes, or admin controls.
+</details>
+
+<details>
+<summary><b>🌿 Union Land Office</b> — <code>/office/union/*</code> (ইউনিয়ন ভূমি সহকারী কর্মকর্তা / তহশিলদার)</summary>
+
+| Route | Purpose |
+|---|---|
+| `/dashboard` | Live stats: New, Pending, Returned, Approved, Rejected, Tax Issues |
+| `/applications` | Queue with search, status filters, pagination |
+| `/applications/:id` | Inspection, tax dues, parcel documents, review modal |
+| `/tax-verification` | Holding tax & arrears docket |
+| `/record-verification` | Physical recordroom comparison docket |
+| `/reports` | Field investigation logs |
+| `/history` | Audit trail of processed cases |
+
+**Review actions:** Approve & forward to AC Land (persists field findings) · Return for correction (mandatory Bengali explanation) · Reject (mandatory legal reason)
+</details>
+
+<details>
+<summary><b>⚖️ AC Land Office</b> — <code>/office/ac-land/*</code> (সহকারী কমিশনার (ভূমি))</summary>
+
+| Route | Purpose |
+|---|---|
+| `/dashboard` | Awaiting Review, Pre-reg Approved, Hearings Scheduled, Mutation Pending |
+| `/applications` | Applications forwarded from Union |
+| `/applications/:id` | Dossier, Union report, risk score, review modal |
+| `/mutation` | **Post-registration e-Mutation docket** (separate from pre-registration review) |
+| `/hearings` | Hearing calendar and summons |
+| `/decisions` | Signed mutation orders archive |
+| `/history` | Historical case repository |
+
+**Pre-registration actions:** Approve (routes to Sub-Registry) · Return · Reject (mandatory judicial reason)
+**Mutation actions:** Schedule hearing (date, time, court room, summons) · Approve (issues Khatian `নামজারি-XXXX`, updates shares and holding) · Reject (formal dismissal order)
+</details>
+
+<details>
+<summary><b>📜 Sub-Registry Office</b> — <code>/office/registry/*</code> (সাব-রেজিস্ট্রার)</summary>
+
+| Route | Purpose |
+|---|---|
+| `/dashboard` | Ready for Scheduling, Scheduled, Pending Completion, Completed |
+| `/applications` | AC Land–approved applications ready for deed execution |
+| `/applications/:id` | Deed review, stamp duty verification, actions |
+| `/appointments` | Daily appointment roster |
+| `/documents` | Registered deed drafts & checklist archive |
+| `/completed` | Completed registrations |
+| `/history` | Office execution history |
+
+**Actions:** Schedule appointment (date, slot, room, mandatory checklist, buyer/seller notifications) · Complete registration (deed number, volume, fees, **auto-spawns linked e-Mutation case**) · Postpone/cancel (with reason)
+</details>
+
+<details>
+<summary><b>🛡️ Central Administration</b> — <code>/admin/*</code> (কেন্দ্রীয় ভূমি প্রশাসন ও সিস্টেম অডিটর)</summary>
+
+| Route | Purpose |
+|---|---|
+| `/dashboard` | National overview, office funnel, pending KYC queue |
+| `/users` | Citizen directory, NID status, KYC approval (issues Citizen ID) |
+| `/roles` | Trusted officer role provisioning |
+| `/applications` | Cross-office oversight, stuck-case alerts |
+| `/offices` | District, Upazila, Union office directory |
+| `/monitoring` | System health, persistence, API uptime |
+| `/audit-logs` | Immutable tamper-proof audit trail |
+| `/demo-data` | Seed status and scenario monitor |
+| `/settings` | Platform parameters, deadlines, notification providers |
+</details>
+
+---
+
+## 🧪 Demo Accounts & Scenarios
+
+Entry points: `/login/citizen` (Email/Password + Google) · `/login/office` (Union, AC Land, Sub-Registrar) · `/login/admin`.
+A **1-Click Demo Persona Bar** is pinned to the top of the UI.
+
+### Test identities
+
+| # | Persona | Name | Email | Role | Scenario |
+|---|---|---|---|---|---|
+| 1 | Buyer | ফারহান আহমেদ | `buyer@bhumisathi.gov.bd` | citizen | Verified; owns Banasree holding; receives alerts |
+| 2 | Seller (clean) | মোঃ রফিকুল ইসলাম | `seller@bhumisathi.gov.bd` | citizen | Dag 405 (10 dec / 50%); tax cleared |
+| 3 | Seller (tax due) | আব্দুল লতিফ | `latif.taxdue@bhumisathi.gov.bd` | citizen | Dag 882; ৳4,850 arrears → tax block |
+| 4 | Seller (over-sell) | নজরুল ইসলাম | `nazrul.oversell@bhumisathi.gov.bd` | citizen | Dag 102 (12.5%); tries to sell 80% → blocked |
+| 5 | তহশিলদার (ULAO) | মো. কামাল হোসেন | `kamal.union@bhumisathi.gov.bd` | union_officer | Reviews Dag 405, forwards to AC Land |
+| 6 | AC Land | তানভীর হাসান চৌধুরী | `tanvir.acland@bhumisathi.gov.bd` | ac_land | Pre-reg approval & mutation court |
+| 7 | Sub-Registrar | সৈয়দা রোকসানা পারভীন | `roksana.registry@bhumisathi.gov.bd` | sub_registrar | Schedules appointments, completes deeds |
+| 8 | Central Admin | কাজী শাহেদুজ্জামান | `admin@bhumisathi.gov.bd` | central_admin | KYC, role provisioning, audit logs |
+
+> Demo-only passwords: `DemoCitizen2026!` (Firebase) / `demo123456` (local). Never reuse these outside the demo.
+
+### Pre-seeded scenarios
+
+| | ID | Parcel | State |
+|---|---|---|---|
+| A | `sa-clean-demo` | Dag ৪০৫ · Khatian ১২০৪ · বাড্ডা | Submitted, awaiting Union review |
+| B | `sa-returned-demo` | Dag ৫০২ · Khatian ১২০৫ · বাড্ডা | Returned with Bengali note; citizen can resubmit |
+| C | `sa-union-approved-demo` | Dag ৬০৩ · Khatian ১২০৬ · বাড্ডা | Union done, in AC Land queue |
+| D | `sa-acland-approved-demo` | Dag ৭০৪ · Khatian ১২০৭ · বাড্ডা | Approved, ready for Sub-Registry scheduling |
+| E | `sa-scheduled-demo` | Dag ৩০২ · Khatian ৭৮০ · বাড্ডা | Appointment 22 Apr 2026; notifications sent |
+| F | `sa-registered-demo` | Dag ৮০৫ · Khatian ১২০৮ · বাড্ডা | Deed `৪৫১২/২০২৬`; spawned `MUT-AC-2026-9921` |
+| G | `sa-rejected-demo` | Dag ৭১০ · আফতাবনগর | Injunction + mortgage; rejected with reason |
+| H | `sa-share-mismatch-demo` | Dag ১০২ · ভাটারা | 80% sale attempt on 12.5% share; flagged |
+| I | `sa-taxdue-demo` | Dag ৮৮২ · সাঁতারকুল | ৳4,850 arrears flagged |
+
+---
+
+## 🧰 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 18 (SPA) · TypeScript · Vite 6 · React Router DOM v7 |
+| **Styling** | Tailwind CSS v3 with `gov-navy` / `gov-teal` / `gov-amber` / `gov-blue` tokens · shadcn/ui · Lucide React |
+| **Typography** | Hind Siliguri · Noto Sans Bengali · Inter |
+| **Backend** | Node.js 20+ · Express 4 · TypeScript (TSX) · Zod |
+| **Auth** | Firebase Authentication (Google Sign-In) + stateless JWT with BCrypt |
+| **Data** | Cloud Firestore (`landtech-e5773`) · persistent ACID JSON store (`data/db.json`) |
+| **Hosting** | Vercel (frontend) · Render (API) · Firebase (Auth, Rules, Indexes, Hosting) |
+| **Languages** | TypeScript · JavaScript (ESM tooling) · HTML5 · CSS3 · Bengali (bn-BD) UX copy |
+
+**UI attribution:** integrates `@skiper-ui/skiper40` (CssLink) animated service gateways. Free-tier attribution to Skiper UI and author [@gurvinder-singh02](https://x.com/Gur__vi). Bengali-first fonts, `gov-*` palettes, and institutional layouts are preserved.
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart TD
+    subgraph Clients["নাগরিক ও কর্মকর্তা ব্রাউজার"]
+        Citizen[Citizen Browser]
+        Officer[Officer Browser]
+    end
+
+    subgraph Vercel["Frontend (Vercel)"]
+        App[Vite React SPA<br/>Bengali UI · Due-Diligence · Demo Persona Bar]
+    end
+
+    subgraph Firebase["Google Firebase (landtech-e5773)"]
+        Auth[Firebase Auth<br/>Google Sign-In · Demo Accounts]
+        Firestore[Cloud Firestore<br/>users · land_parcels · sale_applications<br/>mutation_cases · tax_records · audit_logs]
+    end
+
+    subgraph Render["Backend (Render)"]
+        API[Node / Express API<br/>Tax Guard · Over-sell Guard · Mutation Trigger]
+        JSON[(data/db.json<br/>ACID store)]
+    end
+
+    Citizen --> App
+    Officer --> App
+    App -->|Auth tokens| Auth
+    App -->|Direct reads| Firestore
+    App -->|REST /api/*| API
+    API -->|Dual sync| Firestore
+    API -->|Atomic persistence| JSON
+    Auth -.->|Token verification| API
+```
+
+> **Data architecture note:** the production server currently persists to the local ACID JSON store. The client includes full Firestore adapters, rules, and indexes, but server-side Firestore persistence requires deploying a Firebase Admin SDK service-account key. The built-in transactional store is used for zero-downtime evaluation and test reproducibility.
+
+---
+
+## 📁 Repository Structure
+
+```
+VumiSeba/
+├── .env.example · .gitignore · package.json · tsconfig.json
+├── firebase.json · firestore.rules · firestore.indexes.json
+├── render.yaml · vercel.json · vite.config.ts · tailwind.config.js
+├── data/
+│   └── db.json                  # Persistent local DB (seeded scenarios)
+├── scripts/
+│   ├── seedFirestore.ts         # Idempotent Firestore seeder
+│   └── bootstrapAdmin.ts        # Secure admin role provisioning CLI
+├── server/                      # Backend API
+│   ├── index.ts                 # Express entry, health check, CORS
+│   ├── db/        seed.ts · store.ts (atomic JSON store)
+│   ├── middleware/ auth.ts (JWT + RBAC) · audit.ts
+│   ├── routes/    auth · land · risk · tax · sale · mutation
+│   │              officer · notifications · audit
+│   └── tests/     core-correctness · risk-engine
+│                  e2e-workflow · firebase-auth-rules
+└── src/                         # Frontend
+    ├── main.tsx · App.tsx · index.css
+    ├── lib/        firebase.ts
+    ├── context/    AuthContext · NotificationContext
+    ├── services/   api.ts · firestoreService.ts
+    ├── types/
+    ├── components/ common/ (DemoPersonaBar, DeedDraftModal) · layout/
+    └── pages/      public/ · citizen/ · officer/
 ```
 
 ---
 
-## O. API Documentation
+## 🗄️ Database Schema
 
-The Express backend provides REST endpoints under `/api`:
+<details>
+<summary><b>Cloud Firestore collections</b></summary>
 
-### 1. Authentication (`/api/auth`)
-- `POST /api/auth/register` — Register citizen with email, password, NID, and mobile.
-- `POST /api/auth/login` — Sign in with email and password; returns JWT token and role redirect.
-- `POST /api/auth/demo-login` — Instant role switching for evaluation personas.
-- `POST /api/auth/firebase-sync` — Sync Google Sign-In profile with backend permissions.
-- `GET /api/auth/me` — Retrieve authenticated user profile (Bearer token required).
-- `POST /api/auth/kyc/submit` — Submit NID details and documents for KYC verification.
-- `POST /api/auth/kyc/verify` — Admin approval endpoint issuing unique Citizen ID (`BHM-CIT-XXXXXX`).
+**`users`** — `id/uid`, `email`, `name_bn`, `nid` (10 or 17 digits), `citizen_id` (`BHM-CIT-XXXXXX`), `role` (`citizen` · `union_officer` · `ac_land` · `sub_registrar` · `central_admin`), `kyc_status` (`pending` · `verified` · `rejected`), `created_at`
 
-### 2. Land Due Diligence (`/api/land`)
-- `GET /api/land/search` — Query parcels by district, upazila, mouza, dag_no, khatian_no.
-- `GET /api/land/:id` — Retrieve full parcel record, ownership shares, tax status, and liens.
-- `GET /api/land/my/holdings` — Retrieve all land parcels owned by the authenticated citizen.
+**`land_parcels`** — `id`, `district`, `upazila`, `mouza`, `jl_no`, `khatian_no`, `khatian_type` (`RS` · `City Survey` · `Mutation`), `dag_no`, `land_class`, `total_area_decimal`, `ownerships[]` (`owner_name`, `share_fraction`, `recorded_area_decimal`, `citizen_id`), `tax_status` (`is_cleared`, `last_paid_fiscal_year`, `dues_amount`), `litigation` (`has_injunction`, `case_number`, `court_name`), `encumbrance` (`is_mortgaged`, `bank_name`, `mortgage_amount`), `acquisition_status`
 
-### 3. Risk Engine (`/api/risk`)
-- `POST /api/risk/evaluate` — Multi-factor analysis returning weighted risk score (0-100) and indicators.
-- `GET /api/risk/:parcelId` — Fetch cached risk assessment for a specific parcel.
+**`sale_applications`** — `id` (`SALE-2026-001`), `parcel_id`, `seller_id`, `buyer_id`, `proposed_share`, `proposed_area_decimal`, `total_consideration_bdt`, `status` (`draft` · `submitted` · `union_verified` · `admin_approved` · `registered` · `rejected`), `created_at`, `updated_at`
 
-### 4. Holding Tax & Dakhila (`/api/tax`)
-- `GET /api/tax/holding/:parcelId` — Fetch real-time tax arrears and last payment date.
-- `POST /api/tax/pay` — Process simulated holding tax payment and issue official e-Dakhila.
-- `GET /api/tax/my/history` — Citizen tax payment receipt history.
+**`mutation_cases`** — `id` (`MUT-2026-7841`), `sale_application_id`, `parcel_id`, `buyer_id`, `status` (`initiated` · `hearing_scheduled` · `approved` · `khatian_issued` · `rejected`), `resulting_khatian_no`, `resulting_holding_no`, `approved_at`
 
-### 5. Sale Application Workflow (`/api/sale`)
-- `POST /api/sale/pre-check` — Pre-submission check validating tax clearance and seller share.
-- `POST /api/sale/submit` — Submit sale application with server-side tax guard and share validation.
-- `GET /api/sale/my` — Fetch citizen's active sale/purchase applications.
-- `GET /api/sale/:id` — Retrieve application details, review history, and deed draft.
-- `POST /api/sale/:id/union-review` — Union Land Officer review:
-  - `action`: `'approved'` (forwards to AC Land with field findings)
-  - `action`: `'returned'` (enforces mandatory `reason_bn`)
-  - `action`: `'rejected'` (enforces mandatory `reason_bn`)
-- `POST /api/sale/:id/acland-review` — AC Land pre-registration review:
-  - `action`: `'approved'` (routes to Sub-Registry)
-  - `action`: `'returned'` (enforces mandatory `reason_bn`)
-  - `action`: `'rejected'` (enforces mandatory `reason_bn`)
-- `POST /api/sale/:id/schedule-appointment` — Sub-Registrar appointment scheduler:
-  - Records date, time slot, office room, mandatory checklist, and sends in-app notifications to buyer/seller.
-- `POST /api/sale/:id/complete-registration` — Sub-Registrar deed completion:
-  - Records deed number, volume, fees, and **automatically spawns linked e-Mutation case**.
-- `POST /api/sale/:id/resubmit` — Citizen resubmission of returned application with correction notes.
-
-### 6. Officer Queues & Administration (`/api/officer`)
-- `GET /api/officer/union/queue` — Union Land Office pending, approved, and returned applications.
-- `GET /api/officer/acland/queue` — AC Land pre-registration review queue and live stats.
-- `GET /api/officer/registry/queue` — Sub-Registry ready, scheduled, and completed queues.
-- `GET /api/officer/admin/stats` — Central admin system-wide metrics and pending KYC cases.
-- `GET /api/officer/admin/users` — Administrative user management and role directory.
-- `POST /api/officer/admin/assign-role` — Trusted administrative role provisioning.
-
-### 7. Post-Registration e-Mutation (`/api/mutation`)
-- `GET /api/mutation` — List active mutation cases (role-filtered).
-- `GET /api/mutation/:id` — Mutation case timeline and order sheet.
-- `POST /api/mutation/:id/schedule-hearing` — AC Land hearing scheduler (records date, time, court room).
-- `POST /api/mutation/:id/approve` — AC Land mutation approval:
-  - Issues new Khatian (e.g., `নামজারি-৮৮৯৯`).
-  - Automatically updates buyer's new ownership share.
-  - Recalculates seller's preserved untransferred interest.
-- `POST /api/mutation/:id/reject` — Formal dismissal with judicial explanation.
-
-### 8. System Health, Notifications & Audit (`/api/health`, `/api/notifications`, `/api/audit`)
-- `GET /api/health` — Platform status, database stats, and version information.
-- `GET /api/notifications` — In-app alerts for authenticated user.
-- `POST /api/notifications/:id/read` — Mark notification as read.
-- `GET /api/audit/logs` — Immutable audit trail (Admin only).
+**`audit_logs`** — `id`, `action` (`SALE_SUBMITTED` · `DEED_REGISTERED` · `MUTATION_APPROVED` …), `actor_role`, `actor_id`, `details`, `timestamp` (ISO)
+</details>
 
 ---
 
-## P. Testing
+## 🔌 API Reference
 
-The project includes automated test suites covering 100% of the core lifecycle:
+Base path: `/api` · Auth: `Authorization: Bearer <JWT>` unless noted.
 
-### 1. End-to-End Acceptance Tests (`npm test`)
-Executes `server/tests/e2e-workflow.test.ts`:
-- **Test 1:** Database Seeding with all real-world scenarios.
-- **Test 2:** Citizen Profile creation & unique Citizen ID issuance (`BHM-CIT-XXXXXX`).
-- **Test 3:** Land search by Mouza, Khatian, and Dag.
-- **Test 4:** Multi-factor due diligence risk scoring (Low vs Critical).
-- **Test 5:** Server-Side Tax Clearance Guard (verifies unpaid tax blocks sale submission).
-- **Test 6:** Over-Selling & Share Validation Guard (verifies selling 0.25 on a 0.125 share is blocked).
-- **Test 7:** Full Lifecycle (Sale Application -> Admin Approval -> Union Field Report -> Sub-Registry Deed Execution -> Automated e-Mutation Trigger -> AC Land Approval -> New Khatian `নামজারি-৮৮৯৯` and Share Recalculation).
+<details>
+<summary><b>Authentication</b> — <code>/api/auth</code></summary>
 
-### 2. Firebase Auth & Firestore Rules Tests (`npm run test:firebase`)
-Executes `server/tests/firebase-auth-rules.test.ts` (26 passed checks):
-- Configuration validation for project `landtech-e5773`.
-- Firestore security rules validation (unauthenticated rejections, anti-self-promotion).
-- Immutable audit log protection.
-- Composite index definitions.
-- Pre-provisioned demo accounts mapping.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/register` | Register citizen (email, password, NID, mobile) |
+| POST | `/login` | Email/password sign-in; returns JWT + role redirect |
+| POST | `/demo-login` | Instant persona switching |
+| POST | `/firebase-sync` | Sync Google Sign-In profile with backend permissions |
+| GET | `/me` | Authenticated user profile |
+| POST | `/kyc/submit` | Submit NID details and documents |
+| POST | `/kyc/verify` | Admin approval; issues Citizen ID |
+</details>
 
----
+<details>
+<summary><b>Land & Risk</b> — <code>/api/land</code>, <code>/api/risk</code></summary>
 
-## Q. Deployment Guide
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/land/search` | Query by district, upazila, mouza, dag_no, khatian_no |
+| GET | `/land/:id` | Full parcel record, shares, tax status, liens |
+| GET | `/land/my/holdings` | Authenticated citizen's parcels |
+| POST | `/risk/evaluate` | Weighted risk score (0–100) and indicators |
+| GET | `/risk/:parcelId` | Cached risk assessment |
+</details>
 
-### 1. Deploy Frontend on Vercel
-1. Log in to [Vercel](https://vercel.com/) and click **Add New Project**.
-2. Import the GitHub repository: `https://github.com/BornilMahmud/VumiSeba.git`.
-3. Configure Project Settings:
-   - **Framework Preset:** Vite
-   - **Root Directory:** `./`
-   - **Build Command:** `vite build`
-   - **Output Directory:** `dist`
-4. Add Environment Variables in Vercel:
-   - `VITE_API_BASE_URL` = Your deployed Render backend URL (e.g., `https://vumiseba-backend.onrender.com/api`)
-   - `VITE_FIREBASE_API_KEY` = Your Firebase Web API Key
-   - `VITE_FIREBASE_AUTH_DOMAIN` = `landtech-e5773.firebaseapp.com`
-   - `VITE_FIREBASE_PROJECT_ID` = `landtech-e5773`
-   - `VITE_FIREBASE_STORAGE_BUCKET` = `landtech-e5773.firebasestorage.app`
-   - `VITE_FIREBASE_MESSAGING_SENDER_ID` = Your sender ID
-   - `VITE_FIREBASE_APP_ID` = Your app ID
-5. Click **Deploy**. Vercel will build and serve the application with client-side SPA routing governed by `vercel.json`.
+<details>
+<summary><b>Tax</b> — <code>/api/tax</code></summary>
 
-### 2. Deploy Backend on Render
-1. Log in to [Render](https://render.com/) and click **New -> Web Service** (or use Blueprints with `render.yaml`).
-2. Connect the repository: `https://github.com/BornilMahmud/VumiSeba.git`.
-3. Configure Web Service Settings:
-   - **Name:** `vumiseba-backend`
-   - **Region:** Singapore (`singapore`)
-   - **Runtime:** Node
-   - **Build Command:** `npm install && npm run build:server`
-   - **Start Command:** `node dist-server/server/index.js`
-   - **Health Check Path:** `/api/health`
-4. Environment Variables on Render:
-   - `NODE_ENV` = `production`
-   - `PORT` = `10000`
-   - `CORS_ORIGIN` = Your Vercel frontend URL (e.g., `https://vumi-seba.vercel.app` or `*`)
-   - `JWT_SECRET` = A strong secret string
-   - `FIREBASE_PROJECT_ID` = `landtech-e5773`
-   - `SIMULATE_SMS` = `true`
-   - `SIMULATE_EMAIL` = `true`
-5. Click **Create Web Service**. Verify health check at `https://your-service.onrender.com/api/health`.
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/holding/:parcelId` | Real-time arrears and last payment date |
+| POST | `/pay` | Simulated payment; issues e-Dakhila |
+| GET | `/my/history` | Payment receipt history |
+</details>
 
-> **Note on TypeScript Compilation & Layout:**
-> With `server/tsconfig.json` configured with `"rootDir": ".."` and `"outDir": "../dist-server"`, the compiled output entry point is located at `dist-server/server/index.js`. Path resolution in `server/db/store.ts` dynamically resolves the persistent `data/db.json` regardless of whether running under development `tsx` or compiled production `node`.
+<details>
+<summary><b>Sale workflow</b> — <code>/api/sale</code></summary>
 
-> **Important Data Architecture Clarification:**
-> The production server currently operates with a persistent local ACID JSON database (`data/db.json`). While the client application includes full Firebase Firestore adapters, security rules (`firestore.rules`), and composite indexes (`firestore.indexes.json`), direct backend server-side persistence to Cloud Firestore requires deploying the Firebase Admin SDK service account key. For reliable zero-downtime evaluation and test reproducibility, the server uses its built-in transactional store.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/pre-check` | Validate tax clearance and seller share |
+| POST | `/submit` | Submit with server-side tax and share guards |
+| GET | `/my` | Citizen's active applications |
+| GET | `/:id` | Details, review history, deed draft |
+| POST | `/:id/union-review` | `action`: `approved` \| `returned` \| `rejected` (`reason_bn` required for the last two) |
+| POST | `/:id/acland-review` | Same actions; `approved` routes to Sub-Registry |
+| POST | `/:id/schedule-appointment` | Date, slot, room, checklist; notifies buyer/seller |
+| POST | `/:id/complete-registration` | Deed no., volume, fees; **auto-spawns e-Mutation case** |
+| POST | `/:id/resubmit` | Resubmit a returned application with correction notes |
+</details>
 
-> **UI Component System & Skiper UI (@skiper-ui/skiper40):**
-> VumiSeba integrates `shadcn/ui` with custom government styling tokens and incorporates `@skiper-ui/skiper40` (CssLink) animated interactive service gateways. Free-tier attribution is provided to Skiper UI and author [@gurvinder-singh02](https://x.com/Gur__vi). All existing Bengali-first fonts, `gov-*` palettes, and institutional layouts remain strictly preserved.
+<details>
+<summary><b>e-Mutation</b> — <code>/api/mutation</code></summary>
 
-### 3. Firebase Console Configuration (Project: `landtech-e5773`)
-1. **Authorized Domains:**
-   - Go to [Firebase Console](https://console.firebase.google.com/) -> `landtech-e5773` -> **Authentication** -> **Settings** -> **Authorized domains**.
-   - Add your production Vercel domain (e.g., `vumi-seba.vercel.app`).
-2. **Deploy Firestore Security Rules & Indexes via CLI:**
-   ```bash
-   npx firebase-tools login
-   npx firebase-tools deploy --only firestore:rules --project landtech-e5773
-   npx firebase-tools deploy --only firestore:indexes --project landtech-e5773
-   ```
-3. **Seed Firestore Data & Demo Users:**
-   ```bash
-   npm run seed:firestore
-   ```
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Active cases (role-filtered) |
+| GET | `/:id` | Timeline and order sheet |
+| POST | `/:id/schedule-hearing` | Date, time, court room |
+| POST | `/:id/approve` | Issues Khatian, updates buyer share, recalculates seller's retained interest |
+| POST | `/:id/reject` | Formal dismissal with judicial explanation |
+</details>
+
+<details>
+<summary><b>Officers, Notifications, Audit, Health</b></summary>
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/officer/union/queue` | Union pending / approved / returned |
+| GET | `/officer/acland/queue` | AC Land review queue and stats |
+| GET | `/officer/registry/queue` | Sub-Registry ready / scheduled / completed |
+| GET | `/officer/admin/stats` | System metrics, pending KYC |
+| GET | `/officer/admin/users` | User and role directory |
+| POST | `/officer/admin/assign-role` | Trusted role provisioning |
+| GET | `/notifications` | In-app alerts |
+| POST | `/notifications/:id/read` | Mark read |
+| GET | `/audit/logs` | Immutable audit trail (admin only) |
+| GET | `/health` | Status, DB stats, version (no auth) |
+</details>
 
 ---
 
-## R. Security and Privacy
+## ⚙️ Configuration
 
-- **Anti-Self-Promotion Protection:** Firestore security rules and backend API explicitly prevent users from elevating their own role. Google Sign-In defaults strictly to `citizen`.
-- **Protected Administrator Bootstrapping:** Admin status can only be granted through protected backend CLI execution (`npm run admin:bootstrap`), which permanently logs the promotion in `audit_logs`.
-- **Immutable Audit Trail:** Once written, `audit_logs` entries cannot be modified or deleted (`allow update, delete: if false`).
-- **KYC & PII Protection:** NID numbers and confidential document uploads are restricted to the owner and authorized verification officers.
-- **Strict CORS Origin Restriction:** Configured to whitelist authorized frontend domains, preventing unauthorized cross-origin requests.
-- **Zero Exposed Secrets:** All credentials, private keys, and service account tokens are excluded from Git via `.gitignore`.
+Copy `.env.example` → `.env`. Defaults run with zero configuration locally.
+
+**Frontend (Vercel)**
+
+| Variable | Description | Example |
+|---|---|---|
+| `VITE_API_BASE_URL` | Render API base URL (empty for local proxy) | `https://vumiseba-backend.onrender.com/api` |
+| `VITE_FIREBASE_API_KEY` | Firebase Web API key | `AIzaSy...` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Auth domain | `landtech-e5773.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | Project ID | `landtech-e5773` |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Storage bucket | `landtech-e5773.firebasestorage.app` |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | FCM sender ID | `1234567890` |
+| `VITE_FIREBASE_APP_ID` | Web app ID | `1:1234567890:web:...` |
+
+**Backend (Render)**
+
+| Variable | Description | Example |
+|---|---|---|
+| `PORT` | Port assigned by Render | `10000` |
+| `NODE_ENV` | Environment mode | `production` |
+| `CORS_ORIGIN` | Allowed origins (comma-separated or `*`) | `https://vumi-seba.vercel.app` |
+| `JWT_SECRET` | Session token secret | random 64-char string |
+| `FIREBASE_PROJECT_ID` | Firebase project | `landtech-e5773` |
+| `SIMULATE_SMS` | Mock SMS adapter | `true` |
+| `SIMULATE_EMAIL` | Mock email adapter | `true` |
 
 ---
 
-## S. Known Limitations
+## ✅ Testing
 
-- **Mock Government Integrations:** VumiSeba does not connect to live confidential Ministry of Land or Election Commission production servers; all external lookups run on an authentic mock schema.
-- **Simulated Payment Gateway:** Land development tax payments use an instant simulated gateway rather than live Sonali Bank e-Challan.
-- **Synthetic Court Records:** Judicial cases and injunction notices are representative models for demonstration and do not reflect real ongoing litigation.
-- **Non-Government Status:** VumiSeba is an innovative hackathon MVP. Output drafts are stamped with a legal disclaimer indicating they are not official government documents.
+```bash
+npm test                 # core, risk-engine, and E2E acceptance suites
+npm run test:firebase    # Firebase Auth + Firestore rules (26 assertions)
+npx tsc --noEmit && npm run build   # type-check + production build
+```
 
----
-
-## T. Tools and Development Workflow
-
-- **Git & GitHub:** Version control, branch protection, and collaborative workflow.
-- **Firebase CLI (`firebase-tools`):** Deployment of Firestore security rules and indexes.
-- **Vercel CLI / Platform:** Automated continuous deployment for modern frontend SPAs.
-- **Render Platform:** Zero-downtime Node.js web service hosting.
-- **Tailwind CSS & Autoprefixer:** Institutional design system and responsive layout.
-- **UI/UX Guidelines:** Designed in compliance with Bangladesh National Web Portal design guidelines.
+| Suite | File | Coverage | Result |
+|---|---|---|---|
+| Core Correctness | `server/tests/core-correctness.test.ts` | BPS drift, ID collisions, double-sale guard, injunction blocks, re-validation, production JWT safety, serialized mutex | ✅ 7/7 |
+| Risk Engine | `server/tests/risk-engine.test.ts` | 7 factor groups + 6 table-driven boundary scenarios | ✅ 7/7 |
+| E2E Acceptance | `server/tests/e2e-workflow.test.ts` | Seeding, KYC/Citizen ID, search, risk scoring, tax guard, over-sell guard, full 9-stage lifecycle to Khatian `নামজারি-৮৮৯৯` | ✅ 100% |
+| Firebase Rules | `server/tests/firebase-auth-rules.test.ts` | Role-elevation guards, immutable audit logs, public search, index coverage, demo-account mapping | ✅ 26/26 |
+| Build | `tsc` + `vite build` | Code-split bundle | ✅ 0 errors · 113 kB gzip main chunk |
 
 ---
 
-## U. Roadmap and Contribution Instructions
+## ☁️ Deployment
 
-### Roadmap
-- [ ] Integration with national digital land map vector layers (Mouza Map GIS).
-- [ ] Live SMS gateway integration via Teletalk / Government SMS API.
-- [ ] Automated OCR parsing for historical legacy Khatians (CS, SA).
-- [ ] Mobile PWA (Progressive Web Application) offline caching for remote field officers.
+### Frontend → Vercel
 
-### Contributing
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/your-feature-name`.
-3. Commit your changes following conventional commits: `git commit -m 'feat: add feature'`.
-4. Ensure all tests pass: `npm test && npm run test:firebase && npm run build`.
-5. Push to the branch: `git push origin feature/your-feature-name`.
-6. Open a Pull Request.
+1. **Add New Project** → import `https://github.com/BornilMahmud/VumiSeba.git`
+2. Framework: **Vite** · Root: `./` · Build: `vite build` · Output: `dist`
+3. Set the `VITE_*` variables from [Configuration](#-configuration)
+4. **Deploy** (SPA routing is handled by `vercel.json`)
 
-### License
-This project is developed for the **LandTech Hackathon 2026** and is open-sourced under the **MIT License**.
+### Backend → Render
+
+1. **New → Web Service** (or Blueprint via `render.yaml`) and connect the repo
+2. Settings:
+
+| Setting | Value |
+|---|---|
+| Name | `vumiseba-backend` |
+| Region | Singapore |
+| Runtime | Node |
+| Build | `npm install && npm run build:server` |
+| Start | `node dist-server/server/index.js` |
+| Health check | `/api/health` |
+
+3. Set backend environment variables, then **Create Web Service** and verify `/api/health`.
+
+> `server/tsconfig.json` uses `"rootDir": ".."` and `"outDir": "../dist-server"`, so the compiled entry is `dist-server/server/index.js`. `server/db/store.ts` resolves `data/db.json` dynamically under both `tsx` and compiled `node`.
+
+### Firebase (`landtech-e5773`)
+
+```bash
+# Add your Vercel domain under Authentication → Settings → Authorized domains, then:
+npx firebase-tools login
+npx firebase-tools deploy --only firestore:rules   --project landtech-e5773
+npx firebase-tools deploy --only firestore:indexes --project landtech-e5773
+npm run seed:firestore
+```
+
+---
+
+## 🔒 Security & Privacy
+
+- **Anti-self-promotion** — rules and API prevent users from elevating their own role; Google Sign-In defaults to `citizen`.
+- **Protected admin bootstrap** — admin status only via CLI (`npm run admin:bootstrap`), permanently logged in `audit_logs`.
+- **Immutable audit trail** — `audit_logs` entries cannot be updated or deleted (`allow update, delete: if false`).
+- **KYC & PII protection** — NIDs and confidential uploads are restricted to the owner and authorized verification officers.
+- **Strict CORS** — whitelisted frontend origins only.
+- **Zero exposed secrets** — credentials, private keys, and service-account tokens are excluded via `.gitignore`.
+
+---
+
+## ⚠️ Known Limitations
+
+- **Mock government integrations** — no connection to live Ministry of Land or Election Commission servers; lookups use an authentic mock schema.
+- **Simulated payments** — tax payments use an instant simulated gateway, not live Sonali Bank e-Challan.
+- **Synthetic court records** — cases and injunctions are representative, not real litigation.
+- **Non-government status** — a hackathon MVP; output drafts carry a disclaimer that they are not official government documents.
+
+---
+
+## 🗺️ Roadmap & Contributing
+
+**Roadmap**
+
+- [ ] Mouza Map GIS integration (national digital land map vector layers)
+- [ ] Live SMS via Teletalk / Government SMS API
+- [ ] OCR parsing for legacy Khatians (CS, SA)
+- [ ] Offline-capable PWA for remote field officers
+
+**Contributing**
+
+```bash
+git checkout -b feature/your-feature-name
+git commit -m "feat: add feature"          # conventional commits
+npm test && npm run test:firebase && npm run build
+git push origin feature/your-feature-name  # then open a Pull Request
+```
+
+---
+
+<div align="center">
+
+Built for **LandTech Hackathon 2026** · Released under the **MIT License**
+
+</div>
