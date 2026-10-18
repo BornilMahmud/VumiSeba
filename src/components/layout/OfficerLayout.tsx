@@ -15,7 +15,33 @@ export const OfficerLayout: React.FC<{ children?: React.ReactNode; title?: strin
 
   const avatarUrl = getUserAvatarUrl(user);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (
+      path === '/office/union/dashboard' &&
+      (location.pathname === '/office/union/dashboard' ||
+        location.pathname === '/office/union/applications' ||
+        location.pathname.startsWith('/office/union/applications/'))
+    ) {
+      return true;
+    }
+    if (
+      path === '/office/ac-land/dashboard' &&
+      (location.pathname === '/office/ac-land/dashboard' ||
+        location.pathname === '/office/ac-land/applications' ||
+        location.pathname.startsWith('/office/ac-land/applications/'))
+    ) {
+      return true;
+    }
+    if (
+      path === '/office/registry/dashboard' &&
+      (location.pathname === '/office/registry/dashboard' ||
+        location.pathname === '/office/registry/applications' ||
+        location.pathname.startsWith('/office/registry/applications/'))
+    ) {
+      return true;
+    }
+    return location.pathname === path || location.pathname.startsWith(path + '/');
+  };
 
   const userRole = (user?.role || '').toLowerCase();
 
@@ -39,7 +65,6 @@ export const OfficerLayout: React.FC<{ children?: React.ReactNode; title?: strin
     officeDescription = user?.office_name_bn || 'বাড্ডা ও সাঁতারকুল ইউনিয়ন ভূমি অফিস';
     menuItems = [
       { path: '/office/union/dashboard', label: 'সরেজমিন তদন্ত ড্যাশবোর্ড', iconClass: 'bx bxs-dashboard' },
-      { path: '/office/union/applications', label: 'আবেদন যাচাই কিউ', iconClass: 'bx bx-list-check' },
       { path: '/office/union/tax-verification', label: 'ভূমি উন্নয়ন কর ও দাখিলা অডিট', iconClass: 'bx bx-receipt' },
       { path: '/office/union/record-verification', label: 'রেকর্ড ও দাগ যাচাই', iconClass: 'bx bx-search-alt-2' },
       { path: '/office/union/reports', label: 'সরেজমিন প্রতিবেদন', iconClass: 'bx bx-file' },
@@ -50,7 +75,6 @@ export const OfficerLayout: React.FC<{ children?: React.ReactNode; title?: strin
     officeDescription = user?.office_name_bn || 'গুলশান রাজস্ব সার্কেল, ঢাকা';
     menuItems = [
       { path: '/office/ac-land/dashboard', label: 'ই-নামজারি কেস ও শুনানি ডকেট', iconClass: 'bx bxs-dashboard' },
-      { path: '/office/ac-land/applications', label: 'প্রাক-রেজিস্ট্রেশন যাচাই', iconClass: 'bx bx-task' },
       { path: '/office/ac-land/mutation', label: 'ই-নামজারি নথি', iconClass: 'bx bx-git-branch' },
       { path: '/office/ac-land/hearings', label: 'শুনানি ব্যবস্থাপনা', iconClass: 'bx bx-calendar-event' },
       { path: '/office/ac-land/decisions', label: 'আদেশ ও সিদ্ধান্তসমূহ', iconClass: 'bx bx-badge-check' },
@@ -60,7 +84,6 @@ export const OfficerLayout: React.FC<{ children?: React.ReactNode; title?: strin
     officeDescription = user?.office_name_bn || 'গুলশান সাব-রেজিস্ট্রি অফিস, নিবন্ধন পরিদপ্তর';
     menuItems = [
       { path: '/office/registry/dashboard', label: 'রেজিস্ট্রেশন অ্যাপয়েন্টমেন্ট ও দলিল ডকেট', iconClass: 'bx bxs-dashboard' },
-      { path: '/office/registry/applications', label: 'রেজিস্ট্রেশন শিডিউলিং কিউ', iconClass: 'bx bx-list-check' },
       { path: '/office/registry/appointments', label: 'নির্ধারিত অ্যাপয়েন্টমেন্ট', iconClass: 'bx bx-calendar' },
       { path: '/office/registry/documents', label: 'দলিল ও স্ট্যাম্প নিরীক্ষা', iconClass: 'bx bx-certification' },
     ];

@@ -12,7 +12,8 @@ import { api } from '../services/api';
 import { auth, googleProvider, isFirebaseConfigured } from '../lib/firebase';
 import { firestoreService } from '../services/firestoreService';
 
-import { DEMO_CREDENTIALS, findOfflineDemoUser, createOfflineDemoToken } from '../types/demoCredentials';
+import { DEMO_CREDENTIALS } from '../types/demoCredentials';
+import { findOfflineDemoUser, createOfflineDemoToken } from '../data/offlineDemoData';
 
 interface AuthContextType {
   user: UserProfile | null;

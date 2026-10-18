@@ -1,5 +1,3 @@
-export { OFFLINE_DEMO_USERS, findOfflineDemoUser, createOfflineDemoToken } from '../data/offlineDemoData';
-
 export const DEMO_CREDENTIALS = {
   seller: { email: 'seller@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'বিক্রেতা (রফিক)', role: 'citizen' },
   buyer: { email: 'buyer@bhumisathi.gov.bd', pass: 'DemoCitizen2026!', label: 'ক্রেতা (ফারহান)', role: 'citizen' },

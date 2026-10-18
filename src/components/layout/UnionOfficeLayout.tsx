@@ -15,11 +15,19 @@ export const UnionOfficeLayout: React.FC<{ children?: React.ReactNode }> = ({ ch
 
   const avatarUrl = getUserAvatarUrl(user);
 
-  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+  const isActive = (path: string) => {
+    if (path === '/office/union/dashboard') {
+      return (
+        location.pathname === '/office/union/dashboard' ||
+        location.pathname === '/office/union/applications' ||
+        location.pathname.startsWith('/office/union/applications/')
+      );
+    }
+    return location.pathname === path || location.pathname.startsWith(path + '/');
+  };
 
   const navItems = [
     { path: '/office/union/dashboard', label: 'ড্যাশবোর্ড', labelEn: 'Dashboard', iconClass: 'bx bxs-dashboard' },
-    { path: '/office/union/applications', label: 'আবেদন যাচাই কিউ', labelEn: 'Verification Queue', iconClass: 'bx bx-list-check' },
     { path: '/office/union/tax-verification', label: 'কর ও দাখিলা যাচাই', labelEn: 'Tax Verification', iconClass: 'bx bx-receipt' },
     { path: '/office/union/record-verification', label: 'রেকর্ড ও দাগ যাচাই', labelEn: 'Record & Dag Audit', iconClass: 'bx bx-search-alt-2' },
     { path: '/office/union/reports', label: 'সরেজমিন প্রতিবেদন', labelEn: 'Field Reports', iconClass: 'bx bx-file' },
