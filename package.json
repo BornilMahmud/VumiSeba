@@ -11,6 +11,7 @@
     "build": "tsc -b && vite build && tsc -p server/tsconfig.json",
     "build:client": "vite build",
     "build:server": "tsc -p server/tsconfig.json",
+    "vercel-build": "vite build",
     "start": "node dist-server/server/index.js",
     "preview": "vite preview",
     "seed": "tsx server/db/seed.ts",
@@ -19,6 +20,9 @@
     "admin:bootstrap": "tsx scripts/bootstrapAdmin.ts",
     "test": "tsx server/tests/core-correctness.test.ts && tsx server/tests/risk-engine.test.ts && tsx server/tests/e2e-workflow.test.ts",
     "test:firebase": "tsx server/tests/firebase-auth-rules.test.ts"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",

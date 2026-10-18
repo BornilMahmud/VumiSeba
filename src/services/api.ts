@@ -206,7 +206,143 @@ function resolveOfflineFallback(endpoint: string, options: RequestInit = {}): an
     }
   }
 
-  // 12. Reset Demo
+  // 12. Risk Assessment Evaluation
+  if (endpoint === '/risk/evaluate') {
+    const parcelId = body.parcel_id || 'pcl-badda-01';
+    const parcel = (OFFLINE_DB.land_parcels || []).find((p: any) => p.id === parcelId) || (OFFLINE_DB.land_parcels || [])[0];
+    const isDisputed = parcel?.dispute_status && parcel.dispute_status !== 'none';
+    const isMortgaged = parcel?.mortgage_status && parcel.mortgage_status !== 'none';
+    const riskLevel = isDisputed ? 'CRITICAL' : (isMortgaged ? 'HIGH' : 'LOW');
+    const riskScore = isDisputed ? 25 : (isMortgaged ? 58 : 94);
+
+    return {
+      success: true,
+      data: {
+        id: `rsk-${Date.now()}`,
+        parcel_id: parcelId,
+        risk_level: riskLevel,
+        risk_score: riskScore,
+        confidence_score: 98,
+        factors: [
+          { name_bn: 'মালিকানা ধারাবাহিকতা ও খতিয়ান রেকর্ড', status: 'verified', weight: 30 },
+          { name_bn: 'ভূমি উন্নয়ন কর (খাজনা) হালনাগাদ', status: 'verified', weight: 20 },
+          { name_bn: 'আদালতের কোনো স্থিতাবস্থা/নিষেধাজ্ঞা নেই', status: isDisputed ? 'disputed' : 'clear', weight: 25 },
+          { name_bn: 'ব্যাংক দায়বদ্ধতা বা বন্ধকহীনতা', status: isMortgaged ? 'encumbered' : 'clear', weight: 25 },
+        ],
+        recommendation_bn: isDisputed
+          ? 'এই দাগে আদালতের নিষেধাজ্ঞা বহাল আছে। বায়না বা ক্রয় প্রক্রিয়া থেকে বিরত থাকুন।'
+          : 'জমির সকল রেকর্ড ও খতিয়ান নির্ভুল। বায়না ও রেজিস্ট্রেশন প্রক্রিয়া সম্পন্ন করতে পারেন।',
+        evaluated_at: new Date().toISOString(),
+      },
+    };
+  }
+
+  // 13. Holding Tax Inquiries & Payments
+  if (endpoint.startsWith('/tax/holding/')) {
+    return {
+      success: true,
+      data: {
+        fiscal_year: '১৪৩১ (২০২৪-২৫)',
+        annual_tax_bdt: 1250,
+        arrears_bdt: 0,
+        total_due_bdt: 0,
+        status: 'cleared',
+        dakhila_no: 'DKH-2024-884920',
+        last_payment_date: '15 Jan 2024',
+      },
+    };
+  }
+
+  if (endpoint === '/tax/pay') {
+    return {
+      success: true,
+      dakhila_no: `DKH-${Date.now().toString().slice(-6)}`,
+      receipt_url: '/dakhila-sample.pdf',
+      message_bn: 'ভূমি উন্নয়ন কর সফলভাবে পরিশোধিত হয়েছে। দাখিলা রশিদ প্রস্তুত।',
+    };
+  }
+
+  // 14. KYC Verification & Submissions
+  if (endpoint === '/auth/kyc/verify' || endpoint === '/officer/verify-kyc') {
+    try {
+      const cached = JSON.parse(localStorage.getItem('bhumisathi_demo_user') || '{}');
+      cached.kyc_status = 'verified';
+      if (!cached.citizen_id) cached.citizen_id = 'BHM-CIT-882194';
+      localStorage.setItem('bhumisathi_demo_user', JSON.stringify(cached));
+      return {
+        success: true,
+        user: cached,
+        citizen_id: cached.citizen_id,
+        message_bn: 'কেওয়াইসি সফলভাবে অনুমোদিত ও সিটিজেন আইডি বরাদ্দ করা হয়েছে।',
+      };
+    } catch {
+      return { success: true, citizen_id: 'BHM-CIT-882194', message_bn: 'কেওয়াইসি অনুমোদিত।' };
+    }
+  }
+
+  // 15. Sale Application Workflow Fallbacks
+  if (endpoint === '/sale/pre-check') {
+    return {
+      success: true,
+      is_valid: true,
+      message_bn: 'প্রস্তাবিত জমি বিক্রয়ের যোগ্য এবং কোনো আইনগত প্রতিবন্ধকতা নেই।',
+    };
+  }
+
+  if (endpoint === '/sale/submit') {
+    const newApp = {
+      id: `app-sl-${Date.now().toString().slice(-6)}`,
+      application_no: `APP-${Date.now().toString().slice(-6)}`,
+      stage: 'UNION_LAND_OFFICE_VERIFICATION',
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      ...body,
+    };
+    return {
+      success: true,
+      data: newApp,
+      message_bn: 'বায়না ও জমি বিক্রয় আবেদন সফলভাবে দাখিল হয়েছে।',
+    };
+  }
+
+  if (endpoint.startsWith('/sale/') && endpoint.endsWith('/admin-review')) {
+    return { success: true, message_bn: 'প্রাক-রেজিস্ট্রেশন অডিট সফলভাবে সম্পন্ন হয়েছে।' };
+  }
+
+  if (endpoint.startsWith('/sale/') && endpoint.endsWith('/union-review')) {
+    return { success: true, message_bn: 'ইউনিয়ন ভূমি অফিস সরেজমিন তদন্ত রিপোর্ট দাখিল করা হয়েছে।' };
+  }
+
+  if (endpoint.startsWith('/sale/') && endpoint.endsWith('/acland-review')) {
+    return { success: true, message_bn: 'সহকারী কমিশনার (ভূমি) কর্তৃক আবেদন অনুমোদিত হয়েছে।' };
+  }
+
+  if (endpoint.startsWith('/sale/') && endpoint.endsWith('/schedule-appointment')) {
+    return { success: true, message_bn: 'সাব-রেজিস্ট্রি দলিলের অ্যাপয়েন্টমেন্ট সফলভাবে নির্ধারিত হয়েছে।' };
+  }
+
+  if (endpoint.startsWith('/sale/') && endpoint.endsWith('/complete-registration')) {
+    return { success: true, message_bn: 'দলিল রেজিস্ট্রেশন সম্পন্ন হয়েছে এবং স্বয়ংক্রিয় ই-নামজারি চালু করা হয়েছে।' };
+  }
+
+  // 16. e-Mutation Hearing & Decision
+  if (endpoint.includes('/mutation/') && endpoint.endsWith('/schedule-hearing')) {
+    return { success: true, message_bn: 'শুনানির তারিখ ও সময় সফলভাবে নির্ধারিত হয়েছে।' };
+  }
+
+  if (endpoint.includes('/mutation/') && endpoint.endsWith('/decide')) {
+    return { success: true, message_bn: 'নামজারি মামলার চূড়ান্ত আদেশ প্রদান করা হয়েছে।' };
+  }
+
+  // 17. AI Chatbot Message
+  if (endpoint === '/chat/message') {
+    return {
+      success: true,
+      reply_bn: 'ভূমিসেবায় আপনাকে স্বাগতম। আপনি জমির খতিয়ান যাচাই, ডিজিটাল নামজারি আবেদন এবং এনআইডি বায়োমেট্রিক তথ্য পরীক্ষা করতে পারবেন। আর কীভাবে সাহায্য করতে পারি?',
+    };
+  }
+
+  // 18. Reset Demo
   if (endpoint === '/officer/reset-demo') {
     return {
       success: true,
@@ -229,6 +365,19 @@ export async function apiRequest<T = any>(
         ...(options.headers || {}),
       },
     });
+
+    // Check if the response is valid JSON (protects against SPA fallback serving index.html on Vercel)
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      const fallback = resolveOfflineFallback(endpoint, options);
+      if (fallback) {
+        return fallback;
+      }
+      return {
+        success: false,
+        message_bn: 'সার্ভার সংযোগ উপলব্ধ নেই। অফলাইন ডেমো মোডে চলছে।',
+      };
+    }
 
     const data = await res.json();
     if (!res.ok) {
