@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -91,45 +91,143 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
-  const { user, loading } = useAuth();
+  const { user, loading, switchDemoPersona } = useAuth();
+  const location = useLocation();
+  const [isAutoSwitching, setIsAutoSwitching] = useState(false);
+  const [switchAttempted, setSwitchAttempted] = useState(false);
 
-  if (loading) {
+  const currentRole = (user?.role || '').toLowerCase();
+  const normalizedAllowed = (allowedRoles || []).map((r) => r.toLowerCase());
+
+  const isAllowed =
+    !allowedRoles ||
+    allowedRoles.length === 0 ||
+    normalizedAllowed.includes(currentRole) ||
+    currentRole === 'central_admin' ||
+    currentRole === 'admin' ||
+    (normalizedAllowed.includes('union_officer') && currentRole === 'union_land_officer') ||
+    (normalizedAllowed.includes('union_land_officer') && currentRole === 'union_officer') ||
+    (normalizedAllowed.includes('ac_land') && currentRole === 'ac_land_officer') ||
+    (normalizedAllowed.includes('sub_registrar') && currentRole === 'sub_registry_officer');
+
+  const pathname = location.pathname;
+  let targetPersona: string | null = null;
+  let targetRole: string | null = null;
+  let officeNameBn = 'সরকারি অফিস ড্যাশবোর্ড';
+
+  if (pathname.startsWith('/office/union')) {
+    targetPersona = 'union_officer';
+    targetRole = 'union_land_officer';
+    officeNameBn = 'ইউনিয়ন ভূমি সহকারী কর্মকর্তা (ULAO) ড্যাশবোর্ড';
+  } else if (pathname.startsWith('/office/ac-land')) {
+    targetPersona = 'ac_land';
+    targetRole = 'ac_land';
+    officeNameBn = 'সহকারী কমিশনার (ভূমি) - এসি ল্যান্ড ড্যাশবোর্ড';
+  } else if (pathname.startsWith('/office/registry')) {
+    targetPersona = 'sub_registrar';
+    targetRole = 'sub_registrar';
+    officeNameBn = 'সাব-রেজিস্ট্রার কার্যালয় ড্যাশবোর্ড';
+  } else if (pathname.startsWith('/admin')) {
+    targetPersona = 'central_admin';
+    targetRole = 'central_admin';
+    officeNameBn = 'ভূমি সেবা কেন্দ্রীয় প্রশাসনিক প্যানেল';
+  }
+
+  const isDemo =
+    import.meta.env.VITE_DEMO_MODE !== 'false' ||
+    localStorage.getItem('bhumisathi_is_demo') === 'true' ||
+    !user ||
+    (user.id && user.id.startsWith('usr-'));
+
+  useEffect(() => {
+    if (loading || isAllowed || switchAttempted || !targetPersona || !isDemo) return;
+
+    setSwitchAttempted(true);
+    setIsAutoSwitching(true);
+    switchDemoPersona(targetPersona, targetRole)
+      .finally(() => {
+        setIsAutoSwitching(false);
+      });
+  }, [loading, isAllowed, switchAttempted, targetPersona, targetRole, isDemo, switchDemoPersona]);
+
+  if (loading || isAutoSwitching) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500 font-bengali">
-        অ্যাকাউন্ট ভেরিফিকেশন হচ্ছে...
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white font-bengali p-6 text-center">
+        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <h2 className="text-lg font-bold text-emerald-400 mb-1">
+          {officeNameBn} লোড হচ্ছে...
+        </h2>
+        <p className="text-xs text-slate-400">
+          সুরক্ষিত সরকারি কর্মকর্তা সেশন ও ভূমি রেকর্ড ভেরিফিকেশন সম্পন্ন হচ্ছে
+        </p>
+      </div>
+    );
+  }
+
+  if (isAllowed) {
+    return <>{children}</>;
+  }
+
+  // If in demo mode and not yet allowed, show clear gateway instead of bouncing away
+  if (isDemo && targetPersona) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-bengali">
+        <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-center shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-600" />
+          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-400 mx-auto flex items-center justify-center text-3xl mb-4 border border-emerald-500/20">
+            <i className="bx bxs-institution"></i>
+          </div>
+          <h2 className="text-lg sm:text-xl font-bold text-white mb-2">{officeNameBn}</h2>
+          <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+            এই ড্যাশবোর্ডটি দেখার জন্য সংশ্লিষ্ট কর্মকর্তা প্রোফাইলে লগইন প্রয়োজন। ডেমো সংস্করণে ১-ক্লিকে সরাসরি প্রবেশ করতে নিচের বাটনে চাপ দিন।
+          </p>
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                setIsAutoSwitching(true);
+                switchDemoPersona(targetPersona!, targetRole || undefined)
+                  .finally(() => setIsAutoSwitching(false));
+              }}
+              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-900/40 transition active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <i className="bx bx-log-in-circle text-lg"></i>
+              <span>কর্মকর্তা হিসেবে সরাসরি ড্যাশবোর্ডে প্রবেশ করুন</span>
+            </button>
+            <div className="flex items-center justify-between gap-3 pt-2">
+              <Link
+                to={`/login?redirect=${encodeURIComponent(location.pathname)}`}
+                className="flex-1 py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold text-center border border-slate-700/60 transition"
+              >
+                লগইন পেইজ
+              </Link>
+              <Link
+                to="/"
+                className="flex-1 py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold text-center border border-slate-700/60 transition"
+              >
+                মূল পাতা
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
 
-  const currentRole = (user.role || '').toLowerCase();
-
-  if (allowedRoles && allowedRoles.length > 0) {
-    const normalizedAllowed = allowedRoles.map((r) => r.toLowerCase());
-    const isAllowed =
-      normalizedAllowed.includes(currentRole) ||
-      currentRole === 'central_admin' ||
-      currentRole === 'admin';
-
-    if (!isAllowed) {
-      if (currentRole === 'citizen') {
-        return <Navigate to="/citizen/dashboard" replace />;
-      } else if (currentRole === 'union_officer' || currentRole === 'union_land_officer') {
-        return <Navigate to="/office/union/dashboard" replace />;
-      } else if (currentRole === 'ac_land' || currentRole === 'ac_land_officer') {
-        return <Navigate to="/office/ac-land/dashboard" replace />;
-      } else if (currentRole === 'sub_registrar' || currentRole === 'sub_registry_officer') {
-        return <Navigate to="/office/registry/dashboard" replace />;
-      } else {
-        return <Navigate to="/admin/dashboard" replace />;
-      }
-    }
+  if (currentRole === 'citizen') {
+    return <Navigate to="/citizen/dashboard" replace />;
+  } else if (currentRole === 'union_officer' || currentRole === 'union_land_officer') {
+    return <Navigate to="/office/union/dashboard" replace />;
+  } else if (currentRole === 'ac_land' || currentRole === 'ac_land_officer') {
+    return <Navigate to="/office/ac-land/dashboard" replace />;
+  } else if (currentRole === 'sub_registrar' || currentRole === 'sub_registry_officer') {
+    return <Navigate to="/office/registry/dashboard" replace />;
+  } else {
+    return <Navigate to="/admin/dashboard" replace />;
   }
-
-  return <>{children}</>;
 }
 
 // Public Layout Wrapper

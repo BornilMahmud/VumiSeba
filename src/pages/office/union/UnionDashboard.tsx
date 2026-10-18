@@ -35,7 +35,7 @@ export const UnionDashboard: React.FC = () => {
     setLoading(true);
     try {
       const res = await api.officer.unionQueue();
-      if (res.success && res.stats) {
+      if (res && (res.success || res.stats || res.queue || res.all_applications)) {
         setData(res);
       }
     } catch (err) {
