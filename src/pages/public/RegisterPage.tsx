@@ -36,62 +36,95 @@ export const RegisterPage: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleQuickFill = (type: 'buyer' | 'seller' | 'random') => {
-    setError(null);
+  const generateCleanDemoData = (type: 'buyer' | 'seller' | 'random') => {
     const randId = Math.floor(1000 + Math.random() * 9000);
     const randNid = `199${Math.floor(10000000000000 + Math.random() * 90000000000000)}`;
     const randMobile = `0171${Math.floor(1000000 + Math.random() * 9000000)}`;
 
     if (type === 'buyer') {
-      setFormData({
-        name_bn: 'তানিয়া সুলতানা',
-        name_en: 'Tania Sultana',
-        email: `tania.${randId}@bhumisathi.test`,
-        password: 'password123',
-        mobile: randMobile,
-        nid_no: randNid,
-        father_name_bn: 'শফিকুল ইসলাম',
-        mother_name_bn: 'রোকসানা আক্তার',
-        address_bn: 'বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা',
-        district: 'ঢাকা',
-        upazila: 'গুলশান',
-      });
-      setAutoFilledName(isBn ? 'নমুনা ক্রেতা (তানিয়া সুলতানা)' : 'Demo Buyer (Tania Sultana)');
+      return {
+        data: {
+          name_bn: 'তানিয়া সুলতানা',
+          name_en: 'Tania Sultana',
+          email: `tania.${randId}@bhumisathi.test`,
+          password: 'password123',
+          mobile: randMobile,
+          nid_no: randNid,
+          father_name_bn: 'শফিকুল ইসলাম',
+          mother_name_bn: 'রোকসানা আক্তার',
+          address_bn: 'বাড়ি ৪৫, ফ্ল্যাট ৩এ, রামপুরা, ঢাকা',
+          district: 'ঢাকা',
+          upazila: 'গুলশান',
+        },
+        label: isBn ? 'নমুনা ক্রেতা (তানিয়া সুলতানা)' : 'Demo Buyer (Tania Sultana)',
+      };
     } else if (type === 'seller') {
-      setFormData({
-        name_bn: 'কাজী মিজানুর রহমান',
-        name_en: 'Kazi Mijanur Rahman',
-        email: `mijanur.${randId}@bhumisathi.test`,
-        password: 'password123',
-        mobile: randMobile,
-        nid_no: randNid,
-        father_name_bn: 'কাজী মতিউর রহমান',
-        mother_name_bn: 'মাজেদা বেগম',
-        address_bn: 'বাড়ি ১৭, রোড ৮, ব্লক ডি, বাড্ডা, ঢাকা',
-        district: 'ঢাকা',
-        upazila: 'গুলশান',
-      });
-      setAutoFilledName(isBn ? 'নমুনা বিক্রেতা (কাজী মিজানুর রহমান)' : 'Demo Seller (Kazi Mijanur Rahman)');
+      return {
+        data: {
+          name_bn: 'কাজী মিজানুর রহমান',
+          name_en: 'Kazi Mijanur Rahman',
+          email: `mijanur.${randId}@bhumisathi.test`,
+          password: 'password123',
+          mobile: randMobile,
+          nid_no: randNid,
+          father_name_bn: 'কাজী মতিউর রহমান',
+          mother_name_bn: 'মাজেদা বেগম',
+          address_bn: 'বাড়ি ১৭, রোড ৮, ব্লক ডি, বাড্ডা, ঢাকা',
+          district: 'ঢাকা',
+          upazila: 'গুলশান',
+        },
+        label: isBn ? 'নমুনা বিক্রেতা (কাজী মিজানুর রহমান)' : 'Demo Seller (Kazi Mijanur Rahman)',
+      };
     } else {
       const namesBn = ['আরিফুল ইসলাম', 'মাহমুদা আক্তার', 'সোহেল রানা', 'ফারজানা হক', 'জাকির হোসেন'];
       const namesEn = ['Ariful Islam', 'Mahmuda Akter', 'Sohel Rana', 'Farzana Haque', 'Zakir Hossain'];
       const idx = Math.floor(Math.random() * namesBn.length);
 
-      setFormData({
-        name_bn: namesBn[idx],
-        name_en: namesEn[idx],
-        email: `citizen.${randId}@bhumisathi.test`,
-        password: 'password123',
-        mobile: randMobile,
-        nid_no: randNid,
-        father_name_bn: 'আব্দুর রহিম',
-        mother_name_bn: 'সাহানা বেগম',
-        address_bn: 'বাড়ি ১২, ব্লক বি, গুলশান-১, ঢাকা',
-        district: 'ঢাকা',
-        upazila: 'গুলশান',
-      });
-      setAutoFilledName(isBn ? `ইউনিক নাগরিক (${namesBn[idx]})` : `Unique Citizen (${namesEn[idx]})`);
+      return {
+        data: {
+          name_bn: namesBn[idx],
+          name_en: namesEn[idx],
+          email: `citizen.${randId}@bhumisathi.test`,
+          password: 'password123',
+          mobile: randMobile,
+          nid_no: randNid,
+          father_name_bn: 'আব্দুর রহিম',
+          mother_name_bn: 'সাহানা বেগম',
+          address_bn: 'বাড়ি ১২, ব্লক বি, গুলশান-১, ঢাকা',
+          district: 'ঢাকা',
+          upazila: 'গুলশান',
+        },
+        label: isBn ? `ইউনিক নাগরিক (${namesBn[idx]})` : `Unique Citizen (${namesEn[idx]})`,
+      };
     }
+  };
+
+  const handleQuickFill = (type: 'buyer' | 'seller' | 'random') => {
+    setError(null);
+    const { data, label } = generateCleanDemoData(type);
+    setFormData(data);
+    setAutoFilledName(label);
+  };
+
+  const handleInstantRegister = async (type: 'buyer' | 'seller' | 'random' = 'buyer') => {
+    if (loading) return;
+    setError(null);
+    setLoading(true);
+    const { data, label } = generateCleanDemoData(type);
+    setFormData(data);
+    setAutoFilledName(label);
+
+    const res = await register(data);
+    if (res.success) {
+      navigate('/citizen/dashboard');
+    } else {
+      setError(
+        isBn
+          ? (res.message_bn || 'নিবন্ধন সম্পন্ন করা যায়নি। তথ্য সঠিকভাবে পূরণ করুন।')
+          : (res.message_en || 'Registration failed. Please check the entered data.')
+      );
+    }
+    setLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,9 +132,45 @@ export const RegisterPage: React.FC = () => {
     setError(null);
     setLoading(true);
 
-    const res = await register(formData);
+    const cleanMobile = (formData.mobile || '')
+      .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
+      .replace(/[\s\-]/g, '')
+      .replace(/^\+?88/, '');
+    const cleanNid = (formData.nid_no || '')
+      .replace(/[০-৯]/g, (d) => ({ '০': '0', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7', '৮': '8', '৯': '9' }[d] || d))
+      .replace(/[\s\-]/g, '');
+
+    if (!formData.name_bn.trim() || !formData.name_en.trim()) {
+      setError(isBn ? 'বাংলা এবং ইংরেজিতে পুরো নাম প্রদান করুন।' : 'Please provide full name in both Bengali and English.');
+      setLoading(false);
+      return;
+    }
+    if (!/^01[3-9]\d{8}$/.test(cleanMobile)) {
+      setError(isBn ? 'সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)।' : 'Please provide a valid 11-digit mobile number (e.g. 017XXXXXXXX).');
+      setLoading(false);
+      return;
+    }
+    if (cleanNid.length < 10) {
+      setError(isBn ? 'জাতীয় পরিচয়পত্র নম্বর (NID) ন্যূনতম ১০ বা ১৭ ডিজিট হতে হবে।' : 'National ID (NID) must be at least 10 or 17 digits.');
+      setLoading(false);
+      return;
+    }
+    if (formData.password.length < 6) {
+      setError(isBn ? 'পাসওয়ার্ড ন্যূনতম ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters.');
+      setLoading(false);
+      return;
+    }
+
+    const submissionData = {
+      ...formData,
+      mobile: cleanMobile,
+      nid_no: cleanNid,
+      email: formData.email.trim(),
+    };
+
+    const res = await register(submissionData);
     if (res.success) {
-      navigate('/citizen/profile');
+      navigate('/citizen/dashboard');
     } else {
       setError(
         isBn
@@ -145,11 +214,11 @@ export const RegisterPage: React.FC = () => {
               ? 'নিবন্ধনের ১১টি ঘর হাতে টাইপ না করে নিচের যেকোনো বাটনে ট্যাপ করুন। সঠিক এনআইডি ও মোবাইল নম্বর স্বয়ংক্রিয়ভাবে লোড হবে:'
               : 'Skip manual typing by tapping any button below. Verified demo citizen credentials, NID & phone will load instantly:'}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             <button
               type="button"
               onClick={() => handleQuickFill('buyer')}
-              className="py-2 px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-emerald-200 dark:border-emerald-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5"
+              className="py-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-emerald-200 dark:border-emerald-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>🛒</span>
               <span>{isBn ? 'ক্রেতা তথ্য পূরণ' : 'Fill Demo Buyer'}</span>
@@ -157,7 +226,7 @@ export const RegisterPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleQuickFill('seller')}
-              className="py-2 px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-teal-200 dark:border-teal-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5"
+              className="py-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-teal-200 dark:border-teal-800 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>📜</span>
               <span>{isBn ? 'বিক্রেতা তথ্য পূরণ' : 'Fill Demo Seller'}</span>
@@ -165,10 +234,19 @@ export const RegisterPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleQuickFill('random')}
-              className="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 active:scale-95"
+              className="py-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <RefreshCw size={12} />
-              <span>{isBn ? 'র‍্যান্ডম নতুন নাগরিক' : 'Fill Random Citizen'}</span>
+              <RefreshCw size={12} className="text-emerald-600 dark:text-emerald-400" />
+              <span>{isBn ? 'র‍্যান্ডম তথ্য' : 'Fill Random Citizen'}</span>
+            </button>
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleInstantRegister('buyer')}
+              className="py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 text-[11px] font-bold shadow-2xs hover:shadow transition flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+            >
+              <span>⚡</span>
+              <span>{isBn ? '১-ক্লিকে নিবন্ধন' : 'Instant Register'}</span>
             </button>
           </div>
         </div>
