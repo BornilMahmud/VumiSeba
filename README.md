@@ -474,13 +474,6 @@ Add your Vercel domain under Authentication → Settings → Authorized domains.
 
 ---
 
-## 🗺️ Roadmap
-
-- [ ] Mouza map GIS integration (national digital land map layers)
-- [ ] Live SMS via Teletalk / Government SMS API
-- [ ] OCR parsing for legacy Khatians (CS, SA)
-- [ ] Offline-capable PWA for field officers
-- [ ] Real NID (Porichoy) and e-Challan integration via government partnership
 
 ---
 
@@ -499,7 +492,8 @@ git push origin feature/your-feature  # then open a PR
 
 | Name | Role | Links |
 |---|---|---|
-| *Your name* | *Role* | [GitHub](#) · [LinkedIn](#) |
+| **Arman Hossen** | Developer | [GitHub](https://github.com/armanhossen-dev) · [LinkedIn](https://www.linkedin.com/in/armanhossenripon) |
+| **Bornil Mahmud** | Developer | [GitHub](https://github.com/BornilMahmud) · [LinkedIn](https://www.linkedin.com/in/bornilmahmud/) |
 
 ---
 
