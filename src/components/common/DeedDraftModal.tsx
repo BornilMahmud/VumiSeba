@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Printer, AlertTriangle, FileText } from 'lucide-react';
 import { SaleApplication } from '../../types';
 
@@ -12,13 +13,24 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
   const seller = application.seller;
   const buyer = application.buyer;
 
+  useEffect(() => {
+    document.body.classList.add('printing-deed-modal-active');
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.classList.remove('printing-deed-modal-active');
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   const handlePrint = () => {
     window.print();
   };
 
-  return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 dark:border-slate-700 max-h-[90vh] flex flex-col transition-colors">
+  const modalNode = (
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto deed-modal-backdrop">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-300 dark:border-slate-700 max-h-[90vh] flex flex-col transition-colors deed-modal-dialog">
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 rounded-t-2xl no-print">
           <div className="flex items-center gap-2">
@@ -30,14 +42,14 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition shadow-sm"
+              className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-sm font-medium transition shadow-sm cursor-pointer"
             >
               <Printer size={16} />
               প্রিন্ট করুন
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+              className="p-1.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -159,7 +171,7 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
         <div className="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 rounded-b-2xl text-right no-print">
           <button
             onClick={onClose}
-            className="px-4 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition"
+            className="px-4 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition cursor-pointer"
           >
             বন্ধ করুন
           </button>
@@ -167,6 +179,8 @@ export const DeedDraftModal: React.FC<DeedDraftModalProps> = ({ application, onC
       </div>
     </div>
   );
+
+  return createPortal(modalNode, document.body);
 };
 
 export default DeedDraftModal;

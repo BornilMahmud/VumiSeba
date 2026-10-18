@@ -314,25 +314,95 @@ button:disabled,
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
 }
 
-/* Custom Government Portal Print Styling for Deed Drafts */
+/* Custom Government Portal Print Styling for Deed Drafts & Official Records */
 @media print {
-  body * {
-    visibility: hidden;
+  @page {
+    size: A4 portrait;
+    margin: 10mm 15mm 15mm 15mm;
   }
-  #printable-deed, #printable-deed *,
-  #printable-assessment, #printable-assessment * {
-    visibility: visible;
+
+  /* When printing the deed modal, completely eliminate #root from print layout so it generates zero pages */
+  body.printing-deed-modal-active #root {
+    display: none !important;
   }
-  #printable-deed, #printable-assessment {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 20px;
-    background: white;
-    color: black;
+
+  body.printing-deed-modal-active {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
+
+  /* Unset fixed modal wrapper so it behaves like normal in-flow document and doesn't repeat on multiple pages */
+  body.printing-deed-modal-active .deed-modal-backdrop {
+    position: static !important;
+    inset: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    width: 100% !important;
+    box-shadow: none !important;
+  }
+
+  body.printing-deed-modal-active .deed-modal-dialog {
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  body.printing-deed-modal-active #printable-deed {
+    position: static !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    page-break-inside: auto !important;
+  }
+
+  /* Ensure contrast in print */
+  #printable-deed {
+    color: #000000 !important;
+  }
+  #printable-deed strong,
+  #printable-deed h1,
+  #printable-deed h4,
+  #printable-deed th,
+  #printable-deed td {
+    color: #000000 !important;
+  }
+
+  /* Fallback print rules for non-modal printable assessment */
+  body:not(.printing-deed-modal-active):has(#printable-assessment) {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  body:not(.printing-deed-modal-active):has(#printable-assessment) aside,
+  body:not(.printing-deed-modal-active):has(#printable-assessment) nav,
+  body:not(.printing-deed-modal-active):has(#printable-assessment) header,
+  body:not(.printing-deed-modal-active):has(#printable-assessment) footer {
+    display: none !important;
+  }
+
   .no-print {
     display: none !important;
   }

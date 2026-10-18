@@ -17,7 +17,7 @@ export const ServicesPage: React.FC = () => {
 
   const services = [
     {
-      title: isBn ? 'কেনার আগে জমি যাচাই (P5)' : 'Pre-Purchase Land Audit (P5)',
+      title: isBn ? 'কেনার আগে জমি যাচাই' : 'Pre-Purchase Land Audit',
       desc: isBn
         ? 'বায়নার পূর্বে বিক্রেতার বৈধ হিস্যা, খতিয়ান ও দাগের সত্যতা, বকেয়া খাজনা, আদালতের স্থগিতাদেশ ও ব্যাংক লিয়েন পরীক্ষা।'
         : 'Instant audit of recorded shares, tax liabilities, bank mortgages, and civil court injunctions before paying earnest money.',
@@ -37,7 +37,7 @@ export const ServicesPage: React.FC = () => {
       color: 'bg-blue-50 text-blue-800 border-blue-200',
     },
     {
-      title: isBn ? 'জমি বিক্রির অনলাইন আবেদন (P4)' : 'Online Land Sale Filing (P4)',
+      title: isBn ? 'জমি বিক্রির অনলাইন আবেদন' : 'Online Land Sale Filing',
       desc: isBn
         ? 'ক্রেতা-বিক্রেতা নির্ধারণ, হিস্যা সমন্বয় এবং স্বত্ব যাচাইপূর্বক দলিল প্রস্তুতির আনুষ্ঠানিক আবেদন।'
         : 'Formal digital application for deed preparation with authenticated buyer ID, share checks, and valuation.',

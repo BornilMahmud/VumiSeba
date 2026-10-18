@@ -9,7 +9,7 @@ export const HelpPage: React.FC = () => {
 
   const faqs = [
     {
-      q: isBn ? 'কেনার আগে জমি যাচাই (P5) কেন জরুরি?' : 'Why is Pre-Purchase Land Audit (P5) critical?',
+      q: isBn ? 'কেনার আগে জমি যাচাই কেন জরুরি?' : 'Why is Pre-Purchase Land Audit critical?',
       a: isBn
         ? 'বাংলাদেশে জমি সংক্রান্ত অধিকাংশ মামলা ও প্রতারণার কারণ হলো—বিক্রেতার নিজের চেয়ে বেশি জমি বিক্রির চেষ্টা, অপ্রকাশিত ব্যাংক ঋণ/মর্টগেজ, কিংবা বিচারাধীন আদালতের নিষেধাজ্ঞা। ভূমিসাথীর মাধ্যমে বায়না করার পূর্বেই সরকারি রেকর্ডরুম ও রাজস্ব ডাটাবেজ তুলনা করে ঝুঁকি নিরূপণ করা যায়।'
         : 'Most land disputes in Bangladesh stem from excess-share sales, undisclosed bank mortgages, or pending civil court injunctions. VumiSeba audits official land and revenue databases in real-time before earnest money is committed.',
@@ -23,8 +23,8 @@ export const HelpPage: React.FC = () => {
     {
       q: isBn ? 'দলিল রেজিস্ট্রির পর আলাদা করে কি নামজারির আবেদন করতে হবে?' : 'Do citizens need a separate mutation application after deed registration?',
       a: isBn
-        ? 'না, এটিই ভূমিসাথী (P4) প্ল্যাটফর্মের মূল উদ্ভাবন। সাব-রেজিস্ট্রি অফিসে দলিল নিবন্ধিত হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে সহকারী কমিশনার (ভূমি) অফিসে একটি পোস্ট-রেজিস্ট্রেশন নামজারি কেস শুরু হয়ে যায়। নাগরিককে নতুন করে ফি দিয়ে আলাদা আবেদন করতে হয় না।'
-        : 'No, this is the core breakthrough of the P4 smart registry integration. Deed registration at the Sub-Registry office automatically triggers a mutation case at the AC Land office, eliminating duplicate applications and fees.',
+        ? 'না, এটিই ভূমিসেবা স্মার্ট রেজিস্ট্রির মূল উদ্ভাবন। সাব-রেজিস্ট্রি অফিসে দলিল নিবন্ধিত হওয়ার সাথে সাথেই স্বয়ংক্রিয়ভাবে সহকারী কমিশনার (ভূমি) অফিসে একটি পোস্ট-রেজিস্ট্রেশন নামজারি কেস শুরু হয়ে যায়। নাগরিককে নতুন করে ফি দিয়ে আলাদা আবেদন করতে হয় না।'
+        : 'No, this is the core breakthrough of our smart registry integration. Deed registration at the Sub-Registry office automatically triggers a mutation case at the AC Land office, eliminating duplicate applications and fees.',
     },
     {
       q: isBn ? 'ইউনিক সিটিজেন আইডি (Unique Citizen ID) কী?' : 'What is the Unique Citizen ID?',

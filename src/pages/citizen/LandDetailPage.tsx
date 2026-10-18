@@ -126,7 +126,7 @@ export const LandDetailPage: React.FC = () => {
             className="inline-flex items-center gap-1.5 bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-700 hover:bg-teal-100 dark:hover:bg-teal-900/60 px-3.5 py-2 rounded-lg text-xs font-bold transition shadow-sm"
           >
             <ShieldCheck size={16} />
-            <span>{isBn ? 'ঝুঁকি যাচাই (P5)' : 'Risk Check (P5)'}</span>
+            <span>{isBn ? 'ঝুঁকি যাচাই' : 'Risk Check'}</span>
           </Link>
           <Link
             to={`/citizen/sell?parcel_id=${parcel.id}`}
