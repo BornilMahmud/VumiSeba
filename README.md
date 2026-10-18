@@ -15,7 +15,13 @@
 ![Locale](https://img.shields.io/badge/locale-bn--BD%20%7C%20en--US-1e3a5f)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-[Quick Start](#-quick-start) · [Workflow](#-the-9-stage-lifecycle) · [Real vs Simulated](#-real-vs-simulated) · [Roles](#-roles--office-panels) · [API](#-api-reference) · [Deploy](#-deployment)
+[Quick Start](#-quick-start) · [Screenshots](#-platform-screenshots) · [Workflow](#-the-9-stage-lifecycle) · [Real vs Simulated](#-real-vs-simulated) · [Roles](#-roles--office-panels) · [API](#-api-reference) · [Deploy](#-deployment)
+
+<br/>
+
+<p align="center">
+  <img src="screenshots/00-home-page.png" alt="VumiSeba Platform Overview" width="95%" />
+</p>
 
 </div>
 
@@ -26,22 +32,23 @@
 1. [The Problem](#-the-problem)
 2. [The Solution](#-the-solution)
 3. [Quick Start](#-quick-start)
-4. [The 9-Stage Lifecycle](#-the-9-stage-lifecycle)
-5. [Real vs Simulated](#-real-vs-simulated)
-6. [Features](#-features)
-7. [Roles & Office Panels](#-roles--office-panels)
-8. [Demo Accounts & Scenarios](#-demo-accounts--scenarios)
-9. [Tech Stack](#-tech-stack)
-10. [Architecture](#-architecture)
-11. [Repository Structure](#-repository-structure)
-12. [Database Schema](#-database-schema)
-13. [API Reference](#-api-reference)
-14. [Configuration](#-configuration)
-15. [Testing](#-testing)
-16. [Deployment](#-deployment)
-17. [Security & Privacy](#-security--privacy)
-18. [Known Limitations](#-known-limitations)
-19. [Roadmap & Contributing](#-roadmap--contributing)
+4. [Platform Screenshots](#-platform-screenshots)
+5. [The 9-Stage Lifecycle](#-the-9-stage-lifecycle)
+6. [Real vs Simulated](#-real-vs-simulated)
+7. [Features](#-features)
+8. [Roles & Office Panels](#-roles--office-panels)
+9. [Demo Accounts & Scenarios](#-demo-accounts--scenarios)
+10. [Tech Stack](#-tech-stack)
+11. [Architecture](#-architecture)
+12. [Repository Structure](#-repository-structure)
+13. [Database Schema](#-database-schema)
+14. [API Reference](#-api-reference)
+15. [Configuration](#-configuration)
+16. [Testing](#-testing)
+17. [Deployment](#-deployment)
+18. [Security & Privacy](#-security--privacy)
+19. [Known Limitations](#-known-limitations)
+20. [Roadmap & Contributing](#-roadmap--contributing)
 
 ---
 
@@ -58,8 +65,8 @@ In Bangladesh, over 70% of ongoing civil court litigation originates from land d
 
 A unified LandTech platform built on problem-solving, architectural honesty, and verifiable correctness.
 
-- **🔍 P5: Check Before You Buy** (কেনার আগে জমি যাচাই) — Transparent 7-factor due diligence with **Critical Factor Overrides**. Active injunctions, government khas land, and unrecorded seller shares cap the safety score so a risky parcel can never read "Low Risk".
-- **⚡ P4: Smart Registry → Automated e-Mutation** (স্মার্ট রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি) — Completing deed registration atomically spawns an e-Mutation case in the AC Land docket. No manual paperwork, delays cut from months to ~24 hours, and transferred shares are locked in real time.
+- **🔍 Check Before You Buy** (কেনার আগে জমি যাচাই) — Transparent 7-factor due diligence with **Critical Factor Overrides**. Active injunctions, government khas land, and unrecorded seller shares cap the safety score so a risky parcel can never read "Low Risk".
+- **⚡ Smart Registry → Automated e-Mutation** (স্মার্ট রেজিস্ট্রি ও স্বয়ংক্রিয় ই-নামজারি) — Completing deed registration atomically spawns an e-Mutation case in the AC Land docket. No manual paperwork, delays cut from months to ~24 hours, and transferred shares are locked in real time.
 
 ---
 
@@ -78,7 +85,7 @@ npm run seed:demo
 npm run dev
 ```
 
-Open **http://localhost:3000/** and click the floating **"৩-মিনিট ডেমো গল্প (3-Min Judge Demo Story)"** button for a guided walkthrough.
+Open **http://localhost:3000/** and click the floating **"৩-মিনিট ডেমো গল্প (3-Min Guided Demo Story)"** button for a guided walkthrough.
 
 > Default settings work with zero configuration. To customize, run `cp .env.example .env` (see [Configuration](#-configuration)).
 
@@ -89,6 +96,113 @@ Open **http://localhost:3000/** and click the floating **"৩-মিনিট �
 npm run seed:firestore   # idempotent; demo accounts + parcel records
 ```
 </details>
+
+---
+
+## 📸 Platform Screenshots
+
+Experience the modern, responsive interface and institutional dashboards of **VumiSeba (ভূমিসেবা)**:
+
+### 🌟 Citizen & Public Services Portal (নাগরিক ও পাবলিক পোর্টাল)
+
+#### 1. 🏠 VumiSeba Landing Page & Live Search Portal (মূল হোমপেজ ও লাইভ অনুসন্ধান)
+> *Citizen gateway featuring instant due diligence verification, interactive demo video player, and real-time live Khatian & Dag plot search.*
+
+<p align="center">
+  <img src="screenshots/00-home-page.png" alt="VumiSeba Landing Page & Live Search" width="92%" />
+</p>
+
+---
+
+#### 2. 📝 Citizen Registration & Fast Demo Auto-Fill (নাগরিক নিবন্ধন)
+> *Instant 1-click demographic loading for buyers and sellers, National ID (NID) validation, and responsive bilingual registration forms.*
+
+<p align="center">
+  <img src="screenshots/01-citizen-registration.png" alt="Citizen Registration & 1-Click Auto-Fill" width="92%" />
+</p>
+
+---
+
+#### 3. 🔐 Unified Role-Based Portal Access (ভূমিসেবা পোর্টালে প্রবেশ)
+> *Instant single-click access for all 5 governance stakeholders: Citizen, Union Land Assistant Officer (ULAO), AC Land, Sub-Registrar, and Central System Admin.*
+
+<p align="center">
+  <img src="screenshots/02-portal-login.png" alt="Unified Portal Login & Role Switcher" width="92%" />
+</p>
+
+---
+
+#### 4. 👤 Citizen Interactive Dashboard (নাগরিক ড্যাশবোর্ড)
+> *Personalized citizen hub displaying total landholdings, live sync status, tax clearance alerts, e-mutation tracker, and pre-purchase due-diligence tools.*
+
+<p align="center">
+  <img src="screenshots/06-citizen-dashboard.png" alt="Citizen Interactive Dashboard" width="92%" />
+</p>
+
+---
+
+#### 5. 🏛️ Digital Land Services Directory (সকল ডিজিটাল ভূমি সেবা)
+> *Centralized citizen directory for pre-purchase risk audits, khatian searches, online sale applications, land development tax clearance, e-mutation tracking, and deed appointments.*
+
+<p align="center">
+  <img src="screenshots/04-digital-land-services.png" alt="Digital Land Services Directory" width="92%" />
+</p>
+
+---
+
+#### 6. 📚 Citizen Knowledge Base & Land Term Glossary (সহায়তা ও ভূমি পরিভাষা কোষ)
+> *Interactive FAQ answering critical land-buying questions alongside a comprehensive 16-point bilingual land terminology dictionary (Porcha, Khatian, Dag, Baya Deed, e-Mutation, Anna Shares, Tahsil).*
+
+<p align="center">
+  <img src="screenshots/03-faq-and-glossary.png" alt="Citizen FAQ and Land Term Glossary" width="92%" />
+</p>
+
+---
+
+#### 7. 🔄 9-Stage End-to-End Workflow Lifecycle (কীভাবে কাজ করে ভূমিসাথী)
+> *Interactive visual roadmap illustrating the complete citizen journey from pre-purchase due diligence and union field inquiry to Sub-Registry deed registration and instant automated e-mutation.*
+
+<p align="center">
+  <img src="screenshots/05-how-it-works-workflow.png" alt="How It Works 9-Stage Workflow" width="92%" />
+</p>
+
+---
+
+### 🏛️ Multi-Office Governance & Revenue Court Dashboards (দাপ্তরিক ও রাজস্ব আদালত প্যানেল)
+
+#### 8. 🌿 Union Land Assistant Officer (ULAO) Tahsil Dashboard (ইউনিয়ন ভূমি অফিস ড্যাশবোর্ড)
+> *Field-level review console for tax clearance (`কর ও দাখিলা`), title and dag recordroom verification, on-ground inquiry reports, and forward/return actions.*
+
+<p align="center">
+  <img src="screenshots/07-union-land-office-dashboard.png" alt="Union Land Office Dashboard" width="92%" />
+</p>
+
+---
+
+#### 9. ⚖️ AC Land Revenue Court & Mutation Docket (সহকারী কমিশনার (ভূমি) রাজস্ব আদালত)
+> *Judicial review console for Pre-Registration Title NOCs, contested hearing scheduling, daily cause lists, order sheet generation, and final mutation khatian issuance.*
+
+<p align="center">
+  <img src="screenshots/08-ac-land-revenue-court-dashboard.png" alt="AC Land Revenue Court Dashboard" width="92%" />
+</p>
+
+---
+
+#### 10. 📜 Sub-Registry Office Deed Execution & Balam Registry (সাব-রেজিস্ট্রি কার্যালয়)
+> *Deed verification desk for appointment scheduling, stamp duty verification, deed volume tracking (বালাম রেজিস্ট্রি), and atomic registration completion.*
+
+<p align="center">
+  <img src="screenshots/09-sub-registry-office-dashboard.png" alt="Sub-Registry Office Dashboard" width="92%" />
+</p>
+
+---
+
+#### 11. 🛡️ National Central Administration & Fraud Prevention Audit Dashboard (কেন্দ্রীয় নিয়ন্ত্রণ ও অডিট ড্যাশবোর্ড)
+> *National command center featuring real-time transaction pipelines, fraud-prevention telemetry, SLA stage tracking, role management, and immutable audit logs.*
+
+<p align="center">
+  <img src="screenshots/10-central-admin-audit-dashboard.png" alt="Central Administration & Audit Dashboard" width="92%" />
+</p>
 
 ---
 
@@ -621,7 +735,7 @@ npm run seed:firestore
 - **Mock government integrations** — no connection to live Ministry of Land or Election Commission servers; lookups use an authentic mock schema.
 - **Simulated payments** — tax payments use an instant simulated gateway, not live Sonali Bank e-Challan.
 - **Synthetic court records** — cases and injunctions are representative, not real litigation.
-- **Non-government status** — a hackathon MVP; output drafts carry a disclaimer that they are not official government documents.
+- **Non-government status** — an MVP demonstration prototype; output drafts carry a disclaimer that they are not official government documents.
 
 ---
 
@@ -647,6 +761,6 @@ git push origin feature/your-feature-name  # then open a Pull Request
 
 <div align="center">
 
-Built for **LandTech Hackathon 2026** · Released under the **MIT License**
+Built for **LandTech Initiative 2026** · Released under the **MIT License**
 
 </div>
