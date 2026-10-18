@@ -4,7 +4,7 @@
 
 ### Check before you buy. Register once. Mutate automatically.
 
-**A unified LandTech platform for Bangladesh: pre-purchase due diligence, smart registry, and automated e-Mutation, in one auditable workflow.**
+**A unified LandTech platform for Bangladesh: pre-purchase due diligence, <br/> smart registry, and automated e-Mutation, in one auditable workflow.**
 
 *বাংলাদেশ নাগরিক ভূমি সেবা · স্বত্ব যাচাই · স্মার্ট রেজিস্ট্রি · স্বয়ংক্রিয় ই-নামজারি*
 
