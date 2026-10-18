@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Search,
@@ -19,10 +19,25 @@ import {
   BadgeCheck,
   Zap,
   Play,
+  X,
+  ExternalLink,
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { toBengaliDigits, toEnglishDigits } from '../../utils/bilingual';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const YoutubeIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, className = '' }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+  </svg>
+);
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -33,6 +48,22 @@ export const HomePage: React.FC = () => {
   const [mouza, setMouza] = useState('বাড্ডা');
   const [dagNo, setDagNo] = useState('');
   const [khatianNo, setKhatianNo] = useState('');
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (isVideoModalOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsVideoModalOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isVideoModalOpen]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,16 +140,15 @@ export const HomePage: React.FC = () => {
               <span>{t('hero.ctaVerify', 'কেনার আগে জমি যাচাই করুন', 'Verify Land Before Buying')}</span>
             </Link>
 
-            <a
-              href="https://www.youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => setIsVideoModalOpen(true)}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-teal-600 via-cyan-700 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
-              title={language === 'en' ? 'Watch project demo video on YouTube' : 'ইউটিউবে প্রজেক্ট ডেমো ভিডিও দেখুন'}
+              title={language === 'en' ? 'Watch project demo video' : 'প্রজেক্ট ডেমো ভিডিও দেখুন'}
             >
               <Play size={16} className="fill-current text-white shrink-0" />
               <span>{t('hero.demoVideo', 'ডেমো ভিডিও দেখুন', 'Watch Demo Video')}</span>
-            </a>
+            </button>
 
             <Link
               to="/citizen/sell"
@@ -889,6 +919,96 @@ export const HomePage: React.FC = () => {
           </div>
         </motion.div>
       </section>
+
+      {/* Video Modal Popup */}
+      <AnimatePresence>
+        {isVideoModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsVideoModalOpen(false)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
+            />
+
+            {/* Modal Dialog Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-4xl bg-slate-950 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 bg-slate-900 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center shrink-0">
+                    <YoutubeIcon size={18} />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold text-white leading-tight truncate">
+                      {language === 'en'
+                        ? 'VumiSeba Platform Walkthrough & Live Demo'
+                        : 'ভূমিসেবা প্ল্যাটফর্ম লাইভ ডেমো ভিডিও'}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-slate-400 truncate">
+                      {language === 'en'
+                        ? 'Automated Land Verification, Registration & Mutation'
+                        : 'স্বয়ংক্রিয় জমি যাচাই, দলিল সম্পাদন ও ই-নামজারি প্রক্রিয়া'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href="https://youtu.be/lvudKKWMx6k"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
+                    title={language === 'en' ? 'Open in YouTube' : 'ইউটিউবে খুলুন'}
+                  >
+                    <ExternalLink size={13} />
+                    <span className="hidden sm:inline">YouTube</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setIsVideoModalOpen(false)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                    aria-label="Close modal"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Responsive Video Container 16:9 */}
+              <div className="relative w-full aspect-video bg-black">
+                <iframe
+                  src="https://www.youtube.com/embed/lvudKKWMx6k?autoplay=1&rel=0&modestbranding=1"
+                  title="VumiSeba Platform Demo Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full border-0"
+                />
+              </div>
+
+              {/* Modal Footer / Quick Notes */}
+              <div className="px-4 sm:px-6 py-2.5 bg-slate-900/90 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+                <span>
+                  {language === 'en'
+                    ? 'Tip: Press Esc or click outside to close the player'
+                    : 'টিপস: বন্ধ করতে Esc চাপুন অথবা ভিডিওর বাইরে ক্লিক করুন'}
+                </span>
+                <span className="text-[11px] text-emerald-400 font-medium">
+                  {language === 'en' ? '• High Definition (HD)' : '• হাই ডেফিনিশন (HD)'}
+                </span>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
